@@ -27,7 +27,7 @@ The exported JSON string includes useful metadata for debugging:
 - **Environment**: OS Platform, OS Version, App Version, Build Version, Development status
 - **Network**: Network tier (`mainnet` / `testnet` / `custom`) and label, Horizon and Soroban RPC **hostnames only** (never the full URL), and vault mode (`configured` with a masked contract ID, or `mock`). Reuses the exact same classification the Settings screen shows (`src/features/settings/useNetworkEnvironment`), so this can never drift from what the user sees on-device.
 - **Feature Flags**: every flag defined in `src/config/featureFlags.ts`, by name, with its enabled/disabled state — no description text, just enough to tell support which build variant a user is on.
-- **Storage**: whether secure device storage (Keychain on iOS, Keystore on Android) is available via `SecureStore.isAvailableAsync()` — a capability check, not a read of anything actually stored.
+- **Storage**: platform availability plus a fixed non-sensitive write/read/delete probe, reported as `secureStoreAvailable`, `secureStoreOperational`, and a coarse `secureStoreStatus`. The probe never reads wallet storage and never exports raw platform errors.
 - **App State**: Initialization status, UI Theme, total count of saved contacts
 - **Wallet State**: Wallet initialization status (has public key), balance load status, transaction count, loading state, and the most recent wallet-store error message (if any, already redacted)
 - **Last Reported Failure**: Snapshot from the global `reportError` funnel (ErrorBoundary / JS handler / unhandled rejection) — source, name, redacted message, fatal flag, timestamp
@@ -76,7 +76,9 @@ behavior that might put unrelated data into an error message.
     "ENABLE_NEW_SEND_FLOW": false
   },
   "storage": {
-    "secureStoreAvailable": true
+    "secureStoreAvailable": true,
+    "secureStoreOperational": true,
+    "secureStoreStatus": "available"
   },
   "appState": {
     "isInitialized": true,
