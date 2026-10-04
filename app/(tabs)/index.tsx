@@ -32,6 +32,7 @@ export default function HomeScreen() {
     fundError,
     error,
     balanceState,
+    balanceRefreshState,
     fundingStatus,
     refreshWalletData,
     fundWallet,
@@ -89,6 +90,7 @@ export default function HomeScreen() {
         {/* Issue #329: Balance display with all states */}
         <BalanceDisplay
           state={balanceState}
+          refreshState={balanceRefreshState}
           balance={balance}
           publicKey={publicKey}
           onRetry={handleRetry}

@@ -27,6 +27,69 @@ export interface BalanceStateCopy {
  * Returns user-facing copy for each balance state.
  * Safe to render directly — no raw error messages are surfaced.
  */
+
+/**
+ * Refresh-specific lifecycle for an existing wallet balance.
+ *
+ * This is separate from BalanceState: BalanceState answers whether a numeric
+ * balance is currently usable, while BalanceRefreshState describes the most
+ * recent refresh attempt. A usable cached balance can therefore remain
+ * available while refreshState is stale, failed, or offline.
+ */
+export type BalanceRefreshState =
+  | 'idle'
+  | 'loading'
+  | 'stale'
+  | 'failed'
+  | 'offline'
+  | 'refreshed';
+
+export interface BalanceRefreshStateCopy {
+  title: string;
+  message: string;
+  retryLabel?: string;
+}
+
+export function describeBalanceRefreshState(
+  state: BalanceRefreshState,
+): BalanceRefreshStateCopy {
+  switch (state) {
+    case 'idle':
+      return {
+        title: 'Balance not refreshed yet',
+        message: 'Pull down to load the latest balance.',
+        retryLabel: 'Refresh',
+      };
+    case 'loading':
+      return {
+        title: 'Loading balance',
+        message: 'Fetching the latest balance from the Stellar network.',
+      };
+    case 'stale':
+      return {
+        title: 'Refreshing balance',
+        message: 'Showing the last known balance while the refresh completes.',
+      };
+    case 'failed':
+      return {
+        title: 'Balance refresh failed',
+        message: 'The latest refresh failed. Your last known balance is unchanged.',
+        retryLabel: 'Retry',
+      };
+    case 'offline':
+      return {
+        title: 'Balance refresh offline',
+        message: 'No internet connection. Your last known balance is unchanged.',
+        retryLabel: 'Retry',
+      };
+    case 'refreshed':
+      return {
+        title: 'Balance refreshed',
+        message: 'Latest balance loaded successfully.',
+      };
+  }
+}
+
 /**
  * Whether the account exists on the Stellar network.
  * - 'unknown':  haven't checked yet (or network error prevented check)
