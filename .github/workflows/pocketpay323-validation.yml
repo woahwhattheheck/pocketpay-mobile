@@ -1,0 +1,99 @@
+name: PocketPay #323 source validation
+
+on:
+  push:
+    branches:
+      - validation/pocketpay323-hash-copy-20261004
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact pushed source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify source revision and tree
+        run: |
+          set -eu
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          {
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "ref=$GITHUB_REF"
+            echo "commit=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse 'HEAD^{tree}')"
+            echo "recorded_at_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee source-receipt.txt
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked dependencies
+        id: install
+        run: |
+          set -o pipefail
+          npm ci 2>&1 | tee npm-ci.log
+
+      - name: Run focused receipt and transaction-detail tests
+        id: tests
+        if: ${{ always() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          npm test -- --runInBand __tests__/paymentSuccess.test.tsx __tests__/transactionDetail.test.tsx 2>&1 | tee focused-jest.log
+
+      - name: Run full Jest suite
+        id: full_tests
+        if: ${{ always() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          npm test -- --runInBand 2>&1 | tee full-jest.log
+
+      - name: Run TypeScript check
+        id: typecheck
+        if: ${{ always() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          npm run typecheck 2>&1 | tee typecheck.log
+
+      - name: Run repository lint
+        id: lint
+        if: ${{ always() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          npm run lint 2>&1 | tee lint.log
+
+      - name: Write gate receipt
+        if: always()
+        run: |
+          {
+            echo "install=${{ steps.install.outcome }}"
+            echo "focused_jest=${{ steps.tests.outcome }}"
+            echo "full_jest=${{ steps.full_tests.outcome }}"
+            echo "typecheck=${{ steps.typecheck.outcome }}"
+            echo "lint=${{ steps.lint.outcome }}"
+          } | tee gate-receipt.txt
+
+      - name: Preserve logs and source receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pocketpay323-source-validation-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: |
+            source-receipt.txt
+            gate-receipt.txt
+            npm-ci.log
+            focused-jest.log
+            full-jest.log
+            typecheck.log
+            lint.log
+          if-no-files-found: warn
+          retention-days: 30
