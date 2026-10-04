@@ -1,6 +1,10 @@
-import { buildReceivePayload, isPaymentRequestPayload } from '../src/features/receive/qrPayload';
+import {
+  buildReceivePayload,
+  createReceivePayload,
+  isPaymentRequestPayload,
+} from '../src/features/receive/qrPayload';
 
-const DESTINATION = 'GABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTUV';
+const DESTINATION = 'G' + 'A'.repeat(55);
 
 describe('buildReceivePayload', () => {
   it('returns the bare address when no amount, asset, or memo is given', () => {
@@ -107,5 +111,63 @@ describe('buildReceivePayload', () => {
     const parsed = new URLSearchParams(payload.split('?')[1]);
     expect(parsed.get('memo')).toBe('a&b=c d');
     expect(payload).not.toContain(' ');
+  });
+});
+
+
+describe('createReceivePayload', () => {
+  it('returns a payload only after the complete receive request validates', () => {
+    const result = createReceivePayload({
+      destination: `  ${DESTINATION}  `,
+      amount: '10.5',
+      memo: 'Invoice 42',
+    }, 'Testnet');
+
+    expect(result.isValid).toBe(true);
+    expect(result.errors).toEqual({});
+    expect(result.payload).toBe(
+      `web+stellar:pay?destination=${DESTINATION}&amount=10.5&memo=Invoice+42&memo_type=MEMO_TEXT`,
+    );
+  });
+
+  it('blocks QR generation for an invalid destination instead of encoding it', () => {
+    const result = createReceivePayload({ destination: 'not-a-stellar-address' }, 'Testnet');
+
+    expect(result.isValid).toBe(false);
+    expect(result.payload).toBe('');
+    expect(result.errors.destination).toContain('valid Stellar address');
+  });
+
+  it('blocks QR generation on unsupported networks', () => {
+    const result = createReceivePayload({ destination: DESTINATION }, 'Mainnet');
+
+    expect(result.isValid).toBe(false);
+    expect(result.payload).toBe('');
+    expect(result.errors.network).toContain('only supported on Stellar Testnet');
+  });
+
+  it('reports invalid optional fields without silently dropping them', () => {
+    const result = createReceivePayload({
+      destination: DESTINATION,
+      amount: '-1',
+      memo: 'x'.repeat(29),
+    }, 'Testnet');
+
+    expect(result.isValid).toBe(false);
+    expect(result.payload).toBe('');
+    expect(result.errors.amount).toBeTruthy();
+    expect(result.errors.memo).toContain('too long');
+  });
+
+  it('rejects issued-asset fields in the current XLM-only mobile receive flow', () => {
+    const result = createReceivePayload({
+      destination: DESTINATION,
+      assetCode: 'USDC',
+      assetIssuer: DESTINATION,
+    }, 'Testnet');
+
+    expect(result.isValid).toBe(false);
+    expect(result.payload).toBe('');
+    expect(result.errors.asset).toContain('not supported');
   });
 });
