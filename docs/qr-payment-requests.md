@@ -55,6 +55,31 @@ Query values are encoded with the platform's `URLSearchParams`
 (`application/x-www-form-urlencoded`), matching how SEP-0007 URIs are
 specified.
 
+## Validation before display
+
+The Receive screen never renders a QR directly from unchecked form values.
+It calls `createReceivePayload`, which validates the complete request and
+returns either a payload or field-specific errors.
+
+- **Destination:** must be a valid Stellar public key. Missing or malformed
+  wallet addresses suppress the QR instead of producing an unusable code.
+- **Network:** the current mobile receive flow is Testnet-only. A Mainnet or
+  custom network configuration suppresses QR generation and shows the network
+  error rather than presenting a request that the app cannot safely honor.
+- **Amount:** optional, but when present it must pass the shared positive-decimal
+  validation used by payment flows.
+- **Memo:** optional, but when present it must fit the Stellar 28-byte text-memo
+  limit. A memo type without a memo is rejected.
+- **Issued assets:** the low-level formatter can still represent
+  `asset_code`/`asset_issuer` together for forward compatibility, but the
+  current mobile screen is XLM-only. The validated mobile path therefore rejects
+  issued-asset fields instead of silently dropping or advertising unsupported
+  behavior.
+
+When validation fails, the QR is replaced by a visible error state and Share is
+disabled. Invalid optional fields are not removed from the request to make a
+different payload appear valid.
+
 ## Parsing on the scan side
 
 `app/scan.tsx` currently forwards whatever a scanned QR contains straight
