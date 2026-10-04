@@ -5,6 +5,7 @@ import * as Clipboard from 'expo-clipboard';
 import { useWalletStore } from '../src/store/walletStore';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import TransactionDetailScreen from '../app/transaction/[id]';
+import { fetchOperationById } from '../src/services/stellar';
 
 const mockBack = jest.fn();
 const mockPush = jest.fn();
@@ -108,6 +109,8 @@ describe('Transaction Detail Screen', () => {
     mockUseLocalSearchParams.mockReturnValue({ id: 'nonexistent' });
     const { getByTestId, getByText } = render(<TransactionDetailScreen />);
 
+    expect(fetchOperationById).toHaveBeenCalledWith('nonexistent');
+
     await waitFor(() => {
       expect(getByTestId('error-container')).toBeTruthy();
     });
@@ -116,6 +119,13 @@ describe('Transaction Detail Screen', () => {
     const goBackBtn = getByText('Go Back');
     fireEvent.press(goBackBtn);
     expect(mockBack).toHaveBeenCalled();
+  });
+
+  it('explains what the transaction hash is for in non-technical language', () => {
+    const { getByText } = render(<TransactionDetailScreen />);
+    expect(
+      getByText('This code identifies your payment. Copy it to share or look it up.'),
+    ).toBeTruthy();
   });
 
   it('copies transaction hash to clipboard and shows success feedback', async () => {

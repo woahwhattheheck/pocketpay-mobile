@@ -13,7 +13,7 @@
 
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { Linking } from 'react-native';
+import { Alert, Linking } from 'react-native';
 
 // ─── Module mocks ─────────────────────────────────────────────────────────────
 
@@ -168,12 +168,38 @@ describe('AC6 – no secret key information', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe('copy transaction hash', () => {
-  it('copies the transaction hash to the clipboard when the copy action is pressed', async () => {
-    const { getByLabelText } = render(<PaymentSuccessScreen />);
+  it('explains what the transaction hash is for in non-technical language', () => {
+    const { getByText } = render(<PaymentSuccessScreen />);
+    expect(
+      getByText('This code identifies your payment. Copy it to share or look it up.'),
+    ).toBeTruthy();
+  });
+
+  it('copies the transaction hash and shows visible success feedback', async () => {
+    const { getByLabelText, getByText } = render(<PaymentSuccessScreen />);
     fireEvent.press(getByLabelText('Copy transaction hash'));
     await waitFor(() => {
       expect(Clipboard.setStringAsync).toHaveBeenCalledWith(TX_HASH);
+      expect(getByText('Copied')).toBeTruthy();
     });
+  });
+
+  it('shows a clear error when the clipboard write fails', async () => {
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    (Clipboard.setStringAsync as jest.MockedFunction<typeof Clipboard.setStringAsync>)
+      .mockRejectedValueOnce(new Error('Clipboard unavailable'));
+
+    const { getByLabelText } = render(<PaymentSuccessScreen />);
+    fireEvent.press(getByLabelText('Copy transaction hash'));
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Copy Failed',
+        'Could not copy the transaction ID. Please try again.',
+      );
+    });
+
+    alertSpy.mockRestore();
   });
 });
 

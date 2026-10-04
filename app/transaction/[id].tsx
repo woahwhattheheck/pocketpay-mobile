@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView, Platform, Linking, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
-import * as Clipboard from 'expo-clipboard';
+import { useCopyToClipboard } from '../../src/utils/clipboard';
 import { Copy, Check, ArrowLeft, ArrowUpRight, ArrowDownLeft, ExternalLink, AlertCircle, Clock, CheckCircle, XCircle, RefreshCw } from 'lucide-react-native';
 import { useWalletStore } from '../../src/store/walletStore';
 import { useAppStore } from '../../src/store/appStore';
@@ -336,6 +336,8 @@ export default function TransactionDetailScreen() {
                 onPress={() => handleCopy(txHash, 'hash')} 
                 style={styles.copyBtn}
                 testID="copy-hash-btn"
+                accessibilityLabel="Copy transaction hash"
+                accessibilityRole="button"
               >
                 {copiedField === 'hash' ? (
                   <View style={styles.copiedFeedback}>
@@ -349,6 +351,9 @@ export default function TransactionDetailScreen() {
             </View>
             <Text style={styles.addressText} selectable numberOfLines={2}>
               {txHash}
+            </Text>
+            <Text style={styles.hashHelper}>
+              This code identifies your payment. Copy it to share or look it up.
             </Text>
           </View>
         ) : null}
@@ -532,6 +537,12 @@ const styles = StyleSheet.create({
   },
   copyBtn: {
     padding: SIZES.xs,
+  },
+  hashHelper: {
+    color: COLORS.textMuted,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: SIZES.xs,
   },
   copiedFeedback: {
     flexDirection: 'row',

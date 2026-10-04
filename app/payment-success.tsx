@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { CheckCircle, Copy, Check, ExternalLink } from 'lucide-react-native';
 import { Button } from '../src/components/Button';
@@ -54,7 +54,10 @@ export default function PaymentSuccessScreen() {
 
   const handleCopyHash = async () => {
     if (!hash) return;
-    await copy(hash, 'hash');
+    const result = await copy(hash, 'hash');
+    if (!result.ok) {
+      Alert.alert('Copy Failed', 'Could not copy the transaction ID. Please try again.');
+    }
   };
 
   const handleOpenExplorer = () => {
@@ -112,13 +115,21 @@ export default function PaymentSuccessScreen() {
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               {copiedField === 'hash' ? (
-                <Check color={COLORS.success} size={20} />
+                <View style={styles.copiedFeedback} accessibilityLiveRegion="polite">
+                  <Check color={COLORS.success} size={20} />
+                  <Text style={styles.copiedText}>Copied</Text>
+                </View>
               ) : (
                 <Copy color={COLORS.textSecondary} size={20} />
               )}
             </TouchableOpacity>
           ) : null}
         </View>
+        {hash ? (
+          <Text style={styles.hashHelper}>
+            This code identifies your payment. Copy it to share or look it up.
+          </Text>
+        ) : null}
 
         {explorerUrl ? (
           <TouchableOpacity
@@ -215,6 +226,22 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     fontSize: 14,
     flex: 1,
+  },
+  copiedFeedback: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SIZES.xs,
+  },
+  copiedText: {
+    color: COLORS.success,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  hashHelper: {
+    color: COLORS.textMuted,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: SIZES.xs,
   },
   divider: {
     height: 1,
