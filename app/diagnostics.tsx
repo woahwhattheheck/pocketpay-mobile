@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { useRouter, Redirect } from 'expo-router';
 import Constants from 'expo-constants';
-import * as SecureStore from 'expo-secure-store';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
 import { useTheme } from '../src/hooks/useTheme';
 import { useWalletStore } from '../src/store/walletStore';
 import { useVaultStore } from '../src/store/vaultStore';
+import { probeSecureStorage } from '../src/utils/diagnostics';
 import {
   Info,
   Smartphone,
@@ -61,20 +61,6 @@ const extractHost = (url: string | undefined): string => {
   }
 };
 
-/**
- * Checks if secure storage is available on this device.
- */
-const checkSecureStorageAvailability = async (): Promise<boolean> => {
-  try {
-    const testKey = '__diagnostics_test__';
-    await SecureStore.setItemAsync(testKey, 'test');
-    await SecureStore.deleteItemAsync(testKey);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 export default function DiagnosticsScreen() {
   const router = useRouter();
   const { colors } = useTheme();
@@ -84,7 +70,7 @@ export default function DiagnosticsScreen() {
   const { balanceError: vaultError, isConfigured: vaultConfigured } = useVaultStore();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [secureStorageAvailable, setSecureStorageAvailable] = useState<boolean | null>(null);
+  const [secureStorageStatus, setSecureStorageStatus] = useState<string | null>(null);
 
   // Gate to development mode only
   if (!__DEV__) {
@@ -93,8 +79,8 @@ export default function DiagnosticsScreen() {
 
   useEffect(() => {
     const checkStorage = async () => {
-      const available = await checkSecureStorageAvailability();
-      setSecureStorageAvailable(available);
+      const result = await probeSecureStorage();
+      setSecureStorageStatus(result.secureStoreStatus);
       setIsLoading(false);
     };
     checkStorage();
@@ -153,11 +139,15 @@ export default function DiagnosticsScreen() {
       items: [
         {
           label: 'Secure Storage',
-          value: secureStorageAvailable === null
+          value: secureStorageStatus === null
             ? 'Checking...'
-            : secureStorageAvailable
+            : secureStorageStatus === 'available'
             ? 'Available'
             : 'Unavailable',
+        },
+        {
+          label: 'Storage Diagnostic',
+          value: secureStorageStatus ?? 'checking',
         },
         { label: 'Biometric Support', value: Platform.OS === 'web' ? 'Not available' : 'Supported' },
       ],
