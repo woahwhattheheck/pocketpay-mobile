@@ -12,7 +12,7 @@
  * Accessibility: interactive elements carry accessibilityLabel / accessibilityRole.
  */
 
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useRef } from "react";
 import { View, Text, StyleSheet, FlatList, Alert, Modal, TouchableOpacity } from "react-native";
 import { Button } from "../src/components/Button";
 import { Input } from "../src/components/Input";
@@ -35,7 +35,7 @@ type Mode =
 export default function ContactsScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const { contacts, addContactIfUnique, removeContact, updateContact, findDuplicateContact } =
+  const { contacts, addContactIfUnique, removeContact, updateContact, findDuplicateContact, findContactByPublicKey } =
     useAppStore();
   const { confirm, confirmationDialog } = useConfirm();
 
@@ -44,10 +44,12 @@ export default function ContactsScreen() {
   const [name, setName] = useState("");
   const [publicKey, setPublicKey] = useState("");
   const [nameError, setNameError] = useState<string | undefined>();
-  const [nameWarning, setNameWarning] = useState<string | undefined>();
   const [keyError, setKeyError] = useState<string | undefined>();
   const [foundDuplicate, setFoundDuplicate] = useState<Contact | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const saveInFlight = useRef(false);
+  const conflict = findDuplicateContact(name, publicKey);
+  const nameWarning = conflict.type === "name" ? conflict.message : undefined;
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -55,7 +57,6 @@ export default function ContactsScreen() {
     setName("");
     setPublicKey("");
     setNameError(undefined);
-    setNameWarning(undefined);
     setKeyError(undefined);
     setFoundDuplicate(null);
     setIsSaving(false);
@@ -64,17 +65,6 @@ export default function ContactsScreen() {
   const handleNameChange = (value: string) => {
     setName(value);
     if (nameError && value.trim()) setNameError(undefined);
-    // Check for duplicate name (case-insensitive) — warn but don't block
-    if (value.trim()) {
-      const result = findDuplicateContact(value, publicKey || "G");
-      if (result.type === "name") {
-        setNameWarning(result.message);
-      } else {
-        setNameWarning(undefined);
-      }
-    } else {
-      setNameWarning(undefined);
-    }
   };
 
   const handleKeyChange = (value: string) => {
@@ -92,6 +82,7 @@ export default function ContactsScreen() {
     // Check for duplicate address using the store's centralized logic
     const result = findDuplicateContact(name || "temp", value);
     if (result.type === "address") {
+      setFoundDuplicate(findContactByPublicKey(value) ?? null);
       setKeyError(result.message);
       return;
     }
@@ -101,6 +92,7 @@ export default function ContactsScreen() {
   // ── Save handler (used by both manual and scan-confirm forms) ───────────────
 
   const handleSave = async () => {
+    if (saveInFlight.current) return;
     const trimmedName = name.trim();
     const trimmedKey = publicKey.trim();
 
@@ -119,16 +111,15 @@ export default function ContactsScreen() {
       publicKey: trimmedKey,
     };
 
+    saveInFlight.current = true;
     try {
       setIsSaving(true);
       const result = await addContactIfUnique(newContact);
 
       if (result.type === "address") {
         // Show the update-existing banner instead of just an error
-        const existing = contacts.find((c) => c.publicKey === trimmedKey);
-        if (existing) {
-          setFoundDuplicate(existing);
-        }
+        // Read the latest store after the await, using its normalized lookup.
+        setFoundDuplicate(findContactByPublicKey(trimmedKey) ?? null);
         setKeyError(result.message);
         return;
       }
@@ -138,13 +129,16 @@ export default function ContactsScreen() {
     } catch {
       Alert.alert("Error", "Failed to save contact. Please try again.");
     } finally {
+      saveInFlight.current = false;
       setIsSaving(false);
     }
   };
 
   const handleUpdateExisting = async () => {
-    if (!foundDuplicate) return;
+    if (!foundDuplicate || saveInFlight.current) return;
     const newName = name.trim() || foundDuplicate.name;
+    saveInFlight.current = true;
+    setIsSaving(true);
     try {
       await updateContact(foundDuplicate.id, newName);
       Alert.alert(
@@ -153,8 +147,11 @@ export default function ContactsScreen() {
       );
       resetForm();
       setMode("list");
-    } catch (e: any) {
-      Alert.alert("Error", e.message || "Failed to update contact.");
+    } catch {
+      Alert.alert("Error", "Failed to update contact. Please try again.");
+    } finally {
+      saveInFlight.current = false;
+      setIsSaving(false);
     }
   };
 
@@ -242,10 +239,11 @@ export default function ContactsScreen() {
             onChangeText={handleNameChange}
             error={nameError}
             autoFocus
+            editable={!isSaving}
             accessibilityLabel="Contact name"
           />
           {nameWarning && !nameError && (
-            <Text style={styles.warningText}>{nameWarning}</Text>
+            <Text style={styles.warningText} accessibilityLiveRegion="polite">{nameWarning}</Text>
           )}
 
           {/* Address field – read-only when pre-filled from scan */}
@@ -257,7 +255,7 @@ export default function ContactsScreen() {
             error={keyError}
             autoCapitalize="none"
             autoCorrect={false}
-            editable={mode !== "confirm-scan"}
+            editable={mode !== "confirm-scan" && !isSaving}
             accessibilityLabel="Stellar public key address"
           />
           {/* Duplicate address update banner */}
@@ -273,7 +271,14 @@ export default function ContactsScreen() {
               <Text style={styles.duplicateBannerHint}>
                 You can update the existing entry's name below, or cancel to keep it unchanged.
               </Text>
-              <TouchableOpacity style={styles.updateButton} onPress={handleUpdateExisting}>
+              <TouchableOpacity
+                style={styles.updateButton}
+                onPress={handleUpdateExisting}
+                disabled={isSaving}
+                accessibilityRole="button"
+                accessibilityLabel="Update existing contact"
+                accessibilityState={{ disabled: isSaving, busy: isSaving }}
+              >
                 <Pencil color={colors.primary} size={16} />
                 <Text style={styles.updateButtonText}>
                   Update "{foundDuplicate.name}" to "{name.trim() || foundDuplicate.name}"
@@ -287,6 +292,7 @@ export default function ContactsScreen() {
             <Button
               title="Scan QR Instead"
               variant="outline"
+              disabled={isSaving}
               onPress={() => {
                 resetForm();
                 setMode("scanning");
@@ -307,6 +313,7 @@ export default function ContactsScreen() {
             <Button
               title="Cancel"
               variant="outline"
+              disabled={isSaving}
               onPress={() => {
                 resetForm();
                 setMode("list");

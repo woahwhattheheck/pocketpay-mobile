@@ -63,12 +63,19 @@ export function normalizePublicKey(publicKey: string): string {
   return normalizeAddress(publicKey);
 }
 
+// Serialize reads and mutations, not just writes: each operation must compute
+// its next snapshot from the last successfully persisted contact list.
+let contactOperations: Promise<void> = Promise.resolve();
+
+function withContactStorage<T>(operation: () => Promise<T>): Promise<T> {
+  const result = contactOperations.then(operation);
+  // Reject the caller on failure, but keep later operations/retries runnable.
+  contactOperations = result.then(() => undefined, () => undefined);
+  return result;
+}
+
 const persistContacts = async (contacts: Contact[]) => {
-  try {
-    await AsyncStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(contacts));
-  } catch (e) {
-    console.error("Failed to save contacts:", e);
-  }
+  await AsyncStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(contacts));
 };
 
 /** Parses a stored theme preference, falling back safely if it is missing, malformed, or not a recognized mode. */
@@ -87,7 +94,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   themeMode: DEFAULT_THEME_MODE,
   isInitialized: false,
 
-  initializeApp: async () => {
+  initializeApp: () => withContactStorage(async () => {
     try {
       const [storedContacts, storedTheme] = await Promise.all([
         AsyncStorage.getItem(STORAGE_KEYS.CONTACTS),
@@ -103,60 +110,58 @@ export const useAppStore = create<AppState>((set, get) => ({
       console.error("Failed to load app settings:", e);
       set({ isInitialized: true });
     }
-  },
+  }),
 
-  addContact: async (contact: Contact) => {
-    const { contacts } = get();
-    const normalized = normalizeAddress(contact.publicKey);
-
-    // Defense-in-depth: check for duplicates in the store as well.
-    const existing = contacts.find(
-      (c) => normalizeAddress(c.publicKey) === normalized,
-    );
-    if (existing) {
-      return { success: false, duplicateName: existing.name };
-    }
-
-    // Also normalize the stored key so every entry in the list is consistent.
+  addContact: (contact: Contact) => {
+    // Capture caller input before yielding to another queued operation.
     const sanitized: Contact = {
       ...contact,
-      publicKey: normalized,
+      publicKey: normalizeAddress(contact.publicKey),
       name: contact.name.trim(),
     };
+    return withContactStorage(async () => {
+      const { contacts } = get();
+      const existing = contacts.find(
+        (c) => normalizeAddress(c.publicKey) === sanitized.publicKey,
+      );
+      if (existing) {
+        return { success: false, duplicateName: existing.name };
+      }
 
-    const newContacts = [...contacts, sanitized];
-    set({ contacts: newContacts });
-    await persistContacts(newContacts);
-    return { success: true };
+      const newContacts = [...contacts, sanitized];
+      await persistContacts(newContacts);
+      set({ contacts: newContacts });
+      return { success: true };
+    });
   },
 
-  updateContact: async (id: string, name: string) => {
+  updateContact: (id: string, name: string) => withContactStorage(async () => {
     const newContacts = get().contacts.map((c) =>
       c.id === id ? { ...c, name: name.trim() } : c,
     );
-    set({ contacts: newContacts });
     await persistContacts(newContacts);
-  },
+    set({ contacts: newContacts });
+  }),
 
   addContactIfUnique: async (contact: Contact) => {
-    const duplicateCheck = get().findDuplicateContact(
-      contact.name,
-      contact.publicKey,
-    );
-
-    if (duplicateCheck.isDuplicate) {
-      return duplicateCheck;
+    // addContact checks inside the queue, so simultaneous saves cannot both
+    // report success for the same normalized address.
+    const result = await get().addContact(contact);
+    if (!result.success) {
+      return {
+        isDuplicate: true,
+        type: "address",
+        message: `This address is already saved as "${result.duplicateName}".`,
+      };
     }
-
-    await get().addContact(contact);
     return { isDuplicate: false, type: "none", message: "" };
   },
 
-  removeContact: async (id: string) => {
+  removeContact: (id: string) => withContactStorage(async () => {
     const newContacts = get().contacts.filter((c) => c.id !== id);
-    set({ contacts: newContacts });
     await persistContacts(newContacts);
-  },
+    set({ contacts: newContacts });
+  }),
 
   findDuplicateContact: (
     name: string,
