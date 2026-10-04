@@ -6,8 +6,7 @@ import { ScreenHeader } from "../src/components/ScreenHeader";
 import { SIZES, RADIUS, ThemeColors } from "../src/constants/theme";
 import { useTheme } from "../src/hooks/useTheme";
 import { useWalletStore } from "../src/store/walletStore";
-import { validateAmount, validateMemo } from "../src/utils/validation";
-import { buildReceivePayload, isPaymentRequestPayload } from "../src/features/receive";
+import { createReceivePayload, isPaymentRequestPayload } from "../src/features/receive";
 import QRCode from "react-native-qrcode-svg";
 import { useCopyToClipboard } from "../src/utils/clipboard";
 import { useNetworkState } from "../src/hooks/useNetworkState";
@@ -24,25 +23,29 @@ export default function ReceiveScreen() {
   const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");
 
-  // Requesting a specific amount has no sender balance to validate against
-  // (unlike send.tsx) - the requester isn't the one spending, so
-  // validateAmount is called with no balance argument.
-  const amountError = amount.trim() ? validateAmount(amount) ?? undefined : undefined;
-  const memoError = memo.trim() ? validateMemo(memo) ?? undefined : undefined;
+  const payloadResult = useMemo(
+    () =>
+      createReceivePayload({
+        destination: publicKey ?? "",
+        amount,
+        memo,
+      }),
+    [publicKey, amount, memo],
+  );
+  const { payload } = payloadResult;
+  const amountError = payloadResult.errors.amount;
+  const memoError = payloadResult.errors.memo;
+  const payloadError =
+    payloadResult.errors.destination ??
+    payloadResult.errors.network ??
+    payloadResult.errors.asset ??
+    amountError ??
+    memoError;
 
-  const payload = useMemo(() => {
-    if (!publicKey) return "";
-    return buildReceivePayload({
-      destination: publicKey,
-      amount: amountError ? undefined : amount,
-      memo: memoError ? undefined : memo,
-    });
-  }, [publicKey, amount, amountError, memo, memoError]);
-
-  const isRequestPayload = isPaymentRequestPayload(payload);
+  const isRequestPayload = payloadResult.isValid && isPaymentRequestPayload(payload);
 
   const handleCopyAddress = async () => {
-    if (publicKey) {
+    if (publicKey && !payloadResult.errors.destination) {
       await copy(publicKey, 'address');
     }
   };
@@ -73,7 +76,7 @@ export default function ReceiveScreen() {
       />
 
       <View style={styles.qrContainer}>
-        {publicKey ? (
+        {payloadResult.isValid && payload ? (
           <QRCode
             value={payload}
             size={250}
@@ -81,7 +84,18 @@ export default function ReceiveScreen() {
             backgroundColor={colors.textPrimary}
           />
         ) : (
-          <Text style={{ color: colors.textMuted }}>No public key found</Text>
+          <View style={styles.qrErrorState}>
+            <Text
+              style={styles.qrErrorTitle}
+              accessibilityRole="alert"
+              accessibilityLiveRegion="polite"
+            >
+              Unable to create receive QR
+            </Text>
+            <Text style={styles.qrErrorText}>
+              {payloadError ?? "Your wallet address is unavailable."}
+            </Text>
+          </View>
         )}
       </View>
 
@@ -132,12 +146,14 @@ export default function ReceiveScreen() {
         <Button
           title="Copy Address"
           onPress={handleCopyAddress}
+          disabled={Boolean(payloadResult.errors.destination)}
           style={styles.actionButton}
         />
         <Button
           title="Share"
           variant="secondary"
           onPress={handleShare}
+          disabled={!payloadResult.isValid || !payload}
           style={styles.actionButton}
         />
       </View>
@@ -158,6 +174,25 @@ const createStyles = (colors: ThemeColors) =>
       padding: SIZES.lg,
       borderRadius: RADIUS.lg,
       marginBottom: SIZES.md,
+    },
+    qrErrorState: {
+      width: 250,
+      minHeight: 250,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: SIZES.lg,
+    },
+    qrErrorTitle: {
+      color: colors.error,
+      fontSize: 16,
+      fontWeight: "600",
+      textAlign: "center",
+      marginBottom: SIZES.sm,
+    },
+    qrErrorText: {
+      color: colors.textSecondary,
+      fontSize: 13,
+      textAlign: "center",
     },
     requestBadge: {
       color: colors.primary,
