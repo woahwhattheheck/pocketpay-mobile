@@ -22,6 +22,9 @@
  *   transaction, not a URI query parameter).
  */
 
+import { CURRENT_STELLAR_NETWORK } from '../../constants/network';
+import { validateAddress, validateAmount, validateMemo } from '../../utils/validation';
+
 export type ReceiveMemoType = 'MEMO_TEXT' | 'MEMO_ID' | 'MEMO_HASH' | 'MEMO_RETURN';
 
 export interface ReceivePayloadParams {
@@ -43,6 +46,91 @@ export interface ReceivePayloadParams {
 }
 
 const STELLAR_PAY_URI_PREFIX = 'web+stellar:pay';
+
+export interface ReceivePayloadValidationErrors {
+  destination?: string;
+  network?: string;
+  amount?: string;
+  memo?: string;
+  asset?: string;
+}
+
+export interface ReceivePayloadResult {
+  payload: string;
+  errors: ReceivePayloadValidationErrors;
+  isValid: boolean;
+}
+
+/**
+ * Validate the complete receive request before a QR is rendered.
+ *
+ * The mobile app is currently Testnet/XLM-only. The low-level formatter remains
+ * capable of representing issued assets for forward compatibility, but the
+ * current screen must not advertise fields the rest of the app cannot honor.
+ */
+export function validateReceivePayload(
+  params: ReceivePayloadParams,
+  network: string = CURRENT_STELLAR_NETWORK,
+): ReceivePayloadValidationErrors {
+  const errors: ReceivePayloadValidationErrors = {};
+
+  const destinationError = validateAddress(params.destination);
+  if (destinationError) {
+    errors.destination = destinationError;
+  }
+
+  if (network.trim().toUpperCase() !== 'TESTNET') {
+    errors.network = `Receive QR codes are only supported on Stellar Testnet. Current network: ${network.trim() || 'unknown'}.`;
+  }
+
+  const trimmedAmount = params.amount?.trim();
+  if (trimmedAmount) {
+    const amountError = validateAmount(trimmedAmount);
+    if (amountError) errors.amount = amountError;
+  }
+
+  const trimmedMemo = params.memo?.trim();
+  if (trimmedMemo) {
+    const memoError = validateMemo(trimmedMemo);
+    if (memoError) errors.memo = memoError;
+  } else if (params.memoType) {
+    errors.memo = 'Memo type requires a memo value.';
+  }
+
+  const hasAssetCode = Boolean(params.assetCode?.trim());
+  const hasAssetIssuer = Boolean(params.assetIssuer?.trim());
+  if (hasAssetCode !== hasAssetIssuer) {
+    errors.asset = 'Asset code and issuer must be provided together.';
+  } else if (hasAssetCode && hasAssetIssuer) {
+    errors.asset = 'Issued assets are not supported by the current mobile receive flow.';
+  }
+
+  return errors;
+}
+
+/**
+ * Validate and build a receive QR payload as one operation.
+ *
+ * Invalid inputs deliberately produce no payload so callers cannot accidentally
+ * render a QR with rejected fields silently omitted.
+ */
+export function createReceivePayload(
+  params: ReceivePayloadParams,
+  network: string = CURRENT_STELLAR_NETWORK,
+): ReceivePayloadResult {
+  const normalizedParams = {
+    ...params,
+    destination: params.destination.trim(),
+  };
+  const errors = validateReceivePayload(normalizedParams, network);
+  const isValid = Object.keys(errors).length === 0;
+
+  return {
+    payload: isValid ? buildReceivePayload(normalizedParams) : '',
+    errors,
+    isValid,
+  };
+}
 
 /**
  * Builds the string to encode in the receive QR code (and to use as the
