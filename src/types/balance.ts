@@ -24,11 +24,6 @@ export interface BalanceStateCopy {
 }
 
 /**
- * Returns user-facing copy for each balance state.
- * Safe to render directly — no raw error messages are surfaced.
- */
-
-/**
  * Refresh-specific lifecycle for an existing wallet balance.
  *
  * This is separate from BalanceState: BalanceState answers whether a numeric
@@ -99,6 +94,10 @@ export function describeBalanceRefreshState(
  */
 export type FundingStatus = 'unknown' | 'checking' | 'unfunded' | 'funded';
 
+/**
+ * Returns user-facing copy for each balance state.
+ * Safe to render directly — no raw error messages are surfaced.
+ */
 export function describeBalanceState(state: BalanceState): BalanceStateCopy {
   switch (state) {
     case 'idle':
