@@ -78,8 +78,8 @@ export default function SignConfirmationScreen() {
       confirmLabel: 'Cancel',
       cancelLabel: 'Keep Reviewing',
       destructive: true,
-      // Navigate back to send screen, clearing the flow
-      onConfirm: () => router.replace('/(tabs)'),
+      // Return to the populated send form so the amount can be adjusted.
+      onConfirm: () => router.back(),
     });
   };
 
