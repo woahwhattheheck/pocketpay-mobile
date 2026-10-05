@@ -17,7 +17,7 @@ import { ContactPicker } from "../src/components/ContactPicker";
 import { ContactForm } from "../src/components/ContactForm";
 import { SIZES, RADIUS, ThemeColors } from "../src/constants/theme";
 import { useTheme } from "../src/hooks/useTheme";
-import { sendXlmTransaction } from "../src/services/stellar";
+import { fetchAccountDetails } from "../src/services/stellar";
 import { useWalletStore } from "../src/store/walletStore";
 import { useAppStore } from "../src/store/appStore";
 import { useContactStore } from "../src/features/contacts/contactStore";
@@ -150,7 +150,7 @@ export default function SendScreen() {
     }));
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const fieldErrors: FieldErrors = {
       destination: validateAddress(destination, publicKey) ?? undefined,
       amount: validateAmount(amount, balance) ?? undefined,
@@ -161,7 +161,20 @@ export default function SendScreen() {
       return;
     }
 
-    // Navigate to the signing confirmation screen
+    setIsLoading(true);
+    try {
+      await fetchAccountDetails(destination.trim());
+    } catch (recipientError: any) {
+      const destinationError = /not found/i.test(recipientError?.message || "")
+        ? "This Stellar account could not be found. Check the recipient address and try again."
+        : "We couldn't verify this recipient right now. Check your connection and try again.";
+      setErrors((prev) => ({ ...prev, destination: destinationError }));
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(false);
+
+    // Navigate to the signing confirmation screen only after the recipient can be verified.
     router.push({
       pathname: '/sign-confirmation',
       params: {
@@ -297,7 +310,7 @@ export default function SendScreen() {
           }
           onPress={handleSend}
           isLoading={isLoading}
-          loadingText="Sending…"
+          loadingText="Verifying recipient…"
           disabled={sendDisabled}
           style={styles.sendButton}
         />
