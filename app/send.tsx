@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -68,6 +68,8 @@ export default function SendScreen() {
   const [destination, setDestination] = useState("");
   const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");
+  const latestForm = useRef({ destination, amount, memo });
+  latestForm.current = { destination, amount, memo };
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -161,18 +163,26 @@ export default function SendScreen() {
       return;
     }
 
+    const submittedForm = latestForm.current;
+    const isCurrentForm = () => (
+      latestForm.current.destination === submittedForm.destination &&
+      latestForm.current.amount === submittedForm.amount &&
+      latestForm.current.memo === submittedForm.memo
+    );
     setIsLoading(true);
     try {
       await fetchAccountDetails(destination.trim());
+      if (!isCurrentForm()) return;
     } catch (recipientError: any) {
+      if (!isCurrentForm()) return;
       const destinationError = /not found/i.test(recipientError?.message || "")
         ? "This Stellar account could not be found. Check the recipient address and try again."
         : "We couldn't verify this recipient right now. Check your connection and try again.";
       setErrors((prev) => ({ ...prev, destination: destinationError }));
-      setIsLoading(false);
       return;
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
 
     // Navigate to the signing confirmation screen only after the recipient can be verified.
     router.push({
