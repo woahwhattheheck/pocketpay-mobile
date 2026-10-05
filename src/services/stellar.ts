@@ -171,6 +171,27 @@ export const fetchOperationById = async (
 };
 
 /**
+ * Submission outcome after a signed transaction has been handed to Horizon.
+ *
+ * `failed` means Horizon returned a definitive transaction result code (or the
+ * transaction could not be prepared before submission). `unknown` means the
+ * signed transaction was handed to the submission call but no authoritative
+ * response was received, so retrying blindly could duplicate a payment.
+ */
+export type TransactionSubmissionStatus = 'failed' | 'unknown';
+
+export class TransactionSubmissionError extends Error {
+  constructor(
+    message: string,
+    public readonly submissionStatus: TransactionSubmissionStatus,
+    public readonly transactionHash?: string
+  ) {
+    super(message);
+    this.name = 'TransactionSubmissionError';
+  }
+}
+
+/**
  * Send XLM to a destination address.
  */
 export const sendXlmTransaction = async (
@@ -179,6 +200,8 @@ export const sendXlmTransaction = async (
   amount: string,
   memoText?: string
 ) => {
+  let signedTransactionHash: string | undefined;
+
   try {
     const sourceKeypair = StellarSdk.Keypair.fromSecret(secretKey);
     const sourcePublicKey = sourceKeypair.publicKey();
@@ -188,14 +211,15 @@ export const sendXlmTransaction = async (
 
     let transactionBuilder = new StellarSdk.TransactionBuilder(account, {
       fee: fee.toString(),
-      networkPassphrase: process.env.EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE || StellarSdk.Networks.TESTNET,
+      networkPassphrase:
+        process.env.EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE || StellarSdk.Networks.TESTNET,
     });
 
     transactionBuilder.addOperation(
       StellarSdk.Operation.payment({
         destination: destinationPublicKey,
         asset: StellarSdk.Asset.native(),
-        amount: amount,
+        amount,
       })
     );
 
@@ -207,11 +231,44 @@ export const sendXlmTransaction = async (
     const transaction = transactionBuilder.build();
     transaction.sign(sourceKeypair);
 
-    const response = await server.submitTransaction(transaction);
-    return response;
+    // The hash is deterministic once the transaction is signed, so preserve it
+    // even if the network acknowledgement is lost. This gives the UI a safe key
+    // to reconcile against Horizon instead of suggesting a blind resend.
+    signedTransactionHash = transaction.hash().toString('hex');
+
+    try {
+      return await server.submitTransaction(transaction);
+    } catch (error: any) {
+      console.error('Error submitting transaction:', error?.response?.data || error);
+
+      const resultCode = error?.response?.data?.extras?.result_codes?.transaction;
+      if (resultCode) {
+        throw new TransactionSubmissionError(
+          resultCode,
+          'failed',
+          signedTransactionHash
+        );
+      }
+
+      throw new TransactionSubmissionError(
+        'Transaction submission status is unknown. Check transaction history before retrying.',
+        'unknown',
+        signedTransactionHash
+      );
+    }
   } catch (error: any) {
-    console.error('Error sending transaction:', error?.response?.data || error);
-    throw new Error(error?.response?.data?.extras?.result_codes?.transaction || 'Transaction failed');
+    if (error instanceof TransactionSubmissionError) {
+      throw error;
+    }
+
+    console.error('Error preparing transaction:', error?.response?.data || error);
+    throw new TransactionSubmissionError(
+      error?.response?.data?.extras?.result_codes?.transaction ||
+        error?.message ||
+        'Transaction failed',
+      'failed',
+      signedTransactionHash
+    );
   }
 };
 
