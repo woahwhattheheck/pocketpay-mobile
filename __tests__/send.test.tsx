@@ -73,10 +73,12 @@ jest.mock('expo-camera', () => ({
 // ─── Typed mock imports ──────────────────────────────────────────────────
 
 import { useWalletStore } from '../src/store/walletStore';
+import { fetchAccountDetails } from '../src/services/stellar';
 import { useRouter } from 'expo-router';
 
-const mockUseWalletStore    = useWalletStore as jest.MockedFunction<typeof useWalletStore>;
-const mockUseRouter         = useRouter     as jest.MockedFunction<typeof useRouter>;
+const mockUseWalletStore      = useWalletStore as jest.MockedFunction<typeof useWalletStore>;
+const mockFetchAccountDetails = fetchAccountDetails as jest.MockedFunction<typeof fetchAccountDetails>;
+const mockUseRouter           = useRouter as jest.MockedFunction<typeof useRouter>;
 
 import SendScreen from '../app/send';
 
@@ -118,6 +120,7 @@ beforeEach(() => {
   alertSpy.mockImplementation(() => undefined);
   mockUseRouter.mockReturnValue({ back: mockBack, push: mockPush, replace: mockReplace } as any);
   setupWalletStore();
+  mockFetchAccountDetails.mockResolvedValue({} as any);
   mockPermissionGranted = true;
   mockPermissionCanAskAgain = true;
 });
@@ -199,7 +202,7 @@ describe('AC3 – submit is blocked when the form is invalid', () => {
     fireEvent.press(getByText('Send Payment'));
 
     expect(getByText('Please enter a destination address.')).toBeTruthy();
-    expect(mockSendXlmTransaction).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it('does not call sendXlmTransaction with an invalid amount', async () => {
@@ -222,6 +225,44 @@ describe('AC3 – submit is blocked when the form is invalid', () => {
     fireEvent.press(getByText('Send Payment'));
 
     expect(getByText("You can't send a payment to your own wallet.")).toBeTruthy();
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it('shows a clear not-found message when the recipient account does not exist', async () => {
+    mockFetchAccountDetails.mockRejectedValueOnce(
+      new Error('Account not found on the network. Please fund it first.'),
+    );
+    const { getByPlaceholderText, getByText } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(getByText('Send Payment'));
+
+    await waitFor(() => {
+      expect(
+        getByText('This Stellar account could not be found. Check the recipient address and try again.'),
+      ).toBeTruthy();
+    });
+    expect(mockFetchAccountDetails).toHaveBeenCalledWith(VALID_DESTINATION);
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it('hides provider details when recipient status cannot be verified', async () => {
+    mockFetchAccountDetails.mockRejectedValueOnce(
+      new Error('ETIMEDOUT horizon.internal.example'),
+    );
+    const { getByPlaceholderText, getByText, queryByText } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(getByText('Send Payment'));
+
+    await waitFor(() => {
+      expect(
+        getByText("We couldn't verify this recipient right now. Check your connection and try again."),
+      ).toBeTruthy();
+    });
+    expect(queryByText(/ETIMEDOUT|horizon\.internal\.example/)).toBeNull();
     expect(mockPush).not.toHaveBeenCalled();
   });
 });
