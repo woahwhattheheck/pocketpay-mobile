@@ -277,6 +277,21 @@ describe('AC4 – valid form routes into sign confirmation', () => {
       });
     });
   });
+
+  it('shows memo byte-limit feedback and blocks review when the memo is too long', () => {
+    const { getByPlaceholderText, getByText, queryByText } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.changeText(getByPlaceholderText('Payment reference'), 'x'.repeat(29));
+
+    expect(getByText('Memo is too long. Please keep it under 28 bytes.')).toBeTruthy();
+    expect(queryByText('Text memo, up to 28 bytes')).toBeNull();
+
+    fireEvent.press(getByText('Send Payment'));
+
+    expect(mockPush).not.toHaveBeenCalled();
+  });
 });
 
 
