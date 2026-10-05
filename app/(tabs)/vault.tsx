@@ -22,7 +22,7 @@ import { useWalletStore } from '../../src/store/walletStore';
 import { formatTimeRemaining } from '../../src/utils/lockTime';
 import { validateAmount } from '../../src/utils/validation';
 import { WALLET_SECRET_ACCESS_MESSAGE } from '../../src/utils/walletStorageErrors';
-import { PiggyBank, Info, Lock, HelpCircle, ShieldCheck, AlertTriangle, Ban } from 'lucide-react-native';
+import { PiggyBank, Info, Lock, HelpCircle, ShieldCheck, Ban } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VaultReceiptModal } from "../../src/components/VaultReceiptModal";
 import { isActionSupported, getActionUnsupportedReason, getActionUnsupportedDetail } from '../../src/utils/vaultCapabilities';
@@ -31,9 +31,11 @@ import { NetworkStatusBanner } from '../../src/components/NetworkStatusBanner';
 import { WithdrawalPreview } from '../../src/features/vault/WithdrawalPreview';
 import { DepositPreview } from '../../src/features/vault/DepositPreview';
 import type { VaultLock } from '../../src/types';
+import { describeVaultReadiness } from '../../src/utils/vaultAvailability';
 
 const LOCK_PERIOD_SECONDS = 30 * 24 * 60 * 60; // 30 days
 const VAULT_INTRO_SEEN_KEY = '@pocketpay_vault_intro_seen';
+const READY_VAULT_COPY = describeVaultReadiness('ready');
 
 export default function VaultScreen() {
   const router = useRouter();
@@ -42,7 +44,7 @@ export default function VaultScreen() {
 
   // Wallet & Vault stores
   const { publicKey, getSecretKey, balance: walletBalance, error: walletError } = useWalletStore();
-  const { isAvailable, reasons, isContractConfigured } = useVaultAvailability();
+  const { isAvailable, reasons } = useVaultAvailability();
   const { state: networkState, disableWriteActions: networkDisabled, retry: retryNetwork } = useNetworkState({ error: walletError });
   const {
     balance,
@@ -92,6 +94,15 @@ export default function VaultScreen() {
     transactionHash: null as string | null,
   });
 
+  useEffect(() => {
+    if (!isAvailable) {
+      setConfirmVisible(false);
+      setShowDepositPreview(false);
+      setShowWithdrawalPreview(false);
+      setPendingAction(null);
+    }
+  }, [isAvailable]);
+
   // Initial setup
   useEffect(() => {
     const checkIntro = async () => {
@@ -128,6 +139,7 @@ export default function VaultScreen() {
   };
 
   const handleDepositPress = () => {
+    if (!isAvailable || !canDeposit || networkDisabled) return;
     const isValid = depositForm.validate(walletBalance);
     if (!isValid) return;
 
@@ -136,6 +148,7 @@ export default function VaultScreen() {
   };
 
   const handleDepositConfirm = () => {
+    if (!isAvailable || !canDeposit || networkDisabled) return;
     setShowDepositPreview(false);
     // Set pending action and execute the deposit flow directly —
     // the DepositPreview itself serves as the confirmation step.
@@ -145,6 +158,7 @@ export default function VaultScreen() {
 
   const vaultAction = useVaultAction();
   const handleAction = async (action: 'deposit' | 'withdraw' | 'lock') => {
+    if (!isAvailable || !isActionSupported(capabilities, action) || networkDisabled) return;
     // Validate amount
     let amountError: string | undefined;
     if (action === 'deposit') {
@@ -175,7 +189,8 @@ export default function VaultScreen() {
   };
 
  const handleConfirmAction = async () => {
-    if (!publicKey || !pendingAction) return;
+    if (!publicKey || !pendingAction || !isAvailable || networkDisabled ||
+        !isActionSupported(capabilities, pendingAction)) return;
 
     await vaultAction.run({
       sign: async () => {
@@ -237,6 +252,7 @@ export default function VaultScreen() {
   };
 
   const handleUnlock = async (lockId: string) => {
+    if (!isAvailable || !canUnlock || networkDisabled) return;
     try {
       await unlockLock(lockId);
       Alert.alert('Success', 'Funds unlocked! (mock)');
@@ -246,6 +262,7 @@ export default function VaultScreen() {
   };
 
   const handleWithdrawPress = () => {
+    if (!isAvailable || !canWithdraw || networkDisabled) return;
     setShowWithdrawalPreview(true);
   };
 
@@ -257,7 +274,7 @@ export default function VaultScreen() {
         onClose={() => setLockEducationVisible(false)}
       />
       <VaultConfirmModal
-        visible={confirmVisible}
+        visible={confirmVisible && isAvailable}
         actionType={pendingAction || 'deposit'}
         amount={depositForm.amount}
         isLoading={isSubmitting || depositForm.isSubmitting}
@@ -300,19 +317,19 @@ export default function VaultScreen() {
           <PiggyBank color={colors.primary} size={40} />
         </View>
         <Text style={styles.cardTitle}>Soroban Savings Vault</Text>
-        {isLoadingBalance ? (
+        {isAvailable && isLoadingBalance ? (
           <LoadingState
             message=""
             style={styles.balanceLoader}
             accessibilityLabel="Loading vault balance"
           />
         ) : (
-          <Text style={styles.balanceValue}>{balance} XLM</Text>
+          <Text style={styles.balanceValue}>{isAvailable ? `${balance} XLM` : '—'}</Text>
         )}
         <Text style={styles.cardSubtitle}>
           {isConfigured
             ? `Contract ${contractId.slice(0, 4)}…${contractId.slice(-4)}`
-            : 'Mock balance'}
+            : 'Placeholder — no deposited funds'}
         </Text>
         {balanceError && (
           <View style={styles.balanceErrorBox}>
@@ -325,31 +342,22 @@ export default function VaultScreen() {
       </View>
 
       {/* Issue #331: Pass unlock capability to lock list */}
-      <VaultLockList
+      {isAvailable && <VaultLockList
         locks={locks}
         isLoading={isLoadingLocks}
         onUnlock={canUnlock ? handleUnlock : undefined}
         onInfoPress={() => setLockEducationVisible(true)}
         unlockDisabledReason={!canUnlock ? getActionUnsupportedReason(capabilities, 'unlock') : undefined}
-      />
+      />}
 
 
-      {isContractConfigured ? (
-        <View style={styles.infoBox}>
+      {isAvailable && (
+        <View style={styles.infoBox} testID="vault-readiness-ready">
           <ShieldCheck color={colors.success} size={24} style={{ marginRight: SIZES.sm }} />
           <Text style={styles.infoText}>
-            Connected to a live Soroban smart contract on{' '}
-            {process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET'}. Deposits and withdrawals
-            submit real transactions.
-          </Text>
-        </View>
-      ) : (
-        <View style={styles.warningBox}>
-          <AlertTriangle color={colors.warning} size={24} style={{ marginRight: SIZES.sm }} />
-          <Text style={styles.warningText}>
-            No vault contract configured. Set EXPO_PUBLIC_VAULT_CONTRACT_ID in your .env file to
-            connect to a deployed Soroban contract. Running in mock mode — no real funds are
-            moved.
+            {READY_VAULT_COPY.title}. {READY_VAULT_COPY.message}{' '}
+            Network: {process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET'}.
+            Time locks remain local previews, not on-chain deposits.
           </Text>
         </View>
       )}
@@ -443,12 +451,12 @@ export default function VaultScreen() {
       )}
 
       <WithdrawalPreview
-        visible={showWithdrawalPreview}
+        visible={showWithdrawalPreview && isAvailable}
         onDismiss={() => setShowWithdrawalPreview(false)}
       />
 
       <DepositPreview
-        visible={showDepositPreview}
+        visible={showDepositPreview && isAvailable}
         params={{
           amount: depositForm.amount,
           asset: 'XLM',

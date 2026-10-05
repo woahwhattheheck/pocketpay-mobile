@@ -1,66 +1,80 @@
 /**
- * Vault availability — centralised readiness checks.
- *
- * Determines whether the vault tab should render its interactive UI or
- * show the "unavailable" state. Each check is a named reason so the UI
- * can display targeted guidance.
- *
- * SDK capability assumptions are documented in
- * docs/vault-sdk-capability-assumptions.md.
+ * Shared readiness gates for the vault placeholder and action controls.
+ * "ready" means configured for interaction, not verified on-chain.
+ * See docs/vault-readiness.md for the current integration limitations.
  */
+export type VaultReadinessState = 'unavailable' | 'planned' | 'disabled' | 'ready';
 
 export type VaultUnavailableReason =
-  | 'no-wallet'           // No wallet loaded (publicKey is null)
-  | 'feature-disabled'    // EXPO_PUBLIC_VAULT_ENABLED is explicitly 'false'
-  | 'sdk-not-ready';      // Future: SDK reports vault capability as missing
+  | 'no-wallet'
+  | 'feature-disabled'
+  | 'sdk-not-ready'
+  | 'contract-not-configured';
 
 export interface VaultAvailability {
-  /** True when the vault UI should be fully interactive. */
+  state: VaultReadinessState;
+  /** True only when the configuration, wallet and SDK gates are satisfied. */
   isAvailable: boolean;
-  /** Set only when isAvailable is false. */
   reasons: VaultUnavailableReason[];
-  /** Whether a live Soroban contract is configured (independent of availability). */
+  /** Configuration presence does not prove deployment or connectivity. */
   isContractConfigured: boolean;
+}
+
+export interface VaultReadinessInput {
+  hasWallet: boolean;
+  isContractConfigured: boolean;
+  isFeatureEnabled: boolean;
+  /** Compatibility default until the SDK exposes a readiness signal. */
+  isSdkReady?: boolean;
 }
 
 export interface VaultAvailabilityInput {
   publicKey: string | null;
   isVaultConfigured: boolean;
-  /** Env-var feature toggle; defaults to true when unset. */
   vaultEnabledFlag?: string;
+  isSdkReady?: boolean;
 }
 
-/**
- * Evaluate whether the vault is available for interaction.
- *
- * Pure function — all dependencies are injected so unit tests
- * don't need to mock process.env or store hooks.
- */
-export function evaluateVaultAvailability(
-  input: VaultAvailabilityInput
-): VaultAvailability {
+/** Match the existing environment flag semantics in every vault gate. */
+export function isVaultFeatureEnabled(flag?: string): boolean {
+  const value = (flag ?? 'true').trim().toLowerCase();
+  return value !== 'false' && value !== '0';
+}
+
+/** Explicit disablement takes precedence; preserve every blocking reason. */
+export function getVaultReadinessState(
+  reasons: readonly VaultUnavailableReason[]
+): VaultReadinessState {
+  if (reasons.includes('feature-disabled')) return 'disabled';
+  if (reasons.includes('no-wallet') || reasons.includes('sdk-not-ready')) return 'unavailable';
+  if (reasons.includes('contract-not-configured')) return 'planned';
+  return 'ready';
+}
+
+export function evaluateVaultReadiness(input: VaultReadinessInput): VaultAvailability {
   const reasons: VaultUnavailableReason[] = [];
+  if (!input.isFeatureEnabled) reasons.push('feature-disabled');
+  if (!input.hasWallet) reasons.push('no-wallet');
+  if (input.isSdkReady === false) reasons.push('sdk-not-ready');
+  if (!input.isContractConfigured) reasons.push('contract-not-configured');
 
-  // 1. Feature flag gate
-  const flagValue = (input.vaultEnabledFlag ?? 'true').trim().toLowerCase();
-  if (flagValue === 'false' || flagValue === '0') {
-    reasons.push('feature-disabled');
-  }
-
-  // 2. Wallet gate
-  if (!input.publicKey) {
-    reasons.push('no-wallet');
-  }
-
-  // 3. Future: SDK capability gate
-  // When the PocketPay SDK exposes a readiness signal, add an
-  // 'sdk-not-ready' check here. See docs/vault-sdk-capability-assumptions.md.
-
+  const state = getVaultReadinessState(reasons);
   return {
-    isAvailable: reasons.length === 0,
+    state,
+    isAvailable: state === 'ready',
     reasons,
-    isContractConfigured: input.isVaultConfigured,
+    isContractConfigured: input.isContractConfigured,
   };
+}
+
+/** Retain the wallet/configuration adapter used by useVaultAvailability. */
+export function evaluateVaultAvailability(input: VaultAvailabilityInput): VaultAvailability {
+  return evaluateVaultReadiness({
+    hasWallet: Boolean(input.publicKey),
+    isContractConfigured: input.isVaultConfigured,
+    isFeatureEnabled: isVaultFeatureEnabled(input.vaultEnabledFlag),
+    isSdkReady: input.isSdkReady,
+  });
 }
 
 export interface UnavailableReasonCopy {
@@ -69,10 +83,32 @@ export interface UnavailableReasonCopy {
   hint?: string;
 }
 
-/** Map a reason code to user-facing copy. */
-export function describeUnavailableReason(
-  reason: VaultUnavailableReason
-): UnavailableReasonCopy {
+export function describeVaultReadiness(state: VaultReadinessState): UnavailableReasonCopy {
+  switch (state) {
+    case 'disabled':
+      return {
+        title: 'Vault Disabled',
+        message: 'Vault actions are turned off for this build. Retrying does not change the configuration.',
+      };
+    case 'planned':
+      return {
+        title: 'Vault Planned',
+        message: 'This vault is a placeholder until a contract is configured. Deposits, withdrawals and time-lock actions are unavailable.',
+      };
+    case 'unavailable':
+      return {
+        title: 'Vault Unavailable',
+        message: 'The vault cannot be used right now. Resolve the requirements below before trying again.',
+      };
+    case 'ready':
+      return {
+        title: 'Vault Configured',
+        message: 'The wallet and configuration gates are satisfied. This status does not verify contract deployment, network connectivity or transaction success.',
+      };
+  }
+}
+
+export function describeUnavailableReason(reason: VaultUnavailableReason): UnavailableReasonCopy {
   switch (reason) {
     case 'no-wallet':
       return {
@@ -83,16 +119,20 @@ export function describeUnavailableReason(
     case 'feature-disabled':
       return {
         title: 'Vault feature disabled',
-        message:
-          'The vault is currently disabled by configuration. This may be temporary while the backend is being updated.',
-        hint: 'EXPO_PUBLIC_VAULT_ENABLED is set to false.',
+        message: 'The vault is disabled by this build’s configuration.',
+        hint: 'EXPO_PUBLIC_VAULT_ENABLED is set to false or 0. A configuration change and rebuild are required.',
       };
     case 'sdk-not-ready':
       return {
         title: 'Vault backend not ready',
-        message:
-          'The Soroban Savings Vault contract or SDK is not yet available. Vault actions will be enabled once the backend integration is complete.',
+        message: 'The vault SDK reports that the backend is not ready. Vault actions remain unavailable.',
         hint: 'See docs/vault-sdk-capability-assumptions.md for details.',
+      };
+    case 'contract-not-configured':
+      return {
+        title: 'Vault contract not configured',
+        message: 'No vault contract is configured. Placeholder balances are not deposited funds, and no vault actions can be submitted here.',
+        hint: 'Configure EXPO_PUBLIC_VAULT_CONTRACT_ID for the intended network and rebuild the app.',
       };
   }
 }

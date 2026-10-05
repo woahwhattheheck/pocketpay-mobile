@@ -447,8 +447,8 @@ describe('Vault Unavailable State (Issue #309)', () => {
     try {
       const { getByText, queryByText } = render(<VaultScreen />);
 
-      expect(getByText('Vault Unavailable')).toBeTruthy();
-      expect(getByText('The vault is currently disabled by configuration. This may be temporary while the backend is being updated.')).toBeTruthy();
+      expect(getByText('Vault Disabled')).toBeTruthy();
+      expect(getByText('The vault is disabled by this build’s configuration.')).toBeTruthy();
       expect(queryByText('Set Aside for 30 Days')).toBeNull();
     } finally {
       process.env.EXPO_PUBLIC_VAULT_ENABLED = originalEnv;
@@ -464,3 +464,32 @@ describe('Vault Unavailable State (Issue #309)', () => {
   });
 });
 
+
+describe('Vault readiness states (Issue #528)', () => {
+  it('shows planned copy without actions or a deposited balance when unconfigured', () => {
+    setupStores({ isConfigured: false });
+    const { getByText, queryByText, queryByPlaceholderText } = render(<VaultScreen />);
+    expect(getByText('Vault Planned')).toBeTruthy();
+    expect(queryByPlaceholderText('0.00')).toBeNull();
+    expect(queryByText('50.0000000 XLM')).toBeNull();
+    expect(mockLoadBalance).not.toHaveBeenCalled();
+    expect(mockLoadLocks).not.toHaveBeenCalled();
+  });
+
+  it('renders a configured status without promising live deployment', () => {
+    const { getByTestId, queryByText } = render(<VaultScreen />);
+    expect(getByTestId('vault-readiness-ready')).toBeTruthy();
+    expect(queryByText(/Connected to a live Soroban/)).toBeNull();
+  });
+
+  it('dismisses a pending preview if the contract configuration is removed', async () => {
+    const { getByText, getByPlaceholderText, queryByText, rerender } = render(<VaultScreen />);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(getByText('Deposit'));
+    setupStores({ isConfigured: false });
+    rerender(<VaultScreen />);
+    await waitFor(() => expect(queryByText('Confirm Deposit')).toBeNull());
+    expect(getByText('Vault Planned')).toBeTruthy();
+    expect(mockDeposit).not.toHaveBeenCalled();
+  });
+});

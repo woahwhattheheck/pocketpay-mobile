@@ -1,83 +1,76 @@
 import {
   evaluateVaultAvailability,
+  evaluateVaultReadiness,
   describeUnavailableReason,
-  VaultUnavailableReason,
+  describeVaultReadiness,
+  isVaultFeatureEnabled,
+  VaultAvailabilityInput,
+  VaultReadinessState,
 } from '../vaultAvailability';
+import { evaluateVaultCapabilities, isActionSupported } from '../vaultCapabilities';
 
-describe('evaluateVaultAvailability', () => {
-  it('returns isAvailable true when wallet is loaded and flag is default/true', () => {
-    const result = evaluateVaultAvailability({
-      publicKey: 'GPUBLIC123',
-      isVaultConfigured: true,
+const configured: VaultAvailabilityInput = { publicKey: 'GPUBLIC123', isVaultConfigured: true };
+
+describe('vault readiness', () => {
+  const cases: [string, Partial<VaultAvailabilityInput>, VaultReadinessState, string[]][] = [
+    ['configured', {}, 'ready', []],
+    ['no contract', { isVaultConfigured: false }, 'planned', ['contract-not-configured']],
+    ['no wallet', { publicKey: null }, 'unavailable', ['no-wallet']],
+    ['backend unavailable', { isSdkReady: false }, 'unavailable', ['sdk-not-ready']],
+    ['disabled', { vaultEnabledFlag: 'false' }, 'disabled', ['feature-disabled']],
+    ['disabled and unconfigured', { vaultEnabledFlag: '0', isVaultConfigured: false }, 'disabled', ['feature-disabled', 'contract-not-configured']],
+    ['wallet missing and unconfigured', { publicKey: null, isVaultConfigured: false }, 'unavailable', ['no-wallet', 'contract-not-configured']],
+    ['all gates blocked', { publicKey: null, isVaultConfigured: false, vaultEnabledFlag: 'false', isSdkReady: false }, 'disabled', ['feature-disabled', 'no-wallet', 'sdk-not-ready', 'contract-not-configured']],
+  ];
+
+  it.each(cases)('%s', (_name, overrides, state, reasons) => {
+    const input = { ...configured, ...overrides };
+    const result = evaluateVaultAvailability(input);
+    expect(result).toEqual({ state, reasons, isAvailable: state === 'ready', isContractConfigured: input.isVaultConfigured });
+    const capabilities = evaluateVaultCapabilities({
+      hasWallet: Boolean(input.publicKey),
+      isContractConfigured: input.isVaultConfigured,
+      isFeatureEnabled: isVaultFeatureEnabled(input.vaultEnabledFlag),
+      isSdkReady: input.isSdkReady ?? true,
+      isLoading: false,
     });
-    expect(result.isAvailable).toBe(true);
-    expect(result.reasons).toEqual([]);
-    expect(result.isContractConfigured).toBe(true);
+    for (const action of ['deposit', 'withdraw', 'lock', 'unlock'] as const) {
+      expect(isActionSupported(capabilities, action)).toBe(result.isAvailable);
+    }
   });
 
-  it('returns isAvailable false with no-wallet reason when publicKey is null', () => {
-    const result = evaluateVaultAvailability({
-      publicKey: null,
-      isVaultConfigured: true,
-    });
-    expect(result.isAvailable).toBe(false);
-    expect(result.reasons).toEqual(['no-wallet']);
+  it('uses identical normalized feature flag semantics', () => {
+    for (const flag of ['false', ' FALSE ', '0', ' 0 ']) expect(isVaultFeatureEnabled(flag)).toBe(false);
+    for (const flag of [undefined, '', 'true', '1']) expect(isVaultFeatureEnabled(flag)).toBe(true);
   });
 
-  it('returns isAvailable false with feature-disabled reason when flag is false', () => {
-    const result = evaluateVaultAvailability({
-      publicKey: 'GPUBLIC123',
-      isVaultConfigured: true,
-      vaultEnabledFlag: 'false',
-    });
-    expect(result.isAvailable).toBe(false);
-    expect(result.reasons).toEqual(['feature-disabled']);
+  it('supports configuration transitions without retaining a previous ready state', () => {
+    const sequence = [
+      { ...configured, isVaultConfigured: false }, configured,
+      { ...configured, vaultEnabledFlag: 'false' },
+      { ...configured, publicKey: null }, configured,
+    ];
+    expect(sequence.map((input) => evaluateVaultAvailability(input).state))
+      .toEqual(['planned', 'ready', 'disabled', 'unavailable', 'ready']);
   });
 
-  it('returns isAvailable false with feature-disabled reason when flag is 0', () => {
-    const result = evaluateVaultAvailability({
-      publicKey: 'GPUBLIC123',
-      isVaultConfigured: false,
-      vaultEnabledFlag: '0',
-    });
-    expect(result.isAvailable).toBe(false);
-    expect(result.reasons).toEqual(['feature-disabled']);
+  it('keeps loading actions unavailable and gives configuration blockers priority', () => {
+    const input = { hasWallet: true, isContractConfigured: true, isFeatureEnabled: true, isSdkReady: true, isLoading: true };
+    expect(evaluateVaultCapabilities(input).deposit.status).toBe('loading');
+    expect(evaluateVaultCapabilities({ ...input, isContractConfigured: false }).unlock.status).toBe('unsupported');
+    expect(evaluateVaultCapabilities({ ...input, isFeatureEnabled: false }).lock.status).toBe('unsupported');
   });
 
-  it('returns multiple reasons when both flag is false and wallet is missing', () => {
-    const result = evaluateVaultAvailability({
-      publicKey: null,
-      isVaultConfigured: false,
-      vaultEnabledFlag: 'false',
-    });
-    expect(result.isAvailable).toBe(false);
-    expect(result.reasons).toEqual(['feature-disabled', 'no-wallet']);
-    expect(result.isContractConfigured).toBe(false);
-  });
-
-  it('mirrors isVaultConfigured input correctly in isContractConfigured', () => {
-    const configured = evaluateVaultAvailability({
-      publicKey: 'GPUBLIC123',
-      isVaultConfigured: true,
-    });
-    expect(configured.isContractConfigured).toBe(true);
-
-    const unconfigured = evaluateVaultAvailability({
-      publicKey: 'GPUBLIC123',
-      isVaultConfigured: false,
-    });
-    expect(unconfigured.isContractConfigured).toBe(false);
-  });
-});
-
-describe('describeUnavailableReason', () => {
-  const reasons: VaultUnavailableReason[] = ['no-wallet', 'feature-disabled', 'sdk-not-ready'];
-
-  reasons.forEach((reason) => {
-    it(`returns non-empty title and message for ${reason}`, () => {
-      const copy = describeUnavailableReason(reason);
+  it('provides explicit, non-promissory state and reason copy', () => {
+    for (const state of ['unavailable', 'planned', 'disabled', 'ready'] as const) {
+      const copy = describeVaultReadiness(state);
       expect(copy.title.length).toBeGreaterThan(0);
       expect(copy.message.length).toBeGreaterThan(0);
-    });
+    }
+    for (const reason of ['no-wallet', 'feature-disabled', 'sdk-not-ready', 'contract-not-configured'] as const) {
+      expect(describeUnavailableReason(reason).message.length).toBeGreaterThan(0);
+    }
+    expect(describeVaultReadiness('ready').message).toContain('does not verify');
+    expect(evaluateVaultReadiness({ hasWallet: true, isContractConfigured: false, isFeatureEnabled: true }).isAvailable).toBe(false);
   });
 });

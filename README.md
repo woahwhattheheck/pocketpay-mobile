@@ -7,14 +7,14 @@ React Native Expo wallet for Stellar Testnet. The app aims to feel polished and 
 - This project is best described as a polished but still-evolving wallet experience rather than a production-ready product.
 - Core flows such as wallet creation and import, balance checks, sending and receiving, contacts, and the vault UI are implemented and actively refined.
 - The app is intentionally focused on Stellar Testnet for development and experimentation. Testnet XLM has no real monetary value.
-- The vault experience is currently mock-backed by default. A real Soroban contract integration can be enabled with configuration, but the default experience remains a safe placeholder.
+- The vault uses explicit **planned, disabled, unavailable, and ready** states. Without a configured contract it is a non-interactive placeholder. "Ready" means configuration prerequisites are satisfied, not that deployment or transaction success has been verified. Time locks remain local previews; see [Vault Readiness](./docs/vault-readiness.md).
 
 ## Documentation
 
 - [Architecture Readiness Review](./docs/architecture-readiness-review.md) - Feature boundaries, duplicated state, SDK integration blockers, security-sensitive areas, and test gaps
 - [Evaluation-Readiness Index](./docs/evaluation-readiness-index.md) - Central index linking all evaluation-readiness requirements, including payment expectations, tests, CI, and reviewer checklists
 - [Issue Approval Readiness Checklist](./docs/issue-approval-readiness-checklist.md) - Fast pre-approval gate covering implementation completeness, tests, CI status, acceptance criteria, documentation, and known limitations, plus the reminder that a merged PR does not guarantee payment approval
-- [Evaluation Readiness Checklist](./docs/evaluation-readiness-checklist.md) - GrantFox contributor checklist for mobile issues, including tests, CI, screenshots, acceptance criteria, and the reminder that merge does not guarantee payment approval
+- [Evaluation Readiness Checklist](./docs/evaluation-readiness-checklist.md) - Mobile-issue review checklist for GrantFox contributors before payment evaluation
 - [Payment-Period Communication Policy](./docs/payment-period-communication-policy.md) - How contributors should communicate during the payment evaluation period: no spam or pressure, self-review before raising payment concerns, and follow the GrantFox evaluation process
 - [Self-Review Checklist](./docs/self-review-checklist.md) - Quick checklist to run before opening a PR, covering feature completion, tests, CI, screenshots, and device/emulator verification
 - [Contributor Self-Assessment](./docs/contributor-self-assessment.md) - Pre-review form for confirming scope, test evidence, CI, documentation, limitations, and acceptance criteria
@@ -27,6 +27,7 @@ React Native Expo wallet for Stellar Testnet. The app aims to feel polished and 
 - [Contact Import Design](./docs/contact-import-design.md) - Design for safe contact import, validation, duplicate handling, privacy boundaries
 
 - [Polyfills Guide](./docs/polyfills.md) - React Native polyfills and import order for Stellar SDK
+- [Vault Readiness](./docs/vault-readiness.md) - State precedence, action gates, placeholder behavior and current backend limitations
 - [Vault UI Guidance](./docs/vault-ui-guidance.md) - How to present the Soroban Savings Vault, Testnet risks, and contract limitations
 - [Vault Integration Assumptions](./docs/vault-integration-assumptions.md) - Document expected SDK/contract dependencies, placeholder behaviors, and known gaps
 - [Vault Integration Risks](./docs/vault-integration-risks.md) - Technical integration risk analysis, SDK/contract assumptions, error recovery models, and cross-repo coordination roadmap
@@ -45,7 +46,7 @@ React Native Expo wallet for Stellar Testnet. The app aims to feel polished and 
 - XLM balance and transactions
 - Send and receive with QR codes
 - Address book contacts
-- Soroban Savings Vault (dual-mode: mock placeholder by default, live Soroban contract when configured)
+- Soroban Savings Vault (explicit readiness states; placeholder actions disabled until configured)
 
 For the expected screen sequence, validation, and UI states behind these features, see [Main wallet user flows](docs/user-flows.md).
 

@@ -8,11 +8,11 @@ This document describes the assumptions the mobile client makes about the Pocket
 |----------------------|--------------------------------|-----------------------------------|
 | Wallet loaded        | `walletStore.publicKey`        | Show "no wallet" unavailable      |
 | Feature flag         | `EXPO_PUBLIC_VAULT_ENABLED`    | Default `true` (vault enabled)    |
-| Contract configured  | `isVaultConfigured()`          | Mock mode (not unavailable)       |
+| Contract configured  | `isVaultConfigured()`          | Planned placeholder; no actions       |
 
 ## Capability Gate Architecture (Issue #331)
 
-The vault capability gate (`src/utils/vaultCapabilities.ts`) evaluates per-action availability:
+The vault capability gate (`src/utils/vaultCapabilities.ts`) evaluates per-action availability using the shared [readiness model](vault-readiness.md). Every action also requires a configured contract; missing configuration no longer enables interactive mock actions:
 
 | Action   | Requires Wallet | Requires Feature | Requires SDK Ready | Fallback                     |
 |----------|-----------------|------------------|--------------------|------------------------------|
@@ -22,7 +22,7 @@ The vault capability gate (`src/utils/vaultCapabilities.ts`) evaluates per-actio
 | Unlock   | Yes             | Yes              | Yes                | —                            |
 
 Each capability returns one of:
-- `{ status: 'supported' }` — action is fully available
+- `{ status: 'supported' }` — interaction prerequisites satisfied, not proof of on-chain support
 - `{ status: 'unsupported', reason, detail }` — action not available, with user-facing copy
 - `{ status: 'loading' }` — capability check in progress
 
@@ -44,7 +44,7 @@ When the PocketPay SDK (`pocketpay-sdk`) ships a vault readiness API, the mobile
 
 1. Call `sdk.vault.isReady()` (or equivalent) during app initialization.
 2. Store the result in a dedicated capability store or context.
-3. Pass it to `evaluateVaultCapabilities()` as the `isSdkReady` input.
+3. Pass it to both `evaluateVaultAvailability()` and `evaluateVaultCapabilities()` as the `isSdkReady` input so placeholder and action gates agree.
 4. Add finer-grained checks per action when `sdk.vault.getCapabilities()` is available.
 
 ### Expected SDK Interface
@@ -67,7 +67,7 @@ interface VaultCapabilities {
 }
 ```
 
-Until this interface is available, the mobile client uses `isSdkReady: true` as the default.
+Until this interface is available, the mobile client uses `isSdkReady: true` as the documented compatibility default. No deployment or connectivity probe is currently performed. The `ready` state therefore describes configuration readiness only; local time-lock previews remain local.
 
 ## Related Documentation
 

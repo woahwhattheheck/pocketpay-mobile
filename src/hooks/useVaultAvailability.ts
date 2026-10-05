@@ -1,26 +1,16 @@
 import { useMemo } from 'react';
 import { useWalletStore } from '../store/walletStore';
 import { useVaultStore } from '../store/vaultStore';
-import {
-  evaluateVaultAvailability,
-  VaultAvailability,
-} from '../utils/vaultAvailability';
+import { evaluateVaultAvailability, VaultAvailability } from '../utils/vaultAvailability';
 
-/**
- * Reactive hook that returns the current vault availability state.
- * Re-evaluates whenever the wallet or vault store changes.
- */
+/** Recompute the shared readiness model when any prerequisite changes. */
 export function useVaultAvailability(): VaultAvailability {
   const publicKey = useWalletStore((s) => s.publicKey);
   const isConfigured = useVaultStore((s) => s.isConfigured);
+  const vaultEnabledFlag = process.env.EXPO_PUBLIC_VAULT_ENABLED;
 
   return useMemo(
-    () =>
-      evaluateVaultAvailability({
-        publicKey,
-        isVaultConfigured: isConfigured,
-        vaultEnabledFlag: process.env.EXPO_PUBLIC_VAULT_ENABLED,
-      }),
-    [publicKey, isConfigured]
+    () => evaluateVaultAvailability({ publicKey, isVaultConfigured: isConfigured, vaultEnabledFlag }),
+    [publicKey, isConfigured, vaultEnabledFlag]
   );
 }
