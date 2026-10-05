@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { server } from '../src/services/stellar';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { server, sendXlmTransaction } from '../src/services/stellar';
 import {
   View,
   Text,
@@ -30,7 +30,7 @@ import {
   ScreenHeader,
   StatusBadge,
 } from '@/components';
-import { UNCONFIRMED_SUBMISSION_MESSAGE } from '../src/utils/paymentErrors';
+import { UnknownPaymentSubmissionError } from '../src/features/payments/submissionOutcome';
 
 /** Copy for each in-flight signing phase, shared by the visible card and its screen-reader label. */
 const PHASE_COPY = {
@@ -76,6 +76,7 @@ const getNetworkLabel = (): string => {
  */
 export default function ReviewTransactionScreen() {
   const router = useRouter();
+  const submissionInFlight = useRef(false);
   const params = useLocalSearchParams<{
     destination?: string;
     amount?: string;
@@ -88,15 +89,22 @@ export default function ReviewTransactionScreen() {
   const store = useSignerStore();
   const { phase, error } = store;
 
-  const destination = params.destination || '';
-  const amount = params.amount || '';
-  const memo = params.memo || '';
+  const retainedReview = store.activeSubmission ?? (phase === 'completed' ? store.lastResult?.review : null);
+  const destination = retainedReview ? retainedReview.destinationPublicKey : params.destination || '';
+  const amount = retainedReview ? retainedReview.amount : params.amount || '';
+  const memo = retainedReview ? retainedReview.memo || '' : params.memo || '';
 
   const destinationContact =
     destination.trim() ? resolveAddressLabel(destination.trim(), contacts) : null;
 
   // Start the review when the screen mounts
   useEffect(() => {
+    const state = useSignerStore.getState();
+    if (state.activeSubmission || (state.phase === 'completed' && state.lastResult)) return;
+    if (useSignerStore.getState().unknownSubmission) {
+      router.replace('/payment-retry');
+      return;
+    }
     if (!destination || !amount || !publicKey) {
       router.back();
       return;
@@ -118,15 +126,16 @@ export default function ReviewTransactionScreen() {
   // Handle success - navigate away
   useEffect(() => {
     if (phase === 'completed' && store.lastResult) {
+      const acceptedResult = store.lastResult;
       refreshWalletData();
       const timer = setTimeout(() => {
         store.reset();
         router.replace({
           pathname: '/payment-success',
           params: {
-            hash: store.lastResult!.hash,
-            amount: amount.trim(),
-            destination: destination.trim(),
+            hash: acceptedResult.hash,
+            amount: acceptedResult.review.amount,
+            destination: acceptedResult.review.destinationPublicKey,
             date: new Date().toISOString(),
           },
         });
@@ -136,43 +145,29 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
-    const { sendXlmTransaction } = await import('../src/services/stellar');
-    const secretKey = await getSecretKey();
-    if (!secretKey) {
-      store.failSigning({
-        type: 'signer_unavailable',
-        message: WALLET_SECRET_ACCESS_MESSAGE,
-      });
-      return;
-    }
-    const fee = await server.fetchBaseFee();
-    store.startReview({
-      requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-      sourcePublicKey: publicKey!,
-      destinationPublicKey: destination.trim(),
-      destinationLabel: destinationContact?.isContact ? destinationContact.label : null,
-      amount: amount.trim(),
-      assetCode: 'XLM',
-      memo: memo.trim() || undefined,
-      network: getNetworkLabel(),
-      createdAt: new Date().toISOString(),
-      timeoutSeconds: 30,
-      fee: fee.toString(),
-    });
-
-    store.enterHandoff();
-    store.enterSigning();
-
+    // Guard synchronously, including the awaits before broadcasting.
+    if (submissionInFlight.current || useSignerStore.getState().phase !== 'review') return;
+    const attempt = store.beginSubmission();
+    if (!attempt) return;
+    let attemptReview = attempt;
+    let acceptedHash: string | undefined;
+    submissionInFlight.current = true;
     try {
-      const result = await sendXlmTransaction(
-        secretKey,
-        destination.trim(),
-        amount.trim(),
-        memo.trim() || undefined,
-      );
+      const secretKey = await getSecretKey();
+      if (!secretKey) {
+        store.failSigning({ type: 'signer_unavailable', message: WALLET_SECRET_ACCESS_MESSAGE });
+        return;
+      }
+      const fee = await server.fetchBaseFee();
+      attemptReview = { ...attempt, fee: fee.toString() };
+      store.updateActiveSubmission(attemptReview);
+      store.enterSigning();
       store.enterSubmitting();
+      const result = await sendXlmTransaction(
+        secretKey, destination.trim(), amount.trim(), memo.trim() || undefined,
+      );
+      acceptedHash = result.hash;
       store.enterConfirming();
-
       addPendingTransaction(result.hash, {
         id: result.hash,
         type: 'payment',
@@ -182,44 +177,33 @@ export default function ReviewTransactionScreen() {
         asset: 'XLM',
         created_at: new Date().toISOString(),
       });
-
-      // React batches these consecutive set() calls into a single render, so
-      // without a real gap here 'confirming' never actually paints — this
-      // delay is what makes the phase visible instead of skipping straight
-      // from signing to completed.
+      // Allow the existing confirmation phase to paint before success.
       await new Promise((resolve) => setTimeout(resolve, 400));
-
-      const signingResult = {
+      store.completeSigning({
         hash: result.hash,
-        review: store.currentReview!,
-        signerType: 'local' as const,
+        review: attemptReview,
+        signerType: 'local',
         completedAt: new Date().toISOString(),
-      };
-      store.completeSigning(signingResult);
+      });
     } catch (err: any) {
-      const rawMessage = err?.message || '';
-      // A throw here doesn't prove the transaction was rejected — a client-side
-      // timeout can happen after Horizon already accepted it — so use neutral
-      // copy instead of asserting failure, except for an explicit cancellation.
-      const isCancelled = /cancel|abort/i.test(rawMessage);
+      if (acceptedHash) {
+        // Local history bookkeeping cannot turn an accepted payment into failure.
+        store.completeSigning({ hash: acceptedHash, review: attemptReview, signerType: 'local', completedAt: new Date().toISOString() });
+        return;
+      }
+      if (err instanceof UnknownPaymentSubmissionError) {
+        store.recordUnknownSubmission(err.transactionHash, attemptReview);
+        router.replace('/payment-retry');
+        return;
+      }
+      const isCancelled = /cancel|abort/i.test(err?.message || '');
       store.failSigning({
         type: isCancelled ? 'user_cancelled' : 'unknown',
-        message: isCancelled ? rawMessage : UNCONFIRMED_SUBMISSION_MESSAGE,
-        raw: err,
+        message: isCancelled ? 'Signing was cancelled before submission.' : 'The payment could not be submitted. Review your details and connection before trying again.',
       });
+    } finally {
+      submissionInFlight.current = false;
     }
-  };
-
-  const handleCancel = () => {
-    store.cancelSigning();
-    setTimeout(() => {
-      store.reset();
-      router.back();
-    }, 300);
-  };
-
-  const handleRetry = () => {
-    store.reset();
   };
 
   const handleDismissError = () => {
