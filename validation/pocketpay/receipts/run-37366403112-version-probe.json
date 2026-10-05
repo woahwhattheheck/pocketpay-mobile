@@ -1,0 +1,18 @@
+{
+  "run_id": 37366403112,
+  "url": "https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37366403112",
+  "retry_job_id": 111952559350,
+  "controller_sha": "a103d609e430c78d86eb183b957475a79e636a60",
+  "controller_tree": "323efe5b3790725ec92c9ea249d13fea9e2713a6",
+  "retry_sha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "retry_tree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "camera_status": "cancelled before runner/steps",
+  "actual_emulator_boot_ms": 38851,
+  "actual_emulator_version": "37.2.12.0 build16428233",
+  "result": "optional version probe failed after real headless boot; no Expo Go installation or app launch, no native feature evidence",
+  "exact_version_stderr": "/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/qemu-system-x86_64: error while loading shared libraries: libpulse.so.0: cannot open shared object file: No such file or directory\n",
+  "artifact_id": 11369080823,
+  "artifact_zip_sha256": "fe1d1929de40eae9d73b042c8844e8ee401ef8effdefdb480f9ad25447089d85",
+  "correction": "optional absolute headless version probe retains locator/status/stderr; early cleanup records original exit/frame/XML/logcat; system-image file metadata optional; API34/adb installation/reverse/Metro/UI checks fatal",
+  "independent_review": "PocketPay source owner read full concrete corrected run.sh and found no weakened critical checks or transformed failures into passes"
+}
