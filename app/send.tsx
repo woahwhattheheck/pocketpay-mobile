@@ -274,7 +274,8 @@ export default function SendScreen() {
             placeholder="Payment reference"
             value={memo}
             onChangeText={handleMemoChange}
-            helperText="Add a note for the recipient"
+            error={errors.memo}
+            helperText="Text memo, up to 28 bytes"
           />
         </View>
 

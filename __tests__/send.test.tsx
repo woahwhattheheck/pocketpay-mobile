@@ -44,6 +44,9 @@ jest.mock('lucide-react-native', () => ({
   ShieldCheck: () => null,
   ArrowRight: () => null,
   AlertTriangle: () => null,
+  ChevronDown: () => null,
+  User: () => null,
+  Info: () => null,
 }));
 
 // expo-camera mock – controllable via module-level variables (same pattern as contacts.scan.test.tsx)
@@ -199,7 +202,7 @@ describe('AC3 – submit is blocked when the form is invalid', () => {
     fireEvent.press(getByText('Send Payment'));
 
     expect(getByText('Please enter a destination address.')).toBeTruthy();
-    expect(mockSendXlmTransaction).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it('does not call sendXlmTransaction with an invalid amount', async () => {
@@ -275,6 +278,55 @@ describe('AC4 – valid form routes into sign confirmation', () => {
           network: 'Testnet',
         },
       });
+    });
+  });
+
+  it('shows memo byte-limit feedback and blocks review when the memo is too long', () => {
+    const { getByPlaceholderText, getByText, queryByText } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.changeText(getByPlaceholderText('Payment reference'), 'x'.repeat(29));
+
+    expect(getByText('Memo is too long. Please keep it under 28 bytes.')).toBeTruthy();
+    expect(queryByText('Text memo, up to 28 bytes')).toBeNull();
+
+    fireEvent.press(getByText('Send Payment'));
+
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it.each(['x'.repeat(28), 'é'.repeat(14)])('allows a text memo at the 28-byte limit', async (memo) => {
+    const { getByPlaceholderText, getByText } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.changeText(getByPlaceholderText('Payment reference'), memo);
+    fireEvent.press(getByText('Send Payment'));
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith(expect.objectContaining({
+        pathname: '/sign-confirmation',
+        params: expect.objectContaining({ memo }),
+      }));
+    });
+  });
+
+  it('counts UTF-8 bytes and clears memo feedback after correction', async () => {
+    const { getByPlaceholderText, getByText, queryByText } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.changeText(getByPlaceholderText('Payment reference'), 'é'.repeat(15));
+    expect(getByText('Memo is too long. Please keep it under 28 bytes.')).toBeTruthy();
+
+    fireEvent.changeText(getByPlaceholderText('Payment reference'), 'Corrected');
+    expect(queryByText('Memo is too long. Please keep it under 28 bytes.')).toBeNull();
+    expect(getByText('Text memo, up to 28 bytes')).toBeTruthy();
+    fireEvent.press(getByText('Send Payment'));
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalled();
     });
   });
 });
