@@ -10,7 +10,30 @@ Closes #
 Describe the happy path and at least one negative path. List automated and
 manual checks with their results. For documentation-only changes, explain why
 runtime tests are not applicable and list the static review performed.
+
+Before requesting review, complete the
+[PR Evidence Checklist](../docs/pr-evidence-checklist.md). Record only commands
+and checks actually observed; never infer a pass from a prior commit.
 -->
+
+| Command or check | Result | Evidence or notes |
+| --- | --- | --- |
+| <!-- Command or check actually run --> | <!-- PASS / FAIL / NOT RUN / ACTION REQUIRED / UNKNOWN --> | <!-- Counts, link, output summary, or reason --> |
+
+## Required PR Evidence
+
+- [ ] **Issue reference:** Use `Closes #...` for complete scope or `Refs #...`
+      for explicitly partial work.
+- [ ] **Implementation summary:** The summary explains what changed, why, and
+      any deliberate scope boundary.
+- [ ] **Tests:** Added or updated tests and their results are listed, or an
+      explicit `Not applicable — <reason>` justification is provided.
+- [ ] **Commands run:** Every verification command or check actually run
+      appears in the evidence table with its observed result.
+- [ ] **CI status:** The latest commit's CI state is stated and linked when
+      available; non-green or unknown states are not represented as passing.
+- [ ] **Acceptance criteria:** Every issue criterion is represented in the
+      Acceptance Criteria Audit below.
 
 ## Self-Assessment
 
