@@ -1,11 +1,12 @@
 import { validatePublicKey } from "pocketpay-sdk";
 import { Buffer } from "buffer";
+import { MIN_XLM_RESERVE, formatAmount, getMaxSendableAmount } from "./amount";
 
 // Stellar text memos are limited to 28 bytes.
 export const MEMO_MAX_BYTES = 28;
 
-// Accounts must keep a minimum XLM balance to stay active on the network.
-export const MIN_XLM_RESERVE = 1;
+// Keep the historical export path stable while sharing one reserve constant.
+export { MIN_XLM_RESERVE };
 
 /**
  * Normalize a Stellar public key for consistent comparison.
@@ -154,11 +155,16 @@ export const validateAmount = (
 
   if (balance !== undefined) {
     const balanceValue = Number(balance);
-    if (value > balanceValue) {
-      return "You don't have enough XLM for this payment.";
-    }
-    if (value > balanceValue - MIN_XLM_RESERVE) {
-      return `You need to keep at least ${MIN_XLM_RESERVE} XLM in your wallet, so this amount is too high.`;
+    if (!Number.isNaN(balanceValue)) {
+      const availableToSend = getMaxSendableAmount(balanceValue);
+      if (value > Number(availableToSend)) {
+        return [
+          "Insufficient available balance.",
+          `Required: ${formatAmount(trimmed)} XLM.`,
+          `Available to send: ${formatAmount(availableToSend)} XLM.`,
+          `Reserved: ${formatAmount(MIN_XLM_RESERVE)} XLM.`,
+        ].join(" ");
+      }
     }
   }
 
