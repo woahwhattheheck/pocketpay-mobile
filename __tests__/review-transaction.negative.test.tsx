@@ -91,6 +91,7 @@ const mockSendXlmTransaction = sendXlmTransaction as jest.MockedFunction<typeof 
 
 const mockBack = jest.fn();
 const mockReplace = jest.fn();
+const mockAddPendingTransaction = jest.fn();
 
 describe('ReviewTransactionScreen negative paths', () => {
   beforeEach(() => {
@@ -110,33 +111,62 @@ describe('ReviewTransactionScreen negative paths', () => {
       publicKey: 'GSOURCE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABC',
       getSecretKey: jest.fn(async () => 'SSECRET123'),
       refreshWalletData: jest.fn(),
-      addPendingTransaction: jest.fn(),
+      addPendingTransaction: mockAddPendingTransaction,
     } as any);
   });
 
-  it('shows a safe unconfirmed-submission message when the network request fails', async () => {
-    mockSendXlmTransaction.mockRejectedValueOnce(new Error('fetch failed'));
+  it('shows an unknown-status recovery state and preserves the signed hash', async () => {
+    mockSendXlmTransaction.mockRejectedValueOnce(
+      Object.assign(new Error('request timeout'), {
+        name: 'TransactionSubmissionError',
+        submissionStatus: 'unknown',
+        transactionHash: 'abc123',
+      }),
+    );
 
-    const { getByText } = render(<ReviewTransactionScreen />);
+    const { getByText, queryByText } = render(<ReviewTransactionScreen />);
     fireEvent.press(getByText('Sign & Send'));
 
     await waitFor(() => {
-      expect(getByText('Transaction Failed')).toBeTruthy();
+      expect(getByText('Transaction status unknown')).toBeTruthy();
       expect(getByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeTruthy();
-      expect(getByText('Go Back')).toBeTruthy();
+      expect(getByText('Check History')).toBeTruthy();
+      expect(queryByText('Transaction Failed')).toBeNull();
     });
+
+    expect(mockAddPendingTransaction).toHaveBeenCalledWith(
+      'abc123',
+      expect.objectContaining({
+        id: 'abc123',
+        status: 'unknown',
+        amount: '10',
+      }),
+    );
+
+    fireEvent.press(getByText('Check History'));
+    expect(mockReplace).toHaveBeenCalledWith('/(tabs)/history');
   });
 
-  it('surfaces a clear insufficient-balance failure from submission', async () => {
-    mockSendXlmTransaction.mockRejectedValueOnce(new Error('op_underfunded'));
+  it('keeps a definitive Horizon rejection separate from unknown status', async () => {
+    mockSendXlmTransaction.mockRejectedValueOnce(
+      Object.assign(new Error('op_underfunded'), {
+        name: 'TransactionSubmissionError',
+        submissionStatus: 'failed',
+        transactionHash: 'def456',
+      }),
+    );
 
-    const { getByText } = render(<ReviewTransactionScreen />);
+    const { getByText, queryByText } = render(<ReviewTransactionScreen />);
     fireEvent.press(getByText('Sign & Send'));
 
     await waitFor(() => {
       expect(getByText('Transaction Failed')).toBeTruthy();
-      expect(getByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeTruthy();
+      expect(getByText('op_underfunded')).toBeTruthy();
+      expect(queryByText('Check History')).toBeNull();
+      expect(queryByText('Transaction status unknown')).toBeNull();
     });
+
+    expect(mockAddPendingTransaction).not.toHaveBeenCalled();
   });
 
   it('shows the cancelled state clearly when signing is aborted before submission', () => {
