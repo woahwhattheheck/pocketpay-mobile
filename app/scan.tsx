@@ -17,13 +17,15 @@ export default function ScanScreen() {
 
   if (!permission) {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} accessibilityLiveRegion="polite">
         <View style={styles.content}>
           <Text style={styles.title}>Preparing Camera</Text>
           <Text style={styles.subtitle}>Checking camera permission…</Text>
           <Button
             title="Enter Address Manually"
             onPress={handleManualEntry}
+            accessibilityRole="button"
+            accessibilityLabel="Enter recipient address manually"
             style={styles.button}
           />
         </View>
@@ -37,11 +39,15 @@ export default function ScanScreen() {
         <View style={styles.content}>
           <Text style={styles.title}>Camera Permission Required</Text>
           <Text style={styles.subtitle}>
-            We need camera access to scan QR codes. If you prefer not to grant permission or if your camera is unavailable, please enter the recipient address manually.
+            {permission.canAskAgain
+              ? 'We need camera access to scan QR codes. You can grant permission or enter the recipient address manually.'
+              : 'Camera access is blocked. Enable it in your device settings, or enter the recipient address manually.'}
           </Text>
           <Button 
             title="Enter Address Manually" 
             onPress={handleManualEntry} 
+            accessibilityRole="button"
+            accessibilityLabel="Enter recipient address manually"
             style={styles.button}
           />
           {permission.canAskAgain && (
@@ -49,6 +55,8 @@ export default function ScanScreen() {
                title="Request Camera Permission" 
                variant="secondary"
                onPress={requestPermission} 
+               accessibilityRole="button"
+               accessibilityLabel="Request camera permission"
                style={styles.button}
              />
           )}
@@ -59,15 +67,17 @@ export default function ScanScreen() {
 
   if (cameraError) {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} accessibilityLiveRegion="polite">
         <View style={styles.content}>
           <Text style={styles.title}>Camera Unavailable</Text>
           <Text style={styles.subtitle}>
-            We couldn't start the camera on this device. Enter the recipient address manually instead.
+            We couldn&apos;t start the camera on this device. Enter the recipient address manually instead.
           </Text>
           <Button
             title="Enter Address Manually"
             onPress={handleManualEntry}
+            accessibilityRole="button"
+            accessibilityLabel="Enter recipient address manually"
             style={styles.button}
           />
         </View>
@@ -100,6 +110,8 @@ export default function ScanScreen() {
           <Button 
             title="Enter Address Manually" 
             onPress={handleManualEntry} 
+            accessibilityRole="button"
+            accessibilityLabel="Enter recipient address manually"
             style={styles.button}
           />
         </View>

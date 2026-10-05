@@ -32,12 +32,14 @@ export interface QrScannerProps {
   onError: (message: string) => void;
   /** Called when the user dismisses the scanner. */
   onClose: () => void;
+  /** Open the caller's manual-entry form. Defaults to closing the scanner. */
+  onManualEntry?: () => void;
 }
 
 /** Pause between consecutive scan attempts (ms). Prevents duplicate rapid-fire callbacks. */
 const SCAN_DEBOUNCE_MS = 1500;
 
-export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }) => {
+export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose, onManualEntry }) => {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [permission, requestPermission] = useCameraPermissions();
@@ -80,6 +82,14 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
       <View style={styles.centred} accessibilityLiveRegion="polite">
         <ActivityIndicator color={colors.primary} size="large" />
         <Text style={styles.statusText}>Checking camera permission…</Text>
+        <TouchableOpacity
+          style={styles.permissionButton}
+          onPress={onManualEntry ?? onClose}
+          accessibilityLabel="Enter recipient address manually"
+          accessibilityRole="button"
+        >
+          <Text style={styles.permissionButtonText}>Enter Address Manually</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -106,6 +116,14 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
         )}
         <TouchableOpacity
           style={styles.closeButtonFallback}
+          onPress={onManualEntry ?? onClose}
+          accessibilityLabel="Enter recipient address manually"
+          accessibilityRole="button"
+        >
+          <Text style={styles.closeButtonFallbackText}>Enter Address Manually</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.closeButtonFallback}
           onPress={onClose}
           accessibilityLabel="Close scanner"
           accessibilityRole="button"
@@ -127,7 +145,7 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
         </Text>
         <TouchableOpacity
           style={styles.permissionButton}
-          onPress={onClose}
+          onPress={onManualEntry ?? onClose}
           accessibilityLabel="Enter recipient address manually"
           accessibilityRole="button"
         >
@@ -217,6 +235,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     marginTop: SIZES.sm,
   },
   permissionButton: {
+    minHeight: SIZES.xl + SIZES.md,
+    justifyContent: 'center',
     marginTop: SIZES.lg,
     backgroundColor: colors.primary,
     paddingVertical: SIZES.sm,
@@ -229,6 +249,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     fontWeight: '600',
   },
   closeButtonFallback: {
+    minHeight: SIZES.xl + SIZES.md,
+    justifyContent: 'center',
     marginTop: SIZES.md,
     paddingVertical: SIZES.sm,
     paddingHorizontal: SIZES.xl,
