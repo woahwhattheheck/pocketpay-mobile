@@ -8,6 +8,7 @@ import { COLORS, SIZES, RADIUS } from '../src/constants/theme';
 export default function ScanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleManualEntry = () => {
@@ -15,7 +16,19 @@ export default function ScanScreen() {
   };
 
   if (!permission) {
-    return <View style={styles.container} />;
+    return (
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.title}>Preparing Camera</Text>
+          <Text style={styles.subtitle}>Checking camera permission…</Text>
+          <Button
+            title="Enter Address Manually"
+            onPress={handleManualEntry}
+            style={styles.button}
+          />
+        </View>
+      </View>
+    );
   }
 
   if (!permission.granted) {
@@ -44,6 +57,24 @@ export default function ScanScreen() {
     );
   }
 
+  if (cameraError) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.title}>Camera Unavailable</Text>
+          <Text style={styles.subtitle}>
+            We couldn't start the camera on this device. Enter the recipient address manually instead.
+          </Text>
+          <Button
+            title="Enter Address Manually"
+            onPress={handleManualEntry}
+            style={styles.button}
+          />
+        </View>
+      </View>
+    );
+  }
+
   const handleBarCodeScanned = ({ type, data }: { type: string; data: string }) => {
     setScanned(true);
     // Pass the scanned data to the send screen
@@ -56,6 +87,7 @@ export default function ScanScreen() {
         style={StyleSheet.absoluteFillObject}
         facing="back"
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onMountError={({ message }) => setCameraError(message || 'Camera unavailable')}
         barcodeScannerSettings={{
           barcodeTypes: ["qr"],
         }}
