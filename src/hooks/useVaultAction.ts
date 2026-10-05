@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import type { VaultActionState, VaultActionStatus } from '../types/vault';
+import { mapSdkError } from '../utils/sdkErrorMapper';
 
 interface VaultActionSteps<TSigned, TResult> {
   sign: () => Promise<TSigned>;
@@ -33,9 +34,10 @@ export function useVaultAction<TSigned = unknown, TResult = unknown>() {
 
       setStatus((prev) => ({ state: 'confirmed', txHash: prev.txHash }));
     } catch (err) {
+      const guidance = mapSdkError(err, 'vault');
       setStatus({
         state: 'failed',
-        error: err instanceof Error ? err.message : 'Action failed. Please try again.',
+        error: `${guidance.message} ${guidance.action} (${guidance.diagnosticCode})`,
       });
     }
   }, []);
