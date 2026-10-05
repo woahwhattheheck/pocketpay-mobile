@@ -37,6 +37,7 @@ export type HandoffPhase =
   // "UI flow fully done", so downstream UI never has to treat submit-resolved as final.
   | 'confirming'    // Network call resolved; wrapping up before the flow is done
   | 'completed'     // Flow finished successfully
+  | 'submission_unknown' // Submission may have reached the network; status must be checked before retrying
   | 'failed'        // Signing or submission failed
   | 'cancelled';    // User or signer cancelled the flow
 
