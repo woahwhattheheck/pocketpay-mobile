@@ -132,18 +132,6 @@ export default function HistoryScreen() {
 
   const [filter, setFilter] = useState<FilterType>('all');
 
-  if (!publicKey) {
-    return (
-      <View style={{ flex: 1, backgroundColor: colors.background }}>
-        <WalletEmptyState
-          variant="missing"
-          onCreate={() => router.replace('/(auth)/create')}
-          onImport={() => router.replace('/(auth)/import')}
-        />
-      </View>
-    );
-  }
-
   const filteredTransactions = useMemo(() => {
     return transactions.filter((tx: TransactionRecord) => {
       if (filter === 'all') return true;
@@ -214,6 +202,19 @@ export default function HistoryScreen() {
     ),
     [isLoadingMore, hasMoreTransactions, transactions.length, colors, styles]
   );
+
+  // Keep hook order stable when a wallet is restored or cleared.
+  if (!publicKey) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <WalletEmptyState
+          variant="missing"
+          onCreate={() => router.replace('/(auth)/create')}
+          onImport={() => router.replace('/(auth)/import')}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
