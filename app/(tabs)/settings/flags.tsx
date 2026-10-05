@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Switch, ScrollView } from 'react-native';
-import { useTheme } from '../../src/hooks/useTheme';
-import { SIZES, RADIUS, ThemeColors } from '../../src/constants/theme';
-import { FEATURE_FLAGS, isFeatureEnabled } from '../../src/config/featureFlags';
+import { useTheme } from '../../../src/hooks/useTheme';
+import { SIZES, RADIUS, ThemeColors } from '../../../src/constants/theme';
+import { FEATURE_FLAGS, isFeatureEnabled } from '../../../src/config/featureFlags';
 import { KeyRound, AlertTriangle, CheckCircle } from 'lucide-react-native';
 
 export default function FeatureFlagsScreen() {

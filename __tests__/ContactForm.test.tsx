@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import { ContactForm } from '@/components/ContactForm';
 import { useContactStore } from '@/features/contacts/contactStore';
+import { walletFixture } from '../tests/fixtures/wallet';
 
 // Mock the store
 jest.mock('@/features/contacts/contactStore', () => ({
@@ -130,11 +131,11 @@ describe('ContactForm', () => {
     const mockGetContactByAddress = jest.fn(() => ({
       id: '1',
       name: 'Existing',
-      address: 'GABC123',
+      address: walletFixture.publicKey,
     }));
 
     (useContactStore as jest.Mock).mockReturnValue({
-      contacts: [{ id: '1', name: 'Existing', address: 'GABC123', createdAt: Date.now() }],
+      contacts: [{ id: '1', name: 'Existing', address: walletFixture.publicKey }],
       getContactByAddress: mockGetContactByAddress,
     });
 
@@ -148,7 +149,7 @@ describe('ContactForm', () => {
     );
 
     fireEvent.changeText(screen.getByPlaceholderText('Contact name'), 'New Contact');
-    fireEvent.changeText(screen.getByPlaceholderText('G...'), 'GABC123');
+    fireEvent.changeText(screen.getByPlaceholderText('G...'), walletFixture.publicKey);
 
     fireEvent.press(screen.getByText('Save'));
 
@@ -174,7 +175,7 @@ describe('ContactForm', () => {
     fireEvent.changeText(screen.getByPlaceholderText('Contact name'), 'Alice');
     fireEvent.changeText(
       screen.getByPlaceholderText('G...'),
-      'GABC12345678901234567890123456789012345678901234567890'
+      walletFixture.publicKey
     );
 
     fireEvent.press(screen.getByText('Save'));
@@ -182,7 +183,7 @@ describe('ContactForm', () => {
     await waitFor(() => {
       expect(mockOnSave).toHaveBeenCalledWith(
         'Alice',
-        'GABC12345678901234567890123456789012345678901234567890'
+        walletFixture.publicKey
       );
     });
   });

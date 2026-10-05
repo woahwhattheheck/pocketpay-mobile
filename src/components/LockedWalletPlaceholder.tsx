@@ -39,7 +39,7 @@ const createStyles = (colors: ThemeColors) =>
     card: {
       alignItems: 'center',
       padding: SIZES.lg,
-      backgroundColor: colors.cardBackground,
+      backgroundColor: colors.surface,
       borderRadius: RADIUS.lg,
       borderWidth: 1,
       borderColor: colors.border,

@@ -57,11 +57,6 @@ interface WalletState {
   hasMoreTransactions: boolean;
   nextCursor: string | null;
 
-  // Pagination
-  nextCursor: string | null;
-  hasMoreTransactions: boolean;
-  isLoadingMore: boolean;
-
   // Actions
   setWallet: (publicKey: string, secretKey: string) => Promise<boolean>;
   loadWalletFromStorage: () => Promise<boolean>;

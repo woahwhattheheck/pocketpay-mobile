@@ -1,12 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   Alert,
+  Platform,
 } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { useTheme } from '../src/hooks/useTheme';
 import { useAppStore } from '../src/store/appStore';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
@@ -57,6 +58,12 @@ export default function SignConfirmationScreen() {
   const contacts = useAppStore((state) => state.contacts);
   const { confirm, confirmationDialog } = useConfirm();
   const [isProcessing, setIsProcessing] = useState(false);
+  const navigationPending = useRef(false);
+
+  useFocusEffect(useCallback(() => {
+    navigationPending.current = false;
+    setIsProcessing(false);
+  }, []));
 
   const source = params.source || '';
   const destination = params.destination || '';
@@ -84,8 +91,9 @@ export default function SignConfirmationScreen() {
   };
 
   const handleConfirmSigning = async () => {
-    if (isProcessing) return;
+    if (navigationPending.current) return;
 
+    navigationPending.current = true;
     setIsProcessing(true);
 
     try {
@@ -106,7 +114,7 @@ export default function SignConfirmationScreen() {
         'Failed to proceed to signing. Please try again.',
         [{ text: 'OK' }]
       );
-    } finally {
+      navigationPending.current = false;
       setIsProcessing(false);
     }
   };
@@ -115,7 +123,7 @@ export default function SignConfirmationScreen() {
   if (!source || !destination || !amount) {
     return (
       <View style={[styles.container, styles.centerContent]}>
-        <ScreenHeader title="Error" showBack />
+        <ScreenHeader title="Error" />
         <View style={styles.errorCard}>
           <XCircle size={48} color={colors.error} style={styles.errorIcon} />
           <Text style={styles.errorTitle}>Invalid Transaction</Text>
@@ -134,7 +142,7 @@ export default function SignConfirmationScreen() {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="Confirm Signing" showBack onBack={handleCancel} />
+      <ScreenHeader title="Confirm Signing" />
 
       <ScrollView
         style={styles.scrollView}
@@ -307,7 +315,7 @@ function createStyles(colors: ThemeColors) {
     warningBanner: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: colors.warningBackground || `${colors.warning}20`,
+      backgroundColor: `${colors.warning}20`,
       padding: SIZES.md,
       borderRadius: RADIUS.md,
       marginBottom: SIZES.md,
@@ -340,7 +348,7 @@ function createStyles(colors: ThemeColors) {
     cardTitle: {
       fontSize: 18,
       fontWeight: '600',
-      color: colors.text,
+      color: colors.textPrimary,
       marginBottom: SIZES.md,
     },
     detailRow: {
@@ -363,7 +371,7 @@ function createStyles(colors: ThemeColors) {
     },
     detailValue: {
       fontSize: 14,
-      color: colors.text,
+      color: colors.textPrimary,
       fontWeight: '400',
       textAlign: 'right',
       flex: 1,
@@ -375,7 +383,7 @@ function createStyles(colors: ThemeColors) {
     },
     contactLabel: {
       fontSize: 14,
-      color: colors.text,
+      color: colors.textPrimary,
       fontWeight: '500',
       marginBottom: 2,
     },
@@ -406,7 +414,7 @@ function createStyles(colors: ThemeColors) {
     securityTitle: {
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
+      color: colors.textPrimary,
     },
     securityPoint: {
       flexDirection: 'row',

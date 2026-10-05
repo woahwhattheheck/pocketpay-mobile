@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { MMKV } from 'react-native-mmkv';
-
-const storage = new MMKV();
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Contact {
   id: string;
@@ -45,6 +43,6 @@ export const useContactStore = create<ContactState>()(
         set({ recentRecipients: [newRecent, ...filtered] });
       }
     }),
-    { name: 'address-book', storage: createJSONStorage(() => storage) }
+    { name: 'address-book', storage: createJSONStorage(() => AsyncStorage) }
   )
 );

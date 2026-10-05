@@ -98,7 +98,7 @@ const bProcess = require("process/browser");
 if (typeof process === "undefined") {
   global.process = bProcess;
 } else {
-  for (var p in bProcess) {
+  for (const p in bProcess) {
     if (!(p in process)) {
       process[p] = bProcess[p];
     }

@@ -10,6 +10,11 @@ export const useRouter = () => ({
 
 export const useLocalSearchParams = () => ({});
 
+export const useFocusEffect = (callback: () => void | (() => void)) => {
+  const React = require('react');
+  React.useEffect(callback, [callback]);
+};
+
 export const Link = ({ children }: { children: React.ReactNode }) => children;
 
 export default { useRouter, useLocalSearchParams, Link };

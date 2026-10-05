@@ -125,7 +125,7 @@ describe('ContactPicker', () => {
       />
     );
 
-    fireEvent.press(screen.getByText('Add New Contact'));
+    fireEvent.press(screen.getByText('+ Add New Contact'));
     expect(mockOnAddNew).toHaveBeenCalled();
   });
 

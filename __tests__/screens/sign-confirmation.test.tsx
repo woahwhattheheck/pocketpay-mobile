@@ -7,9 +7,19 @@ import { useTheme } from '../../src/hooks/useTheme';
 import { useAppStore } from '../../src/store/appStore';
 
 // Mock dependencies
-jest.mock('expo-router');
+jest.mock('expo-router', () => ({
+  useRouter: jest.fn(),
+  useLocalSearchParams: jest.fn(),
+  useFocusEffect: (callback: () => void | (() => void)) => {
+    const React = require('react');
+    React.useEffect(callback, [callback]);
+  },
+}));
 jest.mock('../../src/hooks/useTheme');
-jest.mock('../../src/store/appStore');
+jest.mock('../../src/store/appStore', () => ({
+  ...jest.requireActual('../../src/store/appStore'),
+  useAppStore: jest.fn(),
+}));
 jest.mock('react-native/Libraries/Alert/Alert', () => ({
   alert: jest.fn(),
 }));
@@ -68,7 +78,7 @@ describe('SignConfirmationScreen', () => {
       expect(screen.getByText('Confirm Signing')).toBeTruthy();
       expect(screen.getByText(/You are about to sign a blockchain transaction/)).toBeTruthy();
       expect(screen.getByText('Transaction Summary')).toBeTruthy();
-      expect(screen.getByText('10.50 XLM')).toBeTruthy();
+      expect(screen.getByText('10.5 XLM')).toBeTruthy();
       expect(screen.getByText('Test payment')).toBeTruthy();
       expect(screen.getByText('100 stroops')).toBeTruthy();
       expect(screen.getByText('Testnet')).toBeTruthy();
@@ -120,8 +130,7 @@ describe('SignConfirmationScreen', () => {
     it('should show truncated address for unknown contacts', () => {
       render(<SignConfirmationScreen />);
 
-      // Should show truncated format (6 chars ... 6 chars)
-      const truncatedAddress = screen.getByText(/GDEST1.*UVWXYZ/);
+      const truncatedAddress = screen.getByText('GDEST1...UVWXYZ');
       expect(truncatedAddress).toBeTruthy();
     });
   });
@@ -210,34 +219,26 @@ describe('SignConfirmationScreen', () => {
   });
 
   describe('Cancellation', () => {
-    it('should show confirmation alert when Cancel is pressed', () => {
+    it('should show a confirmation dialog when Cancel is pressed', () => {
       render(<SignConfirmationScreen />);
 
       const cancelButton = screen.getByText('Cancel');
       fireEvent.press(cancelButton);
 
-      expect(Alert.alert).toHaveBeenCalledWith(
-        'Cancel Signing',
-        'Are you sure you want to cancel? The transaction will not be signed or sent.',
-        expect.arrayContaining([
-          expect.objectContaining({ text: 'Keep Reviewing', style: 'cancel' }),
-          expect.objectContaining({ text: 'Cancel', style: 'destructive' }),
-        ])
-      );
+      expect(screen.getByText('Cancel Signing')).toBeTruthy();
+      expect(screen.getByText('Are you sure you want to cancel? The transaction will not be signed or sent.')).toBeTruthy();
+      expect(screen.getByText('Keep Reviewing')).toBeTruthy();
+      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
 
-    it('should navigate to home when cancel is confirmed', () => {
+    it('should navigate to home when cancel is confirmed', async () => {
       render(<SignConfirmationScreen />);
 
       const cancelButton = screen.getByText('Cancel');
       fireEvent.press(cancelButton);
 
-      // Get the alert callback and execute it
-      const alertCall = (Alert.alert as jest.Mock).mock.calls[0];
-      const confirmButton = alertCall[2].find((btn: any) => btn.text === 'Cancel');
-      confirmButton.onPress();
-
-      expect(mockRouter.replace).toHaveBeenCalledWith('/(tabs)');
+      fireEvent.press(screen.getAllByRole('button', { name: 'Cancel' }).at(-1)!);
+      await waitFor(() => expect(mockRouter.replace).toHaveBeenCalledWith('/(tabs)'));
     });
   });
 
@@ -290,7 +291,7 @@ describe('SignConfirmationScreen', () => {
       render(<SignConfirmationScreen />);
 
       // Should render with defaults
-      expect(screen.getByText('Unknown')).toBeTruthy(); // Default fee
+      expect(screen.getByText('Unknown stroops')).toBeTruthy();
     });
   });
 

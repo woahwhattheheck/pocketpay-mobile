@@ -56,7 +56,7 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   const handleShareDiagnostics = async () => {
     try {
       await Share.share({
-        message: getDiagnostics(),
+        message: await getDiagnostics(),
         title: 'App Diagnostics Log',
       });
     } catch {
@@ -79,7 +79,7 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
 
           <Text style={styles.title}>Something went wrong</Text>
           <Text style={styles.subtitle}>
-            An unexpected problem occurred in the app. Don't worry — your data and funds on the network are safe.
+            An unexpected problem occurred in the app. Don&apos;t worry — your data and funds on the network are safe.
           </Text>
 
           <View style={styles.actionContainer}>

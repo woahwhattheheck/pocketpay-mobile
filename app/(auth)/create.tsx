@@ -8,7 +8,7 @@ import { useTheme } from '../../src/hooks/useTheme';
 import { generateKeypair } from '../../src/services/stellar';
 import { useWalletStore } from '../../src/store/walletStore';
 import { WALLET_SAVE_FAILURE_MESSAGE } from '../../src/utils/walletStorageErrors';
-import { AlertTriangle, Info, Shield, CheckCircle } from 'lucide-react-native';
+import { AlertTriangle, Info, Shield } from 'lucide-react-native';
 import { SecretKeyReveal } from '../../src/components/SecretKeyReveal';
 import type { OnboardingError, StorageError } from '../../src/types/onboarding';
 import {
@@ -118,24 +118,6 @@ export default function CreateWalletScreen() {
     );
   }
 
-  // ── Success State ──────────────────────────────────────────
-  if (isSuccess) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <View style={styles.successIcon}>
-            <CheckCircle color={colors.success} size={64} />
-          </View>
-          <Text style={styles.title}>Wallet Created!</Text>
-          <Text style={styles.subtitle}>
-            Your Testnet wallet is ready. Fund it with the Friendbot on the home screen to start sending test XLM.
-          </Text>
-        </View>
-        <AsyncActionButton title="Go to Wallet" onPress={handleGoToWallet} />
-      </View>
-    );
-  }
-
   // ── Generate State ─────────────────────────────────────────
   if (!keypair) {
     return (
@@ -144,7 +126,7 @@ export default function CreateWalletScreen() {
           <View style={styles.infoBanner}>
             <Info color={colors.primary} size={20} />
             <Text style={styles.infoText}>
-              You're on <Text style={styles.infoBold}>Stellar Testnet</Text>. Wallets use test funds only — no real value.
+              You&apos;re on <Text style={styles.infoBold}>Stellar Testnet</Text>. Wallets use test funds only — no real value.
             </Text>
           </View>
 

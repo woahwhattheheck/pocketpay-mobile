@@ -145,7 +145,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
         <View style={styles.zeroBanner}>
           <EyeOff color={colors.textMuted} size={14} style={{ marginRight: 4 }} />
           <Text style={styles.zeroText}>
-            This account has no XLM balance. Use "Fund with Friendbot" below to get testnet XLM.
+            This account has no XLM balance. Use &quot;Fund with Friendbot&quot; below to get testnet XLM.
           </Text>
         </View>
       )}

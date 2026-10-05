@@ -400,6 +400,23 @@ const createStyles = (colors: ThemeColors) =>
       fontSize: 13,
       fontWeight: "500",
     },
+    warningContainer: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      padding: SIZES.md,
+      marginBottom: SIZES.md,
+      borderRadius: RADIUS.md,
+      backgroundColor: colors.surface,
+    },
+    warningIcon: {
+      marginRight: SIZES.sm,
+    },
+    warningText: {
+      flex: 1,
+      color: colors.textSecondary,
+      fontSize: 13,
+      lineHeight: 18,
+    },
   unfundedWarning: {
     flexDirection: 'row',
     alignItems: 'flex-start',

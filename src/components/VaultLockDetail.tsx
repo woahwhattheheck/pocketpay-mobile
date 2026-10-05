@@ -150,10 +150,10 @@ export const VaultLockDetail: React.FC<VaultLockDetailProps> = ({ lock }) => {
           • <Text style={{ fontWeight: '600', color: colors.textPrimary }}>Why funds are locked:</Text> Locked funds are held in the vault to help you commit to long-term savings goals and avoid premature spending.
         </Text>
         <Text style={styles.educationBody}>
-          • <Text style={{ fontWeight: '600', color: colors.textPrimary }}>Unlock timing:</Text> The unlock date is determined by the lock duration (e.g., 30 days) set when created and monitored by the smart contract's network schedule.
+          • <Text style={{ fontWeight: '600', color: colors.textPrimary }}>Unlock timing:</Text> The unlock date is determined by the lock duration (e.g., 30 days) set when created and monitored by the smart contract&apos;s network schedule.
         </Text>
         <Text style={styles.educationBody}>
-          • <Text style={{ fontWeight: '600', color: colors.textPrimary }}>When withdrawable:</Text> As soon as the unlock date is reached, your status updates to "Ready to withdraw" and you can return the XLM to your main wallet at any time with no deadline.
+          • <Text style={{ fontWeight: '600', color: colors.textPrimary }}>When withdrawable:</Text> As soon as the unlock date is reached, your status updates to &quot;Ready to withdraw&quot; and you can return the XLM to your main wallet at any time with no deadline.
         </Text>
         <Text style={styles.educationFootnote}>
           Testnet preview — no real funds are involved.

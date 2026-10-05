@@ -86,12 +86,8 @@ export default function DiagnosticsScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [secureStorageAvailable, setSecureStorageAvailable] = useState<boolean | null>(null);
 
-  // Gate to development mode only
-  if (!__DEV__) {
-    return <Redirect href="/(tabs)" />;
-  }
-
   useEffect(() => {
+    if (!__DEV__) return;
     const checkStorage = async () => {
       const available = await checkSecureStorageAvailability();
       setSecureStorageAvailable(available);
@@ -99,6 +95,11 @@ export default function DiagnosticsScreen() {
     };
     checkStorage();
   }, []);
+
+  // Gate to development mode only, after registering the same hooks each render.
+  if (!__DEV__) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   // Gather diagnostic information
   const appVersion = Constants.expoConfig?.version || '1.0.0';

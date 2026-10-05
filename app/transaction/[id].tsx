@@ -12,6 +12,7 @@ import { formatAmount } from '../../src/utils/amount';
 import { validateTransactionId } from '../../src/utils/validation';
 import { getExplorerTxUrl, fetchOperationById } from '../../src/services/stellar';
 import type { TransactionDetail } from '../../src/features/transactions/types';
+import { useCopyToClipboard } from '../../src/utils/clipboard';
 
 type DeepLinkLoadState = 'idle' | 'loading' | 'loaded' | 'not_found' | 'error' | 'invalid';
 
@@ -120,7 +121,7 @@ export default function TransactionDetailScreen() {
         <AlertCircle color={COLORS.warning} size={48} style={{ marginBottom: SIZES.md }} />
         <Text style={styles.errorTitle}>Transaction Not Found</Text>
         <Text style={styles.errorText}>
-          This transaction doesn't exist on the network or may belong to a different account.
+          This transaction doesn&apos;t exist on the network or may belong to a different account.
         </Text>
         <View style={{ gap: SIZES.sm, width: '100%' }}>
           <Button title="Try Again" onPress={handleRetry} />

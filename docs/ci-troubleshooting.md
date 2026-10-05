@@ -113,25 +113,21 @@ check the nearest unclosed brace or tag above it.
 
 ## Lint / Formatting (`npm run lint`)
 
-This project doesn't have a separate `prettier`/`eslint` setup — linting goes
-through Expo's built-in wrapper, which uses `eslint-config-expo` under the
-hood:
+The committed `eslint.config.js` uses Expo's standard flat configuration.
+ESLint and `eslint-config-expo` are explicit development dependencies, so a
+clean npm install can run the whole repository without interactive setup:
 
 ```bash
 npm run lint
 ```
 
-- On a machine without ESLint configured yet, `expo lint` offers to install
-  `eslint` and `eslint-config-expo` automatically. Let it — it only touches
-  `devDependencies`.
+- If ESLint is missing, run `npm install --legacy-peer-deps` to install the
+  committed development dependencies.
 - Auto-fix what can be auto-fixed (the `--` is required so npm passes `--fix`
-  through to `expo lint` instead of swallowing it as an npm flag):
+  through to ESLint instead of swallowing it as an npm flag):
   ```bash
   npm run lint -- --fix
   ```
-- If the auto-install step fails with `spawn bun ENOENT` (or a similar
-  "package manager not found" error), see **Multiple lock files** above —
-  Expo picked the wrong package manager because of a stray lock file.
 
 ---
 
@@ -157,10 +153,13 @@ it. It surfaces in any test that imports a component which imports the
 untransformed package (for example, an icon library like
 `lucide-react-native`).
 
-**Fix:** add the offending package to the `transformIgnorePatterns` entry in
-the `"jest"` block of `package.json` so Jest transforms it instead of
-skipping it. If you're not sure which package is at fault, the file path in
-the error (`node_modules/<package>/...`) tells you.
+**Fix:** check the package's published entry points. The committed Jest
+configuration maps `lucide-react-native` to its real CommonJS build, while
+Metro continues using the React Native entry point for the app. For packages
+without a CommonJS build, include the package in Jest's transform allowlist
+and ensure its file extension is supported by the configured transformer.
+The file path in the error (`node_modules/<package>/...`) identifies the
+package to investigate.
 
 ### `Your test suite must contain at least one test`
 

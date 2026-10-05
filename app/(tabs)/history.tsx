@@ -69,7 +69,7 @@ const ListFooter = ({
   if (!hasMoreTransactions) {
     return (
       <View style={styles.footer} testID="end-of-list-indicator">
-        <Text style={styles.footerText}>You've reached the beginning of your history.</Text>
+        <Text style={styles.footerText}>You&apos;ve reached the beginning of your history.</Text>
       </View>
     );
   }
@@ -127,22 +127,9 @@ export default function HistoryScreen() {
     if (publicKey) {
       refreshWalletData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicKey]);
+  }, [publicKey, refreshWalletData]);
 
   const [filter, setFilter] = useState<FilterType>('all');
-
-  if (!publicKey) {
-    return (
-      <View style={{ flex: 1, backgroundColor: colors.background }}>
-        <WalletEmptyState
-          variant="missing"
-          onCreate={() => router.replace('/(auth)/create')}
-          onImport={() => router.replace('/(auth)/import')}
-        />
-      </View>
-    );
-  }
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter((tx: TransactionRecord) => {
@@ -214,6 +201,18 @@ export default function HistoryScreen() {
     ),
     [isLoadingMore, hasMoreTransactions, transactions.length, colors, styles]
   );
+
+  if (!publicKey) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <WalletEmptyState
+          variant="missing"
+          onCreate={() => router.replace('/(auth)/create')}
+          onImport={() => router.replace('/(auth)/import')}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

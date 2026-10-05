@@ -34,14 +34,14 @@ export const useContactStore = create<ContactState>()(
 
         const newContact = {
           id: Math.random().toString(36).substring(7),
-          name,
+          name: name.trim(),
           address: normalizedAddress,
         };
         set({ contacts: [newContact, ...get().contacts] });
       },
 
       updateContact: (id, name, address) => set({
-        contacts: get().contacts.map(c => c.id === id ? { ...c, name, address } : c)
+        contacts: get().contacts.map(c => c.id === id ? { ...c, name: name.trim(), address: address.trim() } : c)
       }),
 
       deleteContact: (id) => set({

@@ -15,6 +15,7 @@ interface EmptyStateProps {
   title: string;
   message?: string;
   action?: EmptyStateAction;
+  testID?: string;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
@@ -22,12 +23,13 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   title,
   message,
   action,
+  testID,
 }) => {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={testID}>
       {icon ? <View style={styles.iconWrapper}>{icon}</View> : null}
       <Text style={styles.title}>{title}</Text>
       {message ? <Text style={styles.message}>{message}</Text> : null}

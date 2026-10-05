@@ -14,5 +14,6 @@ export const fetchAccountDetails = jest.fn();
 export const fundWithFriendbot = jest.fn(async () => {});
 export const mockConnectVault = jest.fn(async () => true);
 export const mockFetchVaultBalance = jest.fn(async () => '0.0000000');
+export const mockFetchVaultMaturedLocks = jest.fn(async () => []);
 export const mockDepositToVault = jest.fn(async () => true);
 export const mockWithdrawFromVault = jest.fn(async () => true);

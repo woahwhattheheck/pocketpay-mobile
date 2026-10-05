@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe('copyToClipboard', () => {
   it('returns ok:true when clipboard write succeeds', async () => {
-    mockedClipboard.setStringAsync.mockResolvedValueOnce(undefined);
+    mockedClipboard.setStringAsync.mockResolvedValueOnce(true);
 
     const result = await copyToClipboard('test-value');
 
@@ -32,7 +32,7 @@ describe('copyToClipboard', () => {
   });
 
   it('passes the exact text to Clipboard.setStringAsync', async () => {
-    mockedClipboard.setStringAsync.mockResolvedValueOnce(undefined);
+    mockedClipboard.setStringAsync.mockResolvedValueOnce(true);
 
     const longAddress = 'GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H';
     await copyToClipboard(longAddress);

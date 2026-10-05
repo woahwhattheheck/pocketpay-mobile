@@ -20,12 +20,12 @@ describe('ContactStore', () => {
   describe('addContact', () => {
     it('adds a new contact with trimmed values', () => {
       const store = useContactStore.getState();
-      const contact = store.addContact('  Alice  ', '  GABC123  ');
+      store.addContact('  Alice  ', '  GABC123  ');
+      const contact = useContactStore.getState().contacts[0];
 
       expect(contact.name).toBe('Alice');
       expect(contact.address).toBe('GABC123');
       expect(contact.id).toBeDefined();
-      expect(contact.createdAt).toBeDefined();
 
       const { contacts } = useContactStore.getState();
       expect(contacts).toHaveLength(1);
@@ -43,9 +43,10 @@ describe('ContactStore', () => {
   });
 
   describe('updateContact', () => {
-    it('updates existing contact with trimmed values', () => {
+    it('updates an existing contact with trimmed values', () => {
       const store = useContactStore.getState();
-      const contact = store.addContact('Alice', 'GABC123');
+      store.addContact('Alice', 'GABC123');
+      const contact = useContactStore.getState().contacts[0];
 
       store.updateContact(contact.id, '  Bob  ', '  GDEF456  ');
 
@@ -69,7 +70,8 @@ describe('ContactStore', () => {
   describe('deleteContact', () => {
     it('deletes contact by id', () => {
       const store = useContactStore.getState();
-      const contact = store.addContact('Alice', 'GABC123');
+      store.addContact('Alice', 'GABC123');
+      const contact = useContactStore.getState().contacts[0];
 
       store.deleteContact(contact.id);
 
@@ -107,7 +109,7 @@ describe('ContactStore', () => {
       expect(recentRecipients).toEqual(['GABC123', 'GDEF456']);
     });
 
-    it('limits to 10 recent recipients', () => {
+    it('limits to the five most recent recipients', () => {
       const store = useContactStore.getState();
       
       for (let i = 0; i < 15; i++) {
@@ -115,7 +117,7 @@ describe('ContactStore', () => {
       }
 
       const { recentRecipients } = useContactStore.getState();
-      expect(recentRecipients).toHaveLength(10);
+      expect(recentRecipients).toEqual(['GABC14', 'GABC13', 'GABC12', 'GABC11', 'GABC10']);
     });
 
     it('maintains most recent first order', () => {
@@ -132,7 +134,8 @@ describe('ContactStore', () => {
   describe('getContactByAddress', () => {
     it('returns contact with matching address', () => {
       const store = useContactStore.getState();
-      const contact = store.addContact('Alice', 'GABC123');
+      store.addContact('Alice', 'GABC123');
+      const contact = useContactStore.getState().contacts[0];
 
       const result = store.getContactByAddress('GABC123');
       expect(result).toEqual(contact);

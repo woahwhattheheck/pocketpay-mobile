@@ -39,7 +39,7 @@ export const VaultLockEducationModal: React.FC<VaultLockEducationModalProps> = (
 
           <Text style={styles.title}>Understanding Locked Funds</Text>
           <Text style={styles.subtitle}>
-            Locking sets your XLM aside for a set period. Here's how it works.
+            Locking sets your XLM aside for a set period. Here&apos;s how it works.
           </Text>
 
           <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
@@ -93,7 +93,7 @@ export const VaultLockEducationModal: React.FC<VaultLockEducationModalProps> = (
               <View style={styles.pointText}>
                 <Text style={styles.pointTitle}>When do funds become withdrawable?</Text>
                 <Text style={styles.pointBody}>
-                  Funds become eligible for withdrawal as soon as the unlock date passes based on the contract's schedule. Once matured, a "Ready" badge appears and you can move them back to your wallet at any time — there is no time limit or deadline to claim them.
+                  Funds become eligible for withdrawal as soon as the unlock date passes based on the contract&apos;s schedule. Once matured, a &quot;Ready&quot; badge appears and you can move them back to your wallet at any time — there is no time limit or deadline to claim them.
                 </Text>
               </View>
             </View>
@@ -105,7 +105,7 @@ export const VaultLockEducationModal: React.FC<VaultLockEducationModalProps> = (
               <View style={styles.pointText}>
                 <Text style={styles.pointTitle}>How is unlock timing determined?</Text>
                 <Text style={styles.pointBody}>
-                  Unlock timing is set when you create a lock (for example, 30 days) and is tracked on-chain by the smart contract's network time. Multiple independent locks can be created, each with its own amount and unlock schedule.
+                  Unlock timing is set when you create a lock (for example, 30 days) and is tracked on-chain by the smart contract&apos;s network time. Multiple independent locks can be created, each with its own amount and unlock schedule.
                 </Text>
               </View>
             </View>

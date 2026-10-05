@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { server } from '../src/services/stellar';
+import { server, sendXlmTransaction } from '../src/services/stellar';
 import {
   View,
   Text,
@@ -136,7 +136,6 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
-    const { sendXlmTransaction } = await import('../src/services/stellar');
     const secretKey = await getSecretKey();
     if (!secretKey) {
       store.failSigning({

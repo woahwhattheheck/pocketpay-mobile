@@ -47,7 +47,7 @@ export default function VaultLockDetailScreen() {
     return (
       <View style={[styles.container, styles.centered]}>
         <Stack.Screen options={{ title: 'Lock Not Found' }} />
-        <Text style={styles.errorText}>Vault lock with ID "{id}" not found.</Text>
+        <Text style={styles.errorText}>Vault lock with ID &quot;{id}&quot; not found.</Text>
       </View>
     );
   }

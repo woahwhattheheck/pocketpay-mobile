@@ -30,6 +30,9 @@ jest.mock('../src/store/appStore', () => {
   };
 });
 jest.mock('../src/services/stellar');
+jest.mock('../src/hooks/useNetworkState', () => ({
+  useNetworkState: () => ({ state: 'online', retry: jest.fn() }),
+}));
 jest.mock('expo-router');
 jest.mock('lucide-react-native', () => ({
   Clock: () => null,
@@ -37,6 +40,8 @@ jest.mock('lucide-react-native', () => ({
   ArrowDownLeft: () => null,
   CheckCircle: () => null,
   RefreshCw: () => null,
+  KeyRound: () => null,
+  Info: () => null,
 }));
 
 import { useWalletStore } from '../src/store/walletStore';
@@ -111,6 +116,29 @@ describe('AC-H1 – refreshWalletData on mount', () => {
   it('calls refreshWalletData once when the screen mounts', () => {
     const store = setup();
     render(<HistoryScreen />);
+    expect(store.refreshWalletData).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('wallet hydration and removal', () => {
+  it('switches between the missing-wallet guidance and history on the same mounted screen', () => {
+    const store = setup({ publicKey: null });
+    const { getByText, queryByText, rerender } = render(<HistoryScreen />);
+    expect(getByText('No wallet available')).toBeTruthy();
+    expect(getByText('Create New Wallet')).toBeTruthy();
+    expect(getByText('Import Existing Wallet')).toBeTruthy();
+    expect(store.refreshWalletData).not.toHaveBeenCalled();
+
+    setup({ transactions: [makeTx('hydrated-tx')] });
+    rerender(<HistoryScreen />);
+    expect(getByText('Received XLM')).toBeTruthy();
+    expect(queryByText('No wallet available')).toBeNull();
+    expect(store.refreshWalletData).toHaveBeenCalledTimes(1);
+
+    setup({ publicKey: null });
+    rerender(<HistoryScreen />);
+    expect(getByText('No wallet available')).toBeTruthy();
+    expect(queryByText('Received XLM')).toBeNull();
     expect(store.refreshWalletData).toHaveBeenCalledTimes(1);
   });
 });

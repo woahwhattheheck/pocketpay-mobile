@@ -10,7 +10,7 @@ interface ContactPickerProps {
   onSelect: (address: string) => void;
   onCancel: () => void;
   onAddNew: () => void;
-  onEdit: (contact: Contact) => void;
+  onEdit?: (contact: Contact) => void;
 }
 
 export const ContactPicker: React.FC<ContactPickerProps> = ({
@@ -72,6 +72,7 @@ export const ContactPicker: React.FC<ContactPickerProps> = ({
 
               <View style={styles.searchContainer}>
                 <Input
+                    label="Search contacts"
                     placeholder="Search contacts..."
                     value={search}
                     onChangeText={setSearch}
@@ -120,9 +121,9 @@ export const ContactPicker: React.FC<ContactPickerProps> = ({
                               </View>
                             </TouchableOpacity>
                             <View style={styles.actionButtons}>
-                              <TouchableOpacity onPress={() => onEdit(contact)} style={styles.actionBtn}>
+                              {onEdit && <TouchableOpacity onPress={() => onEdit(contact)} style={styles.actionBtn}>
                                 <Edit2 size={18} color="#0066cc" />
-                              </TouchableOpacity>
+                              </TouchableOpacity>}
                               <TouchableOpacity onPress={() => handleDelete(contact)} style={styles.actionBtn}>
                                 <Trash2 size={18} color="#ff4444" />
                               </TouchableOpacity>

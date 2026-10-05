@@ -1,466 +1,277 @@
-/**
- * Vault Screen – Loading State Consistency Tests
- *
- * Acceptance criteria covered:
- *  AC1 – Vault action loading states are consistent across deposit/withdraw/lock
- *  AC2 – Buttons prevent duplicate submission while loading
- *  AC3 – Loading copy is clear
- *  AC4 – Error and success states still work correctly
- */
-
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { Alert } from 'react-native';
-
-// ─── Module mocks ────────────────────────────────────────────────────────
+import { act, render, fireEvent, waitFor } from '@testing-library/react-native';
+import { useWalletStore } from '../src/store/walletStore';
+import { useVaultStore } from '../src/store/vaultStore';
+import { useVaultStore as useWithdrawalStore } from '../src/features/vault/vaultStore';
+import { mockFetchVaultBalance, mockFetchVaultMaturedLocks, mockWithdrawFromVault } from '../src/services/stellar';
+import VaultScreen from '../app/(tabs)/vault';
 
 jest.mock('../src/services/stellar');
 jest.mock('../src/store/walletStore');
 jest.mock('../src/store/vaultStore');
-
+jest.mock('../src/hooks/useNetworkState', () => ({
+  useNetworkState: () => ({ state: 'online', disableWriteActions: false, retry: jest.fn() }),
+}));
 jest.mock('@react-native-async-storage/async-storage', () => ({
-  getItem: jest.fn(async () => null),
+  getItem: jest.fn(async () => 'true'),
   setItem: jest.fn(async () => {}),
 }));
-
-jest.mock('lucide-react-native', () => ({
-  PiggyBank: () => null,
-  ShieldCheck: () => null,
-  AlertTriangle: () => null,
-  XCircle: () => null,
-  Info: () => null,
-  ArrowDownCircle: () => null,
-  ArrowUpCircle: () => null,
-  Lock: () => null,
-  X: () => null,
-  ShieldAlert: () => null,
-  Network: () => null,
-  WifiOff: () => null,
-  Ban: () => null,
-}));
-
-process.env.EXPO_PUBLIC_SOROBAN_RPC_URL = 'https://soroban-testnet.stellar.org';
-
 jest.mock('../src/services/vault', () => ({
   isVaultConfigured: jest.fn(() => true),
   getVaultContractId: jest.fn(() => 'CABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'),
 }));
 
-// ─── Typed mock imports ──────────────────────────────────────────────────
-
-import { useWalletStore } from '../src/store/walletStore';
-import { useVaultStore } from '../src/store/vaultStore';
-
-const mockUseWalletStore = useWalletStore as jest.MockedFunction<typeof useWalletStore>;
-const mockUseVaultStore = useVaultStore as jest.MockedFunction<typeof useVaultStore>;
-
-import VaultScreen from '../app/(tabs)/vault';
-
-// ─── Constants ────────────────────────────────────────────────────────────
-
+process.env.EXPO_PUBLIC_SOROBAN_RPC_URL = 'https://soroban-testnet.stellar.org';
 const VALID_AMOUNT = '10';
-
-// ─── Helpers ──────────────────────────────────────────────────────────────
-
 const mockDeposit = jest.fn();
-const mockWithdraw = jest.fn();
 const mockLoadBalance = jest.fn();
 const mockLoadLocks = jest.fn();
 const mockAddLock = jest.fn();
+const mockUseWalletStore = jest.mocked(useWalletStore);
+const mockUseVaultStore = jest.mocked(useVaultStore);
 
 function setupStores(overrides: Record<string, unknown> = {}) {
-  mockDeposit.mockResolvedValue('tx_hash_1234567890abcdef');
-  mockWithdraw.mockResolvedValue('tx_hash_abcdef1234567890');
-
   const walletState = {
-    publicKey: 'GPUBLIC123',
-    balance: '100.0000000',
-    getSecretKey: jest.fn(async () => 'SVALIDSECRET'),
-    ...overrides,
+    publicKey: 'GPUBLIC123', balance: '100.0000000',
+    getSecretKey: jest.fn(async () => 'SVALIDSECRET'), ...overrides,
   };
-
   const vaultState = {
-    balance: '50.0000000',
-    locks: [],
-    isConfigured: true,
+    balance: '50.0000000', locks: [], isConfigured: true,
     contractId: 'CABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-    isLoadingBalance: false,
-    isLoadingLocks: false,
-    isSubmitting: false,
-    balanceError: null,
-    vaultError: null,
-    loadBalance: mockLoadBalance,
-    loadLocks: mockLoadLocks,
-    addLock: mockAddLock,
-    unlockLock: jest.fn(),
-    deposit: mockDeposit,
-    withdraw: mockWithdraw,
-    withdrawMaturedLock: jest.fn(),
-    clearVaultError: jest.fn(),
-    ...overrides,
+    isLoadingBalance: false, isLoadingLocks: false, isSubmitting: false,
+    balanceError: null, vaultError: null, loadBalance: mockLoadBalance,
+    loadLocks: mockLoadLocks, addLock: mockAddLock, unlockLock: jest.fn(),
+    deposit: mockDeposit, withdraw: jest.fn(), withdrawMaturedLock: jest.fn(),
+    clearVaultError: jest.fn(), ...overrides,
   };
-
   mockUseWalletStore.mockImplementation((selector?: any) =>
-    typeof selector === 'function' ? selector(walletState) : walletState
-  );
-
+    typeof selector === 'function' ? selector(walletState) : walletState as any);
   mockUseVaultStore.mockImplementation((selector?: any) =>
-    typeof selector === 'function' ? selector(vaultState) : vaultState
-  );
+    typeof selector === 'function' ? selector(vaultState) : vaultState as any);
 }
-
-
-const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
-
-// ─── Lifecycle ────────────────────────────────────────────────────────────
 
 beforeEach(() => {
   jest.clearAllMocks();
-  alertSpy.mockImplementation(() => undefined);
+  mockDeposit.mockResolvedValue('tx_hash_1234567890abcdef');
+  mockAddLock.mockResolvedValue(undefined);
+  jest.mocked(mockFetchVaultBalance).mockResolvedValue('50.0000000');
+  jest.mocked(mockFetchVaultMaturedLocks).mockResolvedValue([]);
+  jest.mocked(mockWithdrawFromVault).mockResolvedValue(true);
+  useWithdrawalStore.setState({
+    vaultBalance: '50.0000000', maturedLocks: [], isWithdrawing: false,
+    withdrawalError: null, selectedWithdrawalType: null, selectedLockId: null,
+  });
   setupStores();
 });
 
-// ────────────────────────────────────────────────────────────────────────
-// AC1 – Consistent loading states: deposit/withdraw/lock all use the
-//       same confirmation-modal flow.
-// ────────────────────────────────────────────────────────────────────────
-
-describe('AC1 – consistent loading states', () => {
-  it('shows a confirmation modal before deposit', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => {
-      expect(getAllByText('Confirm Deposit').length).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  it('shows a confirmation modal before withdraw', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Withdraw'));
-
-    await waitFor(() => {
-      expect(getAllByText('Confirm Withdrawal').length).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  it('shows a confirmation modal before lock', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Set Aside for 30 Days'));
-
-    await waitFor(() => {
-      expect(getAllByText('Confirm Lock').length).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  it('calls deposit with correct args when confirmed in modal', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-    fireEvent.press(getAllByText('Confirm Deposit')[1]);
-
-    await waitFor(() => {
-      expect(mockDeposit).toHaveBeenCalledWith('SVALIDSECRET', 'GPUBLIC123', VALID_AMOUNT);
-    });
-  });
-
-  it('calls withdraw with correct args when confirmed in modal', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Withdraw'));
-
-    await waitFor(() => getAllByText('Confirm Withdrawal').length > 0);
-    fireEvent.press(getAllByText('Confirm Withdrawal')[1]);
-
-    await waitFor(() => {
-      expect(mockWithdraw).toHaveBeenCalledWith('SVALIDSECRET', 'GPUBLIC123', VALID_AMOUNT);
-    });
-  });
-});
-
-// ────────────────────────────────────────────────────────────────────────
-// AC2 – Duplicate submission prevention
-// ────────────────────────────────────────────────────────────────────────
-
-describe('AC2 – duplicate submission prevention', () => {
-  it('disables the deposit button while a deposit is in flight', async () => {
-    const { getByText, getByPlaceholderText, getAllByText, rerender } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-
-    setupStores({ isSubmitting: true });
-    rerender(<VaultScreen />);
-
-    await waitFor(() => expect(getByText('Depositing…')).toBeTruthy());
-  });
-
-  it('disables the lock button while a lock is in flight', async () => {
-    const { getByText, getByPlaceholderText, getAllByText, rerender } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Set Aside for 30 Days'));
-    await waitFor(() => getAllByText('Confirm Lock').length > 0);
-
-    setupStores({ isSubmitting: true });
-    rerender(<VaultScreen />);
-
-    await waitFor(() => expect(getByText('Locking…')).toBeTruthy());
-  });
-
-  it('calls deposit exactly once when confirm is pressed', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-    fireEvent.press(getAllByText('Confirm Deposit')[1]);
-
-    await waitFor(() => {
-      expect(mockDeposit).toHaveBeenCalledTimes(1);
-    });
-  });
-});
-
-// ────────────────────────────────────────────────────────────────────────
-// AC3 – Loading copy is clear
-// ────────────────────────────────────────────────────────────────────────
-
-describe('AC3 – clear loading copy', () => {
-  it('shows "Depositing…" on the deposit button while submitting', async () => {
-    const { getByText, getByPlaceholderText, getAllByText, rerender } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-
-    setupStores({ isSubmitting: true });
-    rerender(<VaultScreen />);
-
-    await waitFor(() => expect(getByText('Depositing…')).toBeTruthy());
-  });
-
-  it('shows "Processing deposit…" on the modal confirm button while loading', async () => {
-    const { getByText, getByPlaceholderText, getAllByText, rerender } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-
-    mockUseVaultStore.mockReturnValue({
-      ...mockUseVaultStore(),
-      isSubmitting: true,
-    } as any);
-
-    rerender(<VaultScreen />);
-
-    await waitFor(() => {
-      expect(getByText(/Processing deposit/i)).toBeTruthy();
-    });
-  });
-});
-
-// ────────────────────────────────────────────────────────────────────────
-// AC4 – Error and success states still work correctly
-// ────────────────────────────────────────────────────────────────────────
-
-describe('AC4 – error and success states', () => {
-  it('shows a success alert after a confirmed deposit completes', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-    fireEvent.press(getAllByText('Confirm Deposit')[1]);
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith(
-        'Success',
-        expect.stringContaining('deposited into')
-      );
-    });
-  });
-
-  it('shows a success alert after a confirmed withdrawal completes', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Withdraw'));
-
-    await waitFor(() => getAllByText('Confirm Withdrawal').length > 0);
-    fireEvent.press(getAllByText('Confirm Withdrawal')[1]);
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith(
-        'Success',
-        expect.stringContaining('withdrawn from')
-      );
-    });
-  });
-
-  it('shows a failure alert when deposit throws', async () => {
-    mockDeposit.mockRejectedValueOnce(new Error('insufficient funds'));
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-    fireEvent.press(getAllByText('Confirm Deposit')[1]);
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Deposit failed', 'insufficient funds');
-    });
-  });
-
-  it('shows a failure alert when withdraw throws', async () => {
-    mockWithdraw.mockRejectedValueOnce(new Error('network error'));
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Withdraw'));
-
-    await waitFor(() => getAllByText('Confirm Withdrawal').length > 0);
-    fireEvent.press(getAllByText('Confirm Withdrawal')[1]);
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Withdrawal failed', 'network error');
-    });
-  });
-
-  it('closes the modal after a successful deposit', async () => {
-    const { getByText, getByPlaceholderText, getAllByText, queryByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-    fireEvent.press(getAllByText('Confirm Deposit')[1]);
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Success', expect.any(String));
-    });
-
-    expect(queryByText('Confirm Deposit')).toBeNull();
-  });
-
-  it('closes the modal after a failed deposit', async () => {
-    mockDeposit.mockRejectedValueOnce(new Error('failed'));
-    const { getByText, getByPlaceholderText, getAllByText, queryByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-    fireEvent.press(getAllByText('Confirm Deposit')[1]);
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Deposit failed', 'failed');
-    });
-
-    expect(queryByText('Confirm Deposit')).toBeNull();
-  });
-
-  it('records the lock and reports it as a mock via the modal', async () => {
-    const { getByText, getByPlaceholderText, getAllByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Set Aside for 30 Days'));
-
-    await waitFor(() => getAllByText('Confirm Lock').length > 0);
-    fireEvent.press(getAllByText('Confirm Lock')[1]);
-
-    await waitFor(() => {
-      expect(mockAddLock).toHaveBeenCalledWith(VALID_AMOUNT, expect.any(String));
-      expect(alertSpy).toHaveBeenCalledWith('Success', expect.stringContaining('(mock)'));
-    });
-  });
-
-  it('cancels the modal and does not execute action when cancel is pressed', async () => {
-    const { getByText, getByPlaceholderText, getAllByText, queryByText } = render(<VaultScreen />);
-
-    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
-    fireEvent.press(getByText('Deposit'));
-
-    await waitFor(() => getAllByText('Confirm Deposit').length > 0);
-    fireEvent.press(getByText('Cancel'));
-
-    await waitFor(() => {
-      expect(queryByText('Confirm Deposit')).toBeNull();
-    });
-
+function openDeposit(ui: ReturnType<typeof render>) {
+  fireEvent.changeText(ui.getByPlaceholderText('0.00'), VALID_AMOUNT);
+  fireEvent.press(ui.getByText('Deposit'));
+}
+
+async function reviewAvailableWithdrawal(ui: ReturnType<typeof render>) {
+  fireEvent.press(ui.getByText('Withdraw'));
+  await waitFor(() => expect(ui.getAllByText('50.0000000 XLM').length).toBeGreaterThan(0));
+  fireEvent.press(ui.getByText('Withdraw Available'));
+  expect(ui.getByText('Review Withdrawal')).toBeTruthy();
+}
+
+describe('vault review and submission', () => {
+  it('reviews the amount and remaining wallet balance before depositing', () => {
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    expect(ui.getByText('Deposit to Vault')).toBeTruthy();
+    expect(ui.getByText('Confirm Deposit')).toBeTruthy();
+    expect(ui.getByText('90.0000000 XLM')).toBeTruthy();
     expect(mockDeposit).not.toHaveBeenCalled();
   });
+
+  it('reviews the withdrawal source before submitting', async () => {
+    const ui = render(<VaultScreen />);
+    await reviewAvailableWithdrawal(ui);
+    expect(ui.getByText('Confirm Withdrawal')).toBeTruthy();
+    expect(mockWithdrawFromVault).not.toHaveBeenCalled();
+  });
+
+  it('requests confirmation before creating a lock', () => {
+    const ui = render(<VaultScreen />);
+    fireEvent.changeText(ui.getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(ui.getByText('Set Aside for 30 Days'));
+    expect(ui.getAllByText('Confirm Lock')).toHaveLength(2);
+    expect(mockAddLock).not.toHaveBeenCalled();
+  });
+
+  it('submits a confirmed deposit with the wallet secret and requested amount', async () => {
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    fireEvent.press(ui.getByText('Confirm Deposit'));
+    await waitFor(() => expect(mockDeposit).toHaveBeenCalledWith('SVALIDSECRET', 'GPUBLIC123', VALID_AMOUNT));
+    expect(mockDeposit).toHaveBeenCalledTimes(1);
+  });
+
+  it('submits the full available withdrawal selected in the preview', async () => {
+    const ui = render(<VaultScreen />);
+    await reviewAvailableWithdrawal(ui);
+    fireEvent.press(ui.getByText('Confirm Withdrawal'));
+    await waitFor(() => expect(mockWithdrawFromVault).toHaveBeenCalledWith('SVALIDSECRET', '50.0000000'));
+  });
+
+  it('submits the selected matured lock amount', async () => {
+    const maturedLock = { id: 'matured-lock', amount: '7.5000000', unlockedAt: '2025-01-01T00:00:00Z' };
+    useWithdrawalStore.setState({ maturedLocks: [maturedLock] });
+    const ui = render(<VaultScreen />);
+    fireEvent.press(ui.getByText('Withdraw'));
+    await waitFor(() => expect(ui.getByText('Withdraw This Lock')).toBeTruthy());
+    fireEvent.press(ui.getByText('Withdraw This Lock'));
+    fireEvent.press(ui.getByText('Confirm Withdrawal'));
+    await waitFor(() => expect(mockWithdrawFromVault).toHaveBeenCalledWith('SVALIDSECRET', '7.5000000'));
+  });
 });
 
-// ────────────────────────────────────────────────────────────────────────
-// Validation – form errors prevent modal from showing
-// ────────────────────────────────────────────────────────────────────────
-
-describe('validation prevents action', () => {
-  it('does not show confirmation modal when amount is empty', async () => {
-    const { getByText, queryByText } = render(<VaultScreen />);
-
-    fireEvent.press(getByText('Deposit'));
-
-    expect(queryByText('Confirm Deposit')).toBeNull();
+describe('vault loading and duplicate submission', () => {
+  it('disables further deposits while the request is in flight', async () => {
+    let finishDeposit!: (value: string) => void;
+    mockDeposit.mockImplementationOnce(() => new Promise<string>((resolve) => { finishDeposit = resolve; }));
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    fireEvent.press(ui.getByText('Confirm Deposit'));
+    await waitFor(() => expect(ui.getByText('Depositing…')).toBeDisabled());
+    fireEvent.press(ui.getByText('Depositing…'));
+    expect(mockDeposit).toHaveBeenCalledTimes(1);
+    expect(ui.queryByText('Confirm Deposit')).toBeNull();
+    await act(async () => { finishDeposit('completed-deposit'); });
   });
 
-  it('does not show confirmation modal when amount exceeds wallet balance for deposit', async () => {
-    const { getByText, getByPlaceholderText, queryByText } = render(<VaultScreen />);
+  it('disables the lock button and explains that it is loading', () => {
+    const ui = render(<VaultScreen />);
+    fireEvent.changeText(ui.getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(ui.getByText('Set Aside for 30 Days'));
+    setupStores({ isSubmitting: true });
+    ui.rerender(<VaultScreen />);
+    expect(ui.getByText('Locking…')).toBeDisabled();
+  });
 
-    fireEvent.changeText(getByPlaceholderText('0.00'), '9999');
-    fireEvent.press(getByText('Deposit'));
-
-    expect(queryByText('Confirm Deposit')).toBeNull();
+  it('explains deposit processing in the preview while the store is submitting', () => {
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    setupStores({ isSubmitting: true });
+    ui.rerender(<VaultScreen />);
+    expect(ui.getByText('Processing deposit...')).toBeTruthy();
+    expect(ui.getByText('Cancel')).toBeDisabled();
   });
 });
 
-describe('Vault Unavailable State (Issue #309)', () => {
-  it('renders VaultUnavailableState card when publicKey is null', async () => {
-    setupStores({ publicKey: null });
-    const { getByText, queryByText } = render(<VaultScreen />);
-
-    expect(getByText('Vault Unavailable')).toBeTruthy();
-    expect(getByText('Create or import a wallet to use the Soroban Savings Vault.')).toBeTruthy();
-    expect(queryByText('Set Aside for 30 Days')).toBeNull();
+describe('vault result feedback', () => {
+  it('shows a success receipt with the deposit transaction hash', async () => {
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    fireEvent.press(ui.getByText('Confirm Deposit'));
+    await waitFor(() => expect(ui.getByText('Transaction Receipt')).toBeTruthy());
+    expect(ui.getByText('Success')).toBeTruthy();
+    expect(ui.getByText('tx_hash_1234567890abcdef')).toBeTruthy();
+    expect(ui.getByText('10 XLM')).toBeTruthy();
+    expect(ui.queryByText('Confirm Deposit')).toBeNull();
   });
 
-  it('renders VaultUnavailableState card when EXPO_PUBLIC_VAULT_ENABLED is false', async () => {
-    const originalEnv = process.env.EXPO_PUBLIC_VAULT_ENABLED;
-    process.env.EXPO_PUBLIC_VAULT_ENABLED = 'false';
-
-    try {
-      const { getByText, queryByText } = render(<VaultScreen />);
-
-      expect(getByText('Vault Unavailable')).toBeTruthy();
-      expect(getByText('The vault is currently disabled by configuration. This may be temporary while the backend is being updated.')).toBeTruthy();
-      expect(queryByText('Set Aside for 30 Days')).toBeNull();
-    } finally {
-      process.env.EXPO_PUBLIC_VAULT_ENABLED = originalEnv;
-    }
+  it('shows deposit failure and closes the review', async () => {
+    mockDeposit.mockRejectedValueOnce(new Error('insufficient funds'));
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    fireEvent.press(ui.getByText('Confirm Deposit'));
+    await waitFor(() => expect(ui.getByText('insufficient funds')).toBeTruthy());
+    expect(ui.getByText('Transaction Receipt')).toBeTruthy();
+    expect(ui.getByText('Failed')).toBeTruthy();
+    expect(ui.queryByText('Confirm Deposit')).toBeNull();
   });
 
-  it('does not call loadBalance or loadLocks when vault is unavailable', () => {
-    setupStores({ publicKey: null });
-    render(<VaultScreen />);
+  it('shows withdrawal errors in the review without reporting success', async () => {
+    jest.mocked(mockWithdrawFromVault).mockRejectedValueOnce(new Error('network error'));
+    const ui = render(<VaultScreen />);
+    await reviewAvailableWithdrawal(ui);
+    fireEvent.press(ui.getByText('Confirm Withdrawal'));
+    await waitFor(() => expect(ui.getByText('network error')).toBeTruthy());
+    expect(ui.getByText('Review Withdrawal')).toBeTruthy();
+    expect(ui.queryByText('Success')).toBeNull();
+  });
 
+  it('returns to source selection after a successful preview withdrawal', async () => {
+    const ui = render(<VaultScreen />);
+    await reviewAvailableWithdrawal(ui);
+    fireEvent.press(ui.getByText('Confirm Withdrawal'));
+    await waitFor(() => expect(useWithdrawalStore.getState()).toMatchObject({
+      selectedWithdrawalType: null, withdrawalError: null, isWithdrawing: false,
+    }));
+    await waitFor(() => expect(ui.queryByText('Review Withdrawal')).toBeNull());
+    expect(mockWithdrawFromVault).toHaveBeenCalledTimes(1);
+    expect(ui.getByText('Select Withdrawal Source')).toBeTruthy();
+  });
+
+  it('records the lock and identifies its mock transaction in the receipt', async () => {
+    const ui = render(<VaultScreen />);
+    fireEvent.changeText(ui.getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(ui.getByText('Set Aside for 30 Days'));
+    fireEvent.press(ui.getAllByText('Confirm Lock')[1]);
+    await waitFor(() => expect(ui.getByText('Transaction Receipt')).toBeTruthy());
+    expect(mockAddLock).toHaveBeenCalledWith(VALID_AMOUNT, expect.any(String));
+    expect(ui.getByText('Success')).toBeTruthy();
+    expect(ui.getByText('mock-lock')).toBeTruthy();
+  });
+
+  it('cancels the deposit review without submitting', () => {
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    fireEvent.press(ui.getByText('Cancel'));
+    expect(ui.queryByText('Confirm Deposit')).toBeNull();
+    expect(mockDeposit).not.toHaveBeenCalled();
+  });
+
+  it('dismisses the receipt when Done is pressed', async () => {
+    const ui = render(<VaultScreen />);
+    openDeposit(ui);
+    fireEvent.press(ui.getByText('Confirm Deposit'));
+    await waitFor(() => expect(ui.getByText('Transaction Receipt')).toBeTruthy());
+    fireEvent.press(ui.getByText('Done'));
+    expect(ui.queryByText('Transaction Receipt')).toBeNull();
+  });
+});
+
+describe('vault validation and availability', () => {
+  it('does not open deposit review for an empty amount', () => {
+    const ui = render(<VaultScreen />);
+    fireEvent.press(ui.getByText('Deposit'));
+    expect(ui.queryByText('Confirm Deposit')).toBeNull();
+    expect(ui.getByText('Please enter an amount.')).toBeTruthy();
+  });
+
+  it('does not open deposit review when the amount exceeds the wallet balance', () => {
+    const ui = render(<VaultScreen />);
+    fireEvent.changeText(ui.getByPlaceholderText('0.00'), '9999');
+    fireEvent.press(ui.getByText('Deposit'));
+    expect(ui.queryByText('Confirm Deposit')).toBeNull();
+    expect(ui.getByText("You don't have enough XLM for this payment.")).toBeTruthy();
+  });
+
+  it('guides users to create a wallet when no public key is available', () => {
+    setupStores({ publicKey: null });
+    const ui = render(<VaultScreen />);
+    expect(ui.getByText('Vault Unavailable')).toBeTruthy();
+    expect(ui.getByText('Create or import a wallet to use the Soroban Savings Vault.')).toBeTruthy();
+    expect(ui.queryByText('Set Aside for 30 Days')).toBeNull();
     expect(mockLoadBalance).not.toHaveBeenCalled();
     expect(mockLoadLocks).not.toHaveBeenCalled();
   });
-});
 
+  it('explains when the vault is disabled by configuration', () => {
+    const originalEnv = process.env.EXPO_PUBLIC_VAULT_ENABLED;
+    process.env.EXPO_PUBLIC_VAULT_ENABLED = 'false';
+    try {
+      const ui = render(<VaultScreen />);
+      expect(ui.getByText('Vault Unavailable')).toBeTruthy();
+      expect(ui.getByText('The vault is currently disabled by configuration. This may be temporary while the backend is being updated.')).toBeTruthy();
+      expect(ui.queryByText('Set Aside for 30 Days')).toBeNull();
+    } finally {
+      if (originalEnv === undefined) delete process.env.EXPO_PUBLIC_VAULT_ENABLED;
+      else process.env.EXPO_PUBLIC_VAULT_ENABLED = originalEnv;
+    }
+  });
+});

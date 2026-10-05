@@ -268,15 +268,15 @@ export default function ContactsScreen() {
                 <Text style={styles.duplicateBannerTitle}>Duplicate Address</Text>
               </View>
               <Text style={styles.duplicateBannerText}>
-                This address is already saved as "{foundDuplicate.name}".
+                This address is already saved as &quot;{foundDuplicate.name}&quot;.
               </Text>
               <Text style={styles.duplicateBannerHint}>
-                You can update the existing entry's name below, or cancel to keep it unchanged.
+                You can update the existing entry&apos;s name below, or cancel to keep it unchanged.
               </Text>
               <TouchableOpacity style={styles.updateButton} onPress={handleUpdateExisting}>
                 <Pencil color={colors.primary} size={16} />
                 <Text style={styles.updateButtonText}>
-                  Update "{foundDuplicate.name}" to "{name.trim() || foundDuplicate.name}"
+                  Update &quot;{foundDuplicate.name}&quot; to &quot;{name.trim() || foundDuplicate.name}&quot;
                 </Text>
               </TouchableOpacity>
             </View>

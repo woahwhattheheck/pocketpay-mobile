@@ -37,14 +37,7 @@ jest.mock('../src/store/appStore', () => {
 });
 jest.mock('pocketpay-sdk', () => ({ validatePublicKey: jest.fn(() => true) }));
 jest.mock('expo-router');
-jest.mock('lucide-react-native', () => ({
-  Send: () => null,
-  ScanLine: () => null,
-  X: () => null,
-  ShieldCheck: () => null,
-  ArrowRight: () => null,
-  AlertTriangle: () => null,
-}));
+
 
 // expo-camera mock – controllable via module-level variables (same pattern as contacts.scan.test.tsx)
 let mockPermissionGranted = true;
@@ -74,9 +67,11 @@ jest.mock('expo-camera', () => ({
 
 import { useWalletStore } from '../src/store/walletStore';
 import { useRouter } from 'expo-router';
+import { sendXlmTransaction } from '../src/services/stellar';
 
 const mockUseWalletStore    = useWalletStore as jest.MockedFunction<typeof useWalletStore>;
 const mockUseRouter         = useRouter     as jest.MockedFunction<typeof useRouter>;
+const mockSendXlmTransaction = jest.mocked(sendXlmTransaction);
 
 import SendScreen from '../app/send';
 

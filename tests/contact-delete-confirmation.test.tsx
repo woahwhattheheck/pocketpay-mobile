@@ -4,6 +4,7 @@ import { ContactPicker } from '../src/components/ContactPicker';
 import { ContactManagement } from '../src/components/ContactManagement';
 import { useContactStore } from '../src/features/contacts/contactStore';
 import { useConfirm } from '../src/hooks/useConfirm';
+import { Trash2 } from 'lucide-react-native';
 
 // Mock the stores and hooks
 jest.mock('../src/features/contacts/contactStore');
@@ -45,7 +46,7 @@ describe('Contact Delete Confirmation', () => {
             isVisible: false,
         });
 
-        const { getByText, getByTestId } = render(<ContactPicker
+        const { UNSAFE_getByType } = render(<ContactPicker
             visible={true}
             onSelect={jest.fn()}
             onCancel={jest.fn()}
@@ -54,7 +55,7 @@ describe('Contact Delete Confirmation', () => {
         />);
 
         // Find and press delete button
-        const deleteButton = getByTestId('delete-contact-123');
+        const deleteButton = UNSAFE_getByType(Trash2);
         fireEvent.press(deleteButton);
 
         await waitFor(() => {
@@ -77,10 +78,10 @@ describe('Contact Delete Confirmation', () => {
             isVisible: false,
         });
 
-        const { getByTestId } = render(<ContactManagement />);
+        const { UNSAFE_getByType } = render(<ContactManagement />);
 
         // Find and press delete button
-        const deleteButton = getByTestId('delete-contact-123');
+        const deleteButton = UNSAFE_getByType(Trash2);
         fireEvent.press(deleteButton);
 
         await waitFor(() => {
@@ -109,9 +110,9 @@ describe('Contact Delete Confirmation', () => {
             isVisible: false,
         });
 
-        const { getByTestId } = render(<ContactManagement />);
+        const { UNSAFE_getByType } = render(<ContactManagement />);
 
-        const deleteButton = getByTestId('delete-contact-123');
+        const deleteButton = UNSAFE_getByType(Trash2);
         fireEvent.press(deleteButton);
 
         await waitFor(() => {
@@ -140,9 +141,9 @@ describe('Contact Delete Confirmation', () => {
             isVisible: false,
         });
 
-        const { getByTestId } = render(<ContactManagement />);
+        const { UNSAFE_getByType } = render(<ContactManagement />);
 
-        const deleteButton = getByTestId('delete-contact-123');
+        const deleteButton = UNSAFE_getByType(Trash2);
         fireEvent.press(deleteButton);
 
         await waitFor(() => {
@@ -170,9 +171,9 @@ describe('Contact Delete Confirmation', () => {
             isVisible: false,
         });
 
-        const { getByTestId } = render(<ContactManagement />);
+        const { UNSAFE_getByType } = render(<ContactManagement />);
 
-        const deleteButton = getByTestId('delete-contact-123');
+        const deleteButton = UNSAFE_getByType(Trash2);
         fireEvent.press(deleteButton);
 
         await waitFor(() => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Button as RNButton } from 'react-native';
-import { render, fireEvent } from '@testing-library/react-native';
+import { View, Text, Button as RNButton, Share } from 'react-native';
+import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
+import * as diagnostics from '../src/utils/diagnostics';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
@@ -53,6 +54,37 @@ const StatefulProblemContainer: React.FC<{ onResetCb?: () => void }> = ({ onRese
 };
 
 describe('ErrorBoundary', () => {
+  it('waits for redacted diagnostics before opening the native share sheet', async () => {
+    let resolveDiagnostics!: (value: string) => void;
+    const diagnosticPromise = new Promise<string>((resolve) => {
+      resolveDiagnostics = resolve;
+    });
+    const diagnosticsSpy = jest.spyOn(diagnostics, 'getDiagnostics').mockReturnValue(diagnosticPromise);
+    const shareSpy = jest.spyOn(Share, 'share').mockResolvedValue({ action: Share.sharedAction });
+
+    try {
+      const { getByText } = render(
+        <ErrorBoundary>
+          <ProblemChild shouldThrow />
+        </ErrorBoundary>
+      );
+      fireEvent.press(getByText('Share Diagnostics'));
+      expect(diagnosticsSpy).toHaveBeenCalledTimes(1);
+      expect(shareSpy).not.toHaveBeenCalled();
+
+      await act(async () => {
+        resolveDiagnostics('{"network":"testnet","wallet":"[REDACTED]"}');
+      });
+      await waitFor(() => expect(shareSpy).toHaveBeenCalledWith({
+        message: '{"network":"testnet","wallet":"[REDACTED]"}',
+        title: 'App Diagnostics Log',
+      }));
+    } finally {
+      diagnosticsSpy.mockRestore();
+      shareSpy.mockRestore();
+    }
+  });
+
   it('renders children when no error occurs', () => {
     const { getByText } = render(
       <ErrorBoundary>

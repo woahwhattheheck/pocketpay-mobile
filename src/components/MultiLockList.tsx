@@ -6,9 +6,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { Lock, Unlock, CheckCircle2, Clock, AlertCircle } from 'lucide-react-native';
+import { Lock, Unlock, Clock, AlertCircle } from 'lucide-react-native';
 import { COLORS, SIZES, RADIUS } from '../constants/theme';
-import { VaultLock, LockStatus } from '../types/vault';
+import type { Lock as VaultLock } from '../store/vaultStore';
 import { Button } from './Button';
 
 /* ------------------------------------------------------------------ */
@@ -34,7 +34,7 @@ export interface MultiLockListProps {
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-const STATUS_CONFIG: Record<LockStatus, { icon: React.ReactNode; label: string; color: string; bg: string }> = {
+const STATUS_CONFIG: Record<VaultLock['status'], { icon: React.ReactNode; label: string; color: string; bg: string }> = {
   locked: {
     icon: <Clock size={16} color={COLORS.warning} />,
     label: 'Locked',
@@ -46,12 +46,6 @@ const STATUS_CONFIG: Record<LockStatus, { icon: React.ReactNode; label: string; 
     label: 'Matured',
     color: COLORS.success,
     bg: 'rgba(0, 230, 118, 0.1)',
-  },
-  withdrawn: {
-    icon: <CheckCircle2 size={16} color={COLORS.textMuted} />,
-    label: 'Withdrawn',
-    color: COLORS.textMuted,
-    bg: 'rgba(99, 112, 135, 0.1)',
   },
 };
 

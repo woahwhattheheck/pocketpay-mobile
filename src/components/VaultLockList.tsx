@@ -46,7 +46,7 @@ export const VaultLockList: React.FC<VaultLockListProps> = ({
         <Lock color={colors.textMuted} size={48} style={styles.emptyIcon} />
         <Text style={styles.emptyTitle}>No locked funds</Text>
         <Text style={styles.emptySubtitle}>
-          Locking sets your XLM aside for a fixed period (30 days) so it can't be spent accidentally. Once the time is up you can withdraw freely.
+          Locking sets your XLM aside for a fixed period (30 days) so it can&apos;t be spent accidentally. Once the time is up you can withdraw freely.
         </Text>
         {onInfoPress && (
           <TouchableOpacity style={styles.emptyLearnMore} onPress={onInfoPress}>

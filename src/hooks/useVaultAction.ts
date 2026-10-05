@@ -31,12 +31,16 @@ export function useVaultAction<TSigned = unknown, TResult = unknown>() {
       setStatus({ state: 'pending', txHash });
       await steps.confirm(txHash);
 
-      setStatus((prev) => ({ state: 'confirmed', txHash: prev.txHash }));
+      const result: VaultActionStatus = { state: 'confirmed', txHash };
+      setStatus(result);
+      return result;
     } catch (err) {
-      setStatus({
+      const result: VaultActionStatus = {
         state: 'failed',
         error: err instanceof Error ? err.message : 'Action failed. Please try again.',
-      });
+      };
+      setStatus(result);
+      return result;
     }
   }, []);
 
