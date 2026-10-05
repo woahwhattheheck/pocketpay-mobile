@@ -44,6 +44,9 @@ jest.mock('lucide-react-native', () => ({
   ShieldCheck: () => null,
   ArrowRight: () => null,
   AlertTriangle: () => null,
+  ChevronDown: () => null,
+  User: () => null,
+  Info: () => null,
 }));
 
 // expo-camera mock – controllable via module-level variables (same pattern as contacts.scan.test.tsx)
@@ -202,7 +205,7 @@ describe('AC3 – submit is blocked when the form is invalid', () => {
     fireEvent.press(getByText('Send Payment'));
 
     expect(getByText('Please enter a destination address.')).toBeTruthy();
-    expect(mockSendXlmTransaction).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it('does not call sendXlmTransaction with an invalid amount', async () => {
