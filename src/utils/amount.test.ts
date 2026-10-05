@@ -1,4 +1,5 @@
 import { formatAmount, getMaxSendableAmount } from './amount';
+import { validateAmount } from './validation';
 
 describe('getMaxSendableAmount', () => {
   it('returns 0 for null/undefined/empty balance', () => {
@@ -70,5 +71,24 @@ describe('formatAmount', () => {
     expect(formatAmount(undefined)).toBe('—');
     expect(formatAmount('')).toBe('—');
     expect(formatAmount('abc')).toBe('—');
+  });
+});
+
+
+describe('validateAmount balance guidance', () => {
+  it('accepts an amount that stays within the spendable balance', () => {
+    expect(validateAmount('9', '10')).toBeNull();
+  });
+
+  it('shows required, available, and reserved amounts when the reserve blocks the payment', () => {
+    expect(validateAmount('9.5', '10')).toBe(
+      'Insufficient available balance. Required: 9.5 XLM. Available to send: 9 XLM. Reserved: 1 XLM.',
+    );
+  });
+
+  it('uses the same actionable breakdown when the amount exceeds the total balance', () => {
+    expect(validateAmount('12', '10')).toBe(
+      'Insufficient available balance. Required: 12 XLM. Available to send: 9 XLM. Reserved: 1 XLM.',
+    );
   });
 });
