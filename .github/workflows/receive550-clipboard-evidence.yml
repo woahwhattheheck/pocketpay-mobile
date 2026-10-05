@@ -1,0 +1,62 @@
+name: Receive 550 clipboard evidence
+on:
+  push:
+    branches: [verify/receive550-meridian17-20261005]
+    paths: [.github/workflows/receive550-clipboard-evidence.yml]
+permissions:
+  contents: read
+concurrency:
+  group: receive550-clipboard-evidence-meridian17
+  cancel-in-progress: false
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: a3f7da65e020f3d25701f610d11c6f80676c1f17
+          fetch-depth: 8
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - name: Run the same three cases before and after the repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = a3f7da65e020f3d25701f610d11c6f80676c1f17
+          node --version
+          git show 273def4f2bc487b9d0d9c34e4b21f2eac266add0:src/utils/clipboard.ts > src/utils/clipboard.ts
+          set +e
+          npm test -- --runInBand __tests__/clipboard-result.test.ts --json --outputFile=/tmp/clipboard-before.json
+          before_status=$?
+          set -e
+          test "$before_status" -eq 1
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const r = JSON.parse(fs.readFileSync('/tmp/clipboard-before.json', 'utf8'));
+          assert.equal(r.numTotalTests, 3);
+          assert.equal(r.numPassedTests, 2);
+          assert.equal(r.numFailedTests, 1);
+          const failed = r.testResults.flatMap(x => x.assertionResults).filter(x => x.status === 'failed');
+          assert.equal(failed.length, 1);
+          assert.match(failed[0].title, /resolved false/);
+          console.log('BASELINE: 2 passed, 1 failed (resolved false), 0 skipped');
+          NODE
+          git restore src/utils/clipboard.ts
+          npm test -- --runInBand __tests__/clipboard-result.test.ts --json --outputFile=/tmp/clipboard-after.json
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const r = JSON.parse(fs.readFileSync('/tmp/clipboard-after.json', 'utf8'));
+          assert.equal(r.numTotalTests, 3);
+          assert.equal(r.numPassedTests, 3);
+          assert.equal(r.numFailedTests, 0);
+          assert.equal(r.numPendingTests, 0);
+          console.log('REPAIRED: 3 passed, 0 failed, 0 skipped');
+          NODE
+          git diff --exit-code
