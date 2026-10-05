@@ -1,0 +1,105 @@
+name: PP323 same-run Jest comparison
+
+on:
+  push:
+    branches:
+      - validation/pp323-jest-base-candidate-solvar-20261004
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout base
+        uses: actions/checkout@v4
+        with:
+          ref: c3a24abacb45030eb4fef41aabc46b312aaf54a3
+          path: base
+          persist-credentials: false
+
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          ref: 20c8a7cd11f816dfe8315d7543536a5801a2c3da
+          path: candidate
+          persist-credentials: false
+
+      - name: Set up exact Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.20.2
+
+      - name: Record source and toolchain
+        shell: bash
+        run: |
+          set -eu
+          echo "node=$(node --version)"
+          echo "npm=$(npm --version)"
+          echo "base=$(git -C base rev-parse HEAD)"
+          echo "candidate=$(git -C candidate rev-parse HEAD)"
+          for f in package.json package-lock.json jest.setup.js babel.config.js; do
+            printf '%s base=' "$f"
+            sha256sum "base/$f" | cut -d' ' -f1
+            printf '%s candidate=' "$f"
+            sha256sum "candidate/$f" | cut -d' ' -f1
+          done
+
+      - name: Install locked dependencies
+        shell: bash
+        run: |
+          set -eu
+          (cd base && npm ci)
+          (cd candidate && npm ci)
+
+      - name: Run exact full Jest comparison
+        id: jest
+        shell: bash
+        run: |
+          set +e
+          (cd base && npm test -- --runInBand) > base-jest.log 2>&1
+          base_exit=$?
+          (cd candidate && npm test -- --runInBand) > candidate-jest.log 2>&1
+          candidate_exit=$?
+          set -e
+
+          echo "BASE_EXIT=$base_exit"
+          grep -E '^(Test Suites:|Tests:|Snapshots:|Time:|Ran all test suites)' base-jest.log || true
+          echo "CANDIDATE_EXIT=$candidate_exit"
+          grep -E '^(Test Suites:|Tests:|Snapshots:|Time:|Ran all test suites)' candidate-jest.log || true
+
+          echo "BASE_FAIL_SUITES"
+          grep '^FAIL ' base-jest.log || true
+          echo "CANDIDATE_FAIL_SUITES"
+          grep '^FAIL ' candidate-jest.log || true
+
+          {
+            echo "## PP323 exact same-run Jest comparison"
+            echo
+            echo "- Base: `c3a24abacb45030eb4fef41aabc46b312aaf54a3`"
+            echo "- Candidate: `20c8a7cd11f816dfe8315d7543536a5801a2c3da`"
+            echo "- Node: `$(node --version)`; npm: `$(npm --version)`"
+            echo "- Base Jest exit: `$base_exit`"
+            echo "- Candidate Jest exit: `$candidate_exit`"
+            echo
+            echo "### Base summary"
+            echo '~~~'
+            grep -E '^(Test Suites:|Tests:|Snapshots:|Time:|Ran all test suites)' base-jest.log || true
+            echo '~~~'
+            echo "### Candidate summary"
+            echo '~~~'
+            grep -E '^(Test Suites:|Tests:|Snapshots:|Time:|Ran all test suites)' candidate-jest.log || true
+            echo '~~~'
+            echo
+            echo "_A successful workflow means the comparison harness completed; Jest exits above remain authoritative._"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preserve comparison logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: pp323-jest-base-candidate
+          path: |
+            base-jest.log
+            candidate-jest.log
+          if-no-files-found: error
