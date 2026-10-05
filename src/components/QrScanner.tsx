@@ -5,6 +5,7 @@
  *  - Requests camera permission on mount
  *  - Scans QR codes and validates the result as a Stellar public key
  *  - Calls onScan with the valid address, or onError with a descriptive message
+ *  - Falls back cleanly when the camera cannot be mounted
  *  - Exposes a close button that calls onClose
  *
  * Accessibility: all interactive elements carry accessibilityLabel / accessibilityRole.
@@ -42,6 +43,7 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
   const [permission, requestPermission] = useCameraPermissions();
   const lastScanTime = useRef<number>(0);
   const [hasScanned, setHasScanned] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
 
   // Request permission automatically on mount if not yet determined.
   useEffect(() => {
@@ -114,6 +116,27 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
     );
   }
 
+  // ── Camera: permission granted but unavailable ─────────────────────────────
+  if (cameraError) {
+    return (
+      <View style={styles.centred} accessibilityLiveRegion="polite">
+        <ScanLine color={colors.textMuted} size={48} style={{ marginBottom: SIZES.md }} />
+        <Text style={styles.statusText}>Camera unavailable</Text>
+        <Text style={styles.subText}>
+          We couldn&apos;t start the camera. Enter the recipient address manually instead.
+        </Text>
+        <TouchableOpacity
+          style={styles.permissionButton}
+          onPress={onClose}
+          accessibilityLabel="Enter recipient address manually"
+          accessibilityRole="button"
+        >
+          <Text style={styles.permissionButtonText}>Enter Address Manually</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   // ── Permission: granted ────────────────────────────────────────────────────
   return (
     <View style={styles.container} accessibilityViewIsModal>
@@ -122,6 +145,7 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
         facing="back"
         barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
         onBarcodeScanned={hasScanned ? undefined : handleBarCodeScanned}
+        onMountError={({ message }) => setCameraError(message || 'Camera unavailable')}
         accessibilityLabel="QR code scanner camera"
       />
 
