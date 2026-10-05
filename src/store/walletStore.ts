@@ -23,7 +23,7 @@ const TX_PAGE_SIZE = 20;
 
 // Transaction records from the Stellar Horizon API – use a flexible type
 // until a proper typed SDK wrapper is available.
-export type TransactionStatus = 'pending' | 'confirmed' | 'failed';
+export type TransactionStatus = 'pending' | 'unknown' | 'confirmed' | 'failed';
 export type TransactionRecord = Record<string, any> & { id: string; status?: TransactionStatus };
 
 interface WalletState {
@@ -67,7 +67,7 @@ interface WalletState {
   loadWalletFromStorage: () => Promise<boolean>;
   /** Pull-to-refresh: resets pagination and loads the first page fresh. */
   refreshWalletData: () => Promise<void>;
-  /** Optimistically show a just-submitted transaction as pending, keyed by hash. */
+  /** Show a submitted transaction as pending/unknown, keyed by its deterministic hash. */
   addPendingTransaction: (hash: string, tx: Record<string, any> & { id: string }) => void;
   loadMoreTransactions: () => Promise<void>;
   clearWallet: () => Promise<boolean>;
@@ -267,7 +267,11 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   },
 
   addPendingTransaction: (hash, tx) => {
-    const pendingRecord: TransactionRecord = { ...tx, status: 'pending' };
+    // Preserve an explicit unknown state when submission may have reached the
+    // network but acknowledgement was lost. All other optimistic inserts are
+    // ordinary pending transactions.
+    const status: TransactionStatus = tx.status === 'unknown' ? 'unknown' : 'pending';
+    const pendingRecord: TransactionRecord = { ...tx, status };
     set((state) => ({
       pendingTransactions: { ...state.pendingTransactions, [hash]: pendingRecord },
       transactions: [pendingRecord, ...state.transactions],
