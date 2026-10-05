@@ -36,6 +36,7 @@ export type HandoffPhase =
   // this isn't a real waiting window — it exists to separate "network responded" from
   // "UI flow fully done", so downstream UI never has to treat submit-resolved as final.
   | 'confirming'    // Network call resolved; wrapping up before the flow is done
+  | 'unknown'       // Submission began, but its network result is not yet known
   | 'completed'     // Flow finished successfully
   | 'failed'        // Signing or submission failed
   | 'cancelled';    // User or signer cancelled the flow

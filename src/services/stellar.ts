@@ -1,6 +1,12 @@
 import * as StellarSdk from '@stellar/stellar-sdk';
 import * as ExpoCrypto from 'expo-crypto';
 import { Buffer } from 'buffer';
+import {
+  getSubmissionRejectionCode,
+  isTransactionHash,
+  UnknownPaymentSubmissionError,
+  type PaymentSubmissionStatus,
+} from '../features/payments/submissionOutcome';
 
 export const server = new StellarSdk.Horizon.Server(
   process.env.EXPO_PUBLIC_STELLAR_HORIZON_URL || 'https://horizon-testnet.stellar.org'
@@ -179,6 +185,8 @@ export const sendXlmTransaction = async (
   amount: string,
   memoText?: string
 ) => {
+  let transactionHash: string | undefined;
+  let submissionStarted = false;
   try {
     const sourceKeypair = StellarSdk.Keypair.fromSecret(secretKey);
     const sourcePublicKey = sourceKeypair.publicKey();
@@ -207,11 +215,42 @@ export const sendXlmTransaction = async (
     const transaction = transactionBuilder.build();
     transaction.sign(sourceKeypair);
 
-    const response = await server.submitTransaction(transaction);
+    // Compute identity before broadcasting so a lost response can still be checked.
+    transactionHash = transaction.hash().toString('hex');
+    if (!isTransactionHash(transactionHash)) throw new Error('Invalid transaction hash');
+
+    // The SDK normally performs this before its POST. Keep memo safety checks
+    // outside the unknown-outcome boundary, then skip only that duplicate check.
+    await server.checkMemoRequired(transaction);
+
+    submissionStarted = true;
+    const response = await server.submitTransaction(transaction, { skipMemoRequiredCheck: true });
     return response;
   } catch (error: any) {
-    console.error('Error sending transaction:', error?.response?.data || error);
-    throw new Error(error?.response?.data?.extras?.result_codes?.transaction || 'Transaction failed');
+    const rejectionCode = getSubmissionRejectionCode(error);
+    if (submissionStarted && !rejectionCode) {
+      throw new UnknownPaymentSubmissionError(transactionHash!);
+    }
+    throw new Error(rejectionCode || 'Transaction could not be submitted.');
+  }
+};
+
+/** Read-only, user-initiated lookup. A 404 or missing result remains unknown. */
+export const fetchPaymentSubmissionStatus = async (
+  transactionHash: string,
+): Promise<PaymentSubmissionStatus> => {
+  if (!isTransactionHash(transactionHash)) throw new Error('A valid transaction hash is required.');
+  try {
+    const result = await server.transactions().transaction(transactionHash).call();
+    if (result.hash.toLowerCase() !== transactionHash.toLowerCase()) {
+      throw new Error('Transaction identity did not match.');
+    }
+    if (result.successful === true) return 'confirmed';
+    if (result.successful === false) return 'failed';
+    return 'unknown';
+  } catch (error: any) {
+    if (error?.response?.status === 404) return 'unknown';
+    throw new Error('Could not check the payment status. Please check your connection and try checking again.');
   }
 };
 
