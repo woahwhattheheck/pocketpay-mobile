@@ -1,0 +1,85 @@
+name: Manual PocketPay native evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      camera_sha:
+        description: Exact published camera297 source commit
+        required: true
+        type: string
+      retry_sha:
+        description: Exact published retry321 source commit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pocketpay-native-evidence-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native:
+    if: github.repository == 'woahwhattheheck/pocketpay-mobile'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [camera, retry]
+    env:
+      MODE: ${{ matrix.mode }}
+      SOURCE_SHA: ${{ matrix.mode == 'camera' && inputs.camera_sha || inputs.retry_sha }}
+      EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+      EXPO_OFFLINE: '1'
+      EXPO_NO_TYPESCRIPT_SETUP: '1'
+      CI: '1'
+    steps:
+      - name: Check out the isolated evidence controller
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: controller
+          persist-credentials: false
+      - name: Check out exact published app source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: woahwhattheheck/pocketpay-mobile
+          ref: ${{ env.SOURCE_SHA }}
+          path: subject
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - name: Prepare exact-source local fixtures and official Expo Go
+        run: bash controller/validation/pocketpay/prepare.sh
+      - name: Enable hardware acceleration for the isolated emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          test -r /dev/kvm && test -w /dev/kvm
+      - name: Boot Android 34 and capture production UI evidence
+        uses: ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          ram-size: 2048M
+          heap-size: 512M
+          cores: 2
+          disk-size: 4096M
+          disable-linux-hw-accel: false
+          emulator-boot-timeout: 300
+          emulator-options: -no-window -gpu swiftshader -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none
+          script: bash controller/validation/pocketpay/run.sh
+      - name: Retain actual screenshots, UI trees and logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pocketpay-android34-${{ matrix.mode }}-${{ github.run_id }}
+          path: evidence/${{ matrix.mode }}/
+          retention-days: 14
+          if-no-files-found: error
