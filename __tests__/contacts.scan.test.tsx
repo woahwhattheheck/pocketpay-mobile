@@ -33,6 +33,8 @@ jest.mock("lucide-react-native", () => ({
 // expo-camera mock – controllable via module-level variables
 let mockPermissionGranted = true;
 let mockPermissionCanAskAgain = true;
+let mockPermissionLoading = false;
+let mockCameraOnMountError: ((event: { message: string }) => void) | undefined;
 const mockRequestPermission = jest.fn(async () => {
   mockPermissionGranted = true;
 });
@@ -47,10 +49,11 @@ let latestBarcodeHandler:
   | undefined;
 
 jest.mock("expo-camera", () => ({
-  CameraView: ({ onBarcodeScanned, children }: any) => {
+  CameraView: ({ onBarcodeScanned, onMountError, children }: any) => {
     // Attach a testID so tests can trigger a scan
     const { View } = require("react-native");
     latestBarcodeHandler = onBarcodeScanned;
+    mockCameraOnMountError = onMountError;
     return (
       <View
         testID="camera-view"
@@ -63,7 +66,7 @@ jest.mock("expo-camera", () => ({
     );
   },
   useCameraPermissions: () => [
-    mockPermissionGranted
+    mockPermissionLoading ? null : mockPermissionGranted
       ? { granted: true, canAskAgain: false }
       : { granted: false, canAskAgain: mockPermissionCanAskAgain },
     mockRequestPermission,
@@ -183,6 +186,8 @@ beforeEach(() => {
   alertSpy.mockImplementation(() => undefined);
   mockPermissionGranted = true;
   mockPermissionCanAskAgain = true;
+  mockPermissionLoading = false;
+  mockCameraOnMountError = undefined;
   latestBarcodeHandler = undefined;
   setupStore();
 });
@@ -516,6 +521,26 @@ describe("AC7 – QrScanner permission denied", () => {
       ),
     ).toBeTruthy();
     expect(queryByText("Grant Permission")).toBeNull();
+  });
+});
+
+describe("#297 – manual fallback returns Contacts to its manual form", () => {
+  it.each(["loading", "denied", "unavailable"])("opens the form when the camera is %s", async (state) => {
+    mockPermissionLoading = state === "loading";
+    mockPermissionGranted = state !== "denied";
+    mockPermissionCanAskAgain = false;
+    const { getByText, getByRole, getByPlaceholderText, queryByTestId } = render(<ContactsScreen />);
+    fireEvent.press(getByText("Scan QR"));
+    if (state === "unavailable") {
+      await waitFor(() => expect(mockCameraOnMountError).toBeDefined());
+      act(() => mockCameraOnMountError?.({ message: "No cameras available" }));
+      expect(getByText("Camera unavailable")).toBeTruthy();
+    }
+    fireEvent.press(getByRole("button", { name: "Enter recipient address manually" }));
+    expect(getByPlaceholderText("Alice")).toBeTruthy();
+    expect(getByPlaceholderText("G...")).toBeTruthy();
+    expect(queryByTestId("camera-view")).toBeNull();
+    expect(mockAddContact).not.toHaveBeenCalled();
   });
 });
 

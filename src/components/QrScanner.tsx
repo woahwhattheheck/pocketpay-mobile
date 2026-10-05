@@ -5,6 +5,7 @@
  *  - Requests camera permission on mount
  *  - Scans QR codes and validates the result as a Stellar public key
  *  - Calls onScan with the valid address, or onError with a descriptive message
+ *  - Falls back cleanly when the camera cannot be mounted
  *  - Exposes a close button that calls onClose
  *
  * Accessibility: all interactive elements carry accessibilityLabel / accessibilityRole.
@@ -31,17 +32,20 @@ export interface QrScannerProps {
   onError: (message: string) => void;
   /** Called when the user dismisses the scanner. */
   onClose: () => void;
+  /** Open the caller's manual-entry form. Defaults to closing the scanner. */
+  onManualEntry?: () => void;
 }
 
 /** Pause between consecutive scan attempts (ms). Prevents duplicate rapid-fire callbacks. */
 const SCAN_DEBOUNCE_MS = 1500;
 
-export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }) => {
+export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose, onManualEntry }) => {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [permission, requestPermission] = useCameraPermissions();
   const lastScanTime = useRef<number>(0);
   const [hasScanned, setHasScanned] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
 
   // Request permission automatically on mount if not yet determined.
   useEffect(() => {
@@ -78,6 +82,14 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
       <View style={styles.centred} accessibilityLiveRegion="polite">
         <ActivityIndicator color={colors.primary} size="large" />
         <Text style={styles.statusText}>Checking camera permission…</Text>
+        <TouchableOpacity
+          style={styles.permissionButton}
+          onPress={onManualEntry ?? onClose}
+          accessibilityLabel="Enter recipient address manually"
+          accessibilityRole="button"
+        >
+          <Text style={styles.permissionButtonText}>Enter Address Manually</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -104,11 +116,40 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
         )}
         <TouchableOpacity
           style={styles.closeButtonFallback}
+          onPress={onManualEntry ?? onClose}
+          accessibilityLabel="Enter recipient address manually"
+          accessibilityRole="button"
+        >
+          <Text style={styles.closeButtonFallbackText}>Enter Address Manually</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.closeButtonFallback}
           onPress={onClose}
           accessibilityLabel="Close scanner"
           accessibilityRole="button"
         >
           <Text style={styles.closeButtonFallbackText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  // ── Camera: permission granted but unavailable ─────────────────────────────
+  if (cameraError) {
+    return (
+      <View style={styles.centred} accessibilityLiveRegion="polite">
+        <ScanLine color={colors.textMuted} size={48} style={{ marginBottom: SIZES.md }} />
+        <Text style={styles.statusText}>Camera unavailable</Text>
+        <Text style={styles.subText}>
+          We couldn&apos;t start the camera. Enter the recipient address manually instead.
+        </Text>
+        <TouchableOpacity
+          style={styles.permissionButton}
+          onPress={onManualEntry ?? onClose}
+          accessibilityLabel="Enter recipient address manually"
+          accessibilityRole="button"
+        >
+          <Text style={styles.permissionButtonText}>Enter Address Manually</Text>
         </TouchableOpacity>
       </View>
     );
@@ -122,6 +163,7 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
         facing="back"
         barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
         onBarcodeScanned={hasScanned ? undefined : handleBarCodeScanned}
+        onMountError={({ message }) => setCameraError(message || 'Camera unavailable')}
         accessibilityLabel="QR code scanner camera"
       />
 
@@ -193,6 +235,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     marginTop: SIZES.sm,
   },
   permissionButton: {
+    minHeight: SIZES.xl + SIZES.md,
+    justifyContent: 'center',
     marginTop: SIZES.lg,
     backgroundColor: colors.primary,
     paddingVertical: SIZES.sm,
@@ -205,6 +249,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     fontWeight: '600',
   },
   closeButtonFallback: {
+    minHeight: SIZES.xl + SIZES.md,
+    justifyContent: 'center',
     marginTop: SIZES.md,
     paddingVertical: SIZES.sm,
     paddingHorizontal: SIZES.xl,
