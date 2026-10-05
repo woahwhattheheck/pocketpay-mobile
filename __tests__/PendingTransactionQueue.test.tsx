@@ -66,6 +66,12 @@ const PENDING_TX_2 = {
   created_at: new Date(Date.now() - 300_000).toISOString(),
 };
 
+const UNKNOWN_TX = {
+  ...PENDING_TX_1,
+  id: 'hash-unknown',
+  status: 'unknown' as const,
+};
+
 beforeEach(() => {
   jest.clearAllMocks();
   useWalletStore.setState({
@@ -230,6 +236,22 @@ describe('AC-PTQ6 – guidance text', () => {
     expect(
       getByText(/These transactions have been submitted/)
     ).toBeTruthy();
+  });
+
+  it('shows unknown-status guidance without offering a blind resend', () => {
+    useWalletStore.setState({
+      pendingTransactions: {
+        'hash-unknown': UNKNOWN_TX,
+      },
+    });
+
+    const { getByText, queryByText } = render(
+      <PendingTransactionQueue onRefresh={jest.fn()} />
+    );
+
+    expect(getByText(/unknown network status/i)).toBeTruthy();
+    expect(getByText(/do not retry blindly/i)).toBeTruthy();
+    expect(queryByText(/resend/i)).toBeNull();
   });
 
   it('does not show guidance text when queue is empty', () => {
