@@ -169,7 +169,7 @@ def camera_denied_manual():
     wait("Camera Permission Required")
     capture("camera-permission-denied")
     tap("Enter recipient address manually", "Enter Address Manually")
-    wait("Send XLM", "Recipient", seconds=40)
+    wait("Send XLM", seconds=40)
     capture("camera-denied-manual-entry")
 
 
@@ -184,7 +184,7 @@ def camera_unavailable_manual():
     wait("Camera Unavailable", seconds=60)
     capture("camera-hardware-unavailable")
     tap("Enter recipient address manually", "Enter Address Manually")
-    wait("Send XLM", "Recipient")
+    wait("Send XLM")
     capture("camera-unavailable-manual-entry")
 
 
@@ -236,7 +236,7 @@ def retry_outcome(outcome):
         capture("retry-unknown-help")
         tap("OK")
         tap("View Activity", scroll=True)
-        wait("No activity yet", "All", seconds=50)
+        wait("No activity yet", seconds=50)
         capture("retry-unknown-activity")
 
 
