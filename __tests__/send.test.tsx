@@ -44,6 +44,9 @@ jest.mock('lucide-react-native', () => ({
   ShieldCheck: () => null,
   ArrowRight: () => null,
   AlertTriangle: () => null,
+  ChevronDown: () => null,
+  User: () => null,
+  Info: () => null,
 }));
 
 // expo-camera mock – controllable via module-level variables (same pattern as contacts.scan.test.tsx)
@@ -74,10 +77,12 @@ jest.mock('expo-camera', () => ({
 
 import { useWalletStore } from '../src/store/walletStore';
 import { fetchAccountDetails } from '../src/services/stellar';
+import { validatePublicKey } from 'pocketpay-sdk';
 import { useRouter } from 'expo-router';
 
 const mockUseWalletStore      = useWalletStore as jest.MockedFunction<typeof useWalletStore>;
 const mockFetchAccountDetails = fetchAccountDetails as jest.MockedFunction<typeof fetchAccountDetails>;
+const mockValidatePublicKey = validatePublicKey as jest.MockedFunction<typeof validatePublicKey>;
 const mockUseRouter           = useRouter as jest.MockedFunction<typeof useRouter>;
 
 import SendScreen from '../app/send';
@@ -121,6 +126,8 @@ beforeEach(() => {
   mockUseRouter.mockReturnValue({ back: mockBack, push: mockPush, replace: mockReplace } as any);
   setupWalletStore();
   mockFetchAccountDetails.mockResolvedValue({} as any);
+  mockValidatePublicKey.mockReset();
+  mockValidatePublicKey.mockImplementation(() => true);
   mockPermissionGranted = true;
   mockPermissionCanAskAgain = true;
 });
@@ -264,6 +271,50 @@ describe('AC3 – submit is blocked when the form is invalid', () => {
     });
     expect(queryByText(/ETIMEDOUT|horizon\.internal\.example/)).toBeNull();
     expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it('rejects malformed addresses before querying the network and allows correction', async () => {
+    mockValidatePublicKey.mockImplementation((address) => {
+      if (address === 'bad-address') throw new Error('Invalid public key');
+      return true;
+    });
+    const { getByPlaceholderText, getByText, queryByText } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), 'bad-address');
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(getByText('Send Payment'));
+    expect(getByText("This doesn't look like a valid Stellar address. It should start with G and be 56 characters long.")).toBeTruthy();
+    expect(mockFetchAccountDetails).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
+    await waitFor(() => expect(getByText('Send Payment')).toBeTruthy());
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    expect(queryByText("This doesn't look like a valid Stellar address. It should start with G and be 56 characters long.")).toBeNull();
+    fireEvent.press(getByText('Send Payment'));
+    await waitFor(() => expect(mockPush).toHaveBeenCalled());
+  });
+
+  it.each(['success', 'failure'])('discards a stale recipient-check %s after the destination changes', async (outcome) => {
+    let resolveAccount!: (value: any) => void;
+    let rejectAccount!: (error: Error) => void;
+    mockFetchAccountDetails.mockReturnValueOnce(new Promise((resolve, reject) => {
+      resolveAccount = resolve;
+      rejectAccount = reject;
+    }));
+    const { getByPlaceholderText, getByText, queryByText } = render(<SendScreen />);
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.changeText(getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(getByText('Send Payment'));
+
+    expect(getByText('Verifying recipient…')).toBeTruthy();
+    fireEvent.changeText(getByPlaceholderText('G...'), SCANNED_ADDRESS);
+    if (outcome === 'success') resolveAccount({});
+    else rejectAccount(new Error('Account not found'));
+
+    await waitFor(() => expect(getByText('Send Payment')).toBeTruthy());
+    expect(mockPush).not.toHaveBeenCalled();
+    expect(queryByText('This Stellar account could not be found. Check the recipient address and try again.')).toBeNull();
+    expect(getByPlaceholderText('G...').props.value).toBe(SCANNED_ADDRESS);
   });
 });
 
