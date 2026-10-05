@@ -24,6 +24,7 @@ jest.mock('../src/services/vault', () => ({
 process.env.EXPO_PUBLIC_SOROBAN_RPC_URL = 'https://soroban-testnet.stellar.org';
 const VALID_AMOUNT = '10';
 const mockDeposit = jest.fn();
+const mockWithdraw = jest.fn();
 const mockLoadBalance = jest.fn();
 const mockLoadLocks = jest.fn();
 const mockAddLock = jest.fn();
@@ -41,7 +42,7 @@ function setupStores(overrides: Record<string, unknown> = {}) {
     isLoadingBalance: false, isLoadingLocks: false, isSubmitting: false,
     balanceError: null, vaultError: null, loadBalance: mockLoadBalance,
     loadLocks: mockLoadLocks, addLock: mockAddLock, unlockLock: jest.fn(),
-    deposit: mockDeposit, withdraw: jest.fn(), withdrawMaturedLock: jest.fn(),
+    deposit: mockDeposit, withdraw: mockWithdraw, withdrawMaturedLock: jest.fn(),
     clearVaultError: jest.fn(), ...overrides,
   };
   mockUseWalletStore.mockImplementation((selector?: any) =>
@@ -53,6 +54,7 @@ function setupStores(overrides: Record<string, unknown> = {}) {
 beforeEach(() => {
   jest.clearAllMocks();
   mockDeposit.mockResolvedValue('tx_hash_1234567890abcdef');
+  mockWithdraw.mockResolvedValue('unexpected-withdrawal');
   mockAddLock.mockResolvedValue(undefined);
   jest.mocked(mockFetchVaultBalance).mockResolvedValue('50.0000000');
   jest.mocked(mockFetchVaultMaturedLocks).mockResolvedValue([]);
@@ -213,6 +215,23 @@ describe('vault result feedback', () => {
     fireEvent.press(ui.getAllByText('Confirm Lock')[1]);
     await waitFor(() => expect(ui.getByText('Transaction Receipt')).toBeTruthy());
     expect(mockAddLock).toHaveBeenCalledWith(VALID_AMOUNT, expect.any(String));
+    expect(ui.getByText('Success')).toBeTruthy();
+    expect(ui.getByText('mock-lock')).toBeTruthy();
+  });
+
+  it('keeps the reviewed lock action when native confirmation supplies a press event', async () => {
+    const ui = render(<VaultScreen />);
+    fireEvent.changeText(ui.getByPlaceholderText('0.00'), VALID_AMOUNT);
+    fireEvent.press(ui.getByText('Set Aside for 30 Days'));
+    fireEvent.press(ui.getAllByText('Confirm Lock')[1], {
+      nativeEvent: { target: 1, timestamp: 42, pageX: 140, pageY: 200 },
+    });
+
+    await waitFor(() => expect(mockAddLock).toHaveBeenCalledTimes(1));
+    expect(mockAddLock).toHaveBeenCalledWith(VALID_AMOUNT, expect.any(String));
+    expect(mockWithdraw).not.toHaveBeenCalled();
+    expect(mockDeposit).not.toHaveBeenCalled();
+    expect(ui.getByText('Transaction Receipt')).toBeTruthy();
     expect(ui.getByText('Success')).toBeTruthy();
     expect(ui.getByText('mock-lock')).toBeTruthy();
   });

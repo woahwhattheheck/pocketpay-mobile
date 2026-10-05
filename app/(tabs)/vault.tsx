@@ -262,7 +262,9 @@ export default function VaultScreen() {
         isLoading={isSubmitting || depositForm.isSubmitting}
         contractId={isConfigured ? contractId : undefined}
         unlockTime={pendingAction === 'lock' ? pendingUnlockDate : undefined}
-        onConfirm={handleConfirmAction}
+        onConfirm={() => {
+          void handleConfirmAction();
+        }}
         onCancel={cancelAction}
       />
 
