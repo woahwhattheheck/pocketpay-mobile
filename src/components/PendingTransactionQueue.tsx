@@ -79,6 +79,7 @@ export const PendingTransactionQueue: React.FC<PendingTransactionQueueProps> = (
   );
 
   const count = pendingList.length;
+  const hasUnknown = pendingList.some((tx) => tx.status === 'unknown');
 
   return (
     <View style={styles.container} testID="pending-transaction-queue">
@@ -125,8 +126,9 @@ export const PendingTransactionQueue: React.FC<PendingTransactionQueueProps> = (
       {/* Guidance text when there are pending items */}
       {count > 0 ? (
         <Text style={styles.guidance}>
-          These transactions have been submitted and are waiting for network
-          confirmation. They will be removed automatically once confirmed.
+          {hasUnknown
+            ? 'A submitted transaction has an unknown network status. Refresh to check history before sending again; do not retry blindly.'
+            : 'These transactions have been submitted and are waiting for network confirmation. They will be removed automatically once confirmed.'}
         </Text>
       ) : null}
 
