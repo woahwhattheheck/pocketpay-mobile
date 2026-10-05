@@ -1,0 +1,40 @@
+{
+  "baseline": {
+    "checkRunId": 111976138974,
+    "path": "/repos/woahwhattheheck/pocketpay-mobile/check-runs/111976138974/annotations",
+    "status": 200,
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/woahwhattheheck/pocketpay-mobile/blob/4be50b4ddd56dff441da1202feafd59fc81064db/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "The job was not acquired by Runner of type hosted even after multiple attempts",
+        "raw_details": ""
+      }
+    ]
+  },
+  "camera": {
+    "checkRunId": 111976139238,
+    "path": "/repos/woahwhattheheck/pocketpay-mobile/check-runs/111976139238/annotations",
+    "status": 200,
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/woahwhattheheck/pocketpay-mobile/blob/4be50b4ddd56dff441da1202feafd59fc81064db/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "The job was not acquired by Runner of type hosted even after multiple attempts",
+        "raw_details": ""
+      }
+    ]
+  }
+}

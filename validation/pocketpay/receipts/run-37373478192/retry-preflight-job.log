@@ -1,0 +1,17 @@
+2026-10-05T21:03:44.2696130Z ##[group]Run echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+2026-10-05T21:03:44.2697038Z [36;1mecho 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules[0m
+2026-10-05T21:03:44.2697698Z [36;1msudo udevadm control --reload-rules[0m
+2026-10-05T21:03:44.2698090Z [36;1msudo udevadm trigger --name-match=kvm[0m
+2026-10-05T21:03:44.2698507Z [36;1mtest -r /dev/kvm && test -w /dev/kvm[0m
+2026-10-05T21:03:44.2738649Z shell: /usr/bin/bash -e {0}
+2026-10-05T21:03:44.2739103Z env:
+2026-10-05T21:03:44.2739425Z   MODE: retry
+2026-10-05T21:03:44.2739840Z   SOURCE_SHA: ddd56649099d1fc5763ef29af3bfba0363897bd6
+2026-10-05T21:03:44.2740259Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T21:03:44.2740607Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T21:03:44.2740972Z   EXPO_OFFLINE: 1
+2026-10-05T21:03:44.2741310Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T21:03:44.2741758Z   CI: 1
+2026-10-05T21:03:44.2742031Z ##[endgroup]
+2026-10-05T21:03:44.2861469Z KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"
+2026-10-05T21:03:44.3123004Z ##[error]Process completed with exit code 1.

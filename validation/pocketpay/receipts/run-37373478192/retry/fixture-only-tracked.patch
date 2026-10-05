@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 9f214cd..281d601 100644
+--- a/package.json
++++ b/package.json
+@@ -1,7 +1,7 @@
+ {
+   "name": "stellar-pocketpay-mobile",
+   "version": "1.0.0",
+-  "main": "expo-router/entry",
++  "main": "./primary-validation-entry.js",
+   "scripts": {
+     "start": "expo start",
+     "android": "expo start --android",

@@ -1,8 +1,8 @@
 # Camera follow-up: prepared locally, not executed
 
 This controller is pinned to camera commit
-`e92351b71869f6be89229511c9898e20d50369c9`, tree
-`a9bf24a0884e3fc200f4be66c1e4b1919d53dada`. Production ScanScreen,
+`314b69b9a4ac4c4328540792fcc516e6ce5c6e16`, tree
+`d024fbbd8393b855508da14a0b2fba9441c7a5f4`. Production ScanScreen,
 ContactsScreen, QrScanner, Expo's permission hook and CameraView stay unchanged.
 The existing launch wrapper is copied into `fixtures/` with only its explanatory
 comment changed for the send path; its production imports and rendering remain
@@ -99,11 +99,20 @@ does not fail the measured denial/user-fixed cases. Even an observed loading
 frame does not establish its manual button callback was executed while that
 branch was active; `loadingFallbackExercised` remains false.
 
-QrScanner auto-requests when `!granted && canAskAgain`, including a fresh denied
-response. This sequence uses generic Scan for the real first denial, then the
-Contacts scanner under granted or actual user-fixed states in the primary
-suite. The distinct Contacts-first-denial suite intentionally measures that
-source re-request risk and stops if another prompt appears. Both hooks need
+This collector's optional fast-state capture does not waive final contributor
+readiness. The coordinated runner retains original launch and Contacts Scan-tap
+clips for independent review of the actual loading state and its manual button.
+If no such original frame is observed, loading remains a specific readiness hold
+even when all deterministic denial/unavailable/manual cases pass. The runner
+does not delay or replace the permission hook to manufacture this state.
+
+The canonical successor changes QrScanner's automatic request predicate to
+`permission.status === 'undetermined' && canAskAgain`. An askable denied response
+now requires an explicit Grant press. The source owner validated the narrow
+repair using the installed Expo permission hook, but native OS behavior remains
+unmeasured. This collector stays unchanged and the distinct Contacts-first-denial
+suite must still observe exactly one real denial and usable manual guidance; it
+stops if another prompt appears. Both hooks need
 a relaunch/remount after external permission
 changes; neither refreshes from Settings through an AppState listener.
 

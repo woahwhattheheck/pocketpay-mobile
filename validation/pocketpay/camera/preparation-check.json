@@ -1,12 +1,12 @@
 {
   "readOnlySourceCheck": {
-    "sourceSha": "e92351b71869f6be89229511c9898e20d50369c9",
-    "sourceTree": "a9bf24a0884e3fc200f4be66c1e4b1919d53dada",
+    "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+    "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
     "trackedFilesUnchanged": true,
     "fixturePath": "app/send/__camera-native-fixture.tsx",
     "fixtureSha256": "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0",
     "fixtureInstalled": false,
-    "legacyAuthFixturePresentAtReadOnlyPreparation": true
+    "legacyAuthFixturePresentAtReadOnlyPreparation": false
   },
   "pythonSyntaxFiles": 4,
   "parserOnlyTests": {
@@ -17,7 +17,7 @@
   "nativeExecution": false,
   "setupExecuted": false,
   "fixtureOnlyPathForLaterSetup": "app/send/__camera-native-fixture.tsx",
-  "packetSha256": "4bde70fdc53a6926faae9caebd70176c9b4e4686cb082d2daa681fb1775433ba",
+  "packetSha256": "43bbe48348155b2e7d0194c1bb96fa0f676e674ee15b6cf04c27de73eb2a4d46",
   "collectorSuites": [
     "primary-and-user-fixed",
     "contacts-first-denial"
@@ -34,5 +34,16 @@
     "verified 720x1280 complete visible bounds",
     "guarded before/after media",
     "fresh guest-only reset receipt per suite"
-  ]
+  ],
+  "sourceSuccessor": {
+    "previousSourceSha": "e92351b71869f6be89229511c9898e20d50369c9",
+    "previousSourceTree": "a9bf24a0884e3fc200f4be66c1e4b1919d53dada",
+    "soleParent": "e92351b71869f6be89229511c9898e20d50369c9",
+    "changedPinnedProductFiles": [
+      "src/components/QrScanner.tsx"
+    ],
+    "sourceOwnerValidation": "66 suites/651 tests, typecheck 0, lint 0 errors/185 warnings, Android export; reported by source owner and independently read back by parent",
+    "nativeOsBehavior": "pending actual measurement"
+  },
+  "loadingReadinessHoldIfNoDirectOriginalFrame": true
 }

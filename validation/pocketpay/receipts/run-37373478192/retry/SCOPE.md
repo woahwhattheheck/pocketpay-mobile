@@ -9,24 +9,15 @@ retain their original product tree independently of temporary fixtures.
 | Mode | Published product source | Original product tree |
 | --- | --- | --- |
 | Baseline and Vault | `52ce8006a2d091a4c9f29852a1a530750ff9b3cc` | `b7556026e93c5930915d12fdf51d421773c5f61e` |
-| Camera #297 | `314b69b9a4ac4c4328540792fcc516e6ce5c6e16` | `d024fbbd8393b855508da14a0b2fba9441c7a5f4` |
+| Camera #297 | `e92351b71869f6be89229511c9898e20d50369c9` | `a9bf24a0884e3fc200f4be66c1e4b1919d53dada` |
 | Retry #321 | `ddd56649099d1fc5763ef29af3bfba0363897bd6` | `4e363d77915ca16d3490e677f78c6487aeeb7060` |
 
-Each isolated Ubuntu 24.04 job has a 30-minute bound and requires real KVM acceleration,
+Each isolated Ubuntu 24.04 job has a 30-minute bound, real KVM acceleration,
 Android API 34 Google APIs x86_64 and a 720×1280 viewport. The emulator uses
 `-camera-back none -camera-front none`; genuine CameraView mounting errors, not
 camera mocks, must produce unavailable-state evidence. Actions are pinned to
 reviewed source SHAs. Official Expo Go 54.0.8 APK SHA-256 is
 `d72ed2cec15bf029c942d1cb70c933976ec83048e00d130bbfa6bad8cf22331a`.
-
-The three matrix jobs run one at a time (`max-parallel: 1`), retaining independent
-failure results. Serialization limits simultaneous hosted runner requests; it
-does not guarantee runner availability. The KVM preflight keeps the original
-udev rule and mandatory readable/writable `/dev/kvm` gate. Each provisioning
-command now has separate stdout, stderr and exit status plus a 15-second TERM
-bound and a further five-second KILL bound. The trigger waits only for its own
-udev events (`--settle`). Before/after/exit device diagnostics are retained even
-on failure; missing optional metadata cannot satisfy the mandatory access gate.
 
 `controller-manifest.json` locks all controller files. Prepared fixtures also
 retain their separate immutable manifests and production-file hash checks.
@@ -48,39 +39,11 @@ A separate first-denial Contacts suite begins only after an observed successful
 asked-permission cache. No owner device, owner data, wallet or saved contact is
 involved. The guest is discarded after the run.
 
-The separate frozen `send/` packet measures the actual Send form without a launch
-fixture, wallet initialization or permission mock. Immediately after the original
-Contacts unavailable/manual case, while its real OS grant is still current, it
-enters one fixed checksum-valid public dummy recipient into the observed focused
-recipient field. It leaves amount/memo empty, opens the actual embedded scanner,
-requires its real unavailable branch and returns through the manual action.
-Before/after native EditText XML must hold the same complete 56-character value;
-PNG frames provide visible form context. It performs no Review, Sign, Save,
-broadcast or clipboard action. Production startup hooks may perform normal reads.
-
-The Send prerequisite receipt references the actual prior native grant dialog
-XML/PNG and current granted-permission record with their exact hashes, plus the
-observed disposable guest reset. Send independently rechecks source custody,
-runtime, effective viewport, current CAMERA grant and actual zero camera devices.
-Its result is separate from the original Contacts case. An ordinary failed
-observation can continue only through the next case's existing force-stop/reset;
-an unsafe environment/media/custody result blocks remaining user-fixed and
-Contacts-first-denial cases without further guest actions.
-The integration wrapper also preserves an original camera secret/media or known
-render-error condition as unsafe exit 2 even though the immutable collector
-catches case exceptions. It stops the owned recorder without pulling/retaining
-an active video. Unsafe cleanup collects only local exit/source metadata and
-stops owned Metro; it performs no final guest log, UI or screenshot collection.
-
 Original Scan-launch and Contacts Scan-tap guest clips support independent
 transient-frame review. The immutable permission/UI collector remains unchanged.
-The collector's loading capture is optional because slow XML dumps can miss a
-transient frame. Final readiness still requires direct original-frame evidence
-of the changed loading state and its manual action. Original launch/Scan-tap
-clips must be reviewed alongside actual PNG/XML; deterministic denial and
-unavailable passes cannot waive that state. No SDK delay, camera/permission mock
-or fabricated frame is used. An unobserved transient state or unexercised loading
-fallback remains unproved and is a specific readiness hold.
+Permission loading is optional evidence: native XML and a matching actual frame
+must be observed. No SDK delay, camera/permission mock or fabricated frame is
+used. Unobserved transient state or unexercised loading fallback remains unproved.
 
 ## Retry
 
@@ -149,16 +112,6 @@ established by that run. Original failure PNG/XML and provenance are retained in
 `receipts/run-37368574667/` and its cumulative JSON receipt. Earlier SDK-path and
 optional GUI version-probe failures are retained separately. This successor
 corrects validation route/readiness behavior without product edits.
-
-Run `37373478192` verified the reviewed controller, retry product source,
-fixtures and official APK hash, then failed the unchanged KVM preflight before
-Android boot. The old quiet command block did not identify the failing command,
-so no hardware absence, permission failure or settlement race is inferred.
-Camera and baseline jobs acquired no hosted runner; both check-run annotations
-state that the job was not acquired even after multiple attempts. They executed
-no steps and produced no native capture. Exact retry preparation files, preflight
-log and hosted-runner annotations are retained in `receipts/run-37373478192/`.
-This preparation failure is not a product failure or native execution.
 
 Artifacts are retained for 14 days by the bounded manual workflow. Source,
 controller, runtime and fixture pins must be checked alongside actual media

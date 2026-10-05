@@ -15,7 +15,12 @@ cleanup() {
   hook_exit=$?
   set +e
   printf '%s\n' "$hook_exit" > "$evidence/controller-exit-code.txt"
-  python3 "$controller/baseline/retain-final.py"
+  if [[ "$MODE" == camera && ( "${primary_exit:-}" == 2 || "${contacts_exit:-}" == 2 ) ]]; then
+    printf '%s\n' '{"mediaExcluded":true,"guestCommandsPerformed":false,"reason":"Unsafe camera/Send result: no final guest logs, UI dump or screenshot collected"}' \
+      > "$evidence/cleanup-media-excluded.json"
+  else
+    python3 "$controller/baseline/retain-final.py"
+  fi
   git -C "$subject" status --porcelain > "$evidence/final-working-tree.txt"
   git -C "$subject" diff --binary > "$evidence/final-fixture-only.patch"
   if [[ -n "$metro_pid" ]]; then kill "$metro_pid" 2>/dev/null; fi
@@ -71,21 +76,31 @@ if [[ "$MODE" == camera ]]; then
     --suite primary-and-user-fixed --fresh-data-receipt "$evidence/camera-fresh-profile.txt"; then
     primary_exit=0
   else primary_exit=$?; fi
-  # Contacts first-denial is independent and needs a genuinely fresh asked cache.
-  adb -s "$serial" shell am force-stop host.exp.exponent
-  adb -s "$serial" shell pm clear host.exp.exponent > "$evidence/contacts-fresh-profile.txt"
-  [[ "$(tr -d '\r' < "$evidence/contacts-fresh-profile.txt")" == Success ]]
-  adb -s "$serial" reverse tcp:8081 tcp:8081
-  if python3 "$controller/camera-recording-runner.py" --serial "$serial" \
-    --source-checkout "$subject" --artifacts "$evidence/contacts-first-denial" \
-    --suite contacts-first-denial --fresh-data-receipt "$evidence/contacts-fresh-profile.txt"; then
-    contacts_exit=0
-  else contacts_exit=$?; fi
+  if [[ "$primary_exit" == 2 ]]; then
+    # An unsafe Send prerequisite/media/custody condition blocks remaining guest
+    # cases; even a reset is not permission to continue after that safety stop.
+    contacts_exit=2
+    mkdir -p "$evidence/contacts-first-denial"
+    printf '%s\n' '{"result":"blocked_unattempted","passed":false,"nativeExecution":false,"reason":"Unsafe primary/Send condition; no reset, launch or permission action performed"}' \
+      > "$evidence/contacts-first-denial/observations.json"
+  else
+    # Contacts first-denial is independent and needs a genuinely fresh asked cache.
+    adb -s "$serial" shell am force-stop host.exp.exponent
+    adb -s "$serial" shell pm clear host.exp.exponent > "$evidence/contacts-fresh-profile.txt"
+    [[ "$(tr -d '\r' < "$evidence/contacts-fresh-profile.txt")" == Success ]]
+    adb -s "$serial" reverse tcp:8081 tcp:8081
+    if python3 "$controller/camera-recording-runner.py" --serial "$serial" \
+      --source-checkout "$subject" --artifacts "$evidence/contacts-first-denial" \
+      --suite contacts-first-denial --fresh-data-receipt "$evidence/contacts-fresh-profile.txt"; then
+      contacts_exit=0
+    else contacts_exit=$?; fi
+  fi
   python3 - "$evidence" "$primary_exit" "$contacts_exit" <<'PY2'
 import json,pathlib,sys
 root=pathlib.Path(sys.argv[1]);data={'mode':'camera','primaryExit':int(sys.argv[2]),'contactsFirstDenialExit':int(sys.argv[3]),'cameraMocked':False}
 for kind,name in [('primary','camera-primary/observations.json'),('contactsFirstDenial','contacts-first-denial/observations.json')]:
  p=root/name;data[kind]=json.loads(p.read_text()) if p.exists() else {'result':'failed: no report produced'}
+data['sendPreservation']=data['primary'].get('sendPreservation',{'status':'not_attempted','passed':False})
 (root/'observations.json').write_text(json.dumps(data,indent=2)+'\n')
 PY2
   [[ "$primary_exit" == 0 && "$contacts_exit" == 0 ]]

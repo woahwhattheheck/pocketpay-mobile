@@ -1,0 +1,148 @@
+{
+  "runUrl": "https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37373478192",
+  "controllerSha": "4be50b4ddd56dff441da1202feafd59fc81064db",
+  "controllerTree": "1247f4e05cf99a735125477f34ca00da3c4d31c4",
+  "retryJobId": 111976139195,
+  "retryJobResult": "failure before emulator boot at KVM preflight",
+  "failedCommand": "unknown: original block exits1 without per-command statuses",
+  "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "artifactId": 11370928748,
+  "artifactBytes": 7644,
+  "artifactSha256": "e2fad4ceab83387dd0b6f4405e4e91eba2451295159146213c17b9ee3724a807",
+  "observed": [
+    "Exact source and reviewed controller integrity passed",
+    "Original primary entry/bootstrap unchanged; explicit temporary validation main",
+    "Official Expo Go APK downloaded and hash verified",
+    "KVM preflight exited1; subsequent Android boot step skipped"
+  ],
+  "notObserved": [
+    "No emulator boot",
+    "No APK installation in a guest",
+    "No app or fixture launch",
+    "No native PNG/video/permission/recovery/baseline UI"
+  ],
+  "limits": [
+    "Do not infer hardware absence, permission failure, settlement race or specific quiet failing command",
+    "Preparation is not native execution or a product failure"
+  ],
+  "peerQueueObservation": {
+    "lastQueuedReadFromParentAtUtc": "2026-10-05T21:17:28Z",
+    "terminalReadAtUtc": "2026-10-05T21:19:06.408942+00:00",
+    "jobs": [
+      {
+        "id": 111976138974,
+        "name": "native (baseline)",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "runnerId": 0,
+        "steps": []
+      },
+      {
+        "id": 111976139195,
+        "name": "native (retry)",
+        "status": "completed",
+        "conclusion": "failure",
+        "runnerId": 1000188818,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Check out the isolated evidence controller",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Check out exact published app source",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Node",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare exact-source local fixtures and official Expo Go",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Enable hardware acceleration for the isolated emulator",
+            "status": "completed",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Boot Android 34 and capture production UI evidence",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Retain actual screenshots, UI trees and logs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Set up Node",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Check out exact published app source",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Check out the isolated evidence controller",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 111976139238,
+        "name": "native (camera)",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "runnerId": 0,
+        "steps": []
+      }
+    ],
+    "cancellationActor": "No actor identity is established by the annotation; this agent did not request cancellation",
+    "limit": "Camera/baseline hosted jobs were not acquired and produced no capture; retry failed KVM preparation before Android boot",
+    "hostAcquisitionFailure": "The job was not acquired by Runner of type hosted even after multiple attempts",
+    "annotationSource": "Live GitHub check-run annotations for camera and baseline",
+    "annotationReceiptWrittenAtUtc": "2026-10-05T21:25:45.111055+00:00"
+  },
+  "retainedFilesSha256": {
+    "retry/SCOPE.md": "69ce05881d4d1e012cf56e3967f8a04eae85ca80e272f829e12ee1489f7dd8c0",
+    "retry/controller-integrity.txt": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+    "retry/controller-source.txt": "69a52a914e46d52375d4af6c3373386fe0ce405379a4d95760ef722621f54e49",
+    "retry/executed-source.txt": "423d7dd3cb1ff8fc448724a68a166b9182e58bd4546cd66c16a9e45353e22b59",
+    "retry/expo-go-integrity.txt": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+    "retry/fixture-only-tracked.patch": "946b896b7ab504830caef20ee8887738d5c3b5b467f4b7586dabf40cfed6309f",
+    "retry/fixture-working-tree.txt": "8876ad1047b7e34dfa6c2f6c8e8bf717d382f801e378def822777e68978341f9",
+    "retry/gap-fixture-setup.json": "201ca44126629d9e68c0004580b2f89546484bace1dbecbe1d5c04aa6a62e954",
+    "retry/host.txt": "6ecb75ce9d770bd2cfb6898b267dd8f29398821b25cb233675e182e0323ba0d2",
+    "retry/node-version.txt": "256a8e08ee35cb8ad36ae16385257192c3dbe7d80cfdeff9eaa886531b2f83bc",
+    "retry/npm-ci.log": "bf2afe122cacdac215742415d92f533b322796f17a64da65bc072cef8bffedd4",
+    "retry/npm-version.txt": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+    "retry/primary-fixture-integrity.json": "fc28675f8c82f91670a180616892eb4ddd9ff90066a7975c1a273d9bcdbcb953",
+    "retry/production-files-unchanged.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "retry-preflight-job.log": "5e7ad0fe0836ca634a07b975e344912dc0e880eb5f51df47cfb4469ddc04f345",
+    "host-acquisition-annotations.json": "eb34a2f33d3666db99c1b6720935eb613d3324d75ea9395a89e39c61b73442be"
+  },
+  "runTerminalStatus": {
+    "status": "completed",
+    "conclusion": "failure",
+    "updated_at": "2026-10-05T21:18:04Z"
+  }
+}

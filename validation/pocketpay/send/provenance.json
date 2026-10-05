@@ -1,0 +1,33 @@
+{
+  "status": "frozen_local_candidate_native_not_executed",
+  "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+  "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+  "predecessorSha": "e92351b71869f6be89229511c9898e20d50369c9",
+  "nativeExecution": false,
+  "productSourceWrites": false,
+  "deviceOperations": false,
+  "dispatchOrGithubWrites": false,
+  "actualRoute": "/send",
+  "fixtureInstalled": false,
+  "priorActualOsGrantReceiptRequired": true,
+  "perCaseExitCodes": {
+    "0": "passed",
+    "1": "ordinary_failed_observation_next_independent_case_requires_reset",
+    "2": "unsafe_environment_stop_and_mark_remaining_blocked"
+  },
+  "files": {
+    "README.md": "dadb2e022b88b18367239084996813c2c4725c18f059e9eb63e89e6f8139307c",
+    "ui_guard.py": "5a0db91e03e8e8fce46ec4e2da3c9972c09410deacd1cfbecbc85894b2a7fe3f",
+    "send_preservation.py": "8ab2dc833b7d422fabd2b8cdf3f7338440f31f79f37e94700287e89bfce2aec6",
+    "verify_checkout.py": "134a062aab3fd7bf0c68cfb2d5960352d008cb6af4e9757372d847e1091ad345",
+    "test_ui_guard.py": "a99eecb973a2b7127d91f3b6109cc3a24ff5cd5cb44e825976f8ee126017d330",
+    "source-manifest.json": "b6ef40cceaffb2bfed789c9ae0aa65ecd790f2d133c510adca7cbb3879832e84",
+    "preparation-checks.json": "34cdaa584a9146482be50ed808545bf6ea80c2bc7b803cf21a53879cb2ccfc80"
+  },
+  "limits": [
+    "Native Send preservation not measured",
+    "Exact 56-character equality is native EditText XML; PNG provides context",
+    "Owner-supplied fresh no-wallet guest and prior OS-grant prerequisites must be independently reviewed",
+    "Any source successor requires re-pin and peer review"
+  ]
+}

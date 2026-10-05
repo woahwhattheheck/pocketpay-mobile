@@ -1,0 +1,26 @@
+{
+  "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+  "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+  "predecessorSha": "e92351b71869f6be89229511c9898e20d50369c9",
+  "productionSourceUnmodified": true,
+  "files": {
+    "app/send.tsx": "c4b931c7c8d4abc46f357b4bca4a645188a218f73ab43b4b25bb90513b6035ad",
+    "app/_layout.tsx": "c20c4b012c9a8ea86dc5ce88e42a7959c24d84891b35e3be7f7ba9ddef222080",
+    "src/components/FormField.tsx": "55ec1a884fb562e3a71d9632b9cdda23edf2db297348d1da1e94289934204a63",
+    "src/components/QrScanner.tsx": "774e5c4a3389e0ef553b9e8fa76a36cb4ff93bcf95f0e3f2f4f83d2984ae73ea",
+    "src/components/AsyncActionButton.tsx": "b9955d56dac892a83ad383e4233d6a550aeea6e9d37f59781d07ee8d5494ec95",
+    "src/components/Button.tsx": "f11f28b9d213eeee0b0eb40cd9a320ae296fc7345fe000f1a2ff23a4a168a2ee",
+    "src/components/NetworkStatusBanner.tsx": "eac64d9b1d0d88b13d6b3c00a272a19ab70ea757a36f00a4f9be64a87c72a08a",
+    "src/components/ErrorBoundary.tsx": "fc374182729cfded548d173e475e91ddec874f8c0e5e613c8ad159610ea7ba98",
+    "src/components/ErrorBoundaryFallback.tsx": "4473b4d07f161d89e23d520256ab06a7e247bdc62a0218502ffaa1113db96923",
+    "src/hooks/useNetworkState.ts": "9dfb47435445cbf66735b8804daac4b8897b8a17dc3c75ad3d3ed31d8d507713",
+    "src/hooks/useTheme.ts": "9ffb85d36c87cf3911fc164dd01588914e28b5894916e95226d8bcd53c6237df",
+    "src/store/walletStore.ts": "e88bb10646e8463202b51cb23a7aa596765e6f2eb996326b178df8e09a09bd3a",
+    "src/store/appStore.ts": "ee0ab66e0d6e36e8f6a5927e6d454876292d7a71dc0b0a80d098e8469b381e23",
+    "src/features/contacts/contactStore.ts": "4d7a16ece8e88c8c57e158b380e99e60ad2e08441ee3706f8d887834771ef653",
+    "src/utils/validation.ts": "257217498089841728f4f7659b94ca008d2a98b57f01ced138d92bf4eb80b40c",
+    "package.json": "d026eccc70769351e902358cb01b8848d7574867924337f2631b4dec143f703b",
+    "package-lock.json": "61b58b1dc2f303e95f727f4a185015c5257c503c1fa01d01720765f105053186",
+    "app.json": "92f52f7f63ed29cef0c3765cb189fb67b476f4607337d5814eddd3b846777200"
+  }
+}

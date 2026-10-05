@@ -1,11 +1,26 @@
 {
   "sourcePins": {
     "baseline": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
-    "camera": "e92351b71869f6be89229511c9898e20d50369c9",
+    "camera": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
     "retry": "ddd56649099d1fc5763ef29af3bfba0363897bd6"
   },
   "nativeExecution": false,
-  "checks": {
+  "immutablePackets": {
+    "baselineControllerManifestSha256": "f64dbd53078a9e6603f68475384629a12dd38b4529707c7ecab361ead20333cf",
+    "baselineFixtureManifestSha256": "eb0c5d6364b07b6a6b983488bea2a018ed6305880ac99f7ab6f0934726a10092",
+    "vaultFixtureManifestSha256": "5f1ce139bc2e72c3077a90093edaef640adbfa1f0b39a37f050c77ddda7f7ebc",
+    "retryGapManifestSha256": "7e939e86756093a61424d5c4c16760f855d7f3e17d411b9828c95680b24a7021",
+    "primaryFixtureManifestSha256": "7c0abdee3cd2fb2a259d4ca51e09f9bf023c0ff3e7eb74fa99642f1136d653f0",
+    "cameraPacketDigestField": "43bbe48348155b2e7d0194c1bb96fa0f676e674ee15b6cf04c27de73eb2a4d46",
+    "cameraProvenanceFileSha256": "f83e75e4a3796fe0f4f1d4d276bfb0f1f9d97d9c7bd5a929b1d917f09af26025",
+    "sendProvenanceFileSha256": "294914d4ffe8a79e1d25914b8deae6d95aea38f60d1255a3bb63618724cc540a"
+  },
+  "limits": [
+    "All checks in this receipt are preparation only",
+    "Actual guest media and source/runtime/counter pins must be reviewed before any native success claim",
+    "No source branches, feature PRs, payments or live credentials changed by this preparation"
+  ],
+  "historicalParentControllerChecks": {
     "combinedTypeScriptDiagnostics": 0,
     "actualExpoRouterAndroidMetadataDiscovery": true,
     "primaryObserverMockedOriginalCallErrorResultIdentityPreserved": true,
@@ -15,18 +30,33 @@
     "cameraParserChecksPassed": 10,
     "retryParserChecksPassed": 7
   },
-  "immutablePackets": {
-    "baselineControllerManifestSha256": "f64dbd53078a9e6603f68475384629a12dd38b4529707c7ecab361ead20333cf",
-    "baselineFixtureManifestSha256": "eb0c5d6364b07b6a6b983488bea2a018ed6305880ac99f7ab6f0934726a10092",
-    "vaultFixtureManifestSha256": "5f1ce139bc2e72c3077a90093edaef640adbfa1f0b39a37f050c77ddda7f7ebc",
-    "retryGapManifestSha256": "7e939e86756093a61424d5c4c16760f855d7f3e17d411b9828c95680b24a7021",
-    "primaryFixtureManifestSha256": "7c0abdee3cd2fb2a259d4ca51e09f9bf023c0ff3e7eb74fa99642f1136d653f0",
-    "cameraPacketDigestField": "4bde70fdc53a6926faae9caebd70176c9b4e4686cb082d2daa681fb1775433ba",
-    "cameraProvenanceFileSha256": "f9cc197e42c140349f512bba690fe8f00a9fce1242c091477d5921195870acb8"
+  "historicalParentControllerSha": "4be50b4ddd56dff441da1202feafd59fc81064db",
+  "historicalCombinedFixtureReceipt": "combined-fixture-checks.json",
+  "historicalCombinedFixtureLimits": "Camera virtual type/route checks in that unchanged receipt executed on e923; no claim that those executions ran on 314. Wrapper/route bytes are unchanged, and source owner separately validated canonical 314 full types/tests/export.",
+  "checks": {
+    "changedControllerPythonSyntax": 2,
+    "changedShellSyntax": 2,
+    "syntheticSendIntegrationChecksPassed": 18,
+    "syntheticIntegrationAdbCalls": 0,
+    "cleanCameraSuccessorSourceGuard": true,
+    "all18SendSourceHashesMatchClean314": true,
+    "sendPacket7BytesMatchFrozenOwnerHandoff": true,
+    "cameraPacket6HashesMatchUpdatedMetadata": true,
+    "kvmDiagnosticScriptExactPeerReviewedBytes": true,
+    "ownerSendParserChecksPassed": 14,
+    "ownerCameraSuccessorFullTestCount": 651,
+    "nativeExecution": false,
+    "sourceDerivedOriginalUnsafeMediaAndRenderErrorExit2": true,
+    "sourceDerivedUnsafeRecordingStoppedWithoutPull": true,
+    "sourceDerivedUnsafeSuiteAndFinalCleanupHaveZeroGuestCommands": true,
+    "sourceDerivedOrdinaryFailureUsesResetAndSafeCleanupUnchanged": true,
+    "sourceDerivedUnsafeRecorderFinishAndNewSpawnGuards": true,
+    "sourceDerivedContactsTransferFailureBlocksSendLaunch": true,
+    "sourceDerivedFinalTransferSafetyIncludedBeforeAggregateExit": true
   },
-  "limits": [
-    "All checks in this receipt are preparation only",
-    "Actual guest media and source/runtime/counter pins must be reviewed before any native success claim",
-    "No source branches, feature PRs, payments or live credentials changed by this preparation"
+  "readinessLimits": [
+    "Camera loading/manual-action frame must be directly observed in original media; optional collector capture cannot waive readiness",
+    "Prior Android app run37368574667 failed7 assertions; run37373478192 stopped before boot and peers acquired no runner",
+    "Source owner full651 checks and local controller checks are not native execution"
   ]
 }

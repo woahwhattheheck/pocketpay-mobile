@@ -5,8 +5,8 @@ from pathlib import Path
 import subprocess
 import sys
 
-SOURCE_SHA = "e92351b71869f6be89229511c9898e20d50369c9"
-SOURCE_TREE = "a9bf24a0884e3fc200f4be66c1e4b1919d53dada"
+SOURCE_SHA = "314b69b9a4ac4c4328540792fcc516e6ce5c6e16"
+SOURCE_TREE = "d024fbbd8393b855508da14a0b2fba9441c7a5f4"
 FIXTURE_PATH = "app/send/__camera-native-fixture.tsx"
 FIXTURE_SHA256 = "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0"
 LEGACY_PATH = "app/(auth)/__camera-native-fixture.tsx"
