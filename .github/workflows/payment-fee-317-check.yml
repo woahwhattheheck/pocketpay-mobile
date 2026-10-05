@@ -1,0 +1,22 @@
+name: Payment fee review 317
+on:
+  push:
+    branches: ['checks/payment-review-fee-317']
+permissions:
+  contents: read
+jobs:
+  fee-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 81b765ff15f699a077b9830dcceac85b5421325b
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Focused fee state and confirmation checks
+        run: npm test -- --runInBand __tests__/PaymentFeeEstimate.test.tsx __tests__/ReviewConfirm.test.tsx
