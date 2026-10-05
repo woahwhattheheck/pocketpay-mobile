@@ -62,6 +62,20 @@ describe('AC-P1 – addPendingTransaction', () => {
   });
 });
 
+describe('AC-P1b – preserve unknown submission state', () => {
+  it('keeps an acknowledgement-lost transaction marked unknown for reconciliation', () => {
+    useWalletStore.getState().addPendingTransaction('hash-unknown', {
+      id: 'hash-unknown',
+      amount: '10.0000000',
+      status: 'unknown',
+    });
+
+    const state = useWalletStore.getState();
+    expect(state.pendingTransactions['hash-unknown'].status).toBe('unknown');
+    expect(state.transactions[0].status).toBe('unknown');
+  });
+});
+
 describe('AC-P2 – concurrent pending entries', () => {
   it('does not clobber a concurrent pending entry with a different hash', () => {
     useWalletStore.getState().addPendingTransaction('hash1', { id: 'hash1', amount: '10' });
