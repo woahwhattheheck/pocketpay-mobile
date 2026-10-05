@@ -8,8 +8,8 @@
  * Unlike TransactionListItem, this component:
  *  - Always renders with the "card" variant styling
  *  - Shows relative time since submission (e.g. "2 min ago")
+ *  - Distinguishes an acknowledgement-lost "unknown" state from ordinary pending
  *  - Does NOT offer a retry action (unsafe retry messaging is avoided)
- *  - Includes a pulsing dot indicator for visual pending status
  */
 
 import React, { useMemo } from 'react';
@@ -77,6 +77,7 @@ export const PendingTransactionItem: React.FC<PendingTransactionItemProps> = ({
 
   const tx = transaction as Record<string, any>;
   const isSent = !!currentPublicKey && tx.from === currentPublicKey;
+  const isUnknown = transaction.status === 'unknown';
 
   const label = isSent ? 'Sent XLM' : 'Received XLM';
   const formattedAmount = tx.amount
@@ -145,7 +146,10 @@ export const PendingTransactionItem: React.FC<PendingTransactionItemProps> = ({
           <Text style={styles.amountMissing}>—</Text>
         )}
         <View style={styles.statusWrapper}>
-          <StatusBadge text="Pending" tone="info" />
+          <StatusBadge
+            text={isUnknown ? 'Status unknown' : 'Pending'}
+            tone={isUnknown ? 'warning' : 'info'}
+          />
         </View>
       </View>
     </View>
