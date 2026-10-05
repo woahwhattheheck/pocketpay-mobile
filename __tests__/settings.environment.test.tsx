@@ -97,15 +97,15 @@ jest.mock('lucide-react-native', () => ({
 import SettingsScreen from '../app/(tabs)/settings';
 
 describe('Settings environment and feature visibility', () => {
-  const originalDev = global.__DEV__;
+  const originalDev = (global as any).__DEV__;
 
   afterEach(() => {
-    global.__DEV__ = originalDev;
+    (global as any).__DEV__ = originalDev;
     jest.clearAllMocks();
   });
 
   it('shows safe environment, vault capability, warnings, and current network dynamically', () => {
-    global.__DEV__ = true;
+    (global as any).__DEV__ = true;
 
     const { getByText, queryByText } = render(<SettingsScreen />);
 
@@ -121,7 +121,7 @@ describe('Settings environment and feature visibility', () => {
   });
 
   it('shows development diagnostics, feature flag states, and an experimental warning', () => {
-    global.__DEV__ = true;
+    (global as any).__DEV__ = true;
 
     const { getByText, getAllByText, getByTestId } = render(<SettingsScreen />);
 
@@ -142,7 +142,7 @@ describe('Settings environment and feature visibility', () => {
   });
 
   it('keeps feature flags and diagnostics out of production settings while retaining environment visibility', () => {
-    global.__DEV__ = false;
+    (global as any).__DEV__ = false;
 
     const { getByText, queryByText } = render(<SettingsScreen />);
 
