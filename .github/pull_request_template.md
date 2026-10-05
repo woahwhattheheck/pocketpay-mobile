@@ -54,6 +54,23 @@ requesting review. Include concise evidence below; use
 | --- | --- | --- | --- | --- |
 | <!-- Criterion --> | <!-- File, screenshot, or explanation --> | <!-- Test file or manual check --> | <!-- Docs changed, or N/A --> | Complete / Partial / Not Applicable / Not Implemented |
 
+
+## Device / Emulator Evidence
+
+<!--
+Required for UI, navigation, platform-specific, or other runtime changes.
+Record the device or emulator/simulator, OS version, and the exact flow exercised.
+For documentation-only or other non-runtime changes, select Not applicable and
+explain why.
+-->
+
+- [ ] Physical device
+- [ ] Emulator / simulator
+- [ ] Not applicable — non-runtime change (explain below)
+- **Environment / OS:** <!-- Example: Pixel 8 emulator / Android 16 -->
+- **Flow exercised:** <!-- Exact screen or interaction checked -->
+- **Result:** <!-- Pass/fail and any limitations -->
+
 ## Screenshots or Recordings
 
 <!-- Required for visible UI or flow changes. Otherwise explain why not applicable. Never include secrets or personal data. -->
