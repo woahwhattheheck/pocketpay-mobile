@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
-import { server } from '../src/services/stellar';
+import { usePaymentFeeEstimate } from '../src/features/payments/usePaymentFeeEstimate';
+import { feeEstimateMessage, feeEstimateValue } from '../src/features/payments/feeEstimate';
 import {
   View,
   Text,
@@ -91,6 +92,10 @@ export default function ReviewTransactionScreen() {
   const destination = params.destination || '';
   const amount = params.amount || '';
   const memo = params.memo || '';
+  const feeRequestKey = publicKey && destination && amount
+    ? JSON.stringify([publicKey, destination.trim(), amount.trim(), memo.trim(), getNetworkLabel()])
+    : null;
+  const { estimate: feeEstimate, retry: retryFeeEstimate } = usePaymentFeeEstimate(feeRequestKey);
 
   const destinationContact =
     destination.trim() ? resolveAddressLabel(destination.trim(), contacts) : null;
@@ -136,6 +141,8 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
+    // A missing estimate is not a zero fee and must not initiate signing.
+    if (phase !== 'review' || feeEstimate.status !== 'available') return;
     const { sendXlmTransaction } = await import('../src/services/stellar');
     const secretKey = await getSecretKey();
     if (!secretKey) {
@@ -145,7 +152,7 @@ export default function ReviewTransactionScreen() {
       });
       return;
     }
-    const fee = await server.fetchBaseFee();
+    const fee = feeEstimate.feeStroops;
     store.startReview({
       requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
       sourcePublicKey: publicKey!,
@@ -241,12 +248,10 @@ export default function ReviewTransactionScreen() {
 
     if (memo.trim()) items.push({ label: 'Memo', value: memo.trim() });
     items.push({ label: 'Network', value: getNetworkLabel() });
-    if (store.currentReview?.fee) {
-      items.push({ label: 'Fee', value: `~${store.currentReview.fee} stroops` });
-    }
+    items.push({ label: 'Estimated network fee', value: feeEstimateValue(feeEstimate) });
 
     return items;
-  }, [publicKey, destination, destinationContact, amount, memo, store.currentReview?.fee]);
+  }, [publicKey, destination, destinationContact, amount, memo, feeEstimate]);
 
   // Only the review phase offers actions; every later phase keeps the same
   // summary on screen so the user can still see what they committed to.
@@ -265,9 +270,30 @@ export default function ReviewTransactionScreen() {
         confirmLabel={isReviewPhase ? 'Sign & Send' : undefined}
         onConfirm={isReviewPhase ? handleConfirmSign : undefined}
         loadingText="Signing…"
+        confirmDisabled={feeEstimate.status !== 'available'}
+        confirmDisabledHint={feeEstimate.status !== 'available' ? feeEstimateMessage(feeEstimate) : undefined}
         cancelLabel="Back to Edit"
         onCancel={isReviewPhase ? () => router.back() : undefined}
       />
+
+      {isReviewPhase && (
+        <View
+          style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+          accessibilityLiveRegion="polite"
+        >
+          <Text style={[styles.statusSubtitle, { color: colors.textSecondary }]}>
+            {feeEstimateMessage(feeEstimate)}
+          </Text>
+          {(feeEstimate.status === 'error' || feeEstimate.status === 'unavailable') && (
+            <Button
+              title="Retry fee estimate"
+              variant="secondary"
+              onPress={retryFeeEstimate}
+              style={styles.retryButton}
+            />
+          )}
+        </View>
+      )}
 
       {/* Signer Info Card */}
       <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
