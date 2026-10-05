@@ -72,6 +72,12 @@ const MINIMAL_TX = {
   status: 'pending',
 };
 
+const UNKNOWN_TX = {
+  ...SENT_TX,
+  id: 'hash_unknown',
+  status: 'unknown' as const,
+};
+
 // ── AC-PTI1: Direction label ──────────────────────────────────────────────────
 
 describe('AC-PTI1 – direction label', () => {
@@ -141,6 +147,18 @@ describe('AC-PTI3 – status badge', () => {
       />
     );
     expect(getByText('Pending')).toBeTruthy();
+  });
+
+  it('renders an explicit unknown badge when network acknowledgement was lost', () => {
+    const { getByText, queryByText } = render(
+      <PendingTransactionItem
+        transaction={UNKNOWN_TX}
+        currentPublicKey="GPUBLIC_KEY"
+      />
+    );
+
+    expect(getByText('Status unknown')).toBeTruthy();
+    expect(queryByText('Pending')).toBeNull();
   });
 });
 
