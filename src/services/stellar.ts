@@ -1,6 +1,7 @@
 import * as StellarSdk from '@stellar/stellar-sdk';
 import * as ExpoCrypto from 'expo-crypto';
 import { Buffer } from 'buffer';
+import { extractPaymentResultCode } from '../utils/paymentErrors';
 
 export const server = new StellarSdk.Horizon.Server(
   process.env.EXPO_PUBLIC_STELLAR_HORIZON_URL || 'https://horizon-testnet.stellar.org'
@@ -210,8 +211,9 @@ export const sendXlmTransaction = async (
     const response = await server.submitTransaction(transaction);
     return response;
   } catch (error: any) {
-    console.error('Error sending transaction:', error?.response?.data || error);
-    throw new Error(error?.response?.data?.extras?.result_codes?.transaction || 'Transaction failed');
+    const resultCode = extractPaymentResultCode(error);
+    console.error('Error sending transaction:', resultCode || error?.message || 'unknown error');
+    throw new Error(resultCode || 'Transaction failed');
   }
 };
 
