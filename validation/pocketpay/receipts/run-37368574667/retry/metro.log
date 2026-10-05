@@ -1,0 +1,247 @@
+env: load .env
+env: export EXPO_PUBLIC_STELLAR_HORIZON_URL EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE EXPO_PUBLIC_SOROBAN_RPC_URL
+Starting project at /home/runner/work/pocketpay-mobile/pocketpay-mobile/subject
+Metro is running in CI mode, reloads are disabled. Remove CI=true to enable watch mode.
+Starting Metro Bundler
+Skipping TypeScript setup: EXPO_NO_TYPESCRIPT_SETUP is enabled.
+Skipping dependency validation in offline mode
+Waiting on http://localhost:8081
+Logs for your project will appear below.
+Warning: Unable to resolve manifest assets. Icons and fonts might not work. This operation was aborted.
+Android ./native321-entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android ./native321-entry.js ▓▓▓░░░░░░░░░░░░░ 21.3% ( 63/237)
+Android ./native321-entry.js ▓▓▓▓░░░░░░░░░░░░ 25.9% (234/460)
+Android ./native321-entry.js ▓▓▓▓▓░░░░░░░░░░░ 34.5% (431/747)
+Android ./native321-entry.js ▓▓▓▓▓▓▓▓░░░░░░░░ 53.7% (625/885)
+Android ./native321-entry.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 61.9% (786/999)
+Android ./native321-entry.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 66.1% ( 867/2818)
+Android ./native321-entry.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 66.1% (1150/2980)
+Android ./native321-entry.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 66.1% (2149/2980)
+Android ./native321-entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 92.6% (2894/3007)
+Android ./native321-entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░ 98.8% (3228/3290)
+Android Bundled 38172ms native321-entry.js (3495 modules)
+ LOG  [shim] crypto.getRandomValues installed: true
+ ERROR  [Error: Attempted to navigate before mounting the Root Layout component. Ensure the Root Layout component is rendering a Slot, or other navigator on the first render.] 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: _layout.tsx
+[0m [90m 183 |[39m         [33m<[39m[33mStatusBar[39m style[33m=[39m[32m"light"[39m [33m/[39m[33m>[39m
+ [90m 184 |[39m         [33m<[39m[33mLockScreen[39m[33m>[39m
+[31m[1m>[22m[39m[90m 185 |[39m           [33m<[39m[33mSlot[39m [33m/[39m[33m>[39m
+ [90m     |[39m           [31m[1m^[22m[39m
+ [90m 186 |[39m         [33m<[39m[33m/[39m[33mLockScreen[39m[33m>[39m
+ [90m 187 |[39m       [33m<[39m[33m/[39m[33m>[39m
+ [90m 188 |[39m   )[33m;[39m[0m
+Call Stack
+  RootContent (app/_layout.tsx:185:11)
+  RootLayout (app/_layout.tsx:29:9)
+ ERROR  [ErrorBoundary] 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 12 |[39m
+ [90m 13 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mNativeAttemptFixture[39m() {
+[31m[1m>[22m[39m[90m 14 |[39m   [36mconst[39m router [33m=[39m useRouter()[33m;[39m
+ [90m    |[39m                           [31m[1m^[22m[39m
+ [90m 15 |[39m   [36mconst[39m { outcome [33m=[39m [32m'unknown'[39m } [33m=[39m useLocalSearchParams[33m<[39m{ outcome[33m?[39m[33m:[39m string }[33m>[39m()[33m;[39m
+ [90m 16 |[39m   useEffect(() [33m=>[39m {
+ [90m 17 |[39m     [36mconst[39m fixture [33m=[39m globalThis[33m.[39m__pocket321NativeFixture[33m;[39m[0m
+Call Stack
+  NativeAttemptFixture (app/__payment-retry-attempt-native-fixture.tsx:14:27)
+  LockScreen (src/components/LockScreen.tsx:13:65)
+  RootContent (app/_layout.tsx:35:97)
+  ErrorBoundary (src/components/ErrorBoundary.tsx:16:27) 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: _layout.tsx
+[0m [90m 26 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mRootLayout[39m() {
+ [90m 27 |[39m   [36mreturn[39m (
+[31m[1m>[22m[39m[90m 28 |[39m       [33m<[39m[33mErrorBoundary[39m[33m>[39m
+ [90m    |[39m       [31m[1m^[22m[39m
+ [90m 29 |[39m         [33m<[39m[33mRootContent[39m [33m/[39m[33m>[39m
+ [90m 30 |[39m       [33m<[39m[33m/[39m[33mErrorBoundary[39m[33m>[39m
+ [90m 31 |[39m   )[33m;[39m[0m
+Call Stack
+  RootLayout (app/_layout.tsx:28:7)
+Warning: Unable to resolve manifest assets. Icons and fonts might not work. This operation was aborted.
+Android ./native321-entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 244ms native321-entry.js (1 module)
+ LOG  [shim] crypto.getRandomValues installed: true
+ ERROR  [Error: Attempted to navigate before mounting the Root Layout component. Ensure the Root Layout component is rendering a Slot, or other navigator on the first render.] 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: _layout.tsx
+[0m [90m 183 |[39m         [33m<[39m[33mStatusBar[39m style[33m=[39m[32m"light"[39m [33m/[39m[33m>[39m
+ [90m 184 |[39m         [33m<[39m[33mLockScreen[39m[33m>[39m
+[31m[1m>[22m[39m[90m 185 |[39m           [33m<[39m[33mSlot[39m [33m/[39m[33m>[39m
+ [90m     |[39m           [31m[1m^[22m[39m
+ [90m 186 |[39m         [33m<[39m[33m/[39m[33mLockScreen[39m[33m>[39m
+ [90m 187 |[39m       [33m<[39m[33m/[39m[33m>[39m
+ [90m 188 |[39m   )[33m;[39m[0m
+Call Stack
+  RootContent (app/_layout.tsx:185:11)
+  RootLayout (app/_layout.tsx:29:9)
+ ERROR  [ErrorBoundary] 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 12 |[39m
+ [90m 13 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mNativeAttemptFixture[39m() {
+[31m[1m>[22m[39m[90m 14 |[39m   [36mconst[39m router [33m=[39m useRouter()[33m;[39m
+ [90m    |[39m                           [31m[1m^[22m[39m
+ [90m 15 |[39m   [36mconst[39m { outcome [33m=[39m [32m'unknown'[39m } [33m=[39m useLocalSearchParams[33m<[39m{ outcome[33m?[39m[33m:[39m string }[33m>[39m()[33m;[39m
+ [90m 16 |[39m   useEffect(() [33m=>[39m {
+ [90m 17 |[39m     [36mconst[39m fixture [33m=[39m globalThis[33m.[39m__pocket321NativeFixture[33m;[39m[0m
+Call Stack
+  NativeAttemptFixture (app/__payment-retry-attempt-native-fixture.tsx:14:27)
+  LockScreen (src/components/LockScreen.tsx:13:65)
+  RootContent (app/_layout.tsx:35:97)
+  ErrorBoundary (src/components/ErrorBoundary.tsx:16:27) 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: _layout.tsx
+[0m [90m 26 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mRootLayout[39m() {
+ [90m 27 |[39m   [36mreturn[39m (
+[31m[1m>[22m[39m[90m 28 |[39m       [33m<[39m[33mErrorBoundary[39m[33m>[39m
+ [90m    |[39m       [31m[1m^[22m[39m
+ [90m 29 |[39m         [33m<[39m[33mRootContent[39m [33m/[39m[33m>[39m
+ [90m 30 |[39m       [33m<[39m[33m/[39m[33mErrorBoundary[39m[33m>[39m
+ [90m 31 |[39m   )[33m;[39m[0m
+Call Stack
+  RootLayout (app/_layout.tsx:28:7)
+Warning: Unable to resolve manifest assets. Icons and fonts might not work. This operation was aborted.
+Android ./native321-entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 166ms native321-entry.js (1 module)
+ LOG  [shim] crypto.getRandomValues installed: true
+ ERROR  [Error: Attempted to navigate before mounting the Root Layout component. Ensure the Root Layout component is rendering a Slot, or other navigator on the first render.] 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: _layout.tsx
+[0m [90m 183 |[39m         [33m<[39m[33mStatusBar[39m style[33m=[39m[32m"light"[39m [33m/[39m[33m>[39m
+ [90m 184 |[39m         [33m<[39m[33mLockScreen[39m[33m>[39m
+[31m[1m>[22m[39m[90m 185 |[39m           [33m<[39m[33mSlot[39m [33m/[39m[33m>[39m
+ [90m     |[39m           [31m[1m^[22m[39m
+ [90m 186 |[39m         [33m<[39m[33m/[39m[33mLockScreen[39m[33m>[39m
+ [90m 187 |[39m       [33m<[39m[33m/[39m[33m>[39m
+ [90m 188 |[39m   )[33m;[39m[0m
+Call Stack
+  RootContent (app/_layout.tsx:185:11)
+  RootLayout (app/_layout.tsx:29:9)
+ ERROR  [ErrorBoundary] 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 12 |[39m
+ [90m 13 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mNativeAttemptFixture[39m() {
+[31m[1m>[22m[39m[90m 14 |[39m   [36mconst[39m router [33m=[39m useRouter()[33m;[39m
+ [90m    |[39m                           [31m[1m^[22m[39m
+ [90m 15 |[39m   [36mconst[39m { outcome [33m=[39m [32m'unknown'[39m } [33m=[39m useLocalSearchParams[33m<[39m{ outcome[33m?[39m[33m:[39m string }[33m>[39m()[33m;[39m
+ [90m 16 |[39m   useEffect(() [33m=>[39m {
+ [90m 17 |[39m     [36mconst[39m fixture [33m=[39m globalThis[33m.[39m__pocket321NativeFixture[33m;[39m[0m
+Call Stack
+  NativeAttemptFixture (app/__payment-retry-attempt-native-fixture.tsx:14:27)
+  LockScreen (src/components/LockScreen.tsx:13:65)
+  RootContent (app/_layout.tsx:35:97)
+  ErrorBoundary (src/components/ErrorBoundary.tsx:16:27) 
+
+Code: __payment-retry-attempt-native-fixture.tsx
+[0m [90m 23 |[39m     useSignerStore[33m.[39msetState({ activeSubmission[33m:[39m [36mnull[39m[33m,[39m unknownSubmission[33m:[39m [36mnull[39m })[33m;[39m
+ [90m 24 |[39m     useSignerStore[33m.[39mgetState()[33m.[39mreset()[33m;[39m
+[31m[1m>[22m[39m[90m 25 |[39m     router[33m.[39mreplace({ pathname[33m:[39m [32m'/review-transaction'[39m[33m,[39m params[33m:[39m {
+ [90m    |[39m                   [31m[1m^[22m[39m
+ [90m 26 |[39m       destination[33m:[39m fixture[33m.[39mdestinationPublicKey[33m,[39m amount[33m:[39m [32m'1.25'[39m[33m,[39m memo[33m:[39m [32m'Dummy native fixture'[39m[33m,[39m
+ [90m 27 |[39m     } })[33m;[39m
+ [90m 28 |[39m   }[33m,[39m [outcome[33m,[39m router])[33m;[39m[0m
+Call Stack
+  useEffect$argument_0 (app/__payment-retry-attempt-native-fixture.tsx:25:19) 
+
+Code: _layout.tsx
+[0m [90m 26 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mRootLayout[39m() {
+ [90m 27 |[39m   [36mreturn[39m (
+[31m[1m>[22m[39m[90m 28 |[39m       [33m<[39m[33mErrorBoundary[39m[33m>[39m
+ [90m    |[39m       [31m[1m^[22m[39m
+ [90m 29 |[39m         [33m<[39m[33mRootContent[39m [33m/[39m[33m>[39m
+ [90m 30 |[39m       [33m<[39m[33m/[39m[33mErrorBoundary[39m[33m>[39m
+ [90m 31 |[39m   )[33m;[39m[0m
+Call Stack
+  RootLayout (app/_layout.tsx:28:7)

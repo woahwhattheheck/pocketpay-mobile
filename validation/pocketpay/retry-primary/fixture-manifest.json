@@ -1,0 +1,30 @@
+{
+  "sourceCommit": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "unchangedEntryBootstrap": true,
+  "fixtureFilesSha256": {
+    "native-attempt-route.tsx": "c632b3e77da6ec54a35e394ca146e9c6c99d19cc1c81e14d73d59fa1392bc062",
+    "native321-bootstrap.js": "4c73e73c90c7312f4c0a21c02085d2a45495369e2fc3831c5f8e4a4ec48802be",
+    "native321-entry.js": "c9cc4328dea4c4df09d62f0694911b0e0049f5ed6ec2544954c129bd243ab5c6"
+  },
+  "sourceFilesSha256": {
+    "app/_layout.tsx": "c20c4b012c9a8ea86dc5ce88e42a7959c24d84891b35e3be7f7ba9ddef222080",
+    "app/review-transaction.tsx": "afdeeafe5cd74239b85724cb9b21130fb5c8dcd8dea8bf5c001f0b42a969942e",
+    "app/payment-retry.tsx": "1db99aef0006000a7d12363cee58a4d81aec052fc6092f49bdd164db759ab263",
+    "src/store/signerStore.ts": "1a6ff8be474889b8422ffdd1d494fa2b402ff1381ef0db69f6e014add3ccb336",
+    "src/services/stellar.ts": "4f3f34d6ddfbeaa1a50930d7c2c98f5eeb883b36aa7d3f884ec9858c4cd41fa4"
+  },
+  "observedFailure": {
+    "run": "37368574667",
+    "controller": "73476e199400a369fbb591082505ef0d3a38173c",
+    "nativeOverlay": "Validation route router.replace before Root Layout mounted",
+    "fixtureRouteLine": 25,
+    "primaryNativeCasesPassed": 0
+  },
+  "checks": {
+    "virtualTypeScriptDiagnostics": 0,
+    "independentSourceReview": "rip302_sdk_audit confirms real root key + ref readiness guard, lifecycle listeners, one navigation; no product repair indicated",
+    "nativeExecutionOfReplacement": false
+  },
+  "custody": "Isolated validation only; exclude from product and PR commits"
+}

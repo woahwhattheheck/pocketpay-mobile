@@ -1,0 +1,16 @@
+{
+  "pinnedSourceFiles": 15,
+  "originalFixtureFilesByteIdentical": 3,
+  "jsSyntaxChecks": 3,
+  "virtualTsxFiles": 2,
+  "typeScriptDiagnostics": 0,
+  "androidRouteMetadataResolved": true,
+  "productSourceWrites": false,
+  "nativeUiExecution": false,
+  "pythonSyntaxFiles": 3,
+  "pureParserTestsPassed": 7,
+  "setupExecuted": false,
+  "guestUiScriptExecuted": false,
+  "trackedSourceDiffEmpty": true,
+  "peerReview": "Root and helper reviewed bounded read-only observer/readiness/details/help/Activity scope; final selector/media/ordinary-failure continuation corrections included."
+}

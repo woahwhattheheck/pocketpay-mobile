@@ -1,0 +1,26 @@
+{
+  "sourceCommit": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "sourceFiles": {
+    "app/payment-retry.tsx": "1db99aef0006000a7d12363cee58a4d81aec052fc6092f49bdd164db759ab263",
+    "app/_layout.tsx": "c20c4b012c9a8ea86dc5ce88e42a7959c24d84891b35e3be7f7ba9ddef222080",
+    "app/(tabs)/history.tsx": "e974ea566d587355139682834ce4297c828da7a8afdb55a8e4f0aafa6ab39c3d",
+    "src/services/stellar.ts": "4f3f34d6ddfbeaa1a50930d7c2c98f5eeb883b36aa7d3f884ec9858c4cd41fa4",
+    "src/store/signerStore.ts": "1a6ff8be474889b8422ffdd1d494fa2b402ff1381ef0db69f6e014add3ccb336",
+    "src/store/walletStore.ts": "e88bb10646e8463202b51cb23a7aa596765e6f2eb996326b178df8e09a09bd3a",
+    "src/store/appStore.ts": "ee0ab66e0d6e36e8f6a5927e6d454876292d7a71dc0b0a80d098e8469b381e23",
+    "src/store/appLockStore.ts": "979c1a0f35f5c89c3e23262a90ce578ace20fc03ac7b2f3ed8decd9eb4c8799e",
+    "src/types/signer.ts": "3ce84d94520a7e3f27645d3fa4d3be9683f6f666d183fb01d187ad907bdac222",
+    "src/features/payments/submissionOutcome.ts": "fcfb3ee86b4e0c72341ccb6085218706038cb8d381bb1ec0b1321834195acda9",
+    "src/components/Button.tsx": "f11f28b9d213eeee0b0eb40cd9a320ae296fc7345fe000f1a2ff23a4a168a2ee",
+    "src/components/ReviewConfirm.tsx": "3b176c49ca61bdd0a3e2afe05ca80f90b229847c028e8eb2b0b9048fc4cb92c1",
+    "src/components/ScreenHeader.tsx": "60c40b161725264f4b48d0acd162a17152ef0473cb97b1ce624930893b16fa27",
+    "shim.js": "ca04661f832dd5c516b67e4d1f32eba5fcc5b36c5012ae50876a5125570c5cf1",
+    "package.json": "d026eccc70769351e902358cb01b8848d7574867924337f2631b4dec143f703b"
+  },
+  "originalFixtureSha256": {
+    "fixtures/native-fixture.tsx": "6fe32e79e5dc9c76144b28c9bf5a00bb4ee193e31a8cd205ac700aa964f090f9",
+    "fixtures/native321-entry.js": "c9cc4328dea4c4df09d62f0694911b0e0049f5ed6ec2544954c129bd243ab5c6",
+    "fixtures/native321-bootstrap.js": "4c73e73c90c7312f4c0a21c02085d2a45495369e2fc3831c5f8e4a4ec48802be"
+  }
+}

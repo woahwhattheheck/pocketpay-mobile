@@ -1,4 +1,6 @@
-/** Validation-only launch route. Production screens and camera are unchanged.
+/** Validation-only launch route: app/send/__camera-native-fixture.tsx.
+ * The existing RootLayout send exemption permits this missing-wallet fixture.
+ * Production screens, permission hook and camera are unchanged.
  * Native Android permission dialogs and the camera's real no-hardware mount
  * failure drive the UI. No store, permission hook, camera or transport mocks.
  * Never include this route in the submitted feature commits.

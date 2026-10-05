@@ -1,0 +1,69 @@
+{
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+  "fixtureFilesSha256": {
+    "native-baseline-entry.js": "c05e8419afff4e306497d860c9e438822aa92b419a773b7e632bd03ec3dda625",
+    "native-vault-bootstrap.js": "906ef0b16031f8df4f28e1f484e856a2c8f621417cb3a44b1cbc991fede11548",
+    "native-baseline-bootstrap.js": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+    "native-baseline-cases.tsx": "8fdf745b27d3522418c74528be1d3c2001722d27debaac71907613fd63661551",
+    "native-baseline-observation-cases.tsx": "e44271dc1f25e7e6eb172391f363e90088ad9bb83f5c1c5c726b87141ab1ff13",
+    "native-baseline-route.tsx": "e9b267780e9ff5468cfec696add4b7848133c94404de350e09accdcb8c57ec5f",
+    "setup-validation-checkout.py": "27f216fcd8aee88110f2b5cb899e5de6ee422617a8fa50cd9088dc54964f4adc",
+    "validate-fixture.js": "bfd3caf428b0609049220777e782be6a0e4cf563139d766829c5673f79053595",
+    "source-manifest.json": "e8d2305259e7eed3137ea0f9c49b184a9e5b4dd86f77271239cc066eabb11ce2",
+    "native-cases-source-manifest.json": "85f804d2ddddb68eb641be98d56980219a02a7e5dba6205c065f8453d639d88d",
+    "README.md": "d62306b136feea1e7324633899f3a3c4c9b1e0d6ae0d46dbc6416b9495e09f3f",
+    "native-cases-README.md": "bf4e2a7176e4570dc09cc4e1990cdcd00eea1e44defe1c2b3a5e79956e5d084e",
+    "preparation-check.json": "e239adde328b55cc7a6da830b5625060d8799bef5c5803a7275975745d9f4463",
+    "setup-check.json": "296d38e7305465c994f1ba8ce53f97ab78444c465bec862af52d77183c595b97"
+  },
+  "setup": {
+    "script": "setup-validation-checkout.py",
+    "temporaryEntry": "./native-baseline-entry.js",
+    "temporaryRoute": "app/send/__baseline-native-fixture.tsx",
+    "filesAdded": 6,
+    "pinnedProductionFiles": 30
+  },
+  "checks": {
+    "pinnedProductionFilesVerified": 30,
+    "jsSyntaxFilesPassed": 3,
+    "virtualFixtureFiles": 3,
+    "typeScriptDiagnostics": 0,
+    "androidMetadataRoutes": [
+      {
+        "route": "send",
+        "contextKey": "./send.tsx"
+      },
+      {
+        "route": "send/__baseline-native-fixture",
+        "contextKey": "./send/__baseline-native-fixture.tsx"
+      }
+    ],
+    "productSourceWrites": false,
+    "nativeUiExecution": false
+  },
+  "setupChecks": {
+    "installedFixtureFiles": 6,
+    "sourceFilesVerified": 30,
+    "productionFilesUnchangedExceptTemporaryPackageMain": true,
+    "packageMain": "./native-baseline-entry.js",
+    "packageBackupExact": true,
+    "routeInstalled": true,
+    "fixtureSourceProductCheckoutEdits": false,
+    "repeatedInstallRefused": true,
+    "nativeExecution": false
+  },
+  "custody": "Dedicated manual validation controller branches and lab bundles may retain the fixture. Exclude from product/prerequisite/feature branches and production app distributions.",
+  "nativeStatus": "Pending; no fixture device execution has occurred.",
+  "cases": [
+    "history missing/hydrated/missing stable host",
+    "create masked dummy generation only",
+    "import empty/invalid only",
+    "sign real dialog and distinct review route entries only",
+    "picker actual search and optional edit callback",
+    "diagnostics actual dev readiness probe",
+    "actual ErrorBoundaryFallback Share Diagnostics then native OS cancel"
+  ],
+  "legacyContactStorageScope": "Unreferenced module/type contract repair; no app boot or native migration claim.",
+  "cleanup": "Force-stop process, restore original package.json and remove fixture files/backup, then restart normal entry. The baseline observer and wrappers are process-lifetime."
+}

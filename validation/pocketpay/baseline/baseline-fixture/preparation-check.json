@@ -1,0 +1,18 @@
+{
+  "pinnedProductionFilesVerified": 30,
+  "jsSyntaxFilesPassed": 3,
+  "virtualFixtureFiles": 3,
+  "typeScriptDiagnostics": 0,
+  "androidMetadataRoutes": [
+    {
+      "route": "send",
+      "contextKey": "./send.tsx"
+    },
+    {
+      "route": "send/__baseline-native-fixture",
+      "contextKey": "./send/__baseline-native-fixture.tsx"
+    }
+  ],
+  "productSourceWrites": false,
+  "nativeUiExecution": false
+}

@@ -1,0 +1,32 @@
+{
+  "sourcePins": {
+    "baseline": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+    "camera": "e92351b71869f6be89229511c9898e20d50369c9",
+    "retry": "ddd56649099d1fc5763ef29af3bfba0363897bd6"
+  },
+  "nativeExecution": false,
+  "checks": {
+    "combinedTypeScriptDiagnostics": 0,
+    "actualExpoRouterAndroidMetadataDiscovery": true,
+    "primaryObserverMockedOriginalCallErrorResultIdentityPreserved": true,
+    "primaryObserverSecretProviderPayloadSignatureNotLogged": true,
+    "primaryObserverMockedWriteGuardRejects": true,
+    "primaryExactInteractiveSelectorChecksPassed": 5,
+    "cameraParserChecksPassed": 10,
+    "retryParserChecksPassed": 7
+  },
+  "immutablePackets": {
+    "baselineControllerManifestSha256": "f64dbd53078a9e6603f68475384629a12dd38b4529707c7ecab361ead20333cf",
+    "baselineFixtureManifestSha256": "eb0c5d6364b07b6a6b983488bea2a018ed6305880ac99f7ab6f0934726a10092",
+    "vaultFixtureManifestSha256": "5f1ce139bc2e72c3077a90093edaef640adbfa1f0b39a37f050c77ddda7f7ebc",
+    "retryGapManifestSha256": "7e939e86756093a61424d5c4c16760f855d7f3e17d411b9828c95680b24a7021",
+    "primaryFixtureManifestSha256": "7c0abdee3cd2fb2a259d4ca51e09f9bf023c0ff3e7eb74fa99642f1136d653f0",
+    "cameraPacketDigestField": "4bde70fdc53a6926faae9caebd70176c9b4e4686cb082d2daa681fb1775433ba",
+    "cameraProvenanceFileSha256": "f9cc197e42c140349f512bba690fe8f00a9fce1242c091477d5921195870acb8"
+  },
+  "limits": [
+    "All checks in this receipt are preparation only",
+    "Actual guest media and source/runtime/counter pins must be reviewed before any native success claim",
+    "No source branches, feature PRs, payments or live credentials changed by this preparation"
+  ]
+}

@@ -1,0 +1,2 @@
+locator=/usr/local/lib/android/sdk/emulator/emulator
+exit=0

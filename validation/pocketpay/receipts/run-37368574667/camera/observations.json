@@ -1,0 +1,30 @@
+{
+  "mode": "camera",
+  "source_sha": "e92351b71869f6be89229511c9898e20d50369c9",
+  "camera_mocked": false,
+  "retry_store_and_horizon_transport_controlled": false,
+  "live_payment_transport": false,
+  "cases": [
+    {
+      "name": "scan-denied-manual",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Camera Permission Required',)"
+    },
+    {
+      "name": "scan-unavailable-manual",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Camera Permission Required',)"
+    },
+    {
+      "name": "contacts-unavailable-manual",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Scan QR',)"
+    }
+  ],
+  "optional_observations": [
+    {
+      "name": "transient-loading",
+      "result": "not asserted; only retained raw images may establish observation"
+    }
+  ]
+}

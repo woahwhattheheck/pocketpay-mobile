@@ -1,0 +1,17 @@
+{
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+  "sourceFiles": {
+    "app/(tabs)/vault.tsx": "947facd10953265f36a3a5a34359eab02e6a369bf32a49b5c07bcc94bf03a70f",
+    "src/hooks/useVaultAction.ts": "8e724a9b02c31fd7d5ecfe86dafe58d4e9980e01ffd7ce10af247a0e278bfc14",
+    "src/components/VaultConfirmModal.tsx": "c70d70bd467137ed3d5c69dc95703914e35fcb84d22c276839af899bb2e86e59",
+    "src/components/VaultReceiptModal.tsx": "02a7f90100ead6049c81c0605c3f3d23820c5aeedee822619076bed0a1f29e05",
+    "src/hooks/useVaultAvailability.ts": "dc2d54dff8e608a1019fad96350e1764dcfc8d650588d491b892e3e2a0083f15",
+    "src/hooks/useVaultCapabilities.ts": "c466b3be3a0337cf0a8ce31a034e924cb47ad611b9d899cca490fde85b70d736",
+    "src/hooks/useNetworkState.ts": "9dfb47435445cbf66735b8804daac4b8897b8a17dc3c75ad3d3ed31d8d507713",
+    "src/hooks/useOnlineStatus.ts": "f1fb8dfed2c9f8a5d6e166811384fae3813e44db9b2f0943f43c8e35511a7e14",
+    "src/store/vaultStore.ts": "5d71f79cbcccedb765c455e91e87e5f450a4227079658c76db28705679141ad7",
+    "src/features/vault/vaultStore.ts": "dcd62cd808c6953ecf5b6ae0b59ae1ae2ae3ee197bf34c01bfe7bce691c2667e",
+    "app/_layout.tsx": "c20c4b012c9a8ea86dc5ce88e42a7959c24d84891b35e3be7f7ba9ddef222080"
+  }
+}

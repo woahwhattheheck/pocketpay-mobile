@@ -1,0 +1,38 @@
+{
+  "sourceSha": "e92351b71869f6be89229511c9898e20d50369c9",
+  "sourceTree": "a9bf24a0884e3fc200f4be66c1e4b1919d53dada",
+  "sourceFilesSha256": {
+    "app/scan.tsx": "241f97b4596f91524546705e2ea3528c1ef8580326e0ab1815a2d10a2b7f9098",
+    "app/contacts.tsx": "d323e9db5a011768c15bb8f754f9453789148526431f4e86fa3af8066d99c774",
+    "app/send.tsx": "c4b931c7c8d4abc46f357b4bca4a645188a218f73ab43b4b25bb90513b6035ad",
+    "app/_layout.tsx": "c20c4b012c9a8ea86dc5ce88e42a7959c24d84891b35e3be7f7ba9ddef222080",
+    "src/components/QrScanner.tsx": "d80ade67a92e952783d180113f5236975cb49c2ae556fa35b32d0f53f24d17c4",
+    "src/components/Button.tsx": "f11f28b9d213eeee0b0eb40cd9a320ae296fc7345fe000f1a2ff23a4a168a2ee",
+    "package.json": "d026eccc70769351e902358cb01b8848d7574867924337f2631b4dec143f703b",
+    "package-lock.json": "61b58b1dc2f303e95f727f4a185015c5257c503c1fa01d01720765f105053186"
+  },
+  "originalControllerInputsSha256": {
+    "ui.py": "0e9c8470dbd5c5ca39f6fb4f2e7b5bd787432a32cddaca86308df018309dbffd",
+    "prepare.sh": "055fc23512157e8583ac3d516704a76eba2c53a380c9fa376a59b52d44cf6bfc",
+    "run.sh": "247c82957ff7cfbed9afcdbf514a8ae0cb52dc19b452ee4d677b4b16212112f9",
+    "README.md": "5e982f52f173cf81dda4d75cd462cb4ba28a1e7411d540c06bb43c7a3f2e34a5",
+    "fixtures/camera-native-fixture.tsx": "fcbd08490cb4705425cc9a54cc8c2f8b77e0266f796e05459fbcab69fac6c4e7"
+  },
+  "packetFilesSha256": {
+    "README.md": "ca335cbdac50a99e28767fba632eb727f9ca72a43e796aa7bf250274dc2fb1cf",
+    "camera_followup.py": "4d93f54dc1723a5bcef1e19d145e3d2fc1f66fa2693f81ac9c2ff62225e96345",
+    "verify_checkout.py": "4647134b941998791f2c5dd857a63042b67e4b2bc95d2f500a6f38900d4a4479",
+    "setup_validation_checkout.py": "8f77568d301e68675bfb50d62a0a89930f8643e7caccd6e230fec5f1a821d066",
+    "test_parser.py": "4a470c4009dc3d4d23851cc6704eb52163c4cf3ad5fca890f4deec0db4824fbb",
+    "fixtures/camera-native-fixture.tsx": "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0"
+  },
+  "packetSha256": "4bde70fdc53a6926faae9caebd70176c9b4e4686cb082d2daa681fb1775433ba",
+  "nativeExecution": false,
+  "productSourceWrites": false,
+  "githubRefOrDispatchWrites": false,
+  "supersedesPacketSha256": "2fbf8daa68696dc255ae42b27ab4eae145814cab01611c9770d98d7168f547a6",
+  "collectorSuites": [
+    "primary-and-user-fixed",
+    "contacts-first-denial"
+  ]
+}

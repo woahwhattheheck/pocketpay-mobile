@@ -1,0 +1,62 @@
+{
+  "checks": [
+    {
+      "mode": "camera",
+      "sourceSha": "e92351b71869f6be89229511c9898e20d50369c9",
+      "sourceTree": "a9bf24a0884e3fc200f4be66c1e4b1919d53dada",
+      "virtualFixtureFiles": 1,
+      "typeScriptDiagnostics": 0,
+      "androidMetadataRoutes": [
+        {
+          "route": "send/__camera-native-fixture",
+          "contextKey": "./send/__camera-native-fixture.tsx"
+        }
+      ],
+      "productSourceWrites": false,
+      "nativeUiExecution": false
+    },
+    {
+      "mode": "baseline",
+      "sourceSha": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+      "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+      "virtualFixtureFiles": 4,
+      "typeScriptDiagnostics": 0,
+      "androidMetadataRoutes": [
+        {
+          "route": "__vault-native-fixture",
+          "contextKey": "./__vault-native-fixture.tsx"
+        },
+        {
+          "route": "send/__baseline-native-fixture",
+          "contextKey": "./send/__baseline-native-fixture.tsx"
+        }
+      ],
+      "productSourceWrites": false,
+      "nativeUiExecution": false
+    },
+    {
+      "mode": "retry",
+      "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+      "virtualFixtureFiles": 3,
+      "typeScriptDiagnostics": 0,
+      "androidMetadataRoutes": [
+        {
+          "route": "__payment-retry-attempt-native-fixture",
+          "contextKey": "./__payment-retry-attempt-native-fixture.tsx"
+        },
+        {
+          "route": "__retry-gap-observer-native-fixture",
+          "contextKey": "./__retry-gap-observer-native-fixture.tsx"
+        },
+        {
+          "route": "send/__retry-gap-native-fixture",
+          "contextKey": "./send/__retry-gap-native-fixture.tsx"
+        }
+      ],
+      "productSourceWrites": false,
+      "nativeUiExecution": false
+    }
+  ],
+  "nativeUiExecution": false
+}

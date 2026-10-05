@@ -1,0 +1,82 @@
+{
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+  "officialExpoGoSha256": "d72ed2cec15bf029c942d1cb70c933976ec83048e00d130bbfa6bad8cf22331a",
+  "controllerFilesSha256": {
+    "README.md": "0a0ba2cb11b2fc5e475814f9f359757862ab228d73df2da6d9c24ab9668d61ed",
+    "baseline-fixture/README.md": "d62306b136feea1e7324633899f3a3c4c9b1e0d6ae0d46dbc6416b9495e09f3f",
+    "baseline-fixture/fixture-manifest.json": "eb0c5d6364b07b6a6b983488bea2a018ed6305880ac99f7ab6f0934726a10092",
+    "baseline-fixture/native-baseline-bootstrap.js": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+    "baseline-fixture/native-baseline-cases.tsx": "8fdf745b27d3522418c74528be1d3c2001722d27debaac71907613fd63661551",
+    "baseline-fixture/native-baseline-entry.js": "c05e8419afff4e306497d860c9e438822aa92b419a773b7e632bd03ec3dda625",
+    "baseline-fixture/native-baseline-observation-cases.tsx": "e44271dc1f25e7e6eb172391f363e90088ad9bb83f5c1c5c726b87141ab1ff13",
+    "baseline-fixture/native-baseline-route.tsx": "e9b267780e9ff5468cfec696add4b7848133c94404de350e09accdcb8c57ec5f",
+    "baseline-fixture/native-cases-README.md": "bf4e2a7176e4570dc09cc4e1990cdcd00eea1e44defe1c2b3a5e79956e5d084e",
+    "baseline-fixture/native-cases-source-manifest.json": "85f804d2ddddb68eb641be98d56980219a02a7e5dba6205c065f8453d639d88d",
+    "baseline-fixture/native-vault-bootstrap.js": "906ef0b16031f8df4f28e1f484e856a2c8f621417cb3a44b1cbc991fede11548",
+    "baseline-fixture/preparation-check.json": "e239adde328b55cc7a6da830b5625060d8799bef5c5803a7275975745d9f4463",
+    "baseline-fixture/setup-check.json": "296d38e7305465c994f1ba8ce53f97ab78444c465bec862af52d77183c595b97",
+    "baseline-fixture/setup-validation-checkout.py": "27f216fcd8aee88110f2b5cb899e5de6ee422617a8fa50cd9088dc54964f4adc",
+    "baseline-fixture/source-manifest.json": "e8d2305259e7eed3137ea0f9c49b184a9e5b4dd86f77271239cc066eabb11ce2",
+    "baseline-fixture/validate-fixture.js": "bfd3caf428b0609049220777e782be6a0e4cf563139d766829c5673f79053595",
+    "baseline_cases.py": "1dcd01418616804a9051d0b1d33561accc25127c3bb4308c5cdd36f6b50417a1",
+    "prepare-baseline.sh": "33aa57b7b5d949424175f365327dae19eda0d3325181214aab71f74fbdd56b13",
+    "retain-final.py": "e16b664d782b012aec91de72b4e3ec367686686aa847bc6e028fa4d170e7f987",
+    "run-baseline.sh": "0c73a424e33eb5e9e489c13043042793ecf2404f5cbb60431c0ee92cd36198d7",
+    "ui_baseline.py": "8a01edfc1004150ac466fdfe3b6b38d279139c21330b8a7e1da16e8152090962",
+    "ui_helpers.py": "a000a44d75b37d3b278e2fc355bf8def958e3c68b2d22e25b6866de7fcab87e7",
+    "vault-fixture/README.md": "981ebfb817835c9a030a3358b1e68593b10e027fefc11dc9e47da7de2ec92b26",
+    "vault-fixture/fixture-manifest.json": "5f1ce139bc2e72c3077a90093edaef640adbfa1f0b39a37f050c77ddda7f7ebc",
+    "vault-fixture/native-vault-bootstrap.js": "906ef0b16031f8df4f28e1f484e856a2c8f621417cb3a44b1cbc991fede11548",
+    "vault-fixture/native-vault-entry.js": "c99b5efe867ec325a54b0db0993de20fb01c1d64dc83108942a398ccd182da2f",
+    "vault-fixture/native-vault-route.tsx": "42ac802da48edf55d2982438b58ed0a5b626b0425e482a3162fcc48910787614",
+    "vault-fixture/setup-validation-checkout.py": "9aaef7e03e4221c4fd74cd8cbf6c70185c33a879543a99da04452d733e6dbf4d",
+    "vault-fixture/source-manifest.json": "7fe0631b6c7f00849c13c4be30a2163ffdb97e90e972b5359b2bf32e7ff8d750"
+  },
+  "preparationChecks": {
+    "bashSyntax": true,
+    "pythonAstFiles": 4,
+    "composedUiMatchesSources": true,
+    "baselineFixtureManifestSha256": "eb0c5d6364b07b6a6b983488bea2a018ed6305880ac99f7ab6f0934726a10092",
+    "vaultFixtureManifestSha256": "5f1ce139bc2e72c3077a90093edaef640adbfa1f0b39a37f050c77ddda7f7ebc",
+    "everyImmutableFixtureFileVerified": true,
+    "selectorChecks": {
+      "count": 6,
+      "cases": [
+        "disabled parent with enabled child rejected",
+        "exact enabled clickable parent accepted",
+        "duplicate action rejected",
+        "explicit Confirm Lock lower duplicate selected",
+        "offscreen action rejected",
+        "actual captured Expo developer sheet action rejected"
+      ],
+      "deviceExecution": false
+    },
+    "knownNativeOverlayChecks": {
+      "observedRenderErrorXmlRejectedForActions": true,
+      "failureOnlyCaptureAllowance": true,
+      "diagnosticSentenceNotMisclassifiedAsOverlay": true,
+      "nativeExecution": false
+    }
+  },
+  "custody": "Local isolated controller proposal; no GitHub publication/dispatch or product writes",
+  "nativeExecution": false,
+  "independentReview": {
+    "agent": "/root/slack_backlog",
+    "result": "No blocker in explicitly stated baseline scope after immutable manifests/product hashes/guards/counters/native Share cancellation/sheet/action review",
+    "nativeStatus": "Actual guest execution required"
+  },
+  "plannedCases": [
+    "History missing/hydrated/missing same host",
+    "Masked dummy Create generation",
+    "Empty/invalid Import only",
+    "Real Sign/Cancel/Review navigation and return, no submit",
+    "Missing Sign params",
+    "Real picker search/selection/optional edit rendering",
+    "Real nonsecret Diagnostics readiness + original loading video",
+    "Real resolved redacted native Share sheet cancellation",
+    "Real Vault Confirm Lock native event/receipt + one memory lock/zero wrong actions"
+  ],
+  "supersedesControllerManifestSha256": "bf18a496494f1e23ba76949c8c1c53b38349c1da59440b51773d7407dc45faf4",
+  "knownNativeErrorGuard": "Render Error/Uncaught Error reject app captures/actions; only explicitly named failure capture retains observed error frames. No dismissal."
+}

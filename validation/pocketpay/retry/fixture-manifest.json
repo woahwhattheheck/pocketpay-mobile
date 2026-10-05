@@ -1,0 +1,52 @@
+{
+  "sourceCommit": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "filesSha256": {
+    "fixtures/native-fixture.tsx": "6fe32e79e5dc9c76144b28c9bf5a00bb4ee193e31a8cd205ac700aa964f090f9",
+    "fixtures/native321-entry.js": "c9cc4328dea4c4df09d62f0694911b0e0049f5ed6ec2544954c129bd243ab5c6",
+    "fixtures/native321-bootstrap.js": "4c73e73c90c7312f4c0a21c02085d2a45495369e2fc3831c5f8e4a4ec48802be",
+    "fixtures/retry-gap-observer.js": "d68fdc6eb72f589ebba08738fab9149d59661ac79f84356c2e1545377f479351",
+    "fixtures/retry-gap-launch-route.tsx": "30a61398f5e1adda27dfaab366e9482464f66c27cf0358f8a5a3bd8549139c0e",
+    "observation_helpers.py": "7428a4abdfaaee868af823fb827b55b0feb505432889051a6addc7124cd06108",
+    "retry_gap_ui.py": "512601a9ddddbecf325c8c80ea29e247be272a1a6f26c37002c54bde943933a1",
+    "setup-validation-checkout.py": "86e539f844ba59dbb64e02182bfdeafcbf5cf23f8a2e9ca3fec0ae5561b40cd9",
+    "validate-preparation.js": "c5f030a443da02d48e30c74e107194f1c9ca7175b9f2f82316b3f88abf0036f4",
+    "test_observation_helpers.py": "c33abf312d1bc62c4ed3ed1f77d604d6ba292b914633ffd628ef874d780cdfa0",
+    "source-manifest.json": "2d2b102744bf6d049f72c0e9302f6cd97c456a2e88399fe2432a5d843251e3a4",
+    "preparation-check.json": "60d9b68db5ca706dc5e644836575a9b15807c9a115a02f994b263fe714d6900e",
+    "README.md": "aae7b0174d5593441d34f78d465a4e4c8bbbcf68a0357509717e6042345832e4"
+  },
+  "originalPins": {
+    "fixtures/native-fixture.tsx": "6fe32e79e5dc9c76144b28c9bf5a00bb4ee193e31a8cd205ac700aa964f090f9",
+    "fixtures/native321-entry.js": "c9cc4328dea4c4df09d62f0694911b0e0049f5ed6ec2544954c129bd243ab5c6",
+    "fixtures/native321-bootstrap.js": "4c73e73c90c7312f4c0a21c02085d2a45495369e2fc3831c5f8e4a4ec48802be"
+  },
+  "installDestinations": {
+    "fixtures/native-fixture.tsx": "app/send/__retry-gap-native-fixture.tsx",
+    "fixtures/native321-entry.js": "native321-entry.js",
+    "fixtures/native321-bootstrap.js": "native321-bootstrap.js",
+    "fixtures/retry-gap-observer.js": "retry-gap-observer.js",
+    "fixtures/retry-gap-launch-route.tsx": "app/__retry-gap-observer-native-fixture.tsx"
+  },
+  "entry": "./native321-entry.js",
+  "startRoute": "/__retry-gap-observer-native-fixture?outcome=nohash|empty|mismatch",
+  "checks": {
+    "pinnedSourceFiles": 15,
+    "originalFixtureFilesByteIdentical": 3,
+    "jsSyntaxChecks": 3,
+    "virtualTsxFiles": 2,
+    "typeScriptDiagnostics": 0,
+    "androidRouteMetadataResolved": true,
+    "productSourceWrites": false,
+    "nativeUiExecution": false,
+    "pythonSyntaxFiles": 3,
+    "pureParserTestsPassed": 7,
+    "setupExecuted": false,
+    "guestUiScriptExecuted": false,
+    "trackedSourceDiffEmpty": true,
+    "peerReview": "Root and helper reviewed bounded read-only observer/readiness/details/help/Activity scope; final selector/media/ordinary-failure continuation corrections included."
+  },
+  "nativeStatus": "Pending. No guest/device execution occurred; only local syntax/type/metadata/parser preparation.",
+  "custody": "Dedicated isolated manual validation controller branches and lab bundles allowed; excluded from product/prerequisite/feature branches and production distributions. Publication and dispatch remain coordinator-owned.",
+  "failurePolicy": "Measure all independent cases after ordinary assertions; unsafe secret/provenance/write-guard condition stops further interactions and labels remaining cases blocked/unattempted."
+}

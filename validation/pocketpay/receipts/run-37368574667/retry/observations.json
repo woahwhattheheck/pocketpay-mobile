@@ -1,0 +1,30 @@
+{
+  "mode": "retry",
+  "source_sha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "camera_mocked": false,
+  "retry_store_and_horizon_transport_controlled": true,
+  "live_payment_transport": false,
+  "cases": [
+    {
+      "name": "retry-unknown",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+    },
+    {
+      "name": "retry-error",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+    },
+    {
+      "name": "retry-confirmed",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+    },
+    {
+      "name": "retry-failed",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+    }
+  ],
+  "optional_observations": []
+}

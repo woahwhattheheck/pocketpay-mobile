@@ -1,0 +1,38 @@
+{
+  "readOnlySourceCheck": {
+    "sourceSha": "e92351b71869f6be89229511c9898e20d50369c9",
+    "sourceTree": "a9bf24a0884e3fc200f4be66c1e4b1919d53dada",
+    "trackedFilesUnchanged": true,
+    "fixturePath": "app/send/__camera-native-fixture.tsx",
+    "fixtureSha256": "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0",
+    "fixtureInstalled": false,
+    "legacyAuthFixturePresentAtReadOnlyPreparation": true
+  },
+  "pythonSyntaxFiles": 4,
+  "parserOnlyTests": {
+    "count": 10,
+    "passed": 10,
+    "noAdbInvoked": true
+  },
+  "nativeExecution": false,
+  "setupExecuted": false,
+  "fixtureOnlyPathForLaterSetup": "app/send/__camera-native-fixture.tsx",
+  "packetSha256": "4bde70fdc53a6926faae9caebd70176c9b4e4686cb082d2daa681fb1775433ba",
+  "collectorSuites": [
+    "primary-and-user-fixed",
+    "contacts-first-denial"
+  ],
+  "readinessRequiresBothSuites": true,
+  "loadingResult": "unmeasured at preparation; later observed/not_observed only",
+  "guardChecks": [
+    "sheet precedes loading/target acceptance",
+    "capture/tap/native action waits reject developer sheet",
+    "native permission overlay blocks product/loading acceptance",
+    "one first-denial interaction then unexpected prompt failure capture",
+    "full disabled ancestor chain",
+    "one unique exact clickable target",
+    "verified 720x1280 complete visible bounds",
+    "guarded before/after media",
+    "fresh guest-only reset receipt per suite"
+  ]
+}

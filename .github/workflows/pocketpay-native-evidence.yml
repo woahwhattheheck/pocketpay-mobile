@@ -27,11 +27,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [camera, retry]
+        mode: [camera, retry, baseline]
     env:
       MODE: ${{ matrix.mode }}
-      SOURCE_SHA: ${{ matrix.mode == 'camera' && inputs.camera_sha || inputs.retry_sha }}
+      SOURCE_SHA: ${{ matrix.mode == 'camera' && inputs.camera_sha || matrix.mode == 'retry' && inputs.retry_sha || '52ce8006a2d091a4c9f29852a1a530750ff9b3cc' }}
       EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+      EXPO_PUBLIC_VAULT_ENABLED: 'true'
       EXPO_OFFLINE: '1'
       EXPO_NO_TYPESCRIPT_SETUP: '1'
       CI: '1'

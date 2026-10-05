@@ -1,0 +1,192 @@
+{
+  "run_url": "https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37368574667",
+  "controller_sha": "73476e199400a369fbb591082505ef0d3a38173c",
+  "controller_tree": "987ed74d0569ff660524c07634519571be6a4fff",
+  "result": "failed: all seven requested feature UI assertions failed; no native feature pass",
+  "runtime": {
+    "android_api": "34",
+    "android_release": "14",
+    "android_build_incremental": "12077443",
+    "device": "sdk_gphone64_x86_64",
+    "hardware": "ranchu",
+    "emulator": "37.2.12.0 build16428233",
+    "expo_go": "54.0.8",
+    "expo_sdk_runtime": "54.0.0"
+  },
+  "observed": [
+    "Official pinned Expo Go APK installed successfully on both guests",
+    "Metro bundled the actual app and the actual welcome screen rendered",
+    "Camera captures show welcome/developer sheet, launcher, welcome; requested camera/Contacts screens were not reached",
+    "Retry unknown/confirmed/failed show actual Render Error: fixture router.replace before Root Layout mounted; error case shows Android launcher"
+  ],
+  "interpretation": "Validation route/auth redirect and fixture navigation readiness defects prevent product assertions. No production defect is established by this run.",
+  "limits": [
+    "No permission or CameraView state was reached",
+    "No production Review or PaymentRetryScreen was observed",
+    "No native loading/denied/unavailable/manual-entry/retry success evidence",
+    "Retry fixture uses dummy Testnet wallet/session and controlled Horizon reads/submission failure; no HTTP broadcast or live payment",
+    "No native wallet custody, SecureStore initialization, live ledger or full-app proof"
+  ],
+  "artifacts": {
+    "camera": {
+      "id": 11369806008,
+      "zip_sha256": "52587ca491bc7c67b9a734cce8831886c0789a68fbb42f3cb6754e38f6767de9"
+    },
+    "retry": {
+      "id": 11370755339,
+      "zip_sha256": "1b892c116382bb000e51d89f1972f9e8cc587cecc08272809bf5f5147f0efbdd"
+    }
+  },
+  "lanes": {
+    "camera": {
+      "source_sha": "e92351b71869f6be89229511c9898e20d50369c9",
+      "source_tree": "a9bf24a0884e3fc200f4be66c1e4b1919d53dada",
+      "observations": {
+        "mode": "camera",
+        "source_sha": "e92351b71869f6be89229511c9898e20d50369c9",
+        "camera_mocked": false,
+        "retry_store_and_horizon_transport_controlled": false,
+        "live_payment_transport": false,
+        "cases": [
+          {
+            "name": "scan-denied-manual",
+            "result": "failed",
+            "error": "Expected actual UI state did not appear: ('Camera Permission Required',)"
+          },
+          {
+            "name": "scan-unavailable-manual",
+            "result": "failed",
+            "error": "Expected actual UI state did not appear: ('Camera Permission Required',)"
+          },
+          {
+            "name": "contacts-unavailable-manual",
+            "result": "failed",
+            "error": "Expected actual UI state did not appear: ('Scan QR',)"
+          }
+        ],
+        "optional_observations": [
+          {
+            "name": "transient-loading",
+            "result": "not asserted; only retained raw images may establish observation"
+          }
+        ]
+      },
+      "files": {
+        "SCOPE.md": "5e982f52f173cf81dda4d75cd462cb4ba28a1e7411d540c06bb43c7a3f2e34a5",
+        "adb-version.txt": "b550c715a6de25ff0959a20f67e21503d66eb1d8c192e69e1196d04ad7515cd4",
+        "android-properties.txt": "e1e9673858b681d67faac92c0b8db70924011358281d52be549a981c1c769468",
+        "controller-exit-code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "controller-source.txt": "59836d041615093d9f6839f975e508b8b07bf36f8e3bb9d718dd072594c06dff",
+        "current.xml": "1a144cfdd678e7160b0e38c02c24e10a1100ec08661f5235154f9a3277e2a644",
+        "emulator-version-status.txt": "d13c01c101b8672a001e2d679683036568a38f2ecac7a68f54d935cbfa27424e",
+        "emulator-version.txt": "ea36a35958c14ba5f003d0e68087a01947b2b1e7d3c26286417430ced3f2b811",
+        "executed-source.txt": "6675313353675c7192693344811bc7e1c82091759f8469c7a8b68dbc37f90f77",
+        "expo-go-install.txt": "781a31c82430c97897af612ece5e0ca2205e301cb5ff121ce2660541ea5182c7",
+        "expo-go-integrity.txt": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+        "expo-go-package.txt": "4d62aaf1f3e987c3120a9d2924286dd9c9bc83f4c88aaf635fb1aa7df1824c79",
+        "failure-contacts-unavailable-manual.png": "06edd8ebabe924c76fd5672a4eaa11c1af1f224964ac4dddfaa100541c75ba3c",
+        "failure-contacts-unavailable-manual.xml": "1a144cfdd678e7160b0e38c02c24e10a1100ec08661f5235154f9a3277e2a644",
+        "failure-scan-denied-manual.png": "49cad72f726b2338909724be1a13b53fb3886945eecfca394ca0bf98714ebe75",
+        "failure-scan-denied-manual.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+        "failure-scan-unavailable-manual.png": "bbb20151ce079076386beb1fc459c8a8166da5865491e9164bd0bb018616e330",
+        "failure-scan-unavailable-manual.xml": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+        "final-fixture-only.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "final-screen.png": "06edd8ebabe924c76fd5672a4eaa11c1af1f224964ac4dddfaa100541c75ba3c",
+        "final-ui.xml": "fce4ff27a15a0bc6503d12e80d688d5605444e2ad1228bb2ee9ec0d39b9fb74c",
+        "final-working-tree.txt": "4ff09b9db6387abe93b64f511d399f1ab31ffc32f463865c117b134a8eaed510",
+        "fixture-integrity.txt": "3ed08065464f363e8e464c3f696ab46d20151650e4f71c4dc53411a204840515",
+        "fixture-only-tracked.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "fixture-working-tree.txt": "4ff09b9db6387abe93b64f511d399f1ab31ffc32f463865c117b134a8eaed510",
+        "host.txt": "6ecb75ce9d770bd2cfb6898b267dd8f29398821b25cb233675e182e0323ba0d2",
+        "launches.txt": "d9765db9c4ca353609e62291ce374ee742cacf898cc0232fbc20482a3beec765",
+        "logcat.txt": "035ee40e72a3bf6918bd4a7a9b7c2426c2d2f7aef5958e61a48d4770eb92fc92",
+        "metro-status.txt": "ed71e52f066b30c279378b7933ec895ee558e0899131124296dec5bec2995cef",
+        "metro.log": "f5d9ccc9cd24f3924fa72527cd772f31938f0ad0a69bd7532e5b3d7d03fe02d0",
+        "node-version.txt": "256a8e08ee35cb8ad36ae16385257192c3dbe7d80cfdeff9eaa886531b2f83bc",
+        "npm-ci.log": "a655b37ad5767f6679fa8f95650f500f2f21bedac25dfdb27797d235199bed24",
+        "npm-version.txt": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+        "observations.json": "cadf41114890857652816c1c071a2e203e2437919886a9f32304b7bd83389fc6",
+        "system-image-properties-status.txt": "19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061",
+        "system-image-properties.txt": "bd7597e0dfa855335194fbafaf63bde93aa86bc3b56cea73cd54635715e77abc",
+        "unmatched-labels.json": "98d16d1cbc0282a1f084182b0b658709e85ab9535e746e8386b15996803df429",
+        "unmatched-state.png": "06edd8ebabe924c76fd5672a4eaa11c1af1f224964ac4dddfaa100541c75ba3c"
+      }
+    },
+    "retry": {
+      "source_sha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "source_tree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+      "observations": {
+        "mode": "retry",
+        "source_sha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "camera_mocked": false,
+        "retry_store_and_horizon_transport_controlled": true,
+        "live_payment_transport": false,
+        "cases": [
+          {
+            "name": "retry-unknown",
+            "result": "failed",
+            "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+          },
+          {
+            "name": "retry-error",
+            "result": "failed",
+            "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+          },
+          {
+            "name": "retry-confirmed",
+            "result": "failed",
+            "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+          },
+          {
+            "name": "retry-failed",
+            "result": "failed",
+            "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+          }
+        ],
+        "optional_observations": []
+      },
+      "files": {
+        "SCOPE.md": "5e982f52f173cf81dda4d75cd462cb4ba28a1e7411d540c06bb43c7a3f2e34a5",
+        "adb-version.txt": "b550c715a6de25ff0959a20f67e21503d66eb1d8c192e69e1196d04ad7515cd4",
+        "android-properties.txt": "f4cfac5ee3f1d8c48d296d4ff3a7e9211b20d6c51246261040663563d1446ed6",
+        "controller-exit-code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "controller-source.txt": "59836d041615093d9f6839f975e508b8b07bf36f8e3bb9d718dd072594c06dff",
+        "current.xml": "a61fb75b7532b8e7483facc121ca0ec3a532d288b05e5b7290e85a843d5304c6",
+        "emulator-version-status.txt": "d13c01c101b8672a001e2d679683036568a38f2ecac7a68f54d935cbfa27424e",
+        "emulator-version.txt": "ea36a35958c14ba5f003d0e68087a01947b2b1e7d3c26286417430ced3f2b811",
+        "executed-source.txt": "423d7dd3cb1ff8fc448724a68a166b9182e58bd4546cd66c16a9e45353e22b59",
+        "expo-go-install.txt": "781a31c82430c97897af612ece5e0ca2205e301cb5ff121ce2660541ea5182c7",
+        "expo-go-integrity.txt": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+        "expo-go-package.txt": "b7161b177a6d1ef1df0e90d64f9f5ec1ac2a2ae3e780db447b2f7626ae1262c0",
+        "failure-retry-confirmed.png": "867fe058d295945690779f4564d920d617dc7bc72524d1fc9c02084f79a62f85",
+        "failure-retry-confirmed.xml": "a61fb75b7532b8e7483facc121ca0ec3a532d288b05e5b7290e85a843d5304c6",
+        "failure-retry-error.png": "34a941fc72eef6a6bae1e7c04d59389102caf569f66078a0f809357cdc0a9c9f",
+        "failure-retry-error.xml": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+        "failure-retry-failed.png": "c250b8e70107f6eecd8682abe5b90c9256bf65736b8380b76fbc9e2c3e567fd4",
+        "failure-retry-failed.xml": "a61fb75b7532b8e7483facc121ca0ec3a532d288b05e5b7290e85a843d5304c6",
+        "failure-retry-unknown.png": "871cfe877edb011bc0d327b52a676bb29542a30f68cd53b23931d64f1e2e4267",
+        "failure-retry-unknown.xml": "a61fb75b7532b8e7483facc121ca0ec3a532d288b05e5b7290e85a843d5304c6",
+        "final-fixture-only.patch": "28bd65d22feab5271360bc066b0736b9dee5a04408d367115dff8ef48db03f5f",
+        "final-screen.png": "c250b8e70107f6eecd8682abe5b90c9256bf65736b8380b76fbc9e2c3e567fd4",
+        "final-ui.xml": "e7163d3211a6ce5a9d485c42e688e6f1dc98fbed0500d0ee8c02c080e98f310a",
+        "final-working-tree.txt": "519826ad57b67467d25f31e9d69b42dc5c3b59236dde40d0ecf9385e6d5f1a5d",
+        "fixture-integrity.txt": "3ed08065464f363e8e464c3f696ab46d20151650e4f71c4dc53411a204840515",
+        "fixture-only-tracked.patch": "28bd65d22feab5271360bc066b0736b9dee5a04408d367115dff8ef48db03f5f",
+        "fixture-working-tree.txt": "519826ad57b67467d25f31e9d69b42dc5c3b59236dde40d0ecf9385e6d5f1a5d",
+        "host.txt": "6ecb75ce9d770bd2cfb6898b267dd8f29398821b25cb233675e182e0323ba0d2",
+        "launches.txt": "3f4b8dcada2864e1669ebbbe76ff97f17b1a8fda7620542c5cb0af1a9de60424",
+        "logcat.txt": "9c9244807d31e5611cfe6bd36ee078d47053840f6e49f3968b50c10b03dd56ee",
+        "metro-status.txt": "ed71e52f066b30c279378b7933ec895ee558e0899131124296dec5bec2995cef",
+        "metro.log": "7ec459541866cd6ddffe96eb8b8dfa57b9572c9b04a1e0646ec8406b488449d6",
+        "node-version.txt": "256a8e08ee35cb8ad36ae16385257192c3dbe7d80cfdeff9eaa886531b2f83bc",
+        "npm-ci.log": "55b1b5c5eb0a3e65020478c1a488b80cd90ab167acc3854d24ddd84c7fbf02a5",
+        "npm-version.txt": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+        "observations.json": "d953eea8c9301eab587a2a2736914756e471e85cf859745ec8d53a805b75f1af",
+        "system-image-properties-status.txt": "19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061",
+        "system-image-properties.txt": "bd7597e0dfa855335194fbafaf63bde93aa86bc3b56cea73cd54635715e77abc",
+        "unmatched-labels.json": "cc29468d344efa17c870736a1ae134402522a786ca8a3bd07fb46ec14c68922d",
+        "unmatched-state.png": "c250b8e70107f6eecd8682abe5b90c9256bf65736b8380b76fbc9e2c3e567fd4"
+      }
+    }
+  }
+}

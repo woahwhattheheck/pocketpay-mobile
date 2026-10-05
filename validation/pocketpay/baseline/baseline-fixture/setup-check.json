@@ -1,0 +1,11 @@
+{
+  "installedFixtureFiles": 6,
+  "sourceFilesVerified": 30,
+  "productionFilesUnchangedExceptTemporaryPackageMain": true,
+  "packageMain": "./native-baseline-entry.js",
+  "packageBackupExact": true,
+  "routeInstalled": true,
+  "fixtureSourceProductCheckoutEdits": false,
+  "repeatedInstallRefused": true,
+  "nativeExecution": false
+}

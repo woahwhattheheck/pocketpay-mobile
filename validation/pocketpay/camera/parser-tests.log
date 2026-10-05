@@ -1,0 +1,15 @@
+test_disabled_ancestor_rejects_enabled_child (test_parser.ParserTests.test_disabled_ancestor_rejects_enabled_child) ... ok
+test_disabled_and_ambiguous_nodes_fail (test_parser.ParserTests.test_disabled_and_ambiguous_nodes_fail) ... ok
+test_exact_attributes_do_not_duplicate_label (test_parser.ParserTests.test_exact_attributes_do_not_duplicate_label) ... ok
+test_native_permission_prompt_prevents_back_dismissal (test_parser.ParserTests.test_native_permission_prompt_prevents_back_dismissal) ... ok
+test_reveal_accessibility_label_rejects_before_media (test_parser.ParserTests.test_reveal_accessibility_label_rejects_before_media) ... ok
+test_scoped_os_resource_id_handles_localized_text (test_parser.ParserTests.test_scoped_os_resource_id_handles_localized_text) ... ok
+test_secret_shaped_parser_input_rejects_without_actual_key (test_parser.ParserTests.test_secret_shaped_parser_input_rejects_without_actual_key) ... ok
+test_specific_developer_sheet_labels (test_parser.ParserTests.test_specific_developer_sheet_labels) ... ok
+test_substring_close_and_plain_heading_are_not_actions (test_parser.ParserTests.test_substring_close_and_plain_heading_are_not_actions) ... ok
+test_targets_outside_fixed_viewport_are_rejected (test_parser.ParserTests.test_targets_outside_fixed_viewport_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK
