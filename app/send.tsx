@@ -27,7 +27,11 @@ import {
   validateMemo,
 } from "../src/utils/validation";
 import { resolveAddressLabel } from "../src/utils/contacts";
-import { formatAmount, getMaxSendableAmount } from "../src/utils/amount";
+import {
+  formatAmount,
+  getMaxSendableAmount,
+  MIN_XLM_RESERVE,
+} from "../src/utils/amount";
 import { WALLET_SECRET_ACCESS_MESSAGE } from "../src/utils/walletStorageErrors";
 import {
   Send as SendIcon,
@@ -64,6 +68,7 @@ export default function SendScreen() {
 
   const isUnfunded = fundingStatus === 'unfunded';
   const sendDisabled = isUnfunded || !publicKey || disableWriteActions;
+  const availableToSend = getMaxSendableAmount(balance);
 
   const [destination, setDestination] = useState("");
   const [amount, setAmount] = useState("");
@@ -187,7 +192,7 @@ export default function SendScreen() {
       >
         <ScreenHeader
           title="Send XLM"
-          subtitle={`Available Balance: ${formatAmount(balance)} XLM`}
+          subtitle={`Available to send: ${formatAmount(availableToSend)} XLM`}
         />
 
         {/* Issue #330: Show unfunded account warning */}
@@ -254,7 +259,7 @@ export default function SendScreen() {
             onChangeText={handleAmountChange}
             error={errors.amount}
             keyboardType="decimal-pad"
-            helperText={`Available balance: ${formatAmount(balance)} XLM`}
+            helperText={`Balance: ${formatAmount(balance)} XLM · Reserved: ${formatAmount(MIN_XLM_RESERVE)} XLM`}
             rightIcon={
               <TouchableOpacity
                 onPress={handleSetMaxAmount}
