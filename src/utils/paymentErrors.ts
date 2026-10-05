@@ -26,6 +26,29 @@ export interface RecoveryGuidance {
   shouldNavigateBack: boolean;
 }
 
+/**
+ * Extract the most specific Stellar result code from a Horizon submission error.
+ * Operation codes carry the actionable reason when the transaction result is
+ * the generic `tx_failed`, so prefer them when present.
+ */
+export const extractPaymentResultCode = (error: unknown): string | null => {
+  if (!error || typeof error !== 'object') return null;
+
+  const resultCodes = (error as any)?.response?.data?.extras?.result_codes;
+  if (!resultCodes || typeof resultCodes !== 'object') return null;
+
+  if (Array.isArray(resultCodes.operations)) {
+    const operationCode = resultCodes.operations.find(
+      (code: unknown): code is string => typeof code === 'string' && code.length > 0,
+    );
+    if (operationCode) return operationCode;
+  }
+
+  return typeof resultCodes.transaction === 'string' && resultCodes.transaction
+    ? resultCodes.transaction
+    : null;
+};
+
 /** Default guidance shown for unrecognised errors. */
 const DEFAULT_GUIDANCE: RecoveryGuidance = {
   title: 'Transaction Failed',
@@ -55,7 +78,7 @@ const RESULT_CODE_MAP: Record<string, RecoveryGuidance> = {
       'Sending this amount would drop your balance below the minimum network reserve.',
     action: 'Reduce the payment amount or add funds to your wallet.',
     canRetry: false,
-    shouldNavigateBack: false,
+    shouldNavigateBack: true,
   },
 
   // ── Destination issues ─────────────────────────────────────────
@@ -136,7 +159,7 @@ export const classifyPaymentError = (error: unknown): RecoveryGuidance => {
     rawMessage = (error as any).message;
   }
 
-  const lower = rawMessage.toLowerCase().trim();
+  const lower = (extractPaymentResultCode(error) || rawMessage).toLowerCase().trim();
 
   // ── Network / connectivity ─────────────────────────────────────
   if (
@@ -175,8 +198,5 @@ export const classifyPaymentError = (error: unknown): RecoveryGuidance => {
   }
 
   // ── Fallback ───────────────────────────────────────────────────
-  return {
-    ...DEFAULT_GUIDANCE,
-    message: rawMessage || DEFAULT_GUIDANCE.message,
-  };
+  return DEFAULT_GUIDANCE;
 };
