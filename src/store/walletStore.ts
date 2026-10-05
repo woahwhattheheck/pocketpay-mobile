@@ -5,6 +5,13 @@ import * as StellarSdk from '@stellar/stellar-sdk';
 import { fetchXlmBalance, fetchTransactionsPage, fetchAccountDetails, fundWithFriendbot, PaymentRecord } from '../services/stellar';
 import type { BalanceState, FundingStatus } from '../types/balance';
 import {
+  BalanceRefreshState,
+  balanceValueState,
+  initialBalanceRefreshState,
+  transitionBalanceRefresh,
+  withBalanceRefreshTimeout,
+} from '../types/balanceRefresh';
+import {
   CLEAR_WALLET_ERROR,
   PERSIST_WALLET_ERROR,
   READ_WALLET_ERROR,
@@ -20,6 +27,8 @@ const WALLET_KEY = 'pocketpay_wallet_secret';
 const BACKUP_ACK_KEY = '@pocketpay_backup_acknowledged';
 const DEFAULT_BALANCE = '0.0000000';
 const TX_PAGE_SIZE = 20;
+let balanceRefreshSequence = 0;
+let balanceRequest: { publicKey: string; requestId: number; promise: Promise<void> } | null = null;
 
 // Transaction records from the Stellar Horizon API – use a flexible type
 // until a proper typed SDK wrapper is available.
@@ -47,6 +56,8 @@ interface WalletState {
   // ---- Issue #329: Balance state ----
   /** Tracks the lifecycle of the balance fetch — not just its value. */
   balanceState: BalanceState;
+  balanceRefresh: BalanceRefreshState;
+  balanceOnline: boolean;
 
   // ---- Issue #330: Account funding status ----
   /** Whether the account exists on the Stellar network. */
@@ -57,16 +68,13 @@ interface WalletState {
   hasMoreTransactions: boolean;
   nextCursor: string | null;
 
-  // Pagination
-  nextCursor: string | null;
-  hasMoreTransactions: boolean;
-  isLoadingMore: boolean;
-
   // Actions
   setWallet: (publicKey: string, secretKey: string) => Promise<boolean>;
   loadWalletFromStorage: () => Promise<boolean>;
   /** Pull-to-refresh: resets pagination and loads the first page fresh. */
   refreshWalletData: () => Promise<void>;
+  setBalanceConnectivity: (online: boolean) => void;
+  markBalanceStale: (now?: number) => void;
   /** Optimistically show a just-submitted transaction as pending, keyed by hash. */
   addPendingTransaction: (hash: string, tx: Record<string, any> & { id: string }) => void;
   loadMoreTransactions: () => Promise<void>;
@@ -81,6 +89,12 @@ interface WalletState {
   checkFundingStatus: () => Promise<void>;
 }
 
+const refreshFields = (balanceRefresh: BalanceRefreshState) => ({
+  balanceRefresh,
+  balanceState: balanceValueState(balanceRefresh),
+  isLoading: balanceRefresh.status === 'loading',
+});
+
 const resetWalletState = () => ({
   publicKey: null,
   balance: DEFAULT_BALANCE,
@@ -90,7 +104,7 @@ const resetWalletState = () => ({
   isLoadingMore: false,
   hasMoreTransactions: false,
   nextCursor: null,
-  balanceState: 'idle' as BalanceState,
+  ...refreshFields({ ...initialBalanceRefreshState(), requestId: ++balanceRefreshSequence }),
   fundingStatus: 'unknown' as FundingStatus,
 });
 
@@ -138,6 +152,8 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   fundError: null,
   error: null,
   balanceState: 'idle' as BalanceState,
+  balanceRefresh: initialBalanceRefreshState(),
+  balanceOnline: true,
   fundingStatus: 'unknown' as FundingStatus,
   isLoadingMore: false,
   hasMoreTransactions: false,
@@ -166,7 +182,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   setWallet: async (publicKey: string, secretKey: string) => {
     try {
       await SecureStore.setItemAsync(WALLET_KEY, secretKey);
-      set({ publicKey, balance: DEFAULT_BALANCE, transactions: [], pendingTransactions: {}, error: null });
+      set({ ...resetWalletState(), publicKey, error: null });
       return true;
     } catch {
       console.error(PERSIST_WALLET_ERROR);
@@ -209,7 +225,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         // Non-critical: default to not re-showing the reminder on read failure.
       }
 
-      set({ publicKey: keypair.publicKey(), error: null, showBackupReminder, walletChecked: true });
+      set({ ...resetWalletState(), publicKey: keypair.publicKey(), error: null, showBackupReminder, walletChecked: true });
       return true;
     } catch {
       console.error(RESTORE_WALLET_ERROR);
@@ -219,51 +235,84 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     }
   },
 
-  refreshWalletData: async () => {
-    const { publicKey } = get();
-    if (!publicKey) return;
+  setBalanceConnectivity: (online) => {
+    if (get().balanceOnline === online) return;
+    const next = transitionBalanceRefresh(get().balanceRefresh, { type: online ? 'online' : 'offline' });
+    set({ ...refreshFields(next), balanceOnline: online });
+  },
 
-    set({ isLoading: true, error: null, balanceState: 'loading', isLoadingMore: false, nextCursor: null, hasMoreTransactions: false });
-    try {
-      const [balance, page] = await Promise.all([
-        fetchXlmBalance(publicKey),
-        fetchTransactionsPage(publicKey, TX_PAGE_SIZE),
-      ]);
+  markBalanceStale: (now = Date.now()) => {
+    const previous = get().balanceRefresh;
+    const next = transitionBalanceRefresh(previous, { type: 'age', now });
+    if (next !== previous) set(refreshFields(next));
+  },
 
-      // Reconcile: drop any optimistic pending entry whose hash now shows up in the
-      // real Horizon response, so it isn't displayed twice. Operation records
-      // expose the transaction hash as `transaction_hash`. Entries that don't
-      // reconcile here are left showing as pending — no forced expiry. Read
-      // pendingTransactions fresh (not before the await above) so an entry added
-      // while this refresh was in flight doesn't get silently dropped.
-      const confirmedHashes = new Set(
-        page.records.map((tx: any) => tx.transaction_hash).filter(Boolean)
-      );
-      const remainingPending = Object.fromEntries(
-        Object.entries(get().pendingTransactions).filter(([hash]) => !confirmedHashes.has(hash))
-      );
-
-      const isZero = balance === '0.0000000';
-      set({
-        balance,
-        transactions: [...Object.values(remainingPending), ...page.records],
-        pendingTransactions: remainingPending,
-        nextCursor: page.nextCursor,
-        hasMoreTransactions: page.hasMore,
-        lastRefreshed: Date.now(),
-        isLoading: false,
-        balanceState: 'available',
-        // Also update funding status: if we got balance data, the account exists
-        fundingStatus: 'funded',
-      });
-    } catch (err: any) {
-      console.error('Failed to refresh wallet data');
-      set({
-        isLoading: false,
-        balanceState: 'unavailable',
-        error: err.message || 'Failed to sync data',
-      });
+  refreshWalletData: () => {
+    const { publicKey, balanceRefresh, balanceOnline } = get();
+    if (!publicKey) return Promise.resolve();
+    if (!balanceOnline) {
+      set(refreshFields(transitionBalanceRefresh(balanceRefresh, { type: 'offline' })));
+      return Promise.resolve();
     }
+    if (balanceRequest?.publicKey === publicKey &&
+        balanceRequest.requestId === balanceRefresh.requestId &&
+        balanceRefresh.status === 'loading') {
+      return balanceRequest.promise;
+    }
+
+    const requestId = balanceRefreshSequence = Math.max(balanceRefreshSequence, balanceRefresh.requestId) + 1;
+    set({
+      ...refreshFields(transitionBalanceRefresh(balanceRefresh, { type: 'start', requestId })),
+      error: null,
+      isLoadingMore: false,
+    });
+    const isCurrent = () => get().publicKey === publicKey &&
+      get().balanceRefresh.requestId === requestId && get().balanceRefresh.status === 'loading';
+
+    const promise = Promise.resolve().then(async () => {
+      if (!isCurrent()) return;
+      // Settle each read independently: a history failure is not a failed balance.
+      const [balanceResult, pageResult] = await Promise.allSettled([
+        withBalanceRefreshTimeout(Promise.resolve().then(() => fetchXlmBalance(publicKey))),
+        withBalanceRefreshTimeout(Promise.resolve().then(() => fetchTransactionsPage(publicKey, TX_PAGE_SIZE))),
+      ]);
+      if (!isCurrent()) return;
+
+      const now = Date.now();
+      const next = transitionBalanceRefresh(get().balanceRefresh, balanceResult.status === 'fulfilled'
+        ? { type: 'succeeded', requestId, now }
+        : { type: 'failed', requestId });
+      const patch: Partial<WalletState> = { ...refreshFields(next), error: null };
+      if (balanceResult.status === 'fulfilled') {
+        patch.balance = balanceResult.value;
+        patch.lastRefreshed = now;
+        // A positive balance confirms existence; a synthetic zero for a 404 does not.
+        if (Number(balanceResult.value) > 0) patch.fundingStatus = 'funded';
+      } else {
+        patch.error = balanceResult.reason?.message || 'Failed to refresh balance';
+      }
+
+      if (pageResult.status === 'fulfilled') {
+        const page = pageResult.value;
+        const confirmedHashes = new Set(page.records.map((tx: any) => tx.transaction_hash).filter(Boolean));
+        // Read pending sends after the await so concurrent additions survive.
+        const remainingPending = Object.fromEntries(
+          Object.entries(get().pendingTransactions).filter(([hash]) => !confirmedHashes.has(hash))
+        );
+        patch.transactions = [...Object.values(remainingPending), ...page.records];
+        patch.pendingTransactions = remainingPending;
+        patch.nextCursor = page.nextCursor;
+        patch.hasMoreTransactions = page.hasMore;
+      } else {
+        // Keep the previous records and cursor available after a history failure.
+        patch.error = patch.error || pageResult.reason?.message || 'Failed to load transactions';
+      }
+      set(patch);
+    }).finally(() => {
+      if (balanceRequest?.requestId === requestId) balanceRequest = null;
+    });
+    balanceRequest = { publicKey, requestId, promise };
+    return promise;
   },
 
   addPendingTransaction: (hash, tx) => {
@@ -275,15 +324,19 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   },
 
   loadMoreTransactions: async () => {
-    const { publicKey, isLoadingMore, hasMoreTransactions, nextCursor, transactions } = get();
+    const { publicKey, isLoading, isLoadingMore, hasMoreTransactions, nextCursor, balanceRefresh } = get();
 
     // Guard: nothing to do if already loading or no more pages.
-    if (!publicKey || isLoadingMore || !hasMoreTransactions || !nextCursor) return;
+    if (!publicKey || isLoading || isLoadingMore || !hasMoreTransactions || !nextCursor) return;
 
+    const isCurrent = () => get().publicKey === publicKey &&
+      get().balanceRefresh.requestId === balanceRefresh.requestId && !get().isLoading;
     set({ isLoadingMore: true, error: null });
     try {
       const page = await fetchTransactionsPage(publicKey, TX_PAGE_SIZE, nextCursor);
 
+      if (!isCurrent()) return;
+      const { transactions } = get();
       // Deduplicate: build a set of existing IDs then filter the new records.
       const existingIds = new Set(transactions.map((tx) => tx.id));
       const newRecords = (page.records as TransactionRecord[]).filter(
@@ -297,6 +350,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         isLoadingMore: false,
       });
     } catch (err: any) {
+      if (!isCurrent()) return;
       console.error('Failed to load more transactions:', err);
       set({ isLoadingMore: false, error: err.message || 'Failed to load more' });
     }

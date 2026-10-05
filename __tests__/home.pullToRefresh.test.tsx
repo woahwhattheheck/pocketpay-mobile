@@ -20,6 +20,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { ScrollView } from 'react-native';
+import type { BalanceRefreshState } from '../src/types/balanceRefresh';
 
 jest.mock('../src/store/walletStore');
 jest.mock('../src/store/appStore', () => {
@@ -34,6 +35,9 @@ jest.mock('../src/store/appStore', () => {
     useAppStore: mockUseAppStore,
   };
 });
+jest.mock('../src/hooks/useNetworkState', () => ({
+  useNetworkState: () => ({ state: 'online', disableWriteActions: false, isOnline: true, retry: jest.fn() }),
+}));
 jest.mock('../src/services/stellar');
 jest.mock('expo-router');
 jest.mock('lucide-react-native', () => ({
@@ -73,6 +77,14 @@ const makeTx = (id: string, from = 'GOTHER') => ({
 const baseStore = {
   publicKey: 'GPUBLIC123',
   balance: '100.0000000',
+  balanceState: 'available',
+  balanceRefresh: { status: 'idle', requestId: 0, lastSucceededAt: null } as BalanceRefreshState,
+  setBalanceConnectivity: jest.fn(),
+  markBalanceStale: jest.fn(),
+  checkFundingStatus: jest.fn(),
+  fundingStatus: 'funded',
+  showBackupReminder: false,
+  acknowledgeBackupReminder: jest.fn(),
   transactions: [],
   isLoading: false,
   isLoadingMore: false,
@@ -92,7 +104,8 @@ const baseStore = {
 
 function setup(overrides: Partial<typeof baseStore> = {}) {
   const store = { ...baseStore, ...overrides };
-  mockUseWalletStore.mockReturnValue(store as any);
+  mockUseWalletStore.mockImplementation(((selector?: (state: typeof store) => unknown) =>
+    selector ? selector(store) : store) as any);
   return store;
 }
 
@@ -175,21 +188,15 @@ describe('AC-W5, AC-W6 – spinner while loading', () => {
 
 describe('AC-W7 – no duplicate requests while already refreshing', () => {
   it('does not fire an extra request when onRefresh is called while isLoading is true', () => {
-    /**
-     * The store's refreshWalletData() guards itself with the isLoading flag
-     * (it returns early when isLoading is already true). This test verifies
-     * that calling onRefresh during an active refresh still only results in
-     * a single additional call — and that the store guard is in place.
-     */
+    // The screen guard prevents a second call; store single-flight is tested separately.
     const store = setup({ isLoading: true });
     const { UNSAFE_getAllByType } = render(<HomeScreen />);
     const rc = UNSAFE_getAllByType(ScrollView)[0].props.refreshControl;
 
     rc.props.onRefresh();
 
-    // Mount call + this onRefresh call = 2 total. The store itself will no-op
-    // the second one because isLoading is already true.
-    expect(store.refreshWalletData).toHaveBeenCalledTimes(2);
+    // Only the mount call remains; the pull handler exits while loading.
+    expect(store.refreshWalletData).toHaveBeenCalledTimes(1);
   });
 });
 

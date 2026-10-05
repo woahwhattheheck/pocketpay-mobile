@@ -10,6 +10,8 @@ import { TransactionListItem } from '../../src/components/TransactionListItem';
 import { NetworkStatusBanner } from '../../src/components/NetworkStatusBanner';
 import { WalletEmptyState } from '../../src/components/WalletEmptyState';
 import { BalanceDisplay } from '../../src/components/BalanceDisplay';
+import { BalanceRefreshFeedback } from '../../src/components/BalanceRefreshFeedback';
+import { useBalanceRefresh } from '../../src/hooks/useBalanceRefresh';
 import { FundingStatusBanner } from '../../src/components/FundingStatusBanner';
 import { LoadingState } from '../../src/components/LoadingState';
 import { EmptyState } from '../../src/components/EmptyState';
@@ -40,19 +42,21 @@ export default function HomeScreen() {
     acknowledgeBackupReminder,
   } = useWalletStore();
 
-  const { state: networkState, disableWriteActions, retry } = useNetworkState({ error });
+  const { state: networkState, disableWriteActions, retry, isOnline } = useNetworkState({ error });
+  const { state: balanceRefresh } = useBalanceRefresh(isOnline);
 
   useEffect(() => {
-    refreshWalletData();
-    checkFundingStatus();
-  }, []);
+    if (publicKey && isOnline) void checkFundingStatus();
+  }, [publicKey, isOnline, checkFundingStatus]);
 
   const handleRetry = useCallback(() => {
-    if (publicKey) {
-      refreshWalletData();
-      checkFundingStatus();
+    if (isLoading) return;
+    if (!isOnline || networkState === 'wrong-network') retry();
+    if (publicKey && isOnline) {
+      void refreshWalletData();
+      void checkFundingStatus();
     }
-  }, [publicKey, refreshWalletData, checkFundingStatus]);
+  }, [publicKey, isOnline, isLoading, networkState, retry, refreshWalletData, checkFundingStatus]);
 
   const recentTransactions = transactions.slice(0, 3); // Preview
 
@@ -91,10 +95,10 @@ export default function HomeScreen() {
           state={balanceState}
           balance={balance}
           publicKey={publicKey}
-          onRetry={handleRetry}
           isRetrying={isLoading}
           lastRefreshed={lastRefreshed}
         />
+        <BalanceRefreshFeedback state={balanceRefresh} onRetry={handleRetry} />
 
         {/* Issue #330: Funding status banner */}
         <FundingStatusBanner
