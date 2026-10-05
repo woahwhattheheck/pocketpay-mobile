@@ -8,6 +8,7 @@
 import { useState } from 'react';
 import { validateAmount } from '../../utils/validation';
 import { WALLET_SECRET_ACCESS_MESSAGE } from '../../utils/walletStorageErrors';
+import { mapSdkError } from '../../utils/sdkErrorMapper';
 
 export interface UseVaultDepositFormReturn {
   amount: string;
@@ -74,8 +75,10 @@ export function useVaultDepositForm(): UseVaultDepositFormReturn {
       return hash;
     } catch (err: any) {
       if (err.message !== 'USER_CANCELLED') {
-        const errMsg = err.message || 'Deposit failed';
-        setSubmitError(errMsg);
+        const guidance = mapSdkError(err, 'vault');
+        setSubmitError(
+          `${guidance.message} ${guidance.action} (${guidance.diagnosticCode})`
+        );
       }
       throw err;
     } finally {
