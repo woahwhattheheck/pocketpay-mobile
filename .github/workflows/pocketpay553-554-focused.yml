@@ -1,0 +1,77 @@
+name: PocketPay fee and receive focused checks
+on:
+  push:
+    branches: [verify/pocketpay553-554-meridian17-20261005]
+    paths: [.github/workflows/pocketpay553-554-focused.yml]
+permissions:
+  contents: read
+concurrency:
+  group: pocketpay553-554-meridian17
+  cancel-in-progress: false
+jobs:
+  focused:
+    name: Focused PR${{ matrix.pr }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - pr: 553
+            sha: 81b765ff15f699a077b9830dcceac85b5421325b
+            files: __tests__/PaymentFeeEstimate.test.tsx
+          - pr: 554
+            sha: 49215090a296d0439247ff5b48e5851e48515d5e
+            files: __tests__/qrPayload.test.ts __tests__/receive.qrValidation.test.tsx
+    env:
+      SOURCE_SHA: ${{ matrix.sha }}
+      PR_NUMBER: ${{ matrix.pr }}
+      TEST_FILES: ${{ matrix.files }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - name: Execute only the pinned contribution's named tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          read -r -a files <<< "$TEST_FILES"
+          npm test -- --runInBand --runTestsByPath "${files[@]}" --json --outputFile=/tmp/pocketpay-focused.json
+      - name: Retain source identity and exact result counts
+        if: always()
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const out = { pr: Number(process.env.PR_NUMBER), source: process.env.SOURCE_SHA,
+            scope: 'Named existing Jest tests only; native collaborators mocked. No device, payment submission, full-suite or upstream CI claim.' };
+          if (fs.existsSync('/tmp/pocketpay-focused.json')) {
+            const r = JSON.parse(fs.readFileSync('/tmp/pocketpay-focused.json', 'utf8'));
+            Object.assign(out, { success: r.success, total: r.numTotalTests,
+              passed: r.numPassedTests, failed: r.numFailedTests, pending: r.numPendingTests,
+              runtimeErrorSuites: r.numRuntimeErrorTestSuites,
+              suites: r.testResults.map(s => ({ name: path.relative(process.cwd(), s.name),
+                status: s.status, message: (s.message || '').slice(0, 12000),
+                failures: (s.assertionResults || []).filter(t => t.status === 'failed')
+                  .map(t => ({ name: t.fullName, messages: t.failureMessages.map(m => m.slice(0, 8000)) })) })) });
+          } else { out.success = false; out.status = 'no_test_report'; }
+          fs.writeFileSync('focused-evidence.json', JSON.stringify(out, null, 2) + '\n');
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            '```json\n' + JSON.stringify(out, null, 2) + '\n```\n');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: focused-pr${{ matrix.pr }}-${{ matrix.sha }}
+          path: focused-evidence.json
+          if-no-files-found: error
+          retention-days: 7
