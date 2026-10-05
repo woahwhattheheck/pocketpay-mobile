@@ -347,7 +347,19 @@ export function mapSdkError(
     category = 'validation';
   }
 
-  const template = TEMPLATES[category];
+  const template =
+    category === 'unknown' && domain === 'transaction'
+      ? {
+          ...TEMPLATES.unknown,
+          severity: 'warning' as const,
+          title: 'Transaction Status Unknown',
+          message: 'PocketPay could not confirm the final transaction status.',
+          action: 'Check transaction history before sending again.',
+          recoveryAction: 'check-history' as const,
+          canRetry: false,
+        }
+      : TEMPLATES[category];
+
   return {
     ...template,
     domain,
