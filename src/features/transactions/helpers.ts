@@ -4,14 +4,13 @@
 
 import { TransactionDetail, TransactionStatus } from './types';
 import { formatAmount } from '../../utils/amount';
+import { resolveReceiptStatus } from './receipt';
 
 /**
  * Determines the status of a transaction
  */
 export function getTransactionStatus(tx: TransactionDetail): TransactionStatus {
-  if (tx.is_pending === true) return 'pending';
-  if (tx.transaction_successful === false) return 'failed';
-  return 'successful';
+  return resolveReceiptStatus(tx);
 }
 
 /**

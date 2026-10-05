@@ -31,6 +31,7 @@ import {
   StatusBadge,
 } from '@/components';
 import { UNCONFIRMED_SUBMISSION_MESSAGE } from '../src/utils/paymentErrors';
+import { createReceiptParams } from '../src/features/transactions/receipt';
 
 /** Copy for each in-flight signing phase, shared by the visible card and its screen-reader label. */
 const PHASE_COPY = {
@@ -119,17 +120,19 @@ export default function ReviewTransactionScreen() {
   useEffect(() => {
     if (phase === 'completed' && store.lastResult) {
       refreshWalletData();
+      // Capture public receipt data before clearing the signer store.
+      const receiptParams = createReceiptParams({
+        status: 'successful',
+        hash: store.lastResult.hash,
+        amount: amount.trim(),
+        asset: 'XLM',
+        destination: destination.trim(),
+        date: store.lastResult.completedAt || new Date().toISOString(),
+        network: store.lastResult.review?.network || getNetworkLabel(),
+      });
       const timer = setTimeout(() => {
         store.reset();
-        router.replace({
-          pathname: '/payment-success',
-          params: {
-            hash: store.lastResult!.hash,
-            amount: amount.trim(),
-            destination: destination.trim(),
-            date: new Date().toISOString(),
-          },
-        });
+        router.replace({ pathname: '/payment-receipt', params: receiptParams });
       }, 1500);
       return () => clearTimeout(timer);
     }
@@ -225,6 +228,20 @@ export default function ReviewTransactionScreen() {
   const handleDismissError = () => {
     store.reset();
     router.back();
+  };
+
+  const handleViewReceipt = () => {
+    const receiptParams = createReceiptParams({
+      // A transport/signing error is not evidence of a rejected ledger transaction.
+      status: phase === 'cancelled' ? 'rejected' : 'unknown',
+      amount: amount.trim(),
+      asset: 'XLM',
+      destination: destination.trim(),
+      date: store.currentReview?.createdAt || new Date().toISOString(),
+      network: store.currentReview?.network || getNetworkLabel(),
+    });
+    store.reset();
+    router.replace({ pathname: '/payment-receipt', params: receiptParams });
   };
 
   const reviewItems: ReviewItem[] = useMemo(() => {
@@ -361,6 +378,7 @@ export default function ReviewTransactionScreen() {
 
       {(phase === 'failed' || phase === 'cancelled') && (
         <View style={styles.actions}>
+          <Button title="View Receipt" onPress={handleViewReceipt} />
           <Button
             title="Go Back"
             variant="secondary"

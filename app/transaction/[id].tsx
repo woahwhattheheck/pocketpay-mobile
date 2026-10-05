@@ -12,6 +12,9 @@ import { formatAmount } from '../../src/utils/amount';
 import { validateTransactionId } from '../../src/utils/validation';
 import { getExplorerTxUrl, fetchOperationById } from '../../src/services/stellar';
 import type { TransactionDetail } from '../../src/features/transactions/types';
+import { getTransactionStatus } from '../../src/features/transactions/helpers';
+import { createReceiptParams, RECEIPT_COPY } from '../../src/features/transactions/receipt';
+import { useCopyToClipboard } from '../../src/utils/clipboard';
 
 type DeepLinkLoadState = 'idle' | 'loading' | 'loaded' | 'not_found' | 'error' | 'invalid';
 
@@ -158,11 +161,13 @@ export default function TransactionDetailScreen() {
   }
 
   const tx = transaction;
+  const status = getTransactionStatus(tx);
 
   const isSent = !!publicKey && tx.from === publicKey;
-  const directionLabel = isSent ? 'Sent' : 'Received';
-  const amountColor = isSent ? COLORS.textPrimary : COLORS.success;
-  const formattedAmount = `${isSent ? '-' : '+'}${tx.amount ? formatAmount(tx.amount) : 'N/A'} ${tx.asset || 'XLM'}`;
+  const directionLabel = status === 'successful'
+    ? (isSent ? 'Sent' : 'Received') : (isSent ? 'Outgoing' : 'Incoming');
+  const amountColor = !isSent && status === 'successful' ? COLORS.success : COLORS.textPrimary;
+  const formattedAmount = `${isSent ? '-' : '+'}${tx.amount ? formatAmount(tx.amount) : 'N/A'} ${tx.asset || '(unknown asset)'}`;
   const formattedDate = tx.createdAt 
     ? new Date(tx.createdAt).toLocaleString() 
     : tx.created_at
@@ -178,15 +183,29 @@ export default function TransactionDetailScreen() {
   const memoType = tx.memo_type || '';
 
   // Status determination
-  const isPending = tx.is_pending === true;
-  const isFailed = tx.transaction_successful === false;
-  const isSuccessful = !isPending && !isFailed;
+  const isPending = status === 'pending';
+  const isFailed = status === 'failed';
 
   const senderLabel = resolveAddressLabel(senderAddress, contacts);
   const recipientLabel = resolveAddressLabel(recipientAddress, contacts);
 
   // Explorer link
   const explorerUrl = getExplorerTxUrl(txHash);
+
+  const handleViewReceipt = () => {
+    router.push({
+      pathname: '/payment-receipt',
+      params: createReceiptParams({
+        status,
+        hash: txHash,
+        amount: tx.amount,
+        asset: tx.asset,
+        destination: tx.to || tx.into,
+        date: tx.created_at || tx.createdAt || tx.timestamp,
+        network: tx.network || process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET',
+      }),
+    });
+  };
 
   const handleCopy = async (text: string, fieldName: string) => {
     if (!text) return;
@@ -228,6 +247,14 @@ export default function TransactionDetailScreen() {
         bgColor: 'rgba(255, 61, 0, 0.1)',
       };
     }
+    if (status === 'rejected' || status === 'unknown') {
+      return {
+        icon: <AlertCircle color={COLORS.warning} size={18} />,
+        label: RECEIPT_COPY[status].label,
+        color: COLORS.warning,
+        bgColor: 'rgba(255, 196, 0, 0.1)',
+      };
+    }
     return {
       icon: <CheckCircle color={COLORS.success} size={18} />,
       label: 'Successful',
@@ -264,7 +291,7 @@ export default function TransactionDetailScreen() {
           {isSent ? (
             <ArrowUpRight color={COLORS.error} size={32} />
           ) : (
-            <ArrowDownLeft color={COLORS.success} size={32} />
+            <ArrowDownLeft color={statusConfig.color} size={32} />
           )}
         </View>
         <Text style={[styles.amountText, { color: amountColor }]} testID="detail-amount">
@@ -285,7 +312,7 @@ export default function TransactionDetailScreen() {
         {/* Type / Direction */}
         <View style={styles.detailRow}>
           <Text style={styles.rowLabel}>Type</Text>
-          <Text style={styles.rowValue}>{directionLabel} XLM</Text>
+          <Text style={styles.rowValue}>{directionLabel} {tx.asset || 'Unknown asset'}</Text>
         </View>
 
         {/* Status Row with More Details */}
@@ -409,6 +436,8 @@ export default function TransactionDetailScreen() {
           </View>
         ) : null}
       </View>
+
+      <Button title="View Receipt" onPress={handleViewReceipt} style={{ marginTop: SIZES.lg }} />
 
       {/* Explorer Link Section */}
       {explorerUrl ? (

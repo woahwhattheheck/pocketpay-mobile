@@ -1,147 +1,114 @@
-/**
- * Payment success receipt view-model (issue #216).
- *
- * The payment-success screen (app/payment-success.tsx) currently derives all of
- * its receipt strings inline -- the amount + "XLM" suffix, the date formatting
- * and fallback, the destination fallback -- and it renders the full raw
- * transaction hash. Issue #216 asks the receipt to show recipient, amount,
- * date, a copyable hash and an explorer link "where configured", while keeping
- * the UI non-technical and avoiding raw technical payloads.
- *
- * This module is the pure, framework-free view-model behind that receipt: one
- * function turns the raw route params into ready-to-render, non-technical
- * strings with graceful fallbacks for every missing/invalid field, truncates
- * the hash for display, and preserves the full hash for copy-to-clipboard. It
- * imports no React Native / Expo code and changes no existing behaviour, so it
- * can be unit-tested exhaustively and adopted by the screen incrementally.
- */
+/** Public receipt data only. A receipt is a snapshot, not independent ledger proof. */
+export const RECEIPT_STATUSES = ['successful', 'pending', 'failed', 'rejected', 'unknown'] as const;
+export type PaymentReceiptStatus = (typeof RECEIPT_STATUSES)[number];
 
-import { formatAmount } from '../../utils/amount';
-
-/** Shown for any receipt field that is missing or cannot be parsed. */
-export const RECEIPT_PLACEHOLDER = '\u2014'; // em dash
-
-/** Character inserted between the kept head and tail of a truncated hash. */
-export const HASH_ELLIPSIS = '\u2026'; // horizontal ellipsis
-
-/** Number of leading hash characters kept in the non-technical display form. */
-export const HASH_LEAD = 6;
-
-/** Number of trailing hash characters kept in the non-technical display form. */
-export const HASH_TAIL = 6;
-
-/** Raw receipt inputs, typically the route params of the success screen. */
-export interface PaymentReceiptInput {
-  hash?: string | null;
-  amount?: string | null;
-  destination?: string | null;
-  date?: string | null;
-  /** Optional human label resolved from contacts for the destination. */
-  destinationLabel?: string | null;
-  /**
-   * Explorer transaction URL, or null/undefined when no explorer is configured
-   * for the active network. The caller computes this (e.g. via the stellar
-   * service) so this module stays pure and network-agnostic.
-   */
-  explorerUrl?: string | null;
+export interface ReceiptStatusEvidence {
+  status?: unknown;
+  is_pending?: boolean;
+  transaction_successful?: boolean;
 }
 
-/** Ready-to-render receipt fields. Every string is safe to display as-is. */
-export interface PaymentReceiptViewModel {
-  displayAmount: string;
-  displayDate: string;
-  displayDestination: string;
-  /** Non-technical, truncated hash for display (never the raw full value). */
-  displayHash: string;
-  /** Full hash, preserved for copy-to-clipboard, or null when unavailable. */
-  fullHash: string | null;
-  /** Human contact label for the destination, when known. */
-  destinationLabel: string | null;
-  canCopyHash: boolean;
-  explorerUrl: string | null;
-  hasExplorerLink: boolean;
+export interface PaymentReceipt {
+  status: PaymentReceiptStatus;
+  hash: string;
+  amount: string;
+  asset: string;
+  destination: string;
+  date: string;
+  network: string;
 }
 
-function isNonEmpty(value: string | null | undefined): value is string {
-  return typeof value === 'string' && value.trim().length > 0;
+export type ReceiptRouteParams = { [K in keyof PaymentReceipt]: string };
+export type ReceiptInput = Partial<Record<keyof PaymentReceipt, unknown>>;
+
+export const RECEIPT_COPY = {
+  successful: {
+    label: 'Successful', title: 'Payment Confirmed', tone: 'success',
+    description: 'The payment flow reported network confirmation.',
+  },
+  pending: {
+    label: 'Pending', title: 'Payment Pending', tone: 'warning',
+    description: 'Confirmation is still pending. Check activity before sending again.',
+  },
+  failed: {
+    label: 'Failed', title: 'Payment Failed', tone: 'error',
+    description: 'The network reported an unsuccessful transaction. This receipt does not confirm delivery of funds.',
+  },
+  rejected: {
+    label: 'Rejected', title: 'Payment Rejected', tone: 'warning',
+    description: 'This request was cancelled or rejected before submission.',
+  },
+  unknown: {
+    label: 'Unknown', title: 'Outcome Unknown', tone: 'neutral',
+    description: 'Confirmation is unavailable. Check activity or the explorer before retrying; a timeout does not prove failure.',
+  },
+} as const;
+
+function isReceiptStatus(value: unknown): value is PaymentReceiptStatus {
+  return typeof value === 'string' && (RECEIPT_STATUSES as readonly string[]).includes(value);
 }
 
-/**
- * Format the amount for the receipt, appending the "XLM" unit. Falls back to the
- * placeholder (with no unit) when the amount is missing or non-numeric.
- */
-export function formatReceiptAmount(amount: string | number | null | undefined): string {
-  const formatted = formatAmount(amount ?? undefined);
-  if (!formatted || formatted === RECEIPT_PLACEHOLDER) {
-    return RECEIPT_PLACEHOLDER;
-  }
-  return formatted + ' XLM';
+/** Never infer successful settlement just because a hash exists or flags are missing. */
+export function resolveReceiptStatus(evidence: ReceiptStatusEvidence): PaymentReceiptStatus {
+  if (evidence.is_pending === true) return 'pending';
+  if (evidence.transaction_successful === false) return 'failed';
+  if (evidence.transaction_successful === true) return 'successful';
+  return isReceiptStatus(evidence.status) ? evidence.status : 'unknown';
 }
 
-/**
- * Format an ISO/parseable date string for the receipt. Missing or invalid dates
- * degrade to the placeholder rather than throwing or rendering "Invalid Date".
- */
-export function formatReceiptDate(date: string | null | undefined): string {
-  if (!isNonEmpty(date)) {
-    return RECEIPT_PLACEHOLDER;
-  }
-  const parsed = new Date(date);
-  if (isNaN(parsed.getTime())) {
-    return RECEIPT_PLACEHOLDER;
-  }
-  return parsed.toLocaleString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+function scalar(value: unknown, maxLength: number): string {
+  if (typeof value !== 'string' || value.length > maxLength) return '';
+  return value.trim();
 }
 
-/**
- * Truncate a hash to a short, non-technical form keeping the leading and
- * trailing characters so it is still recognisable. The full value is preserved
- * separately for copying. Returns the placeholder for a missing hash and
- * returns short hashes unchanged.
- */
-export function truncateHash(
-  hash: string | null | undefined,
-  lead: number = HASH_LEAD,
-  tail: number = HASH_TAIL,
-): string {
-  if (!isNonEmpty(hash)) {
-    return RECEIPT_PLACEHOLDER;
-  }
-  const trimmed = hash.trim();
-  if (trimmed.length <= lead + tail + 1) {
-    return trimmed;
-  }
-  return trimmed.slice(0, lead) + HASH_ELLIPSIS + trimmed.slice(trimmed.length - tail);
-}
-
-/**
- * Build the full receipt view-model from raw inputs. Pure and total: it never
- * throws and always returns display-safe strings, so the screen can render the
- * receipt without any additional guarding.
- */
-export function buildPaymentReceipt(input: PaymentReceiptInput): PaymentReceiptViewModel {
-  const fullHash = isNonEmpty(input.hash) ? input.hash.trim() : null;
-  const explorerUrl = isNonEmpty(input.explorerUrl) ? input.explorerUrl.trim() : null;
-  const destination = isNonEmpty(input.destination) ? input.destination.trim() : null;
-  const destinationLabel = isNonEmpty(input.destinationLabel)
-    ? input.destinationLabel.trim()
-    : null;
-
+/** Whitelist route fields; repeated parameters and arbitrary objects are not receipts. */
+export function readReceiptParams(params: ReceiptInput): PaymentReceipt {
+  const amount = scalar(params.amount, 128);
+  const hash = scalar(params.hash, 64);
+  const date = scalar(params.date, 64);
+  const asset = scalar(params.asset, 12);
+  const destination = scalar(params.destination, 128);
   return {
-    displayAmount: formatReceiptAmount(input.amount),
-    displayDate: formatReceiptDate(input.date),
-    displayDestination: destination ?? RECEIPT_PLACEHOLDER,
-    displayHash: truncateHash(fullHash),
-    fullHash,
-    destinationLabel,
-    canCopyHash: fullHash !== null,
-    explorerUrl,
-    hasExplorerLink: explorerUrl !== null,
+    status: resolveReceiptStatus({ status: params.status }),
+    hash: /^[a-f\d]{64}$/i.test(hash) ? hash.toLowerCase() : '',
+    amount: /^\d+(?:\.\d{1,7})?$/.test(amount) ? amount : '',
+    asset: /^[a-z\d]{1,12}$/i.test(asset) ? asset : '',
+    // Receipts show public accounts, never an accidentally forwarded secret seed.
+    destination: /^(?:G[A-Z2-7]{55}|M[A-Z2-7]{68})$/.test(destination) ? destination : '',
+    date: /^\d{4}-\d{2}-\d{2}T/.test(date) && Number.isFinite(Date.parse(date)) ? date : '',
+    network: scalar(params.network, 64),
   };
+}
+
+export function createReceiptParams(receipt: ReceiptInput): ReceiptRouteParams {
+  return { ...readReceiptParams(receipt) };
+}
+
+export function formatReceiptAmount(receipt: Pick<PaymentReceipt, 'amount' | 'asset'>): string {
+  if (!receipt.amount) return 'Unavailable';
+  const [whole, decimal = ''] = receipt.amount.split('.');
+  const fraction = decimal.replace(/0+$/, '');
+  // Preserve decimal precision: do not convert monetary values to floating point.
+  const amount = whole.replace(/^0+(?=\d)/, '') + (fraction ? `.${fraction}` : '');
+  return `${amount} ${receipt.asset || '(unknown asset)'}`;
+}
+
+export function normalizeReceiptNetwork(network: string): 'public' | 'testnet' | null {
+  switch (network.trim().toLowerCase()) {
+    case 'public':
+    case 'mainnet':
+    case 'public network':
+      return 'public';
+    case 'testnet':
+      return 'testnet';
+    default:
+      return null;
+  }
+}
+
+/** Use the existing explorer builder only for a valid hash on the recorded network. */
+export function canOpenReceiptExplorer(receipt: PaymentReceipt, configuredNetwork: string): boolean {
+  const recorded = normalizeReceiptNetwork(receipt.network);
+  return /^[a-f\d]{64}$/i.test(receipt.hash) && recorded !== null
+    && recorded === normalizeReceiptNetwork(configuredNetwork);
 }
