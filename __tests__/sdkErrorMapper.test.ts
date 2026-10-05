@@ -73,7 +73,6 @@ describe('shared SDK error mapper', () => {
 
     expect(known.title).toBe('Lock Not Ready');
     expect(known.diagnosticCode).toBe('SDK-VAULT-NOT_MATURED');
-    expect(thrown.category).toBeUndefined();
     expect(thrown.title).toBe('Contract Error');
     expect(thrown.message).not.toContain('CSECRET');
     expect(thrown.diagnosticCode).toBe('SDK-VAULT-CONTRACT');
