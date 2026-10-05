@@ -16,7 +16,7 @@
 
 import React from 'react';
 import type { ReactElement } from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 
 // ─── Module mocks ────────────────────────────────────────────────────────
@@ -52,9 +52,11 @@ let mockPermissionCanAskAgain = true;
 const mockRequestPermission = jest.fn(async () => {
   mockPermissionGranted = true;
 });
+let mockCameraOnMountError: ((event: { message: string }) => void) | undefined;
 
 jest.mock('expo-camera', () => ({
-  CameraView: ({ onBarcodeScanned, children }: any) => {
+  CameraView: ({ onBarcodeScanned, onMountError, children }: any) => {
+    mockCameraOnMountError = onMountError;
     const { View } = require('react-native');
     return (
       <View testID="camera-view">
@@ -120,6 +122,7 @@ beforeEach(() => {
   setupWalletStore();
   mockPermissionGranted = true;
   mockPermissionCanAskAgain = true;
+  mockCameraOnMountError = undefined;
 });
 
 // ────────────────────────────────────────────────────────────────────────
@@ -344,6 +347,46 @@ describe('AC7 – camera permission handling', () => {
       ).toBeTruthy();
       expect(queryByText('Grant Permission')).toBeNull();
     });
+  });
+});
+
+// ────────────────────────────────────────────────────────────────────────
+// AC7b – Camera mount failure returns to manual entry
+// ────────────────────────────────────────────────────────────────────────
+
+describe('AC7b – camera unavailable fallback', () => {
+  it('preserves the recipient when the camera cannot mount', async () => {
+    const {
+      getByLabelText,
+      getByPlaceholderText,
+      getByText,
+      getByTestId,
+      queryByText,
+    } = render(<SendScreen />);
+
+    fireEvent.changeText(getByPlaceholderText('G...'), VALID_DESTINATION);
+    fireEvent.press(getByLabelText('Scan QR code for recipient address'));
+
+    await waitFor(() => {
+      expect(getByTestId('camera-view')).toBeTruthy();
+      expect(mockCameraOnMountError).toBeDefined();
+    });
+
+    act(() => {
+      mockCameraOnMountError?.({ message: 'Camera unavailable' });
+    });
+
+    await waitFor(() => {
+      expect(getByText('Camera unavailable')).toBeTruthy();
+      expect(getByText('Enter Address Manually')).toBeTruthy();
+    });
+
+    fireEvent.press(getByText('Enter Address Manually'));
+
+    await waitFor(() => {
+      expect(queryByText('Camera unavailable')).toBeNull();
+    });
+    expect(getByPlaceholderText('G...').props.value).toBe(VALID_DESTINATION);
   });
 });
 
