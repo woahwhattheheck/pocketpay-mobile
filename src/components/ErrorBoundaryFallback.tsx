@@ -56,7 +56,7 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   const handleShareDiagnostics = async () => {
     try {
       await Share.share({
-        message: getDiagnostics(),
+        message: await getDiagnostics(),
         title: 'App Diagnostics Log',
       });
     } catch {

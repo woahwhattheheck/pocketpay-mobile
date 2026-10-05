@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import Constants from 'expo-constants';
 import { useAppStore } from '../store/appStore';
 import { useWalletStore } from '../store/walletStore';
+import { classifyNetworkError } from '../hooks/useNetworkStatus';
 import { getLastErrorReport } from './errorReporting';
 import { redactSensitiveString } from './redactSensitive';
 import { computeNetworkEnvironment } from '../features/settings/useNetworkEnvironment';
