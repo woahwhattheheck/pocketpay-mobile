@@ -38,6 +38,9 @@ jest.mock('lucide-react-native', () => ({
   Copy: () => null,
   Check: () => null,
   ExternalLink: () => null,
+  Clock: () => null,
+  XCircle: () => null,
+  AlertCircle: () => null,
 }));
 
 // ─── Typed mock imports ───────────────────────────────────────────────────────
@@ -52,9 +55,18 @@ import PaymentSuccessScreen from '../app/payment-success';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const TX_HASH = 'a1b2c3d4e5f6abcdef1234567890abcdef1234567890abcdef1234567890ab';
+const TX_HASH = 'a'.repeat(64);
 const AMOUNT = '25';
-const DESTINATION = 'GBXXXXVALIDSTELLARADDRESS1234567890ABCDEFGHIJKLMNOPQRSTUVWX';
+const DESTINATION = 'GCAXBKU3AKYJPLQ6PEJ6L47KOATCYCBJ2NFRGAK7FUUA2DCEUC265SU2';
+const VALID_ROUTE = {
+  status: 'successful',
+  hash: TX_HASH,
+  amount: AMOUNT,
+  asset: 'XLM',
+  destination: DESTINATION,
+  date: '2026-10-04T12:00:00Z',
+  network: 'TESTNET',
+};
 
 const mockReplace = jest.fn();
 const mockPush = jest.fn();
@@ -62,11 +74,7 @@ const mockPush = jest.fn();
 beforeEach(() => {
   jest.clearAllMocks();
   mockUseRouter.mockReturnValue({ back: jest.fn(), push: mockPush, replace: mockReplace } as any);
-  mockUseLocalSearchParams.mockReturnValue({
-    hash: TX_HASH,
-    amount: AMOUNT,
-    destination: DESTINATION,
-  } as any);
+  mockUseLocalSearchParams.mockReturnValue(VALID_ROUTE as any);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -98,7 +106,7 @@ describe('AC7 – honest confirmation copy', () => {
   it('states the transaction was confirmed, not just vaguely "sent"', () => {
     const { getByText, queryByText } = render(<PaymentSuccessScreen />);
     expect(getByText('Payment Confirmed')).toBeTruthy();
-    expect(getByText('Your transaction was confirmed on the network.')).toBeTruthy();
+    expect(getByText('The payment flow reported network confirmation.')).toBeTruthy();
     expect(queryByText('Payment Sent')).toBeNull();
   });
 });
@@ -131,22 +139,22 @@ describe('AC5 – explorer link', () => {
     expect(getByText('View on Stellar Expert')).toBeTruthy();
   });
 
-  it('opens the explorer URL when the link is pressed', () => {
+  it('opens the explorer URL when the link is pressed', async () => {
+    const canOpenURLSpy = jest.spyOn(Linking, 'canOpenURL').mockResolvedValue(true);
     const openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValue(true as any);
     const { getByText } = render(<PaymentSuccessScreen />);
     fireEvent.press(getByText('View on Stellar Expert'));
-    expect(openURLSpy).toHaveBeenCalledWith(
-      `https://stellar.expert/explorer/testnet/tx/${TX_HASH}`,
-    );
+    await waitFor(() => {
+      expect(openURLSpy).toHaveBeenCalledWith(
+        `https://stellar.expert/explorer/testnet/tx/${TX_HASH}`,
+      );
+    });
+    canOpenURLSpy.mockRestore();
     openURLSpy.mockRestore();
   });
 
   it('hides the explorer link when there is no transaction hash', () => {
-    mockUseLocalSearchParams.mockReturnValue({
-      hash: undefined,
-      amount: AMOUNT,
-      destination: DESTINATION,
-    } as any);
+    mockUseLocalSearchParams.mockReturnValue({ ...VALID_ROUTE, hash: undefined } as any);
     const { queryByText } = render(<PaymentSuccessScreen />);
     expect(queryByText('View on Stellar Expert')).toBeNull();
   });
@@ -183,36 +191,22 @@ describe('copy transaction hash', () => {
 
 describe('graceful handling of missing or invalid data', () => {
   it('handles missing amount gracefully by showing fallback dash without XLM suffix', () => {
-    mockUseLocalSearchParams.mockReturnValue({
-      hash: TX_HASH,
-      amount: undefined,
-      destination: DESTINATION,
-    } as any);
+    mockUseLocalSearchParams.mockReturnValue({ ...VALID_ROUTE, amount: undefined } as any);
     const { getAllByText, queryByText } = render(<PaymentSuccessScreen />);
-    expect(getAllByText('—').length).toBeGreaterThan(0);
-    expect(queryByText('— XLM')).toBeNull();
+    expect(getAllByText('Unavailable').length).toBeGreaterThan(0);
+    expect(queryByText('Unavailable XLM')).toBeNull();
 
   });
 
   it('handles missing date gracefully by showing fallback dash', () => {
-    mockUseLocalSearchParams.mockReturnValue({
-      hash: TX_HASH,
-      amount: AMOUNT,
-      destination: DESTINATION,
-      date: undefined,
-    } as any);
+    mockUseLocalSearchParams.mockReturnValue({ ...VALID_ROUTE, date: undefined } as any);
     const { getByText } = render(<PaymentSuccessScreen />);
-    expect(getByText('—')).toBeTruthy();
+    expect(getByText('Unavailable')).toBeTruthy();
   });
 
   it('handles invalid date gracefully by showing fallback dash', () => {
-    mockUseLocalSearchParams.mockReturnValue({
-      hash: TX_HASH,
-      amount: AMOUNT,
-      destination: DESTINATION,
-      date: 'invalid-date-string',
-    } as any);
+    mockUseLocalSearchParams.mockReturnValue({ ...VALID_ROUTE, date: 'invalid-date-string' } as any);
     const { getByText } = render(<PaymentSuccessScreen />);
-    expect(getByText('—')).toBeTruthy();
+    expect(getByText('Unavailable')).toBeTruthy();
   });
 });
