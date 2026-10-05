@@ -22,7 +22,7 @@ import { useWalletStore } from '../../src/store/walletStore';
 import { formatTimeRemaining } from '../../src/utils/lockTime';
 import { validateAmount } from '../../src/utils/validation';
 import { WALLET_SECRET_ACCESS_MESSAGE } from '../../src/utils/walletStorageErrors';
-import { PiggyBank, Info, Lock, HelpCircle, ShieldCheck, AlertTriangle, Ban } from 'lucide-react-native';
+import { PiggyBank, Info, Lock, HelpCircle, ShieldCheck, Ban } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VaultReceiptModal } from "../../src/components/VaultReceiptModal";
 import { isActionSupported, getActionUnsupportedReason, getActionUnsupportedDetail } from '../../src/utils/vaultCapabilities';
@@ -30,10 +30,11 @@ import { useNetworkState } from '../../src/hooks/useNetworkState';
 import { NetworkStatusBanner } from '../../src/components/NetworkStatusBanner';
 import { WithdrawalPreview } from '../../src/features/vault/WithdrawalPreview';
 import { DepositPreview } from '../../src/features/vault/DepositPreview';
-import type { VaultLock } from '../../src/types';
+import { describeVaultReadiness } from '../../src/utils/vaultAvailability';
 
 const LOCK_PERIOD_SECONDS = 30 * 24 * 60 * 60; // 30 days
 const VAULT_INTRO_SEEN_KEY = '@pocketpay_vault_intro_seen';
+const READY_VAULT_COPY = describeVaultReadiness('ready');
 
 export default function VaultScreen() {
   const router = useRouter();
@@ -42,15 +43,15 @@ export default function VaultScreen() {
 
   // Wallet & Vault stores
   const { publicKey, getSecretKey, balance: walletBalance, error: walletError } = useWalletStore();
-  const { isAvailable, reasons, isContractConfigured } = useVaultAvailability();
+  const { isAvailable, reasons } = useVaultAvailability();
   const { state: networkState, disableWriteActions: networkDisabled, retry: retryNetwork } = useNetworkState({ error: walletError });
   const {
     balance,
-    locks: _unused_locks,
+    locks,
     isConfigured,
     contractId,
     isLoadingBalance,
-    isLoadingLocks: _unused_isLoadingLocks,
+    isLoadingLocks,
     isSubmitting,
     balanceError,
     vaultError,
@@ -92,6 +93,15 @@ export default function VaultScreen() {
     transactionHash: null as string | null,
   });
 
+  useEffect(() => {
+    if (!isAvailable) {
+      setConfirmVisible(false);
+      setShowDepositPreview(false);
+      setShowWithdrawalPreview(false);
+      setPendingAction(null);
+    }
+  }, [isAvailable]);
+
   // Initial setup
   useEffect(() => {
     const checkIntro = async () => {
@@ -102,11 +112,6 @@ export default function VaultScreen() {
     };
     checkIntro();
   }, []);
-
-  // ---- Multi-lock state (placeholder data until contract integration) ----
-  const [locks, setLocks] = useState<VaultLock[]>([]);
-  const [isLoadingLocks, setIsLoadingLocks] = useState(true);
-  const [locksError, setLocksError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isAvailable && publicKey) {
@@ -128,6 +133,7 @@ export default function VaultScreen() {
   };
 
   const handleDepositPress = () => {
+    if (!isAvailable || !canDeposit || networkDisabled) return;
     const isValid = depositForm.validate(walletBalance);
     if (!isValid) return;
 
@@ -136,15 +142,17 @@ export default function VaultScreen() {
   };
 
   const handleDepositConfirm = () => {
+    if (!isAvailable || !canDeposit || networkDisabled) return;
     setShowDepositPreview(false);
-    // Set pending action and execute the deposit flow directly —
-    // the DepositPreview itself serves as the confirmation step.
+    // Keep UI state in sync, but dispatch the confirmed action explicitly:
+    // React state setters do not update this render's pendingAction snapshot.
     setPendingAction('deposit');
-    handleConfirmAction();
+    handleConfirmAction('deposit');
   };
 
   const vaultAction = useVaultAction();
   const handleAction = async (action: 'deposit' | 'withdraw' | 'lock') => {
+    if (!isAvailable || !isActionSupported(capabilities, action) || networkDisabled) return;
     // Validate amount
     let amountError: string | undefined;
     if (action === 'deposit') {
@@ -174,12 +182,15 @@ export default function VaultScreen() {
     setConfirmVisible(true);
   };
 
- const handleConfirmAction = async () => {
-    if (!publicKey || !pendingAction) return;
+  const handleConfirmAction = async (action: 'deposit' | 'withdraw' | 'lock' | null) => {
+    if (!publicKey || !action || !isAvailable || networkDisabled ||
+        !isActionSupported(capabilities, action)) return;
 
+    // run catches failures; only this operation's confirm callback records success.
+    const outcome: { txHash?: string } = {};
     await vaultAction.run({
       sign: async () => {
-        if (pendingAction === 'withdraw') {
+        if (action === 'withdraw') {
           const secret = await getSecretKey();
           if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
           return secret;
@@ -187,56 +198,46 @@ export default function VaultScreen() {
         return null;
       },
       submit: async () => {
-        if (pendingAction === 'lock') {
+        if (action === 'lock') {
           const unlockDate = new Date(Date.now() + LOCK_PERIOD_SECONDS * 1000);
           await addLock(depositForm.amount, unlockDate.toISOString());
           return { txHash: 'mock-lock' };
-        } else if (pendingAction === 'deposit') {
+        } else if (action === 'deposit') {
           const hash = await depositForm.submit(publicKey, getSecretKey, deposit, walletBalance);
-          return { txHash: hash || 'mock-deposit' };
+          if (!hash) throw new Error('Deposit did not complete with a transaction hash.');
+          return { txHash: hash };
         } else {
           const secret = await getSecretKey();
           if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
           const hash = await withdraw(secret, publicKey, depositForm.amount);
-          return { txHash: hash || 'mock-withdraw' };
+          if (!hash) throw new Error('Withdrawal did not complete with a transaction hash.');
+          return { txHash: hash };
         }
       },
-      confirm: async () => {
-        setConfirmVisible(false);
-        const hash = vaultAction.status.txHash;
-        setReceiptData({
-          actionType: pendingAction as 'deposit' | 'withdraw' | 'lock',
-          amount: depositForm.amount,
-          status: vaultAction.status.state === 'confirmed' ? 'Success' : 'Failed',
-          date: new Date().toLocaleString(),
-          transactionHash: hash || null,
-        });
-        setReceiptVisible(true);
-
-        depositForm.setAmount("");
-        depositForm.setAmountError(undefined);
+      confirm: async (txHash) => {
+        outcome.txHash = txHash;
       },
     });
 
-    if (vaultAction.status.state === 'failed') {
-      setConfirmVisible(false);
-      setReceiptData({
-        actionType: pendingAction as 'deposit' | 'withdraw' | 'lock',
-        amount: depositForm.amount,
-        status: 'Failed',
-        date: new Date().toLocaleString(),
-        transactionHash: null,
-      });
-      setReceiptVisible(true);
-      depositForm.setAmount("");
-      depositForm.setAmountError(undefined);
-    }
+    const succeeded = outcome.txHash !== undefined;
+    setConfirmVisible(false);
+    setReceiptData({
+      actionType: action,
+      amount: depositForm.amount,
+      status: succeeded ? (action === 'lock' ? 'Local preview created' : 'Success') : 'Failed',
+      date: new Date().toLocaleString(),
+      transactionHash: succeeded && action !== 'lock' ? outcome.txHash ?? null : null,
+    });
+    setReceiptVisible(true);
+    depositForm.setAmount("");
+    depositForm.setAmountError(undefined);
   };
   const cancelAction = () => {
     setConfirmVisible(false);
   };
 
   const handleUnlock = async (lockId: string) => {
+    if (!isAvailable || !canUnlock || networkDisabled) return;
     try {
       await unlockLock(lockId);
       Alert.alert('Success', 'Funds unlocked! (mock)');
@@ -246,6 +247,7 @@ export default function VaultScreen() {
   };
 
   const handleWithdrawPress = () => {
+    if (!isAvailable || !canWithdraw || networkDisabled) return;
     setShowWithdrawalPreview(true);
   };
 
@@ -257,13 +259,13 @@ export default function VaultScreen() {
         onClose={() => setLockEducationVisible(false)}
       />
       <VaultConfirmModal
-        visible={confirmVisible}
+        visible={confirmVisible && isAvailable}
         actionType={pendingAction || 'deposit'}
         amount={depositForm.amount}
         isLoading={isSubmitting || depositForm.isSubmitting}
         contractId={isConfigured ? contractId : undefined}
         unlockTime={pendingAction === 'lock' ? pendingUnlockDate : undefined}
-        onConfirm={handleConfirmAction}
+        onConfirm={() => handleConfirmAction(pendingAction)}
         onCancel={cancelAction}
       />
 
@@ -300,19 +302,19 @@ export default function VaultScreen() {
           <PiggyBank color={colors.primary} size={40} />
         </View>
         <Text style={styles.cardTitle}>Soroban Savings Vault</Text>
-        {isLoadingBalance ? (
+        {isAvailable && isLoadingBalance ? (
           <LoadingState
             message=""
             style={styles.balanceLoader}
             accessibilityLabel="Loading vault balance"
           />
         ) : (
-          <Text style={styles.balanceValue}>{balance} XLM</Text>
+          <Text style={styles.balanceValue}>{isAvailable ? `${balance} XLM` : '—'}</Text>
         )}
         <Text style={styles.cardSubtitle}>
           {isConfigured
             ? `Contract ${contractId.slice(0, 4)}…${contractId.slice(-4)}`
-            : 'Mock balance'}
+            : 'Placeholder — no deposited funds'}
         </Text>
         {balanceError && (
           <View style={styles.balanceErrorBox}>
@@ -325,31 +327,22 @@ export default function VaultScreen() {
       </View>
 
       {/* Issue #331: Pass unlock capability to lock list */}
-      <VaultLockList
+      {isAvailable && <VaultLockList
         locks={locks}
         isLoading={isLoadingLocks}
         onUnlock={canUnlock ? handleUnlock : undefined}
         onInfoPress={() => setLockEducationVisible(true)}
         unlockDisabledReason={!canUnlock ? getActionUnsupportedReason(capabilities, 'unlock') : undefined}
-      />
+      />}
 
 
-      {isContractConfigured ? (
-        <View style={styles.infoBox}>
+      {isAvailable && (
+        <View style={styles.infoBox} testID="vault-readiness-ready">
           <ShieldCheck color={colors.success} size={24} style={{ marginRight: SIZES.sm }} />
           <Text style={styles.infoText}>
-            Connected to a live Soroban smart contract on{' '}
-            {process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET'}. Deposits and withdrawals
-            submit real transactions.
-          </Text>
-        </View>
-      ) : (
-        <View style={styles.warningBox}>
-          <AlertTriangle color={colors.warning} size={24} style={{ marginRight: SIZES.sm }} />
-          <Text style={styles.warningText}>
-            No vault contract configured. Set EXPO_PUBLIC_VAULT_CONTRACT_ID in your .env file to
-            connect to a deployed Soroban contract. Running in mock mode — no real funds are
-            moved.
+            {READY_VAULT_COPY.title}. {READY_VAULT_COPY.message}{' '}
+            Network: {process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET'}.
+            Time locks remain local previews, not on-chain deposits.
           </Text>
         </View>
       )}
@@ -443,12 +436,12 @@ export default function VaultScreen() {
       )}
 
       <WithdrawalPreview
-        visible={showWithdrawalPreview}
+        visible={showWithdrawalPreview && isAvailable}
         onDismiss={() => setShowWithdrawalPreview(false)}
       />
 
       <DepositPreview
-        visible={showDepositPreview}
+        visible={showDepositPreview && isAvailable}
         params={{
           amount: depositForm.amount,
           asset: 'XLM',

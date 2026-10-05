@@ -1,48 +1,30 @@
-/**
- * useVaultCapabilities
- *
- * Reactive hook that evaluates which vault actions are currently supported.
- * Combines wallet state, vault configuration, and feature flags into a
- * per-action capability map that the UI uses to disable/hide actions.
- *
- * Usage:
- * ```tsx
- * const capabilities = useVaultCapabilities();
- * const canDeposit = capabilities.deposit.status === 'supported';
- * ```
- */
-
 import { useMemo } from 'react';
 import { useWalletStore } from '../store/walletStore';
 import { useVaultStore } from '../store/vaultStore';
-import {
-  evaluateVaultCapabilities,
-  VaultCapabilityInput,
-} from '../utils/vaultCapabilities';
+import { evaluateVaultCapabilities } from '../utils/vaultCapabilities';
+import { isVaultFeatureEnabled } from '../utils/vaultAvailability';
 import type { VaultCapabilities } from '../types/vault';
 
-export function useVaultCapabilities(): VaultCapabilities & {
-  /** True while any capability check is still loading. */
-  isLoading: boolean;
-} {
+/** Reactive per-action gates using the same configuration as the placeholder. */
+export function useVaultCapabilities(): VaultCapabilities & { isLoading: boolean } {
   const publicKey = useWalletStore((s) => s.publicKey);
   const isConfigured = useVaultStore((s) => s.isConfigured);
   const isLoadingBalance = useVaultStore((s) => s.isLoadingBalance);
   const isLoadingLocks = useVaultStore((s) => s.isLoadingLocks);
+  const isFeatureEnabled = isVaultFeatureEnabled(process.env.EXPO_PUBLIC_VAULT_ENABLED);
 
   return useMemo(() => {
-    const input: VaultCapabilityInput = {
-      hasWallet: publicKey !== null,
-      isContractConfigured: isConfigured,
-      isFeatureEnabled: true, // Feature flag check; defaults to true
-      isSdkReady: true, // SDK readiness; assumed true until SDK integration
-      isLoading: isLoadingBalance || isLoadingLocks,
-    };
-
-    const capabilities = evaluateVaultCapabilities(input);
+    const isLoading = isLoadingBalance || isLoadingLocks;
     return {
-      ...capabilities,
-      isLoading: input.isLoading,
+      ...evaluateVaultCapabilities({
+        hasWallet: Boolean(publicKey),
+        isContractConfigured: isConfigured,
+        isFeatureEnabled,
+        // No SDK readiness API is available yet; retain the documented default.
+        isSdkReady: true,
+        isLoading,
+      }),
+      isLoading,
     };
-  }, [publicKey, isConfigured, isLoadingBalance, isLoadingLocks]);
+  }, [publicKey, isConfigured, isFeatureEnabled, isLoadingBalance, isLoadingLocks]);
 }

@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { SIZES, RADIUS, ThemeColors } from '../constants/theme';
 import { useTheme } from '../hooks/useTheme';
 import { XCircle } from 'lucide-react-native';
 import {
   VaultUnavailableReason,
   describeUnavailableReason,
+  describeVaultReadiness,
+  getVaultReadinessState,
 } from '../utils/vaultAvailability';
 import { Button } from './Button';
 
@@ -22,39 +24,39 @@ export const VaultUnavailableState: React.FC<VaultUnavailableStateProps> = ({
 }) => {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-
-  const primaryReason = reasons[0] ?? 'sdk-not-ready';
-  const primaryCopy = describeUnavailableReason(primaryReason);
-
-  const showSettingsButton = reasons.includes('no-wallet') && onNavigateToSettings;
-  const showRetryButton =
-    (reasons.includes('feature-disabled') || reasons.includes('sdk-not-ready')) && onRetry;
+  const displayedReasons: VaultUnavailableReason[] = reasons.length ? reasons : ['sdk-not-ready'];
+  const state = getVaultReadinessState(displayedReasons);
+  const copy = describeVaultReadiness(state);
+  const primaryCopy = describeUnavailableReason(displayedReasons[0]);
+  const showSettingsButton = displayedReasons.includes('no-wallet') && onNavigateToSettings;
+  // Reloading cannot enable a disabled build or configure a missing contract.
+  const showRetryButton = displayedReasons.length === 1 &&
+    displayedReasons[0] === 'sdk-not-ready' && onRetry;
+  const tone = state === 'planned' || state === 'disabled' ? colors.warning : colors.error;
 
   return (
     <View
-      style={styles.unavailableCard}
+      style={[styles.unavailableCard, { borderColor: tone }]}
       accessible={true}
       accessibilityRole="alert"
-      accessibilityLabel={`Vault Unavailable. ${primaryCopy.title}. ${primaryCopy.message}`}
+      accessibilityLabel={`${copy.title}. ${primaryCopy.title}. ${primaryCopy.message}`}
       accessibilityLiveRegion="polite"
+      testID={`vault-readiness-${state}`}
     >
-      <XCircle color={colors.error} size={48} testID="unavailable-icon" />
-      <Text style={styles.unavailableTitle}>Vault Unavailable</Text>
-      <Text style={styles.unavailableText}>
-        The Soroban Savings Vault cannot be used right now because the required configuration or wallet is missing.
-      </Text>
+      <XCircle color={tone} size={48} testID="unavailable-icon" />
+      <Text style={styles.unavailableTitle}>{copy.title}</Text>
+      <Text style={styles.unavailableText}>{copy.message}</Text>
 
-      {reasons.map((reason) => {
-        const copy = describeUnavailableReason(reason);
+      {displayedReasons.map((reason) => {
+        const detail = describeUnavailableReason(reason);
         return (
           <View key={reason} style={styles.unavailableDetail} testID={`reason-detail-${reason}`}>
-            <Text style={styles.unavailableDetailLabel}>{copy.title}</Text>
-            <Text style={styles.unavailableDetailValue}>{copy.message}</Text>
-            {copy.hint ? <Text style={styles.unavailableDetailHint}>{copy.hint}</Text> : null}
+            <Text style={styles.unavailableDetailLabel}>{detail.title}</Text>
+            <Text style={styles.unavailableDetailValue}>{detail.message}</Text>
+            {detail.hint ? <Text style={styles.unavailableDetailHint}>{detail.hint}</Text> : null}
           </View>
         );
       })}
-
 
       {showSettingsButton ? (
         <Button
@@ -64,18 +66,11 @@ export const VaultUnavailableState: React.FC<VaultUnavailableStateProps> = ({
           style={styles.actionButton}
         />
       ) : null}
-
-      {showRetryButton && !showSettingsButton ? (
-        <Button
-          title="Try Again"
-          onPress={onRetry}
-          variant="secondary"
-          style={styles.actionButton}
-        />
+      {showRetryButton ? (
+        <Button title="Try Again" onPress={onRetry} variant="secondary" style={styles.actionButton} />
       ) : null}
-
       <Text style={styles.unavailableDocsLink}>
-        See docs/vault-ui-guidance.md for more information.
+        See docs/vault-readiness.md for current capabilities and limitations.
       </Text>
     </View>
   );
@@ -89,7 +84,6 @@ const createStyles = (colors: ThemeColors) =>
       borderRadius: RADIUS.lg,
       alignItems: 'center',
       borderWidth: 1,
-      borderColor: colors.error,
       marginBottom: SIZES.xl,
     },
     unavailableTitle: {
@@ -107,7 +101,7 @@ const createStyles = (colors: ThemeColors) =>
       marginBottom: SIZES.lg,
     },
     unavailableDetail: {
-      backgroundColor: 'rgba(255, 61, 0, 0.06)',
+      backgroundColor: colors.surfaceLight,
       padding: SIZES.md,
       borderRadius: RADIUS.md,
       width: '100%',
