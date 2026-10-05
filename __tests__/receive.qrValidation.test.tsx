@@ -96,13 +96,14 @@ describe('ReceiveScreen QR validation', () => {
   });
 
   it('does not silently drop an invalid requested amount', () => {
-    const { getByText, getByPlaceholderText, queryByTestId } = render(<ReceiveScreen />);
+    const { getByText, getAllByText, getByPlaceholderText, queryByTestId } = render(<ReceiveScreen />);
 
     fireEvent.press(getByText('Request a specific amount'));
     fireEvent.changeText(getByPlaceholderText('0.00'), '-1');
 
     expect(queryByTestId('receive-qr')).toBeNull();
     expect(getByText('Unable to create receive QR')).toBeTruthy();
-    expect(getByText('Please enter a valid number.')).toBeTruthy();
+    // The field and the QR-blocking summary both explain the invalid amount.
+    expect(getAllByText('Please enter a valid number.')).toHaveLength(2);
   });
 });
