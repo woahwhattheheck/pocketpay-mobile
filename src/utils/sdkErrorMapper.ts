@@ -51,8 +51,7 @@ export interface SdkErrorGuidance {
   diagnosticCode: string;
 }
 
-interface GuidanceTemplate
-  extends Omit<SdkErrorGuidance, 'domain' | 'diagnosticCode'> {}
+type GuidanceTemplate = Omit<SdkErrorGuidance, 'domain' | 'diagnosticCode'>;
 
 const TEMPLATES: Record<SdkErrorCategory, GuidanceTemplate> = {
   network: {
