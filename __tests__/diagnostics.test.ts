@@ -112,6 +112,41 @@ describe('getDiagnostics', () => {
     expect(parsed.storage.secureStoreStatus).toBe('available');
   });
 
+  it('shares concurrent probes and starts a fresh probe after completion', async () => {
+    let finishAvailability!: (available: boolean) => void;
+    const availability = jest.spyOn(SecureStore, 'isAvailableAsync').mockClear()
+      .mockImplementationOnce(() => new Promise<boolean>((resolve) => {
+        finishAvailability = resolve;
+      })).mockResolvedValue(true);
+    const write = jest.spyOn(SecureStore, 'setItemAsync').mockClear().mockResolvedValue(undefined);
+    const read = jest.spyOn(SecureStore, 'getItemAsync').mockClear()
+      .mockResolvedValue('pocketpay-diagnostic');
+    const cleanup = jest.spyOn(SecureStore, 'deleteItemAsync').mockClear().mockResolvedValue(undefined);
+    const first = probeSecureStorage();
+    const second = probeSecureStorage();
+    expect(second).toBe(first);
+    finishAvailability(true);
+    const results = await Promise.all([first, second]);
+    expect(results.every((result) => result.secureStoreStatus === 'available')).toBe(true);
+    expect(availability).toHaveBeenCalledTimes(1);
+    expect(write).toHaveBeenCalledTimes(1);
+    expect(read).toHaveBeenCalledTimes(1);
+    expect(cleanup).toHaveBeenCalledTimes(1);
+    await probeSecureStorage();
+    expect(availability).toHaveBeenCalledTimes(2);
+    expect(cleanup).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not retain a failed probe result', async () => {
+    jest.spyOn(SecureStore, 'isAvailableAsync').mockResolvedValue(true);
+    jest.spyOn(SecureStore, 'setItemAsync')
+      .mockRejectedValueOnce(new Error('write failed')).mockResolvedValue(undefined);
+    jest.spyOn(SecureStore, 'getItemAsync').mockResolvedValue('pocketpay-diagnostic');
+    jest.spyOn(SecureStore, 'deleteItemAsync').mockResolvedValue(undefined);
+    expect((await probeSecureStorage()).secureStoreStatus).toBe('write_failed');
+    expect((await probeSecureStorage()).secureStoreStatus).toBe('available');
+  });
+
   it('classifies a secure storage write failure', async () => {
     jest.spyOn(SecureStore, 'setItemAsync').mockRejectedValueOnce(new Error('write failed'));
     const result = await probeSecureStorage();

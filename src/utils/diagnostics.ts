@@ -25,6 +25,7 @@ export interface SecureStorageDiagnostics {
 
 const SECURE_STORE_PROBE_KEY = '__pocketpay_secure_store_diagnostic__';
 const SECURE_STORE_PROBE_VALUE = 'pocketpay-diagnostic';
+let activeStorageProbe: Promise<SecureStorageDiagnostics> | null = null;
 
 /**
  * Probe SecureStore without reading wallet material.
@@ -33,7 +34,17 @@ const SECURE_STORE_PROBE_VALUE = 'pocketpay-diagnostic';
  * It uses one fixed non-sensitive value and returns only a coarse stage code,
  * never a raw Keychain or Keystore error.
  */
-export async function probeSecureStorage(): Promise<SecureStorageDiagnostics> {
+export function probeSecureStorage(): Promise<SecureStorageDiagnostics> {
+  // Share only the active round trip so callers cannot delete each other's probe.
+  if (!activeStorageProbe) {
+    activeStorageProbe = runSecureStorageProbe().finally(() => {
+      activeStorageProbe = null;
+    });
+  }
+  return activeStorageProbe;
+}
+
+async function runSecureStorageProbe(): Promise<SecureStorageDiagnostics> {
   let available = false;
   try {
     available = await SecureStore.isAvailableAsync();
