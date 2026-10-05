@@ -46,6 +46,7 @@ export interface ReceivePayloadParams {
 }
 
 const STELLAR_PAY_URI_PREFIX = 'web+stellar:pay';
+const TESTNET_NETWORK_PASSPHRASE = 'Test SDF Network ; September 2015';
 
 export interface ReceivePayloadValidationErrors {
   destination?: string;
@@ -126,7 +127,7 @@ export function createReceivePayload(
   const isValid = Object.keys(errors).length === 0;
 
   return {
-    payload: isValid ? buildReceivePayload(normalizedParams) : '',
+    payload: isValid ? buildReceivePayload(normalizedParams, TESTNET_NETWORK_PASSPHRASE) : '',
     errors,
     isValid,
   };
@@ -135,9 +136,13 @@ export function createReceivePayload(
 /**
  * Builds the string to encode in the receive QR code (and to use as the
  * Share/Copy fallback text). Pure formatting - assumes `amount`/`memo` have
- * already passed `validateAmount`/`validateMemo`.
+ * already passed `validateAmount`/`validateMemo`. A non-public network needs an
+ * explicit passphrase; omitting it retains SEP-0007's public-network default.
  */
-export function buildReceivePayload(params: ReceivePayloadParams): string {
+export function buildReceivePayload(
+  params: ReceivePayloadParams,
+  networkPassphrase?: string,
+): string {
   const { destination, amount, assetCode, assetIssuer, memo, memoType } = params;
 
   const trimmedAmount = amount?.trim();
@@ -150,6 +155,10 @@ export function buildReceivePayload(params: ReceivePayloadParams): string {
 
   const query = new URLSearchParams();
   query.set('destination', destination);
+
+  if (networkPassphrase) {
+    query.set('network_passphrase', networkPassphrase);
+  }
 
   if (trimmedAmount) {
     query.set('amount', trimmedAmount);
