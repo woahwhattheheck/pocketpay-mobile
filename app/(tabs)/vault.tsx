@@ -30,7 +30,6 @@ import { useNetworkState } from '../../src/hooks/useNetworkState';
 import { NetworkStatusBanner } from '../../src/components/NetworkStatusBanner';
 import { WithdrawalPreview } from '../../src/features/vault/WithdrawalPreview';
 import { DepositPreview } from '../../src/features/vault/DepositPreview';
-import type { VaultLock } from '../../src/types';
 import { describeVaultReadiness } from '../../src/utils/vaultAvailability';
 
 const LOCK_PERIOD_SECONDS = 30 * 24 * 60 * 60; // 30 days
@@ -48,11 +47,11 @@ export default function VaultScreen() {
   const { state: networkState, disableWriteActions: networkDisabled, retry: retryNetwork } = useNetworkState({ error: walletError });
   const {
     balance,
-    locks: _unused_locks,
+    locks,
     isConfigured,
     contractId,
     isLoadingBalance,
-    isLoadingLocks: _unused_isLoadingLocks,
+    isLoadingLocks,
     isSubmitting,
     balanceError,
     vaultError,
@@ -113,11 +112,6 @@ export default function VaultScreen() {
     };
     checkIntro();
   }, []);
-
-  // ---- Multi-lock state (placeholder data until contract integration) ----
-  const [locks, setLocks] = useState<VaultLock[]>([]);
-  const [isLoadingLocks, setIsLoadingLocks] = useState(true);
-  const [locksError, setLocksError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isAvailable && publicKey) {
