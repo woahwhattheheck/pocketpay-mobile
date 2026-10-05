@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { View, Text, StyleSheet, Share, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Share, TouchableOpacity, Alert } from "react-native";
 import { Button } from "../src/components/Button";
 import { FormField } from "../src/components/FormField";
 import { ScreenHeader } from "../src/components/ScreenHeader";
@@ -17,7 +17,7 @@ export default function ReceiveScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { publicKey, error } = useWalletStore();
-  const { copy } = useCopyToClipboard();
+  const { copy, copiedField } = useCopyToClipboard();
   const { state: networkState, retry } = useNetworkState({ error });
 
   const [showRequestFields, setShowRequestFields] = useState(false);
@@ -42,21 +42,57 @@ export default function ReceiveScreen() {
   const isRequestPayload = isPaymentRequestPayload(payload);
 
   const handleCopyAddress = async () => {
-    if (publicKey) {
-      await copy(publicKey, 'address');
+    if (!publicKey) return;
+
+    const result = await copy(publicKey, "address");
+    if (!result.ok) {
+      Alert.alert(
+        "Copy failed",
+        "PocketPay could not copy your address. You can select the address above and copy it manually.",
+      );
     }
   };
 
-  // Share the receive payload (address or payment request) via OS share sheet
+  const offerCopyFallback = (title: string, message: string) => {
+    Alert.alert(title, message, [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Copy Address",
+        onPress: () => {
+          void handleCopyAddress();
+        },
+      },
+    ]);
+  };
+
+  // Share only the wallet address. Payment-request amount/memo fields must not
+  // silently change what the address-share action sends to another app.
   const handleShare = async () => {
-    if (!payload) return;
+    if (!publicKey) return;
+
+    if (typeof Share.share !== "function") {
+      offerCopyFallback(
+        "Sharing unavailable",
+        "Native sharing is not available on this device. You can copy your address instead.",
+      );
+      return;
+    }
+
     try {
-      await Share.share({
-        message: payload,
-        title: isRequestPayload ? "Payment Request" : "My Stellar Address",
+      const result = await Share.share({
+        message: publicKey,
+        title: "My Stellar Address",
       });
+
+      if (result.action === Share.sharedAction) {
+        Alert.alert("Address shared", "Your Stellar address was shared successfully.");
+      }
     } catch (error) {
-      console.error("Error sharing receive payload:", error);
+      console.error("Error sharing receive address:", error);
+      offerCopyFallback(
+        "Unable to share",
+        "PocketPay could not open the share sheet. You can copy your address instead.",
+      );
     }
   };
 
@@ -130,14 +166,18 @@ export default function ReceiveScreen() {
 
       <View style={styles.actions}>
         <Button
-          title="Copy Address"
+          title={copiedField === "address" ? "Copied" : "Copy Address"}
           onPress={handleCopyAddress}
+          disabled={!publicKey}
+          accessibilityLabel="Copy wallet address"
           style={styles.actionButton}
         />
         <Button
-          title="Share"
+          title="Share Address"
           variant="secondary"
           onPress={handleShare}
+          disabled={!publicKey}
+          accessibilityLabel="Share wallet address"
           style={styles.actionButton}
         />
       </View>
