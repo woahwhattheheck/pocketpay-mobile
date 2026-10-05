@@ -59,8 +59,8 @@ jest.mock('expo-camera', () => ({
   },
   useCameraPermissions: () => [
     mockPermissionGranted
-      ? { granted: true, canAskAgain: false }
-      : { granted: false, canAskAgain: mockPermissionCanAskAgain },
+      ? { status: 'granted', granted: true, canAskAgain: false, expires: 'never' }
+      : { status: 'denied', granted: false, canAskAgain: mockPermissionCanAskAgain, expires: 'never' },
     mockRequestPermission,
   ],
 }));

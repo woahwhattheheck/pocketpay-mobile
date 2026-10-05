@@ -49,7 +49,7 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose, 
 
   // Request permission automatically on mount if not yet determined.
   useEffect(() => {
-    if (permission && !permission.granted && permission.canAskAgain) {
+    if (permission?.status === 'undetermined' && permission.canAskAgain) {
       requestPermission();
     }
   }, [permission, requestPermission]);

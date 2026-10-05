@@ -3,7 +3,7 @@ import { render, fireEvent, act } from '@testing-library/react-native';
 
 const mockReplace = jest.fn();
 const mockRequestPermission = jest.fn();
-let mockPermission: { granted: boolean; canAskAgain: boolean } | null = null;
+let mockPermission: { status: 'undetermined' | 'denied' | 'granted'; granted: boolean; canAskAgain: boolean; expires: 'never' } | null = null;
 let mockMountError: ((event: { message: string }) => void) | undefined;
 let mockScan: ((event: { type: string; data: string }) => void) | undefined;
 
@@ -39,7 +39,7 @@ describe('#297 – generic scanner permission and camera states', () => {
   });
 
   it('offers a permission request and manual entry after denial', () => {
-    mockPermission = { granted: false, canAskAgain: true };
+    mockPermission = { status: 'denied', granted: false, canAskAgain: true, expires: 'never' };
     const screen = render(<ScanScreen />);
     fireEvent.press(screen.getByRole('button', { name: 'Request camera permission' }));
     expect(mockRequestPermission).toHaveBeenCalledTimes(1);
@@ -48,7 +48,7 @@ describe('#297 – generic scanner permission and camera states', () => {
   });
 
   it('explains device settings when permission cannot be requested again', () => {
-    mockPermission = { granted: false, canAskAgain: false };
+    mockPermission = { status: 'denied', granted: false, canAskAgain: false, expires: 'never' };
     const screen = render(<ScanScreen />);
     expect(screen.getByText(/device settings/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Request camera permission' })).toBeNull();
@@ -57,7 +57,7 @@ describe('#297 – generic scanner permission and camera states', () => {
   });
 
   it('replaces a failed native camera with usable manual entry', () => {
-    mockPermission = { granted: true, canAskAgain: false };
+    mockPermission = { status: 'granted', granted: true, canAskAgain: false, expires: 'never' };
     const screen = render(<ScanScreen />);
     act(() => mockMountError?.({ message: 'No camera available' }));
     expect(screen.getByText('Camera Unavailable')).toBeTruthy();
@@ -67,7 +67,7 @@ describe('#297 – generic scanner permission and camera states', () => {
   });
 
   it('keeps the successful scan handoff to Send without submitting a payment', () => {
-    mockPermission = { granted: true, canAskAgain: false };
+    mockPermission = { status: 'granted', granted: true, canAskAgain: false, expires: 'never' };
     render(<ScanScreen />);
     act(() => mockScan?.({ type: 'qr', data: 'dummy address' }));
     expect(mockReplace).toHaveBeenCalledWith('/send?destination=dummy%20address');
