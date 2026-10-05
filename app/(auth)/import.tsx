@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StrKey } from '@stellar/stellar-sdk';
@@ -27,6 +27,9 @@ export default function ImportWalletScreen() {
   const [secretKey, setSecretKey] = useState('');
   const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
+  const importInProgress = useRef(false);
 
   // Recovery states
   const [onboardingError, setOnboardingError] = useState<OnboardingError | null>(null);
@@ -75,6 +78,7 @@ export default function ImportWalletScreen() {
   }
 
   const handleImport = async () => {
+    if (importInProgress.current) return;
     setError('');
     resetErrors();
 
@@ -87,6 +91,8 @@ export default function ImportWalletScreen() {
       return;
     }
 
+    importInProgress.current = true;
+    setIsImporting(true);
     try {
       const { publicKey } = await importWallet(trimmedKey);
 
@@ -101,6 +107,9 @@ export default function ImportWalletScreen() {
     } catch (err: any) {
       const errorMsg = err?.message || String(err);
       setOnboardingError(classifyOnboardingError(errorMsg));
+    } finally {
+      importInProgress.current = false;
+      setIsImporting(false);
     }
   };
 
@@ -114,10 +123,33 @@ export default function ImportWalletScreen() {
   };
 
   const handleStartOver = () => {
+    setIsCancelled(false);
     resetErrors();
     setError('');
     setSecretKey('');
   };
+
+  const handleCancel = () => {
+    // SecureStore writes cannot be aborted by this screen.
+    if (importInProgress.current) return;
+    resetErrors();
+    setError('');
+    setSecretKey('');
+    setIsCancelled(true);
+  };
+
+  if (isCancelled) {
+    return (
+      <View style={styles.container}>
+        <WalletEmptyState
+          variant="cancelled"
+          subtitle="You cancelled this import attempt. You can start another import or create a wallet when you're ready."
+          onCreate={() => router.replace('/(auth)/create')}
+          onImport={handleStartOver}
+        />
+      </View>
+    );
+  }
 
   // ── Storage Error State ────────────────────────────────────
   if (storageError) {
@@ -209,11 +241,20 @@ export default function ImportWalletScreen() {
         />
       </View>
 
-      <AsyncActionButton
-        title="Import Wallet"
-        onPress={handleImport}
-        loadingText="Importing…"
-      />
+      <View style={styles.actions}>
+        <AsyncActionButton
+          title="Import Wallet"
+          onPress={handleImport}
+          loadingText="Importing…"
+        />
+        <AsyncActionButton
+          title="Cancel Import"
+          variant="outline"
+          onPress={handleCancel}
+          disabled={isImporting}
+          accessibilityHint="Clears the entered key before importing. Unavailable while the wallet is being saved."
+        />
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -228,6 +269,9 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  actions: {
+    gap: SIZES.sm,
   },
   contentCenter: {
     flex: 1,
