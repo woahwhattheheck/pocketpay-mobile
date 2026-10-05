@@ -186,6 +186,11 @@ export default function ContactsScreen() {
     resetForm();
   }, [resetForm]);
 
+  const handleScanManualEntry = useCallback(() => {
+    resetForm();
+    setMode("manual");
+  }, [resetForm]);
+
   // ── Remove handler with confirmation ──────────────────────────────────────────
 
   const handleRemove = (contact: Contact) => {
@@ -216,6 +221,7 @@ export default function ContactsScreen() {
               onScan={handleScanSuccess}
               onError={handleScanError}
               onClose={handleScanClose}
+              onManualEntry={handleScanManualEntry}
           />
         </Modal>
     );
