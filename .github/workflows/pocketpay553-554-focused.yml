@@ -18,11 +18,8 @@ jobs:
       max-parallel: 1
       matrix:
         include:
-          - pr: 553
-            sha: 81b765ff15f699a077b9830dcceac85b5421325b
-            files: __tests__/PaymentFeeEstimate.test.tsx
           - pr: 554
-            sha: 49215090a296d0439247ff5b48e5851e48515d5e
+            sha: a245d7575384e0f1d84ee38e5063b6169c5a1d09
             files: __tests__/qrPayload.test.ts __tests__/receive.qrValidation.test.tsx
     env:
       SOURCE_SHA: ${{ matrix.sha }}
