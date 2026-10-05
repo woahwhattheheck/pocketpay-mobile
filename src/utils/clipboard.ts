@@ -14,7 +14,10 @@ export interface CopyResult {
  */
 export async function copyToClipboard(text: string): Promise<CopyResult> {
   try {
-    await Clipboard.setStringAsync(text);
+    const copied = await Clipboard.setStringAsync(text);
+    if (copied === false) {
+      return { ok: false, error: 'Clipboard did not accept the text.' };
+    }
     return { ok: true };
   } catch (error) {
     console.error('Clipboard copy failed:', error);
