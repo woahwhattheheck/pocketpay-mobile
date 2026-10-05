@@ -12,15 +12,17 @@ When a user submits a payment, the app optimistically inserts a pending transact
 
 ### Data source
 
-Pending transactions are stored in `useWalletStore.pendingTransactions`, a `Record<string, TransactionRecord>` keyed by transaction hash. Entries are added by `addPendingTransaction()` and reconciled (removed) in `refreshWalletData()` once the real Horizon record appears.
+Submitted transactions awaiting reconciliation are stored in `useWalletStore.pendingTransactions`, a `Record<string, TransactionRecord>` keyed by deterministic transaction hash. Entries are added by `addPendingTransaction()` and reconciled (removed) in `refreshWalletData()` once the real Horizon record appears.
 
 ```
-Pending map: { [hash]: TransactionRecord & { status: 'pending' } }
+Pending map: { [hash]: TransactionRecord & { status: 'pending' | 'unknown' } }
 ```
+
+`pending` means Horizon acknowledged submission and the app is waiting for history reconciliation. `unknown` means the transaction was signed and handed to the submission call, but the app did not receive an authoritative Horizon response. An unknown state is **not** proof of failure and must not trigger a blind resend.
 
 ### Reconciliation
 
-During `refreshWalletData()`, each pending hash is checked against the Horizon response's `transaction_hash` field. If a match is found, the optimistic entry is dropped from the map to avoid duplicate display. Entries that don't reconcile are left in the map indefinitely — no forced expiry.
+During `refreshWalletData()`, each pending or unknown hash is checked against the Horizon response's `transaction_hash` field. If a match is found, the optimistic entry is dropped from the map to avoid duplicate display. Entries that don't reconcile remain visible — there is no forced expiry or automatic resend.
 
 ### Components
 
@@ -64,9 +66,11 @@ The `PendingTransactionQueue` is rendered in the `ListHeaderComponent` of the Hi
 
 ## Design Decisions
 
-### No retry actions
+### Unknown status recovery and no blind retry
 
-The queue deliberately does not expose any retry or resend mechanism. This is an explicit design requirement — retrying a Stellar transaction is unsafe (duplicate submissions, nonce conflicts, or re-signing with stale state). The guidance text makes it clear that pending transactions are automatically reconciled on pull-to-refresh.
+The queue deliberately does not expose any retry or resend mechanism. This is an explicit design requirement — if acknowledgement is lost after a signed transaction reaches Horizon, submitting another payment can duplicate the user's intent.
+
+When an entry is marked `unknown`, the row displays **Status unknown** and the queue tells the user to refresh/check History before sending again. Pull-to-refresh uses the deterministic transaction hash to reconcile against Horizon. A definitive Horizon rejection remains a separate failure and is not added to this queue.
 
 ### Always-visible section
 
