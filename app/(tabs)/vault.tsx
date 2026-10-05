@@ -186,6 +186,8 @@ export default function VaultScreen() {
     if (!publicKey || !action || !isAvailable || networkDisabled ||
         !isActionSupported(capabilities, action)) return;
 
+    // run catches failures; only this operation's confirm callback records success.
+    const outcome: { txHash?: string } = {};
     await vaultAction.run({
       sign: async () => {
         if (action === 'withdraw') {
@@ -202,44 +204,33 @@ export default function VaultScreen() {
           return { txHash: 'mock-lock' };
         } else if (action === 'deposit') {
           const hash = await depositForm.submit(publicKey, getSecretKey, deposit, walletBalance);
-          return { txHash: hash || 'mock-deposit' };
+          if (!hash) throw new Error('Deposit did not complete with a transaction hash.');
+          return { txHash: hash };
         } else {
           const secret = await getSecretKey();
           if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
           const hash = await withdraw(secret, publicKey, depositForm.amount);
-          return { txHash: hash || 'mock-withdraw' };
+          if (!hash) throw new Error('Withdrawal did not complete with a transaction hash.');
+          return { txHash: hash };
         }
       },
-      confirm: async () => {
-        setConfirmVisible(false);
-        const hash = vaultAction.status.txHash;
-        setReceiptData({
-          actionType: action as 'deposit' | 'withdraw' | 'lock',
-          amount: depositForm.amount,
-          status: vaultAction.status.state === 'confirmed' ? 'Success' : 'Failed',
-          date: new Date().toLocaleString(),
-          transactionHash: hash || null,
-        });
-        setReceiptVisible(true);
-
-        depositForm.setAmount("");
-        depositForm.setAmountError(undefined);
+      confirm: async (txHash) => {
+        outcome.txHash = txHash;
       },
     });
 
-    if (vaultAction.status.state === 'failed') {
-      setConfirmVisible(false);
-      setReceiptData({
-        actionType: action as 'deposit' | 'withdraw' | 'lock',
-        amount: depositForm.amount,
-        status: 'Failed',
-        date: new Date().toLocaleString(),
-        transactionHash: null,
-      });
-      setReceiptVisible(true);
-      depositForm.setAmount("");
-      depositForm.setAmountError(undefined);
-    }
+    const succeeded = outcome.txHash !== undefined;
+    setConfirmVisible(false);
+    setReceiptData({
+      actionType: action,
+      amount: depositForm.amount,
+      status: succeeded ? (action === 'lock' ? 'Local preview created' : 'Success') : 'Failed',
+      date: new Date().toLocaleString(),
+      transactionHash: succeeded && action !== 'lock' ? outcome.txHash ?? null : null,
+    });
+    setReceiptVisible(true);
+    depositForm.setAmount("");
+    depositForm.setAmountError(undefined);
   };
   const cancelAction = () => {
     setConfirmVisible(false);
