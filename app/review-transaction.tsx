@@ -120,15 +120,16 @@ export default function ReviewTransactionScreen() {
   useEffect(() => {
     if (phase === 'completed' && store.lastResult) {
       refreshWalletData();
-      // Capture public receipt data before clearing the signer store.
+      // Capture receipt fields from the completed operation before clearing the store.
+      const completedReview = store.lastResult.review;
       const receiptParams = createReceiptParams({
         status: 'successful',
         hash: store.lastResult.hash,
-        amount: amount.trim(),
-        asset: 'XLM',
-        destination: destination.trim(),
+        amount: completedReview?.amount,
+        asset: completedReview?.assetCode,
+        destination: completedReview?.destinationPublicKey,
         date: store.lastResult.completedAt || new Date().toISOString(),
-        network: store.lastResult.review?.network || getNetworkLabel(),
+        network: completedReview?.network,
       });
       const timer = setTimeout(() => {
         store.reset();
@@ -149,7 +150,7 @@ export default function ReviewTransactionScreen() {
       return;
     }
     const fee = await server.fetchBaseFee();
-    store.startReview({
+    const submittedReview = {
       requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
       sourcePublicKey: publicKey!,
       destinationPublicKey: destination.trim(),
@@ -161,7 +162,8 @@ export default function ReviewTransactionScreen() {
       createdAt: new Date().toISOString(),
       timeoutSeconds: 30,
       fee: fee.toString(),
-    });
+    };
+    store.startReview(submittedReview);
 
     store.enterHandoff();
     store.enterSigning();
@@ -194,7 +196,7 @@ export default function ReviewTransactionScreen() {
 
       const signingResult = {
         hash: result.hash,
-        review: store.currentReview!,
+        review: submittedReview,
         signerType: 'local' as const,
         completedAt: new Date().toISOString(),
       };
