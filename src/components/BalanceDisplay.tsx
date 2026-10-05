@@ -12,13 +12,14 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { RefreshCw, AlertTriangle, EyeOff } from 'lucide-react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { RefreshCw, AlertTriangle, EyeOff, Copy, Check } from 'lucide-react-native';
 import { SIZES, RADIUS, ThemeColors } from '../constants/theme';
 import { useTheme } from '../hooks/useTheme';
 import type { BalanceState } from '../types/balance';
 import { describeBalanceState } from '../types/balance';
 import { formatAmount } from '../utils/amount';
+import { useCopyToClipboard } from '../utils/clipboard';
 
 export interface BalanceDisplayProps {
   /** The current balance state. */
@@ -59,6 +60,44 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const copy = useMemo(() => describeBalanceState(state), [state]);
+  const { copy: copyToClipboard, copiedField } = useCopyToClipboard();
+
+  const handleCopyPublicKey = async () => {
+    if (!publicKey) return;
+
+    const result = await copyToClipboard(publicKey, 'wallet-address');
+    if (!result.ok) {
+      Alert.alert('Copy Failed', 'Failed to copy to clipboard. Please try again.');
+    }
+  };
+
+  const renderPublicKey = () => {
+    if (!publicKey) return null;
+
+    const copied = copiedField === 'wallet-address';
+    return (
+      <TouchableOpacity
+        style={styles.publicKeyButton}
+        onPress={handleCopyPublicKey}
+        accessibilityRole="button"
+        accessibilityLabel={copied ? 'Wallet address copied' : 'Copy wallet address'}
+        testID="copy-wallet-address"
+        activeOpacity={0.7}
+      >
+        <Text style={styles.publicKey} numberOfLines={1} ellipsizeMode="middle">
+          {publicKey}
+        </Text>
+        {copied ? (
+          <>
+            <Check color={colors.success} size={14} />
+            <Text style={styles.copiedText}>Copied</Text>
+          </>
+        ) : (
+          <Copy color={colors.textMuted} size={14} />
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   // ── Loading state ─────────────────────────────────────────────────
   if (state === 'idle' || state === 'loading') {
@@ -69,11 +108,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
           <ActivityIndicator color={colors.primary} size="small" style={{ marginRight: SIZES.sm }} />
           <Text style={styles.loadingText}>{copy.title}</Text>
         </View>
-        {publicKey ? (
-          <Text style={styles.publicKey} numberOfLines={1} ellipsizeMode="middle">
-            {publicKey}
-          </Text>
-        ) : null}
+        {renderPublicKey()}
       </View>
     );
   }
@@ -91,11 +126,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
           <Text style={styles.unavailableTitle}>{copy.title}</Text>
         </View>
         <Text style={styles.unavailableMessage}>{copy.message}</Text>
-        {publicKey ? (
-          <Text style={styles.publicKey} numberOfLines={1} ellipsizeMode="middle">
-            {publicKey}
-          </Text>
-        ) : null}
+        {renderPublicKey()}
         {onRetry && copy.retryLabel ? (
           <TouchableOpacity
             style={styles.retryButton}
@@ -128,11 +159,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
       <Text style={[styles.balanceValue, isZero && styles.balanceZero]}>
         {formatAmount(balance)} XLM
       </Text>
-      {publicKey ? (
-        <Text style={styles.publicKey} numberOfLines={1} ellipsizeMode="middle">
-          {publicKey}
-        </Text>
-      ) : null}
+      {renderPublicKey()}
       {lastRefreshed != null && (
         <View style={styles.lastRefreshedRow}>
           <RefreshCw color={colors.textMuted} size={12} />
@@ -182,15 +209,26 @@ const createStyles = (colors: ThemeColors) =>
     balanceZero: {
       color: colors.textMuted,
     },
-    publicKey: {
-      color: colors.textMuted,
-      fontSize: 12,
+    publicKeyButton: {
+      maxWidth: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: SIZES.xs,
       backgroundColor: colors.background,
       paddingHorizontal: SIZES.md,
       paddingVertical: SIZES.xs,
       borderRadius: RADIUS.round,
+    },
+    publicKey: {
+      flexShrink: 1,
+      color: colors.textMuted,
+      fontSize: 12,
       overflow: 'hidden',
-      maxWidth: '100%',
+    },
+    copiedText: {
+      color: colors.success,
+      fontSize: 11,
+      fontWeight: '600',
     },
     lastRefreshedRow: {
       flexDirection: 'row',
