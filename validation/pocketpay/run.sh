@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# The emulator action invokes tools by absolute SDK paths without extending PATH.
+export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
 subject="$GITHUB_WORKSPACE/subject"
 evidence="$GITHUB_WORKSPACE/evidence/$MODE"
 mkdir -p "$evidence"

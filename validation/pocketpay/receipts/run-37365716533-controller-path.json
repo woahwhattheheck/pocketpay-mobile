@@ -1,0 +1,27 @@
+{
+  "run_id": 37365716533,
+  "url": "https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37365716533",
+  "camera_job_id": 111950249477,
+  "controller_sha": "02054eb5f8c2d3f59f2109cb71480d0f03454663",
+  "camera_sha": "e92351b71869f6be89229511c9898e20d50369c9",
+  "camera_tree": "a9bf24a0884e3fc200f4be66c1e4b1919d53dada",
+  "retry_sha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "retry_status": "cancelled while queued before steps",
+  "scope": "isolated manual Android API34 evidence controller; no feature source changes or live payments",
+  "result": "controller failure before Expo Go installation or app launch; no native product failure or pass established",
+  "actual_android_boot_ms": 38565,
+  "adb_version": "37.0.1-15733141",
+  "artifact_id": 11368027432,
+  "artifact_name": "pocketpay-android34-camera-37365716533",
+  "artifact_zip_sha256": "74dfe57710f972d8c462450c494d4b6d75f24d73aed1d0f7c807cd7a69efde76",
+  "exact_emulator_version_file": "controller/validation/pocketpay/run.sh: line 8: emulator: command not found\n",
+  "job_log_proof": [
+    "2026-10-05T19:48:57.7332792Z   script: bash controller/validation/pocketpay/run.sh",
+    "2026-10-05T19:48:57.7986399Z disable Linux hardware acceleration: false",
+    "2026-10-05T19:50:00.7690285Z INFO         | Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)",
+    "2026-10-05T19:50:39.3036896Z Emulator booted.",
+    "2026-10-05T19:50:39.3629486Z INFO         | Boot completed in 38565 ms",
+    "2026-10-05T19:50:40.0049064Z ##[error]The process '/usr/bin/sh' failed with exit code 127"
+  ],
+  "correction": "prepend $ANDROID_HOME/emulator and $ANDROID_HOME/platform-tools to the hook shell PATH; retain production source unchanged"
+}
