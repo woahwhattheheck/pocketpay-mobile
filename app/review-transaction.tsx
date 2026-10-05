@@ -30,7 +30,10 @@ import {
   ScreenHeader,
   StatusBadge,
 } from '@/components';
-import { UNCONFIRMED_SUBMISSION_MESSAGE } from '../src/utils/paymentErrors';
+import {
+  classifyPaymentError,
+  UNCONFIRMED_SUBMISSION_MESSAGE,
+} from '../src/utils/paymentErrors';
 
 /** Copy for each in-flight signing phase, shared by the visible card and its screen-reader label. */
 const PHASE_COPY = {
@@ -198,13 +201,20 @@ export default function ReviewTransactionScreen() {
       store.completeSigning(signingResult);
     } catch (err: any) {
       const rawMessage = err?.message || '';
-      // A throw here doesn't prove the transaction was rejected — a client-side
-      // timeout can happen after Horizon already accepted it — so use neutral
-      // copy instead of asserting failure, except for an explicit cancellation.
       const isCancelled = /cancel|abort/i.test(rawMessage);
+      const isBalanceFailure = /op_underfunded|op_low_reserve/i.test(rawMessage);
+      const guidance = isBalanceFailure ? classifyPaymentError(err) : null;
+
+      // Known balance failures are deterministic and can show actionable copy.
+      // Ambiguous submission failures keep the neutral status message because a
+      // client-side timeout can occur after Horizon already accepted the tx.
       store.failSigning({
-        type: isCancelled ? 'user_cancelled' : 'unknown',
-        message: isCancelled ? rawMessage : UNCONFIRMED_SUBMISSION_MESSAGE,
+        type: isCancelled ? 'user_cancelled' : isBalanceFailure ? 'network_error' : 'unknown',
+        message: isCancelled
+          ? 'Signing was cancelled. No transaction was submitted.'
+          : guidance
+            ? `${guidance.message} ${guidance.action}`
+            : UNCONFIRMED_SUBMISSION_MESSAGE,
         raw: err,
       });
     }
