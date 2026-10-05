@@ -126,7 +126,7 @@ describe('createReceivePayload', () => {
     expect(result.isValid).toBe(true);
     expect(result.errors).toEqual({});
     expect(result.payload).toBe(
-      `web+stellar:pay?destination=${DESTINATION}&amount=10.5&memo=Invoice+42&memo_type=MEMO_TEXT`,
+      `web+stellar:pay?destination=${DESTINATION}&network_passphrase=Test+SDF+Network+%3B+September+2015&amount=10.5&memo=Invoice+42&memo_type=MEMO_TEXT`,
     );
   });
 
