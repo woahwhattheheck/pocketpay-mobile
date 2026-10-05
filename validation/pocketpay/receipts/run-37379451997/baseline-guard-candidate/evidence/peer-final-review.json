@@ -1,0 +1,37 @@
+{
+  "candidateHashes": {
+    "fixture/native-baseline-entry.js": "79be50b9d7194e40b078de9ef166072a5e6cab4bcade9556b4d29b15193eb71a",
+    "fixture/native-baseline-stellar-guard.js": "734d646577aeda51611e055b62d84265116d7cb26a7f9cdc2ad9263459e8840d",
+    "fixture/native-vault-bootstrap.js": "3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359",
+    "fixture/native-baseline-bootstrap.js": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+    "fixture/setup-validation-checkout.py": "d260160c7a633d8b6f3f788ce056f93c4899df88728589c5e6f7dfef8512876a",
+    "fixture/validate-fixture.js": "77aa535b88ae6baa1b4a836519a80b9fe6be046b7e595f3b8f7ea4d0cf4ef470",
+    "guard-install-regression.cjs": "3568d5520c99d4970f78b77e0f55ea98b303bb435925dab2c5c87820d1f3475d",
+    "guard-install-regression-report.json": "ae4b5b48e53e4457766b9d6f1d7ba54df81977f2bdf8ce8cdd31b6109f538416"
+  },
+  "fixtureChanged": [
+    "native-baseline-entry.js",
+    "native-vault-bootstrap.js",
+    "setup-validation-checkout.py",
+    "validate-fixture.js"
+  ],
+  "fixtureAdded": [
+    "native-baseline-stellar-guard.js"
+  ],
+  "fixtureUnchanged": [
+    "native-baseline-bootstrap.js",
+    "native-baseline-cases.tsx",
+    "native-baseline-observation-cases.tsx",
+    "native-baseline-route.tsx",
+    "native-cases-source-manifest.json",
+    "source-manifest.json"
+  ],
+  "afterRunCandidateHashesStillMatch": true,
+  "independentRegressionReportSha256": "ae4b5b48e53e4457766b9d6f1d7ba54df81977f2bdf8ce8cdd31b6109f538416",
+  "independentRegressionReportByteEqualsOwner": true,
+  "source52GitStatus": "",
+  "serializerProofSha256": "578365688f7f8a1a71ed2b39c080734f2c4b3b3f672c4b0d2801b3373d5d7667",
+  "emittedRegistrationSha256": "324a8c16169e5aa5cfde531716db76ebab16329118835b038676bd9cd8f0852e",
+  "nativeExecution": false,
+  "reviewVerdict": "clear for validation-controller integration; full local dev bundle and actual native run remain unverified"
+}

@@ -17,8 +17,8 @@ cp "$controller/README.md" "$evidence/SCOPE.md"
 python3 - "$controller" <<'PY' > "$evidence/fixture-integrity.txt"
 import hashlib, json, pathlib, sys
 root = pathlib.Path(sys.argv[1])
-pins = {'baseline-fixture': 'eb0c5d6364b07b6a6b983488bea2a018ed6305880ac99f7ab6f0934726a10092',
-        'vault-fixture': '5f1ce139bc2e72c3077a90093edaef640adbfa1f0b39a37f050c77ddda7f7ebc'}
+pins = {'baseline-fixture': 'f18fbe3aa2b96e155a8cc7765b683b676821b5d81e527df79c8292ce1e7b78c8',
+        'vault-fixture': '2733bed622719ef205c12c69fa23d8670ba5b47224387b7f0dab4c1829941624'}
 for directory, expected in pins.items():
     base = root / directory
     manifest = base / 'fixture-manifest.json'
@@ -46,7 +46,7 @@ for name, expected in manifest['sourceFiles'].items():
     if hashlib.sha256((subject / name).read_bytes()).hexdigest() != expected:
         raise SystemExit('Vault production file changed: ' + name)
 guard = subject / 'native-vault-bootstrap.js'
-if hashlib.sha256(guard.read_bytes()).hexdigest() != '906ef0b16031f8df4f28e1f484e856a2c8f621417cb3a44b1cbc991fede11548':
+if hashlib.sha256(guard.read_bytes()).hexdigest() != '3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359':
     raise SystemExit('Shared vault transport guard changed')
 route = subject / 'app/__vault-native-fixture.tsx'
 if route.exists():

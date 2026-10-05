@@ -1,0 +1,103 @@
+{
+  "scope": "Local validation-fixture candidate only. No source/ref/dispatch or product writes.",
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+  "executedControllerCommit": "51d8f49aa884b12d07ab889407d6815c5e01d521",
+  "executedControllerTree": "b9377f1ca6775c55047763a937438245dea51499",
+  "failedNativeRun": 37379451997,
+  "failedNativeArtifact": 11376146919,
+  "failedNativeArtifactZipSha256": "9e87bb897ed730e8def94c2b05335b1cb841c394491cef5a64e546a4b9c0ea06",
+  "cleanSource52VerifiedFiles": 30,
+  "packageLockSha256": "61b58b1dc2f303e95f727f4a185015c5257c503c1fa01d01720765f105053186",
+  "runtimeVersions": {
+    "expoMetroConfig": "54.0.17",
+    "metroRuntime": "0.83.3",
+    "babelPresetExpo": "54.0.12"
+  },
+  "fixtureChangedFiles": [
+    "native-baseline-entry.js",
+    "native-vault-bootstrap.js",
+    "setup-validation-checkout.py",
+    "validate-fixture.js"
+  ],
+  "fixtureAddedFiles": [
+    "native-baseline-stellar-guard.js"
+  ],
+  "unchangedFixtureInputs": [
+    "native-baseline-bootstrap.js",
+    "native-baseline-cases.tsx",
+    "native-baseline-observation-cases.tsx",
+    "native-baseline-route.tsx",
+    "source-manifest.json",
+    "native-cases-source-manifest.json"
+  ],
+  "compositionRequirements": [
+    "Apply candidate vault bootstrap identically to baseline-fixture and vault-fixture copies.",
+    "Refresh both fixture manifests, baseline controller manifest and enclosing controller manifest; include new seam install count7 and syntax count4.",
+    "Refresh prepare-baseline.sh expected fixture manifest hashes and shared vault guard hash to candidate bytes.",
+    "Leave product source, deterministic seed11/12/23 definitions, cases, counters, parser and baseline Tutorial behavior unchanged."
+  ],
+  "gates": {
+    "frozenExpectedFailure": "Dummy key-generation guard did not install.",
+    "ownerRegression": "expected frozen failure plus5 passing cases",
+    "independentPeer": "byte-equal report and final peer clear",
+    "syntaxFiles": 4,
+    "typeScriptDiagnostics": 0,
+    "androidMetadataRoutes": 2,
+    "source52GitClean": true,
+    "actualWorkerSerializerName": "src/services/stellar.ts",
+    "actualWorkerSerializerFactoryModuleArgumentIndex": 4
+  },
+  "limits": [
+    "No native/device/Hermes execution of candidate. All9 original baseline targets unvisited; no prerequisite/product acceptance.",
+    "Runtime probes use harmless source dependencies, store/native/transport stubs and existing public deterministic SDK seeds only; no original/random generator, signing, broadcast, native persistence/clipboard/share or external HTTP delivery.",
+    "Active installed Expo worker+serializer emitted registration is real; dependency ids are unexecuted fixtures, not a full bundle graph.",
+    "Full local bundle attempts fail first at unwatched entry, then at symlinked pocketpay-sdk resolution; logs retained and no emitted bundle.",
+    "Cold-start fixture process only; HMR behavior untested. Writable non-configurable slots prevent deletion/accessor redefine but permit assignment/value replacement."
+  ],
+  "hashes": {
+    "README.md": "037f3da332d9d98b80451cb6428c2bea896a91ee2b0b5e31bd6c4d6accb8c059",
+    "build-dev-bundle.cjs": "23fb21910ce929be926a42540cf030ed033404e5262274d8cff8fd6438dbb461",
+    "capture-worker-output.cjs": "f036d78fc6398edc1a433d6adfb293fbc49024bfc76a4a5e95d31d554487f60e",
+    "evidence/actual-worker-capture.log": "7948d12251dcd3a0420f89219f28cb37962073bc5f53227ac2bcc16d75d9e596",
+    "evidence/actual-worker-output.js": "0f0ef0e7e10811da9464a4f63be60286712dc6583df139ca26dba6dcb0f2d932",
+    "evidence/effective-actual-config.json": "7948d12251dcd3a0420f89219f28cb37962073bc5f53227ac2bcc16d75d9e596",
+    "evidence/peer-exact52-emitted-registration.js": "324a8c16169e5aa5cfde531716db76ebab16329118835b038676bd9cd8f0852e",
+    "evidence/peer-exact52-probe.cjs": "17f80b0d51dccca1c1d127b193abe64a8bd26bce42e698ac2df6462b2e418c35",
+    "evidence/peer-exact52-report.json": "30890a50e3941e6b58f31f3643a33cc1931ad7fdbcc173be8276fb9d8f20b3da",
+    "evidence/peer-exact52-runtime-report.json": "aa24dd84f9047f1fd9db0fbd8418e459b5bdb3a286f8616f23863895993b9415",
+    "evidence/peer-exact52-runtime.cjs": "4968dbb6ff03e38c61dd6e68e94414f98b36b0998e50dd375716ba65bca8285f",
+    "evidence/peer-exact52-serializer-report.json": "578365688f7f8a1a71ed2b39c080734f2c4b3b3f672c4b0d2801b3373d5d7667",
+    "evidence/peer-exact52-serializer.cjs": "cd325ba18a83a09b435df535836c319ac8de05d27b22d971e14cd6cd15407e73",
+    "evidence/peer-exact52-serializer.log": "578365688f7f8a1a71ed2b39c080734f2c4b3b3f672c4b0d2801b3373d5d7667",
+    "evidence/peer-exact52-source-binding.json": "ba3b50faf75dcb6ad92d9dc2dd29fa70a07737c2369d6a95004631eb5aca9b05",
+    "evidence/peer-final-candidate-report.json": "ae4b5b48e53e4457766b9d6f1d7ba54df81977f2bdf8ce8cdd31b6109f538416",
+    "evidence/peer-final-review.json": "ff5620572fe84c41338429b27bfe56d94dc74b5a57d4322213e5d310d755d47c",
+    "fixture/native-baseline-bootstrap.js": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+    "fixture/native-baseline-cases.tsx": "8fdf745b27d3522418c74528be1d3c2001722d27debaac71907613fd63661551",
+    "fixture/native-baseline-entry.js": "79be50b9d7194e40b078de9ef166072a5e6cab4bcade9556b4d29b15193eb71a",
+    "fixture/native-baseline-observation-cases.tsx": "e44271dc1f25e7e6eb172391f363e90088ad9bb83f5c1c5c726b87141ab1ff13",
+    "fixture/native-baseline-route.tsx": "e9b267780e9ff5468cfec696add4b7848133c94404de350e09accdcb8c57ec5f",
+    "fixture/native-baseline-stellar-guard.js": "734d646577aeda51611e055b62d84265116d7cb26a7f9cdc2ad9263459e8840d",
+    "fixture/native-cases-source-manifest.json": "85f804d2ddddb68eb641be98d56980219a02a7e5dba6205c065f8453d639d88d",
+    "fixture/native-vault-bootstrap.js": "3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359",
+    "fixture/setup-validation-checkout.py": "d260160c7a633d8b6f3f788ce056f93c4899df88728589c5e6f7dfef8512876a",
+    "fixture/source-manifest.json": "e8d2305259e7eed3137ea0f9c49b184a9e5b4dd86f77271239cc066eabb11ce2",
+    "fixture/validate-fixture.js": "77aa535b88ae6baa1b4a836519a80b9fe6be046b7e595f3b8f7ea4d0cf4ef470",
+    "fixture-guard.patch": "002c4e16b8ba3614aeb53ebf079c0605f0ed56ba18e0a50807ccfad685caaacb",
+    "guard-install-regression-report.json": "ae4b5b48e53e4457766b9d6f1d7ba54df81977f2bdf8ce8cdd31b6109f538416",
+    "guard-install-regression.cjs": "3568d5520c99d4970f78b77e0f55ea98b303bb435925dab2c5c87820d1f3475d",
+    "guard-install-regression.log": "ae4b5b48e53e4457766b9d6f1d7ba54df81977f2bdf8ce8cdd31b6109f538416",
+    "local-dev-bundle-first-unwatched-entry.log": "9b4d3245c282573dc13a8371cafc0081a2139dc00a27e4d460b8a70a48ad4ced",
+    "local-dev-bundle.log": "c0342445bba46b2fdd0581dc73879bf144da0a3157a780351d054cf54b5fc03b",
+    "preparation-check.log": "028f7fec1bc86644496831bae8cc381a8c63188a212af248243e66304a24b6cf"
+  },
+  "rawActualWorkerSha256": "0f0ef0e7e10811da9464a4f63be60286712dc6583df139ca26dba6dcb0f2d932",
+  "rawActualSerializerRegistrationSha256": "324a8c16169e5aa5cfde531716db76ebab16329118835b038676bd9cd8f0852e",
+  "effectiveActualConfigSha256": "7948d12251dcd3a0420f89219f28cb37962073bc5f53227ac2bcc16d75d9e596",
+  "failedLocalPreparationLogs": [
+    "local-dev-bundle-first-unwatched-entry.log",
+    "local-dev-bundle.log"
+  ],
+  "peerFinalReviewSha256": "ff5620572fe84c41338429b27bfe56d94dc74b5a57d4322213e5d310d755d47c"
+}

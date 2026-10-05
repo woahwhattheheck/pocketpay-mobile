@@ -1,0 +1,49 @@
+{
+  "status": "frozen_local_decoder_candidate_not_integrated",
+  "nativeExecution": false,
+  "controllerOrProductSourceWrites": false,
+  "deviceOperations": false,
+  "dispatchOrRefWrites": false,
+  "originalArtifactRun": "37379451997",
+  "tests": {
+    "pureFramingTests": 10,
+    "immutableCallerDifferentialTests": 6,
+    "passed": 16,
+    "failed": 0,
+    "pythonSyntaxFiles": 4
+  },
+  "originalCallerSources": {
+    "gap": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/retry/observation_helpers.py",
+      "sha256": "7428a4abdfaaee868af823fb827b55b0feb505432889051a6addc7124cd06108"
+    },
+    "primary": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/retry-primary-ui.py",
+      "sha256": "e7edde717a3b3b9d8c5abedce50db785a8aac49366d207476e8bcee72bde51b0"
+    }
+  },
+  "originalLogInputs": {
+    "logcat.txt": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/logcat.txt",
+      "sha256": "9d5e1f7cc700c3a6bfd9d4268bb5224f8dff34915f8f2789cdf0207ef1e657ea",
+      "bytes": 221254
+    },
+    "metro.log": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/metro.log",
+      "sha256": "315e5a0486dafd7dc96c4560c3c89eb3bc1767d8d0001a9aef6ecc1b02af22e3",
+      "bytes": 20892
+    }
+  },
+  "payloadSourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "nativeFlowPassClaim": false,
+  "files": {
+    "README.md": "cea08c00246410bb81a389d9acfe15bbc2fbc73551226b32477fec08ac0d4987",
+    "observer_framing.py": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2",
+    "test_observer_framing.py": "6c083a4fd75683a07a7d692f048380f84af8e253544ccb1b0339d7899dab3b96",
+    "test_caller_validations.py": "57c64d5954c5832427309a62403a7f3b59c1438a6806ffc455eaaf6d3771f7f8",
+    "reproduce_receipt.py": "303c445d34437273e299be3468b9ab516c494d721e70cb9994700733f0b66171",
+    "immutable-callers.json": "1f959fd40989300a9e1f510d97b0b158d8f67d5c073e4546a4fce8131305fc7c",
+    "actual-framing-fixtures.json": "bcbe9846b8ced3b9d64498f0b3547b77870477e6df84c1e086ce7fc46d79dbde",
+    "parser-receipt.json": "ecb66755daf13de25e55a72400dd32a9fbc7b614f3b822ed80b1a4499ddffc8d"
+  }
+}

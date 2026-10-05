@@ -10,11 +10,17 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent / 'camera'))
 import camera_followup as collector
 from native_overlay import assert_no_native_error_overlay
+from expo_go_intro import intro_sheet, dismiss_observed_intro
 
 last_controller = None
 
 original_contains = collector.contains
 original_action = collector.exact_action
+original_developer_sheet = collector.developer_sheet
+
+
+def known_developer_sheet(tree):
+    return original_developer_sheet(tree) or intro_sheet(tree)
 
 
 def guarded_contains(tree, label):
@@ -92,7 +98,10 @@ class RecordingController(collector.Controller):
         self.recording = None
         result = {'name': name, 'visibleLoadingClaim': 'Independent original-frame review required'}
         try:
-            _, stderr = process.communicate(timeout=25)
+            remaining = min(self.deadline, getattr(self, 'recording_deadline', time.monotonic() + 25)) - time.monotonic()
+            if remaining <= 0:
+                raise subprocess.TimeoutExpired('owned original recorder', 0)
+            _, stderr = process.communicate(timeout=remaining)
             result.update({'exit': process.returncode, 'stderr': stderr.decode('utf-8', 'replace')})
             if process.returncode == 0:
                 self.adb('pull', remote, str(self.output / (name + '-original.mp4')))
@@ -130,13 +139,48 @@ class RecordingController(collector.Controller):
                                     '--time-limit', str(seconds), remote],
                                    stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         self.recording = (name, remote, process)
+        # Permit the actual prescribed clip to complete, with five seconds of
+        # collection margin, still inside the original 600-second suite bound.
+        self.recording_deadline = time.monotonic() + seconds + 5
 
     def launch(self, screen):
         # These prescribed missing-wallet Scan/Contacts routes have no secret UI.
         # First Scan clip spans real Expo startup; later frames are warm app state.
         if screen == 'scan':
-            self.begin_recording('scan-launch', 20)
+            self.begin_recording('scan-launch', 60)
         return super().launch(screen)
+
+    def wait(self, text, seconds=35, scope=None):
+        # Keep the original target/permission/loading rules and bounds. Only
+        # the concretely observed Expo host tutorial is an added branch.
+        until = min(self.deadline, time.monotonic() + seconds)
+        while time.monotonic() < until:
+            tree, _ = self.dump()
+            if intro_sheet(tree):
+                dismiss_observed_intro(self, tree, guarded_action, collector.bounds)
+                continue
+            if original_developer_sheet(tree):
+                if self.developer_sheet_dismissals >= 2:
+                    raise RuntimeError('Expo developer sheet exceeded bounded observed dismissals')
+                name = 'observed-expo-dev-sheet-' + str(self.developer_sheet_dismissals + 1)
+                if self.capture(name, ('SDK Version', 'Connected to expo-cli'), allow_developer_sheet=True):
+                    current, _ = self.dump()
+                    if original_developer_sheet(current):
+                        self.developer_sheet_dismissals += 1
+                        self.adb('shell', 'input', 'keyevent', 'KEYCODE_BACK')
+                continue
+            if self.reject_post_denial_prompt and collector.permission_prompt(tree):
+                self.unexpected_prompt()
+            if collector.permission_prompt(tree):
+                raise RuntimeError('Native permission dialog blocks product/loading acceptance')
+            if scope and not self.loading[scope] and guarded_contains(tree, collector.LOADING):
+                name = scope + '-actual-permission-loading'
+                if self.capture(name, (collector.LOADING, collector.MANUAL)):
+                    self.loading[scope].append(name)
+            if guarded_contains(tree, text):
+                return tree
+            time.sleep(0.2)
+        raise RuntimeError('Actual UI state not observed within bound: ' + text)
 
     def tap(self, tree, label, packages=None, resource_suffix=None):
         if label == 'Scan QR code to add contact':
@@ -273,6 +317,7 @@ class RecordingController(collector.Controller):
 if __name__ == '__main__':
     collector.contains = guarded_contains
     collector.exact_action = guarded_action
+    collector.developer_sheet = known_developer_sheet
     collector.Controller = RecordingController
     result = collector.main()
     if last_controller is not None and last_controller.unsafe_stop:

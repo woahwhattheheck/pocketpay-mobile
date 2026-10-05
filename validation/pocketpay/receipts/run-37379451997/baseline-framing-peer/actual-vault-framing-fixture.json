@@ -1,0 +1,29 @@
+{
+  "kind": "actual-retained-native-vault-bootstrap-line",
+  "synthetic": false,
+  "inputPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/baseline/logcat.txt",
+  "inputSha256": "6fce0dbdb0fff7eb670099d878e995a2ca1d320078a991da32e2718ff5a2fe31",
+  "lineNumber": 794,
+  "actualLine": "10-05 22:30:41.958 14425 14526 I ReactNativeJS: 'POCKETPAY_VAULT_NATIVE_FIXTURE', '{\"event\":\"bootstrap-ready\",\"label\":\"DUMMY TESTNET / MEMORY ONLY / BROADCAST DISABLED\",\"addLock\":0,\"deposit\":0,\"withdraw\":0,\"secretAccess\":0,\"broadcastAttempts\":0,\"blockedFetch\":0,\"blockedXHR\":0,\"balanceReads\":0,\"lockReads\":0,\"reachabilityReads\":0,\"passphraseReads\":0,\"lastLock\":null,\"persistedLocks\":0}'",
+  "actualLineSha256NoNewline": "41ae2809b12190a6f21ab5002e7e5ee6a4b9d2fef056b35ed7e26d54d6f1d111",
+  "wholePayloadJsonText": "{\"event\":\"bootstrap-ready\",\"label\":\"DUMMY TESTNET / MEMORY ONLY / BROADCAST DISABLED\",\"addLock\":0,\"deposit\":0,\"withdraw\":0,\"secretAccess\":0,\"broadcastAttempts\":0,\"blockedFetch\":0,\"blockedXHR\":0,\"balanceReads\":0,\"lockReads\":0,\"reachabilityReads\":0,\"passphraseReads\":0,\"lastLock\":null,\"persistedLocks\":0}",
+  "wholePayloadSha256": "b036d1447191ab209a3196144bc47d79b310c43be9888fdcc28f6b69810a562e",
+  "wholePublicObject": {
+    "event": "bootstrap-ready",
+    "label": "DUMMY TESTNET / MEMORY ONLY / BROADCAST DISABLED",
+    "addLock": 0,
+    "deposit": 0,
+    "withdraw": 0,
+    "secretAccess": 0,
+    "broadcastAttempts": 0,
+    "blockedFetch": 0,
+    "blockedXHR": 0,
+    "balanceReads": 0,
+    "lockReads": 0,
+    "reachabilityReads": 0,
+    "passphraseReads": 0,
+    "lastLock": null,
+    "persistedLocks": 0
+  },
+  "nativeFlowPassClaim": false
+}

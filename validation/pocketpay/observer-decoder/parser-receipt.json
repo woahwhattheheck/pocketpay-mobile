@@ -1,0 +1,2084 @@
+{
+  "nativeExecution": false,
+  "controllerOrSourceWrites": false,
+  "dispatchWrites": false,
+  "run": "37379451997",
+  "expectedPayloadSourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "originalParserSources": {
+    "gap": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/retry/observation_helpers.py",
+      "sha256": "7428a4abdfaaee868af823fb827b55b0feb505432889051a6addc7124cd06108"
+    },
+    "primary": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/retry-primary-ui.py",
+      "sha256": "e7edde717a3b3b9d8c5abedce50db785a8aac49366d207476e8bcee72bde51b0"
+    }
+  },
+  "immutableCallerExtractionSha256": "1f959fd40989300a9e1f510d97b0b158d8f67d5c073e4546a4fce8131305fc7c",
+  "inputs": {
+    "logcat.txt": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/logcat.txt",
+      "sha256": "9d5e1f7cc700c3a6bfd9d4268bb5224f8dff34915f8f2789cdf0207ef1e657ea",
+      "bytes": 221254
+    },
+    "metro.log": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/metro.log",
+      "sha256": "315e5a0486dafd7dc96c4560c3c89eb3bc1767d8d0001a9aef6ecc1b02af22e3",
+      "bytes": 20892
+    }
+  },
+  "framingCounts": [
+    {
+      "input": "logcat.txt",
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "actualPrefixLines": 4,
+      "originalFragmentAccepted": 0,
+      "strictAnchoredAccepted": 4,
+      "rejectedLineNumbersByOriginal": [
+        598,
+        695,
+        697,
+        699
+      ]
+    },
+    {
+      "input": "logcat.txt",
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "actualPrefixLines": 4,
+      "originalFragmentAccepted": 0,
+      "strictAnchoredAccepted": 4,
+      "rejectedLineNumbersByOriginal": [
+        692,
+        696,
+        698,
+        700
+      ]
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "actualPrefixLines": 23,
+      "originalFragmentAccepted": 23,
+      "strictAnchoredAccepted": 23,
+      "rejectedLineNumbersByOriginal": []
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "actualPrefixLines": 11,
+      "originalFragmentAccepted": 11,
+      "strictAnchoredAccepted": 11,
+      "rejectedLineNumbersByOriginal": []
+    }
+  ],
+  "publicGroups": [
+    {
+      "input": "logcat.txt",
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "outcome": "unknown",
+      "recordCount": 4,
+      "lineNumbers": [
+        598,
+        695,
+        697,
+        699
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "submitObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "logcat.txt",
+        "lineNumber": 699,
+        "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+        "record": {
+          "event": "real-signer-store-change",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "unknown",
+          "counters": {
+            "submitObserved": 0,
+            "readObserved": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "broadcastAttempts": 0,
+            "rpcWrites": 0,
+            "walletSaveAttempts": 0
+          },
+          "submitCalls": 0,
+          "readCalls": 0,
+          "transactionHash": null,
+          "phase": "unknown",
+          "unknownPresent": true,
+          "unknownIdentity": 1,
+          "unknownHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "lastLookup": null
+        }
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "outcome": "mismatch",
+      "recordCount": 4,
+      "lineNumbers": [
+        692,
+        696,
+        698,
+        700
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "blockedFetch": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "blockedXHR": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "mismatchResponses": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "reachabilityReads": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCompleted": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readErrors": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "storeUpdates": {
+          "minimum": 0,
+          "maximum": 3
+        },
+        "submitCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "unknownClears": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "logcat.txt",
+        "lineNumber": 700,
+        "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+        "record": {
+          "event": "signer-store-observed",
+          "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "mismatch",
+          "startedAt": "2026-10-05T22:12:41.875Z",
+          "counters": {
+            "readCalls": 0,
+            "readCompleted": 0,
+            "mismatchResponses": 0,
+            "readErrors": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "submitCalls": 0,
+            "rpcWrites": 0,
+            "broadcastAttempts": 0,
+            "blockedFetch": 0,
+            "blockedXHR": 0,
+            "walletSaveAttempts": 0,
+            "unknownClears": 0,
+            "storeUpdates": 3,
+            "reachabilityReads": 0
+          },
+          "unknownPresent": true,
+          "unknownIdentity": 1,
+          "transactionHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "requestId": "native-dummy-mismatch",
+          "phase": "unknown",
+          "lastLookup": null
+        }
+      }
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "outcome": "unknown",
+      "recordCount": 17,
+      "lineNumbers": [
+        20,
+        21,
+        22,
+        23,
+        28,
+        36,
+        44,
+        46,
+        48,
+        50,
+        56,
+        58,
+        60,
+        66,
+        68,
+        70,
+        72
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "submitObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "metro.log",
+        "lineNumber": 72,
+        "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+        "record": {
+          "event": "real-signer-store-change",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "unknown",
+          "counters": {
+            "submitObserved": 0,
+            "readObserved": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "broadcastAttempts": 0,
+            "rpcWrites": 0,
+            "walletSaveAttempts": 0
+          },
+          "submitCalls": 0,
+          "readCalls": 0,
+          "transactionHash": null,
+          "phase": "unknown",
+          "unknownPresent": true,
+          "unknownIdentity": 1,
+          "unknownHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "lastLookup": null
+        }
+      }
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "outcome": "error",
+      "recordCount": 3,
+      "lineNumbers": [
+        29,
+        30,
+        31
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "submitObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "metro.log",
+        "lineNumber": 31,
+        "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+        "record": {
+          "event": "real-signer-store-change",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "error",
+          "counters": {
+            "submitObserved": 0,
+            "readObserved": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "broadcastAttempts": 0,
+            "rpcWrites": 0,
+            "walletSaveAttempts": 0
+          },
+          "submitCalls": 0,
+          "readCalls": 0,
+          "transactionHash": null,
+          "phase": "review",
+          "unknownPresent": false,
+          "unknownIdentity": null,
+          "unknownHash": null,
+          "lastLookup": null
+        }
+      }
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "outcome": "confirmed",
+      "recordCount": 3,
+      "lineNumbers": [
+        37,
+        38,
+        39
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "submitObserved": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "metro.log",
+        "lineNumber": 39,
+        "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+        "record": {
+          "event": "real-signer-store-change",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "confirmed",
+          "counters": {
+            "submitObserved": 0,
+            "readObserved": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "broadcastAttempts": 0,
+            "rpcWrites": 0,
+            "walletSaveAttempts": 0
+          },
+          "submitCalls": 0,
+          "readCalls": 0,
+          "transactionHash": null,
+          "phase": "review",
+          "unknownPresent": false,
+          "unknownIdentity": null,
+          "unknownHash": null,
+          "lastLookup": null
+        }
+      }
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "outcome": "nohash",
+      "recordCount": 4,
+      "lineNumbers": [
+        45,
+        47,
+        49,
+        51
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "blockedFetch": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "blockedXHR": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "mismatchResponses": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "reachabilityReads": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCompleted": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readErrors": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "storeUpdates": {
+          "minimum": 0,
+          "maximum": 3
+        },
+        "submitCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "unknownClears": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "metro.log",
+        "lineNumber": 51,
+        "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+        "record": {
+          "event": "signer-store-observed",
+          "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "nohash",
+          "startedAt": "2026-10-05T22:12:14.820Z",
+          "counters": {
+            "readCalls": 0,
+            "readCompleted": 0,
+            "mismatchResponses": 0,
+            "readErrors": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "submitCalls": 0,
+            "rpcWrites": 0,
+            "broadcastAttempts": 0,
+            "blockedFetch": 0,
+            "blockedXHR": 0,
+            "walletSaveAttempts": 0,
+            "unknownClears": 0,
+            "storeUpdates": 3,
+            "reachabilityReads": 0
+          },
+          "unknownPresent": true,
+          "unknownIdentity": 1,
+          "transactionHash": null,
+          "requestId": "native-dummy-nohash",
+          "phase": "unknown",
+          "lastLookup": null
+        }
+      }
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "outcome": "empty",
+      "recordCount": 3,
+      "lineNumbers": [
+        57,
+        59,
+        61
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "blockedFetch": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "blockedXHR": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "mismatchResponses": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "reachabilityReads": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCompleted": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readErrors": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "storeUpdates": {
+          "minimum": 0,
+          "maximum": 2
+        },
+        "submitCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "unknownClears": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "metro.log",
+        "lineNumber": 61,
+        "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+        "record": {
+          "event": "signer-store-observed",
+          "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "empty",
+          "startedAt": "2026-10-05T22:12:28.402Z",
+          "counters": {
+            "readCalls": 0,
+            "readCompleted": 0,
+            "mismatchResponses": 0,
+            "readErrors": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "submitCalls": 0,
+            "rpcWrites": 0,
+            "broadcastAttempts": 0,
+            "blockedFetch": 0,
+            "blockedXHR": 0,
+            "walletSaveAttempts": 0,
+            "unknownClears": 0,
+            "storeUpdates": 2,
+            "reachabilityReads": 0
+          },
+          "unknownPresent": false,
+          "unknownIdentity": null,
+          "transactionHash": null,
+          "requestId": null,
+          "phase": "idle",
+          "lastLookup": null
+        }
+      }
+    },
+    {
+      "input": "metro.log",
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "outcome": "mismatch",
+      "recordCount": 4,
+      "lineNumbers": [
+        67,
+        69,
+        71,
+        73
+      ],
+      "sourceShaAllMatch": true,
+      "counterRanges": {
+        "blockedFetch": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "blockedXHR": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "broadcastAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "mismatchResponses": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "reachabilityReads": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readCompleted": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "readErrors": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "rpcWrites": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "secretCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "signingCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "storeUpdates": {
+          "minimum": 0,
+          "maximum": 3
+        },
+        "submitCalls": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "unknownClears": {
+          "minimum": 0,
+          "maximum": 0
+        },
+        "walletSaveAttempts": {
+          "minimum": 0,
+          "maximum": 0
+        }
+      },
+      "latestPublicState": {
+        "input": "metro.log",
+        "lineNumber": 73,
+        "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+        "record": {
+          "event": "signer-store-observed",
+          "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+          "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+          "outcome": "mismatch",
+          "startedAt": "2026-10-05T22:12:41.875Z",
+          "counters": {
+            "readCalls": 0,
+            "readCompleted": 0,
+            "mismatchResponses": 0,
+            "readErrors": 0,
+            "secretCalls": 0,
+            "signingCalls": 0,
+            "submitCalls": 0,
+            "rpcWrites": 0,
+            "broadcastAttempts": 0,
+            "blockedFetch": 0,
+            "blockedXHR": 0,
+            "walletSaveAttempts": 0,
+            "unknownClears": 0,
+            "storeUpdates": 3,
+            "reachabilityReads": 0
+          },
+          "unknownPresent": true,
+          "unknownIdentity": 1,
+          "transactionHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "requestId": "native-dummy-mismatch",
+          "phase": "unknown",
+          "lastLookup": null
+        }
+      }
+    }
+  ],
+  "indexedPublicRecords": [
+    {
+      "input": "logcat.txt",
+      "lineNumber": 598,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "primary-observer-ready",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "lineNumber": 695,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "lineNumber": 697,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "lineNumber": 699,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "unknown",
+        "unknownPresent": true,
+        "unknownIdentity": 1,
+        "unknownHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "lineNumber": 692,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "retry-gap-observer-ready",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 0,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "lineNumber": 696,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 1,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "lineNumber": 698,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 2,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "logcat.txt",
+      "lineNumber": 700,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 3,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": true,
+        "unknownIdentity": 1,
+        "transactionHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "requestId": "native-dummy-mismatch",
+        "phase": "unknown",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 20,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "primary-observer-ready",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 21,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 22,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 23,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "review",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 28,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "primary-observer-ready",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 29,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "error",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 30,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "error",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 31,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "error",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "review",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 36,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "primary-observer-ready",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 37,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "confirmed",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 38,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "confirmed",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 39,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "confirmed",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "review",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 44,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "primary-observer-ready",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 46,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 48,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 50,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "unknown",
+        "unknownPresent": true,
+        "unknownIdentity": 1,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 56,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "primary-observer-ready",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 58,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 60,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 66,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "primary-observer-ready",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 68,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 70,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "idle",
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "unknownHash": null,
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 72,
+      "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+      "record": {
+        "event": "real-signer-store-change",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "unknown",
+        "counters": {
+          "submitObserved": 0,
+          "readObserved": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "broadcastAttempts": 0,
+          "rpcWrites": 0,
+          "walletSaveAttempts": 0
+        },
+        "submitCalls": 0,
+        "readCalls": 0,
+        "transactionHash": null,
+        "phase": "unknown",
+        "unknownPresent": true,
+        "unknownIdentity": 1,
+        "unknownHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 45,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "retry-gap-observer-ready",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "nohash",
+        "startedAt": "2026-10-05T22:12:14.820Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 0,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 47,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "nohash",
+        "startedAt": "2026-10-05T22:12:14.820Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 1,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 49,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "nohash",
+        "startedAt": "2026-10-05T22:12:14.820Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 2,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 51,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "nohash",
+        "startedAt": "2026-10-05T22:12:14.820Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 3,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": true,
+        "unknownIdentity": 1,
+        "transactionHash": null,
+        "requestId": "native-dummy-nohash",
+        "phase": "unknown",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 57,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "retry-gap-observer-ready",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "empty",
+        "startedAt": "2026-10-05T22:12:28.402Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 0,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 59,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "empty",
+        "startedAt": "2026-10-05T22:12:28.402Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 1,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 61,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "empty",
+        "startedAt": "2026-10-05T22:12:28.402Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 2,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 67,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "retry-gap-observer-ready",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 0,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 69,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 1,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 71,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 2,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": false,
+        "unknownIdentity": null,
+        "transactionHash": null,
+        "requestId": null,
+        "phase": "idle",
+        "lastLookup": null
+      }
+    },
+    {
+      "input": "metro.log",
+      "lineNumber": 73,
+      "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+      "record": {
+        "event": "signer-store-observed",
+        "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+        "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "outcome": "mismatch",
+        "startedAt": "2026-10-05T22:12:41.875Z",
+        "counters": {
+          "readCalls": 0,
+          "readCompleted": 0,
+          "mismatchResponses": 0,
+          "readErrors": 0,
+          "secretCalls": 0,
+          "signingCalls": 0,
+          "submitCalls": 0,
+          "rpcWrites": 0,
+          "broadcastAttempts": 0,
+          "blockedFetch": 0,
+          "blockedXHR": 0,
+          "walletSaveAttempts": 0,
+          "unknownClears": 0,
+          "storeUpdates": 3,
+          "reachabilityReads": 0
+        },
+        "unknownPresent": true,
+        "unknownIdentity": 1,
+        "transactionHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "requestId": "native-dummy-mismatch",
+        "phase": "unknown",
+        "lastLookup": null
+      }
+    }
+  ],
+  "limits": [
+    "Pure parsing of original retained logs only; no native-flow pass",
+    "Metro records are historical console transport, not current logcat records",
+    "Current logcat was cleared between cases and retains only latest primary-unknown/gap-mismatch observer events",
+    "Observer sourceSha is payload provenance; payload does not independently attest a source tree",
+    "Zero submission/read counters and initialization/store-state records do not prove a completed native submission or lookup"
+  ],
+  "exactOriginalFunctionReproductions": {
+    "native_records": {
+      "rejected": true,
+      "exceptionType": "RuntimeError",
+      "message": "No actual native observer records were captured.",
+      "exactFunctionExecutedWithRetainedTextOnly": true
+    },
+    "primary_snapshot": {
+      "rejected": true,
+      "exceptionType": "RuntimeError",
+      "message": "No actual native primary records for outcome: unknown",
+      "exactFunctionExecutedWithRetainedTextOnly": true
+    }
+  },
+  "allDecodedPublicRecordsSourceShaMatch": true
+}

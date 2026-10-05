@@ -1,0 +1,97 @@
+[
+  {
+    "original": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-confirmed-submit-original.mp4",
+    "sha256": "e88c009170683164aa1afd027dbc9c69cb988b27ade28f312faf42e44d938dcf",
+    "duration": 7.269844,
+    "frames": [
+      {
+        "seconds": 0.25,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-confirmed-submit-original-frame-0.25.png",
+        "sha256": "c05fb558afa204958365caae4fe8ee6e80fd7aae713478cf1c710c4d06905ebb"
+      },
+      {
+        "seconds": 2,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-confirmed-submit-original-frame-2.png",
+        "sha256": "b4e16db4148cc1c4fb290cd1e29121b65ecc01b60e6638a0b59a9edf5139f2a3"
+      },
+      {
+        "seconds": 4,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-confirmed-submit-original-frame-4.png",
+        "sha256": "f37c96ba7cc14b8aac966eac4fb1aba47f4fec5e74415bac4a849a66a357d884"
+      },
+      {
+        "seconds": 6,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-confirmed-submit-original-frame-6.png",
+        "sha256": "908135688a46a912ec878048ca799c46ac03d0fed0876c64f33475168894bd90"
+      },
+      {
+        "seconds": 6.769844,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-confirmed-submit-original-frame-6.77.png",
+        "sha256": "908135688a46a912ec878048ca799c46ac03d0fed0876c64f33475168894bd90"
+      }
+    ]
+  },
+  {
+    "original": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-error-submit-original.mp4",
+    "sha256": "2aafb10de591d20b2b14e3ab01b62d7daa4657ab1354b7af0bf75ed4d14e9caf",
+    "duration": 7.318333,
+    "frames": [
+      {
+        "seconds": 0.25,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-error-submit-original-frame-0.25.png",
+        "sha256": "3a783b1a6af96472b8cadb07a79fb46ed20f4104e2f13722f302c93fac07515a"
+      },
+      {
+        "seconds": 2,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-error-submit-original-frame-2.png",
+        "sha256": "b98b35da78ef07f905522cd74252aacc156cb76cb6e7ea909d142edb5cca096f"
+      },
+      {
+        "seconds": 4,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-error-submit-original-frame-4.png",
+        "sha256": "53034a735f4df3cb3b5f89a73ce3b24a32d96e9b89c316310e5697c40346f509"
+      },
+      {
+        "seconds": 6,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-error-submit-original-frame-6.png",
+        "sha256": "ac3967cb04fbfc0b14ad0fa86bd56cb690d1f3e037ee0ddd8ce7e0c51edeba9c"
+      },
+      {
+        "seconds": 6.818333,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-error-submit-original-frame-6.818.png",
+        "sha256": "ac3967cb04fbfc0b14ad0fa86bd56cb690d1f3e037ee0ddd8ce7e0c51edeba9c"
+      }
+    ]
+  },
+  {
+    "original": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-unknown-submit-original.mp4",
+    "sha256": "a2d39e527731fce06c194de236880f4c97e9911ddbf067b175b101de248d8180",
+    "duration": 8.848256,
+    "frames": [
+      {
+        "seconds": 0.25,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-unknown-submit-original-frame-0.25.png",
+        "sha256": "cbed5542cb75d98d3038031d7eff593ed6c3436919c63f1f73b7b2bea294074a"
+      },
+      {
+        "seconds": 2,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-unknown-submit-original-frame-2.png",
+        "sha256": "e96a2696fd2865df35fd8edaf15882e733119509bc9bde6630309ebb0ad026ea"
+      },
+      {
+        "seconds": 4,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-unknown-submit-original-frame-4.png",
+        "sha256": "27b626d751f17e384c038489b4120ad3de764e1ead3cd4c54af6ff9f4a3a846d"
+      },
+      {
+        "seconds": 6,
+        "file": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/retry-unknown-submit-original-frame-6.png",
+        "sha256": "11f18ae9dd65b313163aaf1b5f4708f4ff40ca222e07e847932a29cb1e888520"
+      },
+      {
+        "seconds": 8.348256,
+        "status": "no decodable frame produced"
+      }
+    ]
+  }
+]

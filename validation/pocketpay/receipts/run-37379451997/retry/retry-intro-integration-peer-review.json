@@ -1,0 +1,33 @@
+{
+  "status": "bounded-static-clear",
+  "scope": "Retry only; no baseline or warm-replay review in this receipt",
+  "files": {
+    "retry-primary-ui.py": "ae4e80fbc616642675c1b4bdbdfd3a5027f70acd56aa5b8a182ec4f588dc08c1",
+    "retry-gap-runner.py": "beb468607c54599a72b3feccc9733fca0d24a7c2b55e5ad8f46cf758ecaf56e2",
+    "expo_go_intro.py": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+    "expo_go_module_intro.py": "b0791312386e66398f75dcac20688c8e01f0c090d59dd90d41f211008258ac8b",
+    "observer_framing.py": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2",
+    "test_intro_composition.py": "38700e5bb7099f4b6f4815a8c01a294af2855b00fb65729e8a739833a31870de"
+  },
+  "frozenDecoderManifestSha256": "30faf555530bac9b762a2a81b45809b42454c270044bab8609ca03a2f61b1178",
+  "independentChecks": {
+    "compositionAndIntroTestsPassed": 17,
+    "syntaxFiles": 6,
+    "allEightFrozenDecoderPacketFilesMatch": true,
+    "sharedDecoderMatchesFrozenHelper": true
+  },
+  "findings": [
+    "Exact observed SDK54 marker set must occur within host.exp.exponent Bottom Sheet; permission packages prevent onboarding recognition.",
+    "Unique native Button Continue must be enabled, have no disabled ancestor, fit viewport, and belong to the recognized sheet.",
+    "Before/after retained host media and closure record are distinct from a product-state pass.",
+    "Primary and gap wait paths handle recognized intro before app labels; expanded before/post-media and action predicates reject it.",
+    "Recognized intro transport/XML failure becomes RuntimeError with original cause, so primary ordinary polling cannot swallow it.",
+    "Primary snapshot AST equals reviewed framing-only transform; gap decoder equals reviewed function plus bound helpers.adb. All other snapshot provenance/counter/identity validators retained.",
+    "No fixture route, original transport delay, production code, head, controller ref, or dispatch changed by this review."
+  ],
+  "limits": [
+    "Static/controller preparation only, zero ADB.",
+    "Actual tutorial closure, native feature flows and visible loading frames still require original native evidence.",
+    "Existing active controller/run remains unchanged."
+  ]
+}

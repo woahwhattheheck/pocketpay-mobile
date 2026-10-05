@@ -8,6 +8,9 @@ import subprocess
 import sys
 import time
 import xml.etree.ElementTree as ET
+from expo_go_intro import intro_sheet
+from expo_go_module_intro import ModuleIntro
+from observer_framing import decode_observer_line
 
 ROOT = Path(os.environ["ARTIFACT_DIR"])
 MODE = sys.argv[1]
@@ -58,7 +61,7 @@ def contains(tree, label):
 
 
 def expo_sheet(tree):
-    return contains(tree, "Connected to expo-cli") and contains(tree, "SDK version:")
+    return intro_sheet(tree) or (contains(tree, "Connected to expo-cli") and contains(tree, "SDK version:"))
 
 
 def native_error_overlay(tree):
@@ -117,7 +120,7 @@ def find(tree, *candidates):
 def exact_action(tree, label):
     if native_error_overlay(tree):
         raise RuntimeError("Actual native render-error overlay covers the requested action")
-    if contains(tree, "Connected to expo-cli") and contains(tree, "SDK version:"):
+    if expo_sheet(tree):
         raise RuntimeError("Observed Expo developer sheet covers the requested action")
     parents = {child: parent for parent in tree.iter() for child in parent}
     matches = {}
@@ -169,6 +172,9 @@ def wait(*candidates, seconds=50, optional=False):
     while time.monotonic() < deadline:
         try:
             last = dump()
+            if intro_sheet(last):
+                INTRO.dismiss(last)
+                continue
             # The real failed run captured these two labels on Expo's sheet.
             # Close only observed development chrome before evaluating app state.
             if contains(last, "Connected to expo-cli") and contains(last, "SDK version:"):
@@ -266,9 +272,8 @@ def primary_snapshot(name, outcome, submits, reads):
     for line in adb("logcat", "-d", "-s", "ReactNativeJS:I").splitlines():
         if prefix not in line:
             continue
-        try:
-            record = json.JSONDecoder().raw_decode(line.split(prefix, 1)[1].lstrip(" :"))[0]
-        except ValueError:
+        record = decode_observer_line(line, prefix)
+        if record is None:
             continue
         if record.get("sourceSha") != "ddd56649099d1fc5763ef29af3bfba0363897bd6":
             raise RuntimeError("Native primary observer source mismatch")
@@ -361,6 +366,8 @@ def retry_outcome(outcome):
     elif final["unknownPresent"]:
         raise RuntimeError("Definitive Done action retained resolved uncertainty")
 
+
+INTRO = ModuleIntro(globals())
 
 for outcome in ("unknown", "error", "confirmed", "failed"):
     case("retry-" + outcome, lambda outcome=outcome: retry_outcome(outcome))

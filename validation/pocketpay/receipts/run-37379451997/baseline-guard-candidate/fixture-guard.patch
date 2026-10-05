@@ -1,0 +1,103 @@
+--- a/validation/pocketpay/baseline/baseline-fixture/native-baseline-entry.js
++++ b/validation/pocketpay/baseline/baseline-fixture/native-baseline-entry.js
+@@ -1,5 +1,6 @@
+ // Dedicated validation-controller entry only; exclude from product branches/bundles.
+ require('./shim');
++require('./native-baseline-stellar-guard');
+ require('./native-vault-bootstrap');
+ require('./native-baseline-bootstrap');
+ require('expo-router/entry');
+--- a/validation/pocketpay/baseline/baseline-fixture/native-vault-bootstrap.js
++++ b/validation/pocketpay/baseline/baseline-fixture/native-vault-bootstrap.js
+@@ -117,8 +117,12 @@
+ };
+ stellar.server.submitTransaction = rejectBroadcast;
+ StellarSdk.rpc.Server.prototype.sendTransaction = rejectBroadcast;
+-stellar.mockDepositToVault = rejectAction('deposit');
+-stellar.mockWithdrawFromVault = rejectAction('withdraw');
++const blockedDeposit = rejectAction('deposit');
++const blockedWithdraw = rejectAction('withdraw');
++stellar.mockDepositToVault = blockedDeposit;
++stellar.mockWithdrawFromVault = blockedWithdraw;
++if (stellar.mockDepositToVault !== blockedDeposit) throw new Error('Dummy deposit guard did not install.');
++if (stellar.mockWithdrawFromVault !== blockedWithdraw) throw new Error('Dummy withdrawal guard did not install.');
+ 
+ const initializeWallet = async () => {
+   useWalletStore.setState({ publicKey, walletChecked: true, error: null, isLoading: false });
+--- a/validation/pocketpay/baseline/baseline-fixture/setup-validation-checkout.py
++++ b/validation/pocketpay/baseline/baseline-fixture/setup-validation-checkout.py
+@@ -22,6 +22,7 @@
+     raise SystemExit('Checkout must use its normal expo-router/entry before fixture installation.')
+ destinations = {
+     'native-baseline-entry.js': checkout / 'native-baseline-entry.js',
++    'native-baseline-stellar-guard.js': checkout / 'native-baseline-stellar-guard.js',
+     'native-vault-bootstrap.js': checkout / 'native-vault-bootstrap.js',
+     'native-baseline-bootstrap.js': checkout / 'native-baseline-bootstrap.js',
+     'native-baseline-cases.tsx': checkout / 'native-baseline-cases.tsx',
+--- a/validation/pocketpay/baseline/baseline-fixture/validate-fixture.js
++++ b/validation/pocketpay/baseline/baseline-fixture/validate-fixture.js
+@@ -10,7 +10,7 @@
+   const actual = crypto.createHash('sha256').update(fs.readFileSync(path.join(root, relative))).digest('hex');
+   if (actual !== expected) throw new Error('Pinned source mismatch: ' + relative);
+ }
+-for (const name of ['native-baseline-entry.js', 'native-baseline-bootstrap.js', 'native-vault-bootstrap.js']) {
++for (const name of ['native-baseline-entry.js', 'native-baseline-stellar-guard.js', 'native-baseline-bootstrap.js', 'native-vault-bootstrap.js']) {
+   cp.execFileSync(process.execPath, ['--check', path.join(fixture, name)]);
+ }
+ const ts = require(path.join(root, 'node_modules/typescript'));
+@@ -58,6 +58,6 @@
+ if (routes.length !== 2) throw new Error('Send and fixture route metadata did not coexist.');
+ process.stdout.write(JSON.stringify({
+   pinnedProductionFilesVerified: Object.keys(manifest.sourceFiles).length,
+-  jsSyntaxFilesPassed: 3, virtualFixtureFiles: virtual.size, typeScriptDiagnostics: 0,
++  jsSyntaxFilesPassed: 4, virtualFixtureFiles: virtual.size, typeScriptDiagnostics: 0,
+   androidMetadataRoutes: routes, productSourceWrites: false, nativeUiExecution: false,
+ }, null, 2) + '\n');
+--- /dev/null
++++ b/validation/pocketpay/baseline/baseline-fixture/native-baseline-stellar-guard.js
+@@ -0,0 +1,45 @@
++// VALIDATION ONLY: install before vault/stores/router in the disposable dev app.
++// Expo's live exports are read-only. Keep every unselected descriptor intact;
++// make only the existing dummy-generator/write-blocker slots assignable.
++const metroRequire = globalThis.__r;
++if (typeof metroRequire !== 'function' || typeof metroRequire.getModules !== 'function') {
++  throw new Error('Dummy Stellar export guard requires the validation Metro dev runtime.');
++}
++const matches = [...metroRequire.getModules().values()]
++  .filter(record => record.verboseName === 'src/services/stellar.ts');
++if (matches.length !== 1) throw new Error('Dummy Stellar export guard requires one exact source module.');
++const record = matches[0];
++if (record.isInitialized !== false || record.hasError !== false || typeof record.factory !== 'function') {
++  throw new Error('Dummy Stellar export guard must install before the source module loads.');
++}
++const sourceFactory = record.factory;
++const guardedNames = new Set(['generateKeypair', 'mockDepositToVault', 'mockWithdrawFromVault']);
++const pendingGuard = () => {
++  throw new Error('Dummy Stellar fixture has not installed its generator/write blockers.');
++};
++const guardedFactory = function(...args) {
++  sourceFactory.apply(this, args);
++  const module = args[4];
++  const originalExports = module.exports;
++  const guardedExports = {};
++  for (const key of Reflect.ownKeys(originalExports)) {
++    const descriptor = Object.getOwnPropertyDescriptor(originalExports, key);
++    if (guardedNames.has(key)) {
++      if (typeof originalExports[key] !== 'function') {
++        throw new Error('Dummy Stellar guard expected its pinned function export.');
++      }
++      Object.defineProperty(guardedExports, key, {
++        enumerable: descriptor.enumerable, configurable: false, writable: true, value: pendingGuard,
++      });
++    } else {
++      Object.defineProperty(guardedExports, key, descriptor);
++    }
++  }
++  for (const name of guardedNames) {
++    if (guardedExports[name] !== pendingGuard) throw new Error('Dummy Stellar blocking slot did not install.');
++  }
++  module.exports = guardedExports;
++  if (module.exports !== guardedExports) throw new Error('Dummy Stellar namespace guard did not install.');
++};
++record.factory = guardedFactory;
++if (record.factory !== guardedFactory) throw new Error('Dummy Stellar preload guard did not install.');

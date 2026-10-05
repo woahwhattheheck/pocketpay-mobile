@@ -1,0 +1,25 @@
+{
+  "status": "frozen_read_only_actual_line_peer_receipt",
+  "nativeExecution": false,
+  "controllerProductOrOriginalArtifactWrites": false,
+  "deviceDispatchOrRefOperations": false,
+  "actualArtifactRun": "37379451997",
+  "actualVaultPrefixLines": 1,
+  "actualBaselinePrefixLines": 0,
+  "actualLogcatSha256": "6fce0dbdb0fff7eb670099d878e995a2ca1d320078a991da32e2718ff5a2fe31",
+  "ledgerHelperSourceSha256": "788d2fb8861b52ee6bb84101b05b7ff34cd2707918dfabe17fce3bb91e74c443",
+  "oldNativeRecordsFunctionSha256": "0dca7a2ddb7145c7bfb57a4972a3a453b115b04c7b12a05e7d6bb7fbdee804ed",
+  "wholeActualJsonPreserved": true,
+  "allPureDifferentialChecksPassed": true,
+  "negativeSyntheticCasesRejected": 8,
+  "syntheticBaselinePrefixIsNotNativeEvidence": true,
+  "nativeFlowPassClaim": false,
+  "pythonSyntaxFiles": 1,
+  "files": {
+    "README.md": "cb446f9ae304cef56ca7282a4eefeefe180951ea945e87808408e18e3ca9c331",
+    "immutable-inputs.json": "da148aecc3a06a4af5eefd26a638350d5dd221db58371d37edfba3a58b557c3b",
+    "actual-vault-framing-fixture.json": "f17551849c336ad088892772fe17c2522f778f8de95a59d36e3ac9297ee526ab",
+    "reproduce-proof.py": "c148bc96307d98d101cdd8fd0236f994b98099b797e65afce960af66b34e784f",
+    "parser-proof-receipt.json": "b09f0b82e3e8bd63c1d916bef2efc34d4233429eaa9cb56fdbb14b50919daf1d"
+  }
+}

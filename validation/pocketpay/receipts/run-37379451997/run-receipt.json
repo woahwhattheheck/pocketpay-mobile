@@ -1,0 +1,57 @@
+{
+  "runId": 37379451997,
+  "runUrl": "https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37379451997",
+  "terminal": true,
+  "allModes": [
+    {
+      "mode": "camera",
+      "conclusion": "failure",
+      "artifactId": 11373381395,
+      "archiveBytes": 598436,
+      "archiveSha256": "4b9c1c02780a8ef3dfd5c5963c90930ecf186dc4217b73425d77d8a2d1a800fc",
+      "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+      "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+      "controllerSha": "51d8f49aa884b12d07ab889407d6815c5e01d521",
+      "controllerTree": "b9377f1ca6775c55047763a937438245dea51499",
+      "kvmPreflightExit": 0,
+      "localArtifactPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/camera",
+      "jobLogPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/camera-job.log"
+    },
+    {
+      "mode": "retry",
+      "conclusion": "failure",
+      "artifactId": 11375135159,
+      "archiveBytes": 3316235,
+      "archiveSha256": "5906fe21ceb2b79b2752de6bde14febebda1fb6c10f9d8da50613378696122b4",
+      "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+      "controllerSha": "51d8f49aa884b12d07ab889407d6815c5e01d521",
+      "controllerTree": "b9377f1ca6775c55047763a937438245dea51499",
+      "kvmPreflightExit": 0,
+      "localArtifactPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry",
+      "jobLogPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry-job.log"
+    },
+    {
+      "mode": "baseline",
+      "conclusion": "failure",
+      "artifactId": 11376146919,
+      "archiveBytes": 3176033,
+      "archiveSha256": "9e87bb897ed730e8def94c2b05335b1cb841c394491cef5a64e546a4b9c0ea06",
+      "sourceSha": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+      "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+      "controllerSha": "51d8f49aa884b12d07ab889407d6815c5e01d521",
+      "controllerTree": "b9377f1ca6775c55047763a937438245dea51499",
+      "kvmPreflightExit": 0,
+      "localArtifactPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/baseline",
+      "jobLogPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/baseline-job.log"
+    }
+  ],
+  "nativeReadiness": "all full flow gates remain held; job results do not identify product defects",
+  "observedControllerObstructions": {
+    "camera": "Exact Expo SDK54 introduction covers Welcome; no feature targets observed; underlying route reason unknown",
+    "retry": "Actual tutorial/Launcher; strict quoted-log decoder failure proven; only initialization/store-state zero-operation records",
+    "baseline": "Actual runtime-not-ready Dummy key-generation guard did not install; no intended target screens observed"
+  },
+  "sourceOrControllerRefChangesAfterDispatch": false,
+  "additionalDispatches": 0
+}

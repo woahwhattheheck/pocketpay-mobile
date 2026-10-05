@@ -3,11 +3,11 @@
   "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
   "files": {
     "native-vault-entry.js": "c99b5efe867ec325a54b0db0993de20fb01c1d64dc83108942a398ccd182da2f",
-    "native-vault-bootstrap.js": "906ef0b16031f8df4f28e1f484e856a2c8f621417cb3a44b1cbc991fede11548",
+    "native-vault-bootstrap.js": "3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359",
     "native-vault-route.tsx": "42ac802da48edf55d2982438b58ed0a5b626b0425e482a3162fcc48910787614",
     "setup-validation-checkout.py": "9aaef7e03e4221c4fd74cd8cbf6c70185c33a879543a99da04452d733e6dbf4d",
     "source-manifest.json": "7fe0631b6c7f00849c13c4be30a2163ffdb97e90e972b5359b2bf32e7ff8d750",
-    "README.md": "981ebfb817835c9a030a3358b1e68593b10e027fefc11dc9e47da7de2ec92b26"
+    "README.md": "eae624a19e94b530dbb48f46afb4b82293ae4d3cd8235d7e260b5ffe253d4f4f"
   },
   "checks": [
     "node --check: entry and bootstrap pass",
@@ -15,6 +15,7 @@
     "Python setup compilation: pass",
     "Virtual fixture strict typecheck with real production imports and installed packages: zero errors"
   ],
-  "nativeExecution": "not run; controlled fixture preparation only",
-  "custody": "Allowed in isolated validation controller branches/bundles; excluded from product/prerequisite/feature branches and production distribution."
+  "nativeExecution": "Original active combined run failed at initializer before Vault target; corrected active fixture native pending.",
+  "custody": "Allowed in isolated validation controller branches/bundles; excluded from product/prerequisite/feature branches and production distribution.",
+  "standaloneStatus": "Inactive historical scaffold: active job uses baseline preload seam plus this route; standalone entry/setup not repaired or validated."
 }

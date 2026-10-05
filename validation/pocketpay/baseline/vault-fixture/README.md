@@ -87,3 +87,11 @@ Additional prerequisite native coverage still to record, unless already captured
 - Source-contract fixes: Send warning layout and Contacts search/edit availability
   should be visually inspected where exercised. Typecheck/export already establish
   static import resolution; they do not establish each native screen interaction.
+
+
+Successor scope after failed run37379451997: this directory is an inactive
+historical standalone scaffold. The active combined job installs the baseline
+entry and its reviewed pre-load Stellar guard, then copies only this vault
+route. The bootstrap here mirrors the active explicit write blockers, but this
+standalone entry/setup has not received the pre-load seam and is not repaired
+or validated for standalone use. Do not infer a standalone execution pass.

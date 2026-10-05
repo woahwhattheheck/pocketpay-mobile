@@ -1,0 +1,18 @@
+Error: Unable to resolve module pocketpay-sdk from /workspace/scratch/ea8baa184658/pocketpay-baseline-guard-candidate/disposable-source52/app/(auth)/import.tsx: pocketpay-sdk could not be found within the project.
+[0m [90m 10 |[39m [36mimport[39m { useWalletStore } [36mfrom[39m [32m'../../src/store/walletStore'[39m[33m;[39m
+ [90m 11 |[39m [36mimport[39m { [33mWALLET_SAVE_FAILURE_MESSAGE[39m } [36mfrom[39m [32m'../../src/utils/walletStorageErrors'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 12 |[39m [36mimport[39m { importWallet } [36mfrom[39m [32m'pocketpay-sdk'[39m[33m;[39m
+ [90m    |[39m                               [31m[1m^[22m[39m
+ [90m 13 |[39m [36mimport[39m { [33mInfo[39m[33m,[39m [33mShield[39m[33m,[39m [33mCheckCircle[39m } [36mfrom[39m [32m'lucide-react-native'[39m[33m;[39m
+ [90m 14 |[39m [36mimport[39m type { [33mOnboardingError[39m[33m,[39m [33mStorageError[39m } [36mfrom[39m [32m'../../src/types/onboarding'[39m[33m;[39m
+ [90m 15 |[39m [36mimport[39m {[0m
+    at ModuleResolver.resolveDependency (/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/node-haste/DependencyGraph/ModuleResolution.js:172:15)
+    at DependencyGraph.resolveDependency (/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/node-haste/DependencyGraph.js:252:43)
+    at /workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/lib/transformHelpers.js:163:21
+    at resolveDependencies (/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/DeltaBundler/buildSubgraph.js:43:25)
+    at visit (/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/DeltaBundler/buildSubgraph.js:81:30)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Promise.all (index 2)
+    at async visit (/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/DeltaBundler/buildSubgraph.js:90:5)
+    at async Promise.all (index 0)
+    at async visit (/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/DeltaBundler/buildSubgraph.js:90:5)

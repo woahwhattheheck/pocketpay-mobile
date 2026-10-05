@@ -1,0 +1,185 @@
+{
+  "run": 37379451997,
+  "job": 111997334153,
+  "archiveId": 11375135159,
+  "archiveSha256": "5906fe21ceb2b79b2752de6bde14febebda1fb6c10f9d8da50613378696122b4",
+  "productSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "productTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "controllerSha": "51d8f49aa884b12d07ab889407d6815c5e01d521",
+  "controllerTree": "b9377f1ca6775c55047763a937438245dea51499",
+  "review": "failure retained; source publication held",
+  "findings": [
+    "SDK54 first-run tutorial is actually visible and lacks Connected-to-expo-cli; current blocker detector does not recognize it.",
+    "Named unknown Review PNG/XML show Android Launcher, not production Review.",
+    "Error named Review XML initially lacks tutorial, but before/post media XML and PNG show it; actual media must govern qualification.",
+    "Real production Review and recovery guidance render behind tutorial, but actions/results/navigation are not established.",
+    "Primary observer Metro records remain review with zero secret/sign/submit/read counters for error/confirmed. No real dummy payment submission was observed.",
+    "Gap records exist in actual Metro/logcat; immutable parser rejects quoted ReactNativeJS framing. Seeded nohash/empty/mismatch states have zero safety/read counters. This does not establish later actions.",
+    "No current Render Error/Uncaught Error identified in reviewed original images/XML/Metro; prior render failure remains historical.",
+    "Original sampled submit clip frames show Launcher for unknown and tutorial for error/confirmed, with no demonstrated Signing/Unknown transition."
+  ],
+  "media": [
+    {
+      "name": "retry-unknown-review",
+      "png": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-unknown-review.png",
+      "pngSha256": "d5ab1976e97cb996f7db781971de8c57a514ea5b90d952ec6d46dfdcb75c6adf",
+      "xml": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-unknown-review.xml",
+      "xmlSha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "packages": [
+        "com.google.android.apps.nexuslauncher"
+      ],
+      "tutorialInNamedXml": false,
+      "guards": [
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-unknown-review-media-guard.xml",
+          "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+          "tutorial": false
+        },
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-unknown-review-post-media-guard.xml",
+          "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+          "tutorial": false
+        }
+      ],
+      "qualification": "obstructed/launcher; does not establish completed native flow"
+    },
+    {
+      "name": "retry-error-review",
+      "png": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-error-review.png",
+      "pngSha256": "c296eb9cf4d04f7460bc1eda1eb791bfc602fe0cd5cbdce32344ef6a08b6ca84",
+      "xml": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-error-review.xml",
+      "xmlSha256": "552ea239e2925e8a805fecdf033fab2d19131d7a894c593e4ff35a5b3c8664a7",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "tutorialInNamedXml": false,
+      "guards": [
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-error-review-media-guard.xml",
+          "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+          "tutorial": true
+        },
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-error-review-post-media-guard.xml",
+          "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+          "tutorial": true
+        }
+      ],
+      "qualification": "obstructed/launcher; does not establish completed native flow"
+    },
+    {
+      "name": "retry-confirmed-review",
+      "png": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-confirmed-review.png",
+      "pngSha256": "cc563e01178ec8ecfc58be5f2e26257eb24d525ae9687adefabe8918d80c1f51",
+      "xml": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-confirmed-review.xml",
+      "xmlSha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "tutorialInNamedXml": true,
+      "guards": [
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-confirmed-review-media-guard.xml",
+          "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+          "tutorial": true
+        },
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/retry-confirmed-review-post-media-guard.xml",
+          "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+          "tutorial": true
+        }
+      ],
+      "qualification": "obstructed/launcher; does not establish completed native flow"
+    },
+    {
+      "name": "nohash-actual-guidance",
+      "png": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/nohash-actual-guidance.png",
+      "pngSha256": "f3c75266dd1c68bd00b56862ed9baa18b900e63d2423c789da101b6bdaacd9ac",
+      "xml": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/nohash-actual-guidance.xml",
+      "xmlSha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "tutorialInNamedXml": true,
+      "guards": [
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/nohash-actual-guidance-post-media-guard.xml",
+          "sha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+          "tutorial": true
+        }
+      ],
+      "qualification": "obstructed/launcher; does not establish completed native flow"
+    },
+    {
+      "name": "empty-actual-guidance",
+      "png": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/empty-actual-guidance.png",
+      "pngSha256": "197d5516260ccc842c24efd6b92628dd6af7c69496d6a71f7bfd12fe069acf6a",
+      "xml": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/empty-actual-guidance.xml",
+      "xmlSha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "tutorialInNamedXml": true,
+      "guards": [
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/empty-actual-guidance-post-media-guard.xml",
+          "sha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+          "tutorial": true
+        }
+      ],
+      "qualification": "obstructed/launcher; does not establish completed native flow"
+    },
+    {
+      "name": "mismatch-actual-unknown",
+      "png": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/mismatch-actual-unknown.png",
+      "pngSha256": "f3c75266dd1c68bd00b56862ed9baa18b900e63d2423c789da101b6bdaacd9ac",
+      "xml": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/mismatch-actual-unknown.xml",
+      "xmlSha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "tutorialInNamedXml": true,
+      "guards": [
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/mismatch-actual-unknown-post-media-guard.xml",
+          "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+          "tutorial": true
+        }
+      ],
+      "qualification": "obstructed/launcher; does not establish completed native flow"
+    },
+    {
+      "name": "failure-retry-failed",
+      "png": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/failure-retry-failed.png",
+      "pngSha256": "2a140430ecc9434e780eb4ecc3ee419393cdad73060f180d7fb90b56d56353e1",
+      "xml": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/failure-retry-failed.xml",
+      "xmlSha256": "40eb00b9c314cd5e68f8c4b531aa2f6120be030286a1a1e2ffd6f5859801fb40",
+      "packages": [
+        "com.google.android.apps.nexuslauncher"
+      ],
+      "tutorialInNamedXml": false,
+      "guards": [
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/failure-retry-failed-media-guard.xml",
+          "sha256": "40eb00b9c314cd5e68f8c4b531aa2f6120be030286a1a1e2ffd6f5859801fb40",
+          "tutorial": false
+        },
+        {
+          "file": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/retry/failure-retry-failed-post-media-guard.xml",
+          "sha256": "40eb00b9c314cd5e68f8c4b531aa2f6120be030286a1a1e2ffd6f5859801fb40",
+          "tutorial": false
+        }
+      ],
+      "qualification": "obstructed/launcher; does not establish completed native flow"
+    }
+  ],
+  "originalFrameProvenance": "/workspace/scratch/ea8baa184658/pocketpay-retry37379451997-peer-review/original-video-frame-provenance.json",
+  "gatesUnproved": [
+    "Review real dummy Sign & Send \u2192 uncertain hash capture",
+    "Check Status loading and unknown/error/confirmed/failed outcomes",
+    "Recovery details/help/Activity identity retention and definitive clear",
+    "No-hash/empty navigation with zero lookup",
+    "Mismatch lookup preserves original hash and unknown object identity"
+  ],
+  "mutations": "No product, controller, ref, body or dispatch write. Original artifacts unchanged; extracted original video frames labeled separately."
+}

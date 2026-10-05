@@ -1,0 +1,63 @@
+{
+  "runId": 37379451997,
+  "artifactId": 11373381395,
+  "artifactZipSha256": "4b9c1c02780a8ef3dfd5c5963c90930ecf186dc4217b73425d77d8a2d1a800fc",
+  "artifactZipBytes": 598436,
+  "reviewer": "/root/slack_backlog",
+  "controllerCommit": "51d8f49aa884b12d07ab889407d6815c5e01d521",
+  "controllerTree": "b9377f1ca6775c55047763a937438245dea51499",
+  "controllerManifestSha256": "e5f2f76c0d23ca165565cb34b89cf1c821375c9db7cfd5f9ea2a404195f4dc99",
+  "sourceCommit": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+  "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+  "runtime": {
+    "node": "22.16.0",
+    "api": 34,
+    "expoGo": "54.0.8",
+    "nativeKvmBootCompleted": true
+  },
+  "originalMediaSha256": {
+    "final-screen.png": "74f48d64d13a9106918bb81ec3814890772e65ebd00c73fced8e497caf9b5668",
+    "final-ui.xml": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+    "camera-primary/primary-and-user-fixed-scan-launch-1-original.mp4": "ecfd4a663a8fcaa83f4ae19c0530e1c017f7aea4d9474f9c4eda6da009e40420"
+  },
+  "originalVideoReview": {
+    "codec": "h264",
+    "width": 720,
+    "height": 1280,
+    "durationSeconds": 19.982389,
+    "originalFrames": 124,
+    "decodedFrames": 124,
+    "firstPTS": "0.000000",
+    "lastPTS": "19.473389",
+    "visualSequence": [
+      "Android launcher",
+      "Expo splash",
+      "Expo host Loading from127.0.0.1:8081 / New update available downloading"
+    ],
+    "cameraOrPermissionLoadingUiObserved": false,
+    "manualFallbackActionObserved": false,
+    "decodedFramesAreReviewDerivativesNotAdbPngs": true
+  },
+  "finalMediaObserved": [
+    "Welcome to PocketPay behind Expo Go developer-menu introduction",
+    "SDK version54.0.0 / runtimeexposdk54.0.0",
+    "Instructional developer-menu text",
+    "Continue and close X",
+    "No Connected to expo-cli label"
+  ],
+  "diagnosis": {
+    "establishedControllerDefect": "Specific sheet detector requires SDK Version and Connected to expo-cli; the actual first-run developer-menu introduction lacks the latter and is not dismissed.",
+    "startupClipLimit": "Cold first Metro bundle took27.568s, longer than the19.982s startup clip. No app loading claim is possible from this clip.",
+    "routeBoundary": "Logcat receives exact expected Contacts initialUri /--/send/__camera-native-fixture?screen=contacts. Valid route discovery/imports and unchanged RootLayout send exemption are static facts; navigation state was not recorded. Welcome alone does not establish discarded cold URL or RootLayout auth redirect.",
+    "productionRegressionEstablished": false
+  },
+  "observations": {
+    "primaryFirstCase": "failed initial Camera Permission Required timeout before denial",
+    "contactsFirstCase": "failed initial Scan QR timeout before denial",
+    "grantUnavailableUserFixed": "unattempted after initial failures",
+    "sendPreservation": "unattempted",
+    "loadingPermissionAndManualFallback": "unobserved/unexercised"
+  },
+  "reviewOutcome": "Failed startup/launch evidence; no camera, first denial, permission-loading/manual, or Send preservation native pass.",
+  "reviewActions": "Read-only original artifacts/source/logs; decoded frames and this receipt written only to separate review scratch. No guest/source/controller/ref/dispatch/public-message changes."
+}

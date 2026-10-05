@@ -47,3 +47,27 @@ transient loading state was visible. It does not assert a loading screenshot.
 Camera/retry gaps
 have separate, exact feature-source followup packets and must remain separate
 from all product/prerequisite/feature branches.
+
+
+## Corrected local successor after run37379451997
+
+The original baseline job did execute the prior controller and retained failure
+media: all9 targets were unvisited because the dummy generator assignment could
+not replace an actual getter-only Stellar export. The new fixture adds one
+pre-load Metro seam before stores/router, preserving the real source52 files,
+dummy seeds and all case/counter/transport assertions. Its installed-worker/
+serializer ABI, fail-closed blockers and dummy generator were checked locally;
+no native/full-bundle pass is claimed, and both failed local bundle logs remain
+under the retained guard candidate receipt. Historical6-file/3-syntax setup
+receipts are kept byte-exact; current setup installs7 files and checks4 syntax
+inputs plus the separate vault route. Only the active baseline entry is repaired;
+the vault standalone scaffold remains inactive and unvalidated.
+
+The actual quoted Vault initialization line now decodes through a separate
+strict literal baseline/vault prefix helper. Existing readiness/provenance/
+transport/write and one-lock/amount outcome assertions are unchanged; zero
+bootstrap counters cannot pass them. Known actual runtime-not-ready redbox
+context fails before hidden target/action acceptance and only named failure
+media may retain it. A fatal initializer marks remaining cases blocked/unattempted
+without launching their callbacks. No baseline tutorial handling or warm replay
+was added. Original failure artifacts remain intact.

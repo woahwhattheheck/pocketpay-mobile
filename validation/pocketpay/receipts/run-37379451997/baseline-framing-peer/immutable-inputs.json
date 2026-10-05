@@ -1,0 +1,30 @@
+{
+  "nativeExecution": false,
+  "inputs": {
+    "logcat": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37379451997/baseline/logcat.txt",
+      "sha256": "6fce0dbdb0fff7eb670099d878e995a2ca1d320078a991da32e2718ff5a2fe31"
+    },
+    "ledgerHelper": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-intro-composed-proposal/validation/pocketpay/baseline/baseline_observer_framing.py",
+      "sha256": "788d2fb8861b52ee6bb84101b05b7ff34cd2707918dfabe17fce3bb91e74c443",
+      "source": "\"\"\"Pure strict framing decoder. No ADB, UI, source, filesystem or network operations.\"\"\"\nimport json\nimport re\n\nBASELINE_PREFIX = \"POCKETPAY_BASELINE_NATIVE_FIXTURE\"\nVAULT_PREFIX = \"POCKETPAY_VAULT_NATIVE_FIXTURE\"\nPREFIXES = (BASELINE_PREFIX, VAULT_PREFIX)\n_LOGCAT = re.compile(\n    r\"\\d{2}-\\d{2}[ \\t]+\\d{2}:\\d{2}:\\d{2}\\.\\d{3}[ \\t]+\\d+[ \\t]+\\d+[ \\t]+I[ \\t]+ReactNativeJS:[ \\t]+(?P<body>[^\\r\\n]*)\"\n)\n_METRO = re.compile(r\"[ \\t]*INFO[ \\t]+(?P<body>[^\\r\\n]*)\")\n\n\ndef _reject_constant(_):\n    raise ValueError(\"Non-finite value is not JSON\")\n\n\ndef _unique_object(pairs):\n    result = {}\n    for key, value in pairs:\n        if key in result:\n            raise ValueError(\"Duplicate JSON key\")\n        result[key] = value\n    return result\n\n\ndef decode_observer_line(line, prefix):\n    \"\"\"Return an object only for one exact supported prefix/framed JSON record.\n\n    Accepts bare ``PREFIX {JSON}``, RN's actual ``'PREFIX', '{JSON}'``\n    framing, and those bodies within the retained native I/ReactNativeJS or\n    Metro INFO envelopes. Full matching forbids substring salvage or trailing\n    material. This function does not validate counter/source/outcome semantics;\n    every existing caller validation must remain unchanged after decoding.\n    \"\"\"\n    if prefix not in PREFIXES or not isinstance(line, str):\n        return None\n    body = line.strip(\" \\t\\r\\n\")\n    if \"\\r\" in body or \"\\n\" in body:\n        return None\n    transport = _LOGCAT.fullmatch(body) or _METRO.fullmatch(body)\n    if transport:\n        body = transport.group(\"body\").strip(\" \\t\")\n    marker = re.escape(prefix)\n    frame = re.fullmatch(\n        rf\"(?:{marker}[ \\t]+(?P<plain>\\{{.*\\}})|'{marker}',[ \\t]*'(?P<quoted>\\{{.*\\}})')\", body\n    )\n    if frame is None:\n        return None\n    payload = frame.group(\"plain\") or frame.group(\"quoted\")\n    try:\n        record = json.loads(payload, parse_constant=_reject_constant, object_pairs_hook=_unique_object)\n    except (ValueError, TypeError, RecursionError):\n        return None\n    return record if isinstance(record, dict) else None\n"
+    }
+  },
+  "oldDecoderSources": {
+    "baseline_cases.py": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/baseline/baseline_cases.py",
+      "fileSha256": "1dcd01418616804a9051d0b1d33561accc25127c3bb4308c5cdd36f6b50417a1",
+      "functionFirstLine": 14,
+      "functionSha256": "0dca7a2ddb7145c7bfb57a4972a3a453b115b04c7b12a05e7d6bb7fbdee804ed",
+      "functionSource": "def native_records(prefix=\"POCKETPAY_BASELINE_NATIVE_FIXTURE\"):\n    logs = adb(\"logcat\", \"-d\", \"-s\", \"ReactNativeJS:I\", timeout=30)\n    records = []\n    for line in logs.splitlines():\n        if prefix not in line:\n            continue\n        payload = line.split(prefix, 1)[1].lstrip(\" :\")\n        try:\n            records.append(json.JSONDecoder().raw_decode(payload)[0])\n        except (ValueError, json.JSONDecodeError):\n            continue\n    if not records:\n        raise RuntimeError(\"No actual native fixture records observed\")\n    return records"
+    },
+    "ui_baseline.py": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/baseline/ui_baseline.py",
+      "fileSha256": "8a01edfc1004150ac466fdfe3b6b38d279139c21330b8a7e1da16e8152090962",
+      "functionFirstLine": 245,
+      "functionSha256": "0dca7a2ddb7145c7bfb57a4972a3a453b115b04c7b12a05e7d6bb7fbdee804ed",
+      "functionSource": "def native_records(prefix=\"POCKETPAY_BASELINE_NATIVE_FIXTURE\"):\n    logs = adb(\"logcat\", \"-d\", \"-s\", \"ReactNativeJS:I\", timeout=30)\n    records = []\n    for line in logs.splitlines():\n        if prefix not in line:\n            continue\n        payload = line.split(prefix, 1)[1].lstrip(\" :\")\n        try:\n            records.append(json.JSONDecoder().raw_decode(payload)[0])\n        except (ValueError, json.JSONDecodeError):\n            continue\n    if not records:\n        raise RuntimeError(\"No actual native fixture records observed\")\n    return records"
+    }
+  }
+}

@@ -8,6 +8,7 @@ import subprocess
 import sys
 import time
 import xml.etree.ElementTree as ET
+from baseline_startup_overlay import FatalFixtureStartup, fixture_startup_error
 
 ROOT = Path(os.environ["ARTIFACT_DIR"])
 MODE = sys.argv[1]
@@ -61,6 +62,8 @@ def expo_sheet(tree):
 
 
 def native_error(tree):
+    if fixture_startup_error(tree):
+        return True
     titles = {"render error", "uncaught error"}
     return any(node.attrib.get(key, "").strip().casefold() in titles
                for node in tree.iter("node") for key in ("text", "content-desc"))
@@ -116,6 +119,8 @@ def find_action(tree, *candidates, lowest=False):
     """Find a real enabled native action, never an enabled child of a disabled button."""
     if expo_sheet(tree):
         raise RuntimeError("Expo developer sheet covers app UI; hidden actions are rejected")
+    if fixture_startup_error(tree):
+        raise FatalFixtureStartup("Actual runtime-not-ready initializer error; product actions are unavailable")
     if native_error(tree):
         raise RuntimeError("Actual native error covers app UI; hidden actions are rejected")
     parents = {child: parent for parent in tree.iter() for child in parent}
@@ -177,6 +182,8 @@ def wait(*candidates, seconds=50, optional=False):
                 capture("observed-expo-developer-sheet", allow_expo_sheet=True)
                 adb("shell", "input", "keyevent", "KEYCODE_BACK")
                 continue
+            if fixture_startup_error(last):
+                raise FatalFixtureStartup("Actual runtime-not-ready initializer error observed")
             if native_error(last):
                 raise RuntimeError("Actual native render error observed")
             if any(contains(last, target) for target in candidates):
@@ -218,18 +225,32 @@ def wait_enabled_action(label, seconds=50):
 
 def case(name, callback):
     observation = {"name": name, "result": "failed"}
+    if REPORT.get("fixture_startup_unavailable"):
+        observation.update({"result": "blocked_unattempted",
+                            "reason": "Earlier actual runtime-not-ready initializer error; no callback or guest action attempted"})
+        REPORT["cases"].append(observation)
+        (ROOT / "observations.json").write_text(json.dumps(REPORT, indent=2))
+        return
     try:
         callback()
         observation["result"] = "passed"
     except Exception as error:
         observation["error"] = str(error)
+        if isinstance(error, FatalFixtureStartup):
+            REPORT["fixture_startup_unavailable"] = True
+            observation["failure_scope"] = "validation initializer; no product acceptance"
         try:
-            capture("failure-" + name)
+            tree = capture("failure-" + name)
+            if fixture_startup_error(tree):
+                REPORT["fixture_startup_unavailable"] = True
+                observation["failure_scope"] = "validation initializer; no product acceptance"
         except Exception as capture_error:
             observation["capture_error"] = str(capture_error)
     REPORT["cases"].append(observation)
     (ROOT / "observations.json").write_text(json.dumps(REPORT, indent=2))
 """Controlled Android UI evidence; no source hooks/router/persistence are replaced here."""
+from baseline_observer_framing import decode_observer_line
+
 BASELINE_SHA = "52ce8006a2d091a4c9f29852a1a530750ff9b3cc"
 if os.environ["SOURCE_SHA"] != BASELINE_SHA:
     raise RuntimeError("This proposal is pinned to the reviewed baseline52 source")
@@ -248,11 +269,9 @@ def native_records(prefix="POCKETPAY_BASELINE_NATIVE_FIXTURE"):
     for line in logs.splitlines():
         if prefix not in line:
             continue
-        payload = line.split(prefix, 1)[1].lstrip(" :")
-        try:
-            records.append(json.JSONDecoder().raw_decode(payload)[0])
-        except (ValueError, json.JSONDecodeError):
-            continue
+        record = decode_observer_line(line, prefix)
+        if record is not None:
+            records.append(record)
     if not records:
         raise RuntimeError("No actual native fixture records observed")
     return records

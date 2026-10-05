@@ -1,0 +1,51 @@
+{
+  "nativeExecution": false,
+  "actualAdbCalls": 0,
+  "results": [
+    {
+      "file": "test_camera_integration.py",
+      "exit": 0,
+      "output": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.035s\n\nOK"
+    },
+    {
+      "file": "camera/test_parser.py",
+      "exit": 0,
+      "output": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.001s\n\nOK"
+    },
+    {
+      "file": "send/test_ui_guard.py",
+      "exit": 0,
+      "output": "..............\n----------------------------------------------------------------------\nRan 14 tests in 0.019s\n\nOK"
+    },
+    {
+      "file": "test_intro_composition.py",
+      "exit": 0,
+      "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.026s\n\nOK"
+    },
+    {
+      "file": "observer-decoder/test_caller_validations.py",
+      "exit": 0,
+      "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.096s\n\nOK"
+    },
+    {
+      "file": "observer-decoder/test_observer_framing.py",
+      "exit": 0,
+      "output": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.001s\n\nOK"
+    },
+    {
+      "file": "retry/test_observation_helpers.py",
+      "exit": 0,
+      "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.001s\n\nOK"
+    },
+    {
+      "file": "test_expo_go_intro.py",
+      "exit": 0,
+      "output": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.003s\n\nOK"
+    },
+    {
+      "file": "baseline/test_baseline_observation.py",
+      "exit": 0,
+      "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.025s\n\nOK"
+    }
+  ]
+}

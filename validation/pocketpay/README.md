@@ -137,7 +137,7 @@ Only actual ADB PNGs, UI hierarchies, original videos, timestamped native logs a
 counter records support a native assertion. Selectors require observed exact
 enabled clickable actions with visible bounds and no disabled ancestor. Expo's
 actual SDK-version/Connected-to-expo-cli sheet is captured and closed by Back
-before app targets can be accepted. No generic Continue/consent action is used.
+before app targets can be accepted. Only the observed SDK54/runtime/instructional developer-menu tutorial permits its unique native Button Continue; all generic Continue/consent actions remain excluded.
 XML guards reject secret-shaped/revealed-secret UI before retaining media.
 Failure remains failure; cleanup captures/logs never change an exit status.
 
@@ -164,3 +164,53 @@ Artifacts are retained for 14 days by the bounded manual workflow. Source,
 controller, runtime and fixture pins must be checked alongside actual media
 before adding evidence to a product PR. Preparation checks are recorded as
 preparation only; they are never native execution or full CI claims.
+
+
+## Successor of run37379451997
+
+Run37379451997 used exact controller51d8/b937 and source52/314/ddd. All three
+jobs booted with KVM and retained original artifacts, but all native acceptance
+gates failed. Camera and Retry were obstructed by the actual Expo SDK54 first-run
+developer-menu introduction; no camera permission/fallback/Send or Retry signing/
+recovery pass was observed. Camera's original19.982-second startup clip ended
+before the first27.568-second Metro bundle, so it provides no product loading
+frame. Baseline failed before all9 targets with the actual runtime-not-ready
+dummy-generator initializer error. These are validation failures; no product
+defect or feature readiness is inferred.
+
+The exact three provider ZIP archives, their SHA256s, current-run receipt and
+independent media reviews are retained under receipts/run-37379451997. Prior
+run37368574667 failure media and run37373478192 preparation/runner failures
+remain unchanged. Current logcat and historical Metro observations retain
+separate attribution; zero initialization counters are never successful flows.
+
+This local successor recognizes only the actual observed SDK54/runtime/tutorial
+Bottom Sheet in the host package and its unique enabled native Button Continue.
+Before/action/after media must prove host tutorial closure, with productStatePassed
+false; ordinary product waits and safety/counter gates still must pass. Recognized
+closure/transport errors fail explicitly. No warm deep-link replay, auth bypass,
+product change or permission timing alteration is added. Actual Scan startup
+recordings are60 seconds within the original bounded suite, and loading/manual
+readiness still requires visible original product frames.
+
+Two exact-prefix Retry framing callsites now decode the original quoted native
+transport. A separate baseline/vault literal whitelist uses the same strict
+envelopes; the one observed Vault seed record decodes but cannot satisfy the
+unchanged one-lock/zero-write gates. The baseline prefix examples are source-
+derived parser cases, not observed native records.
+
+Baseline's reviewed preload seam binds the actual installed Metro module/factory
+ABI before stores/router initialization, preserving unselected getter descriptors
+and replacing only the dummy generator and vault write-guard slots. Owner and
+independent local fatal-guard/dummy-generator/write-blocker checks pass; both
+failed full local bundle preparation logs remain retained. No native, Hermes or
+full-bundle success is claimed. The active job installs7 baseline files and
+checks4 JavaScript syntax inputs, then mirrors the vault route and identical
+blockers. The standalone vault entry/setup is inactive historical scaffolding
+and is not repaired or validated.
+
+The exact actual runtime-not-ready host redbox blocks hidden target/actions and
+app-success captures; failure-only captures retain the original error. A fatal
+initializer failure records the current failure and marks later cases blocked/
+unattempted, avoiding repeated target timeouts. There is no baseline tutorial
+adaptation or baseline warm replay in this successor.

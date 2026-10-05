@@ -1,0 +1,31 @@
+{
+  "nativeExecution": false,
+  "extractionOnly": true,
+  "sources": {
+    "gap": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/retry/observation_helpers.py",
+      "sha256": "7428a4abdfaaee868af823fb827b55b0feb505432889051a6addc7124cd06108"
+    },
+    "primary": {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-kvm-next/validation/pocketpay/retry-primary-ui.py",
+      "sha256": "e7edde717a3b3b9d8c5abedce50db785a8aac49366d207476e8bcee72bde51b0"
+    }
+  },
+  "functions": {
+    "native_records": {
+      "group": "gap",
+      "line": 136,
+      "source": "def native_records():\n    prefix = 'POCKETPAY_RETRY_GAP_NATIVE_OBSERVER'\n    records = []\n    for line in adb('logcat', '-d', '-s', 'ReactNativeJS:I').splitlines():\n        if prefix not in line:\n            continue\n        try:\n            records.append(json.JSONDecoder().raw_decode(line.split(prefix, 1)[1].lstrip(' :'))[0])\n        except ValueError:\n            continue\n    if not records:\n        raise RuntimeError('No actual native observer records were captured.')\n    return records"
+    },
+    "snapshot": {
+      "group": "gap",
+      "line": 150,
+      "source": "def snapshot(name, outcome):\n    records = native_records()\n    serialized = json.dumps(records, indent=2)\n    serialized = re.sub(r'\\bS[A-Z2-7]{55}\\b', '[SECRET_REDACTED]', serialized)\n    (ROOT / (name + '-observer-records.json')).write_text(serialized)\n    for record in records:\n        if record.get('sourceSha') != 'ddd56649099d1fc5763ef29af3bfba0363897bd6' or record.get('outcome') != outcome:\n            raise UnsafeEnvironment('Native observer provenance does not match the case.')\n        for key in ('secretCalls', 'signingCalls', 'submitCalls', 'rpcWrites',\n                    'broadcastAttempts', 'walletSaveAttempts'):\n            if record.get('counters', {}).get(key) != 0:\n                raise UnsafeEnvironment('Unexpected actual native safety guard counter: ' + key)\n        if record.get('counters', {}).get('unknownClears') != 0:\n            raise RuntimeError('The uncertain payment was unexpectedly cleared.')\n    return records[-1]"
+    },
+    "primary_snapshot": {
+      "group": "primary",
+      "line": 263,
+      "source": "def primary_snapshot(name, outcome, submits, reads):\n    prefix = \"POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER\"\n    records = []\n    for line in adb(\"logcat\", \"-d\", \"-s\", \"ReactNativeJS:I\").splitlines():\n        if prefix not in line:\n            continue\n        try:\n            record = json.JSONDecoder().raw_decode(line.split(prefix, 1)[1].lstrip(\" :\"))[0]\n        except ValueError:\n            continue\n        if record.get(\"sourceSha\") != \"ddd56649099d1fc5763ef29af3bfba0363897bd6\":\n            raise RuntimeError(\"Native primary observer source mismatch\")\n        counts = record.get(\"counters\", {})\n        for key in (\"broadcastAttempts\", \"rpcWrites\", \"walletSaveAttempts\"):\n            if counts.get(key) != 0:\n                raise RuntimeError(\"Missing/nonzero primary safety counter: \" + key)\n        if record.get(\"outcome\") == outcome:\n            records.append(record)\n    if not records:\n        raise RuntimeError(\"No actual native primary records for outcome: \" + outcome)\n    state = records[-1]\n    counts = state[\"counters\"]\n    if (state[\"submitCalls\"], state[\"readCalls\"], counts[\"submitObserved\"], counts[\"readObserved\"]) != (submits, reads, submits, reads):\n        raise RuntimeError(\"Unexpected observed dummy submission/status lookup count\")\n    if submits and (counts[\"secretCalls\"] != 1 or counts[\"signingCalls\"] < 1):\n        raise RuntimeError(\"Expected one memory dummy secret access and real dummy signing\")\n    (ROOT / (name + \"-native-primary-records.json\")).write_text(json.dumps(records, indent=2))\n    return state"
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+  "sourceFilesVerified": 30,
+  "packageLockSha256": "61b58b1dc2f303e95f727f4a185015c5257c503c1fa01d01720765f105053186",
+  "versions": {
+    "expoMetroConfig": "54.0.17",
+    "metroRuntime": "0.83.3",
+    "babelPresetExpo": "54.0.12"
+  },
+  "options": {
+    "dev": true,
+    "platform": "android",
+    "type": "module",
+    "projectRoot": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair",
+    "experimentalImportSupport": true,
+    "inlineRequires": false,
+    "customTransformOptions": {
+      "engine": "hermes",
+      "routerRoot": "app"
+    },
+    "enableBabelRCLookup": true,
+    "unstable_transformProfile": "hermes-stable"
+  },
+  "hashes": {
+    "sourceStellar": "8a83fd1ec619ca90b199811368d47edbb5a0c4db4609f7be04fab089597561ab",
+    "transformedStellar": "33b62efe8793c62c357ccd9b4727d77812cd7cd1663e86dd7faf95c9240017be",
+    "actualMetroRuntime": "d1b99ca97dfdffae46b5e71c16878a5b1ccadac2e5741068777953283aa583d1",
+    "frozenVaultBootstrap": "906ef0b16031f8df4f28e1f484e856a2c8f621417cb3a44b1cbc991fede11548",
+    "candidateVaultBootstrap": "3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359",
+    "frozenBaselineBootstrap": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+    "candidateSeam": "734d646577aeda51611e055b62d84265116d7cb26a7f9cdc2ad9263459e8840d",
+    "candidateEntry": "79be50b9d7194e40b078de9ef166072a5e6cab4bcade9556b4d29b15193eb71a",
+    "namedConsumerTransformed": "f2bfac3e4b77ac203989d8ef2e01d75a888ea8a2090ebee5e6abaee054db7524"
+  },
+  "cases": [
+    {
+      "case": "frozen-bootstrap",
+      "result": "expected-failure",
+      "error": "Dummy key-generation guard did not install.",
+      "originalFunctionCalls": 0
+    },
+    {
+      "case": "vault-blocker-identity-guards",
+      "result": "pass",
+      "readonlyDepositRejectsFatally": true,
+      "readonlyWithdrawalRejectsFatally": true,
+      "originalFunctionCalls": 0
+    },
+    {
+      "case": "candidate-bootstrap-and-named-import",
+      "result": "pass",
+      "ready": true,
+      "sameDeterministicSeed23": true,
+      "dummyGenerationCounter": 1,
+      "originalFunctionCalls": 0,
+      "requireImportAllAndNamedBindingAgree": true,
+      "allUnselectedExportDescriptorsAndGetterIdentitiesPreserved": true
+    },
+    {
+      "case": "existing-write-and-clipboard-blockers",
+      "result": "pass",
+      "inducedLocalDepositRejections": 1,
+      "inducedLocalWithdrawRejections": 1,
+      "originalFunctionCalls": 0,
+      "nativeShareCalls": 0,
+      "writesUseFixtureMap": true
+    },
+    {
+      "case": "five-fail-closed-boundaries",
+      "result": "pass",
+      "boundaries": [
+        "late-load",
+        "missing-module",
+        "duplicate-module",
+        "missing-dev-runtime",
+        "non-function-export"
+      ]
+    },
+    {
+      "case": "guard-slot-shape",
+      "result": "pass",
+      "writableForExistingFixtures": true,
+      "deletionAndGetterRedefinitionRejected": true
+    }
+  ],
+  "boundary": "Installed Expo transform and Metro runtime in Node VM. Unmodified frozen baseline bootstrap; vault bootstrap only adds explicit blocker identity checks. Harmless stores/native transports, exact existing deterministic SDK seeds only. No Hermes/device/native UI, original random generator, real wallet, native persistence/clipboard/share, signing, broadcast, or network delivery.",
+  "nativeExecution": false
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "input": "logcat.txt",
+    "lineNumber": 598,
+    "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+    "originalAccepted": false,
+    "actualLine": "10-05 22:12:40.836 10048 10146 I ReactNativeJS: 'POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER', '{\"event\":\"primary-observer-ready\",\"sourceSha\":\"ddd56649099d1fc5763ef29af3bfba0363897bd6\",\"outcome\":\"unknown\",\"counters\":{\"submitObserved\":0,\"readObserved\":0,\"secretCalls\":0,\"signingCalls\":0,\"broadcastAttempts\":0,\"rpcWrites\":0,\"walletSaveAttempts\":0},\"submitCalls\":0,\"readCalls\":0,\"transactionHash\":null,\"phase\":\"idle\",\"unknownPresent\":false,\"unknownIdentity\":null,\"unknownHash\":null,\"lastLookup\":null}'",
+    "expected": {
+      "event": "primary-observer-ready",
+      "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "outcome": "unknown",
+      "counters": {
+        "submitObserved": 0,
+        "readObserved": 0,
+        "secretCalls": 0,
+        "signingCalls": 0,
+        "broadcastAttempts": 0,
+        "rpcWrites": 0,
+        "walletSaveAttempts": 0
+      },
+      "submitCalls": 0,
+      "readCalls": 0,
+      "transactionHash": null,
+      "phase": "idle",
+      "unknownPresent": false,
+      "unknownIdentity": null,
+      "unknownHash": null,
+      "lastLookup": null
+    }
+  },
+  {
+    "input": "logcat.txt",
+    "lineNumber": 692,
+    "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+    "originalAccepted": false,
+    "actualLine": "10-05 22:12:41.875 10048 10146 I ReactNativeJS: 'POCKETPAY_RETRY_GAP_NATIVE_OBSERVER', '{\"event\":\"retry-gap-observer-ready\",\"label\":\"DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST\",\"sourceSha\":\"ddd56649099d1fc5763ef29af3bfba0363897bd6\",\"outcome\":\"mismatch\",\"startedAt\":\"2026-10-05T22:12:41.875Z\",\"counters\":{\"readCalls\":0,\"readCompleted\":0,\"mismatchResponses\":0,\"readErrors\":0,\"secretCalls\":0,\"signingCalls\":0,\"submitCalls\":0,\"rpcWrites\":0,\"broadcastAttempts\":0,\"blockedFetch\":0,\"blockedXHR\":0,\"walletSaveAttempts\":0,\"unknownClears\":0,\"storeUpdates\":0,\"reachabilityReads\":0},\"unknownPresent\":false,\"unknownIdentity\":null,\"transactionHash\":null,\"requestId\":null,\"phase\":\"idle\",\"lastLookup\":null}'",
+    "expected": {
+      "event": "retry-gap-observer-ready",
+      "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+      "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "outcome": "mismatch",
+      "startedAt": "2026-10-05T22:12:41.875Z",
+      "counters": {
+        "readCalls": 0,
+        "readCompleted": 0,
+        "mismatchResponses": 0,
+        "readErrors": 0,
+        "secretCalls": 0,
+        "signingCalls": 0,
+        "submitCalls": 0,
+        "rpcWrites": 0,
+        "broadcastAttempts": 0,
+        "blockedFetch": 0,
+        "blockedXHR": 0,
+        "walletSaveAttempts": 0,
+        "unknownClears": 0,
+        "storeUpdates": 0,
+        "reachabilityReads": 0
+      },
+      "unknownPresent": false,
+      "unknownIdentity": null,
+      "transactionHash": null,
+      "requestId": null,
+      "phase": "idle",
+      "lastLookup": null
+    }
+  },
+  {
+    "input": "metro.log",
+    "lineNumber": 20,
+    "prefix": "POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER",
+    "originalAccepted": true,
+    "actualLine": " INFO  POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER {\"event\":\"primary-observer-ready\",\"sourceSha\":\"ddd56649099d1fc5763ef29af3bfba0363897bd6\",\"outcome\":\"unknown\",\"counters\":{\"submitObserved\":0,\"readObserved\":0,\"secretCalls\":0,\"signingCalls\":0,\"broadcastAttempts\":0,\"rpcWrites\":0,\"walletSaveAttempts\":0},\"submitCalls\":0,\"readCalls\":0,\"transactionHash\":null,\"phase\":\"idle\",\"unknownPresent\":false,\"unknownIdentity\":null,\"unknownHash\":null,\"lastLookup\":null}",
+    "expected": {
+      "event": "primary-observer-ready",
+      "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "outcome": "unknown",
+      "counters": {
+        "submitObserved": 0,
+        "readObserved": 0,
+        "secretCalls": 0,
+        "signingCalls": 0,
+        "broadcastAttempts": 0,
+        "rpcWrites": 0,
+        "walletSaveAttempts": 0
+      },
+      "submitCalls": 0,
+      "readCalls": 0,
+      "transactionHash": null,
+      "phase": "idle",
+      "unknownPresent": false,
+      "unknownIdentity": null,
+      "unknownHash": null,
+      "lastLookup": null
+    }
+  },
+  {
+    "input": "metro.log",
+    "lineNumber": 45,
+    "prefix": "POCKETPAY_RETRY_GAP_NATIVE_OBSERVER",
+    "originalAccepted": true,
+    "actualLine": " INFO  POCKETPAY_RETRY_GAP_NATIVE_OBSERVER {\"event\":\"retry-gap-observer-ready\",\"label\":\"DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST\",\"sourceSha\":\"ddd56649099d1fc5763ef29af3bfba0363897bd6\",\"outcome\":\"nohash\",\"startedAt\":\"2026-10-05T22:12:14.820Z\",\"counters\":{\"readCalls\":0,\"readCompleted\":0,\"mismatchResponses\":0,\"readErrors\":0,\"secretCalls\":0,\"signingCalls\":0,\"submitCalls\":0,\"rpcWrites\":0,\"broadcastAttempts\":0,\"blockedFetch\":0,\"blockedXHR\":0,\"walletSaveAttempts\":0,\"unknownClears\":0,\"storeUpdates\":0,\"reachabilityReads\":0},\"unknownPresent\":false,\"unknownIdentity\":null,\"transactionHash\":null,\"requestId\":null,\"phase\":\"idle\",\"lastLookup\":null}",
+    "expected": {
+      "event": "retry-gap-observer-ready",
+      "label": "DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST",
+      "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "outcome": "nohash",
+      "startedAt": "2026-10-05T22:12:14.820Z",
+      "counters": {
+        "readCalls": 0,
+        "readCompleted": 0,
+        "mismatchResponses": 0,
+        "readErrors": 0,
+        "secretCalls": 0,
+        "signingCalls": 0,
+        "submitCalls": 0,
+        "rpcWrites": 0,
+        "broadcastAttempts": 0,
+        "blockedFetch": 0,
+        "blockedXHR": 0,
+        "walletSaveAttempts": 0,
+        "unknownClears": 0,
+        "storeUpdates": 0,
+        "reachabilityReads": 0
+      },
+      "unknownPresent": false,
+      "unknownIdentity": null,
+      "transactionHash": null,
+      "requestId": null,
+      "phase": "idle",
+      "lastLookup": null
+    }
+  }
+]

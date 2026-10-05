@@ -1,4 +1,6 @@
 """Controlled Android UI evidence; no source hooks/router/persistence are replaced here."""
+from baseline_observer_framing import decode_observer_line
+
 BASELINE_SHA = "52ce8006a2d091a4c9f29852a1a530750ff9b3cc"
 if os.environ["SOURCE_SHA"] != BASELINE_SHA:
     raise RuntimeError("This proposal is pinned to the reviewed baseline52 source")
@@ -17,11 +19,9 @@ def native_records(prefix="POCKETPAY_BASELINE_NATIVE_FIXTURE"):
     for line in logs.splitlines():
         if prefix not in line:
             continue
-        payload = line.split(prefix, 1)[1].lstrip(" :")
-        try:
-            records.append(json.JSONDecoder().raw_decode(payload)[0])
-        except (ValueError, json.JSONDecodeError):
-            continue
+        record = decode_observer_line(line, prefix)
+        if record is not None:
+            records.append(record)
     if not records:
         raise RuntimeError("No actual native fixture records observed")
     return records

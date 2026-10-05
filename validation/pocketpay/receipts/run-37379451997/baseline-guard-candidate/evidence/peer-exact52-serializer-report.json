@@ -1,0 +1,73 @@
+{
+  "sourcePath": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair/src/services/stellar.ts",
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceSha256": "8a83fd1ec619ca90b199811368d47edbb5a0c4db4609f7be04fab089597561ab",
+  "actualConfigProjectRoot": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair",
+  "actualConfigServerRoot": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair",
+  "installedDefaultTransformOptions": {
+    "experimentalImportSupport": true,
+    "inlineRequires": false
+  },
+  "activeConfigHasCustomSerializer": true,
+  "activeCustomSerializerOwnProperties": [
+    "length",
+    "name",
+    "__originalSerializer"
+  ],
+  "serializerCallPathEvidence": "Installed Expo getDefaultConfig source returns withExpoSerializers; its outer processor wrapper lacks the inner __expoSerializer marker.",
+  "originalCustomSerializerPresent": false,
+  "activeSerializerCallPath": [
+    "metro.config.js getDefaultConfig",
+    "@expo/metro-config/build/ExpoMetroConfig.js withExpoSerializers",
+    "serializer/withExpoSerializers.js defaultSerializer for dev/non-static request",
+    "serializer/fork/baseJSBundle.js",
+    "serializer/fork/processModules.js",
+    "serializer/fork/js.js wrapModule → getModuleParams → addParamsToDefineCall"
+  ],
+  "expoAndUpstreamEmittedRegistrationsIdentical": true,
+  "actualWorkerOutputSha256": "0f0ef0e7e10811da9464a4f63be60286712dc6583df139ca26dba6dcb0f2d932",
+  "emittedRegistrationPath": "/tmp/pocketpay-baseline-binding-peer-exact52-emitted-registration.js",
+  "emittedRegistrationSha256": "324a8c16169e5aa5cfde531716db76ebab16329118835b038676bd9cd8f0852e",
+  "emittedRegistrationTail": "rkPassphrase() {\n      return _ref11.apply(this, arguments);\n    };\n  }();\n},100,[101,102,103,104,105],\"src/services/stellar.ts\");",
+  "actualSerializerParameters": [
+    100,
+    [
+      101,
+      102,
+      103,
+      104,
+      105
+    ],
+    "src/services/stellar.ts"
+  ],
+  "factoryParameters": [
+    "global",
+    "require",
+    "_$$_IMPORT_DEFAULT",
+    "_$$_IMPORT_ALL",
+    "module",
+    "exports",
+    "_dependencyMap"
+  ],
+  "moduleFactoryArgumentIndex": 4,
+  "runtimeRecordVerboseName": "src/services/stellar.ts",
+  "runtimeRecordIsInitialized": false,
+  "runtimeFactoryArity": 7,
+  "actualDependenciesCollected": [
+    "@babel/runtime/helpers/asyncToGenerator",
+    "expo/virtual/env",
+    "@stellar/stellar-sdk",
+    "expo-crypto",
+    "buffer"
+  ],
+  "registrationCount": 1,
+  "factoriesExecuted": 0,
+  "sourceBoundary": "Actual exact52 stellar source transformed by installed Expo worker and emitted by installed Metro wrapModule serializer. Dependency ID paths are explicit unexecuted fixtures, so this is not a full dependency graph/dev bundle.",
+  "primarySources": {
+    "worker": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/@expo/metro-config/build/transform-worker/metro-transform-worker.js",
+    "serializer": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/@expo/metro-config/build/serializer/fork/js.js",
+    "factoryBuilder": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro/src/ModuleGraph/worker/JsFileWrapping.js",
+    "runtime": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro-runtime/src/polyfills/require.js"
+  },
+  "nativeExecution": false
+}

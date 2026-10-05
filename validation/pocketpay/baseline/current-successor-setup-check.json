@@ -1,0 +1,18 @@
+{
+  "nativeExecution": false,
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceFilesVerified": 30,
+  "installedFixtureFiles": 7,
+  "productionFilesUnchangedExceptTemporaryPackageMain": true,
+  "packageBackupExact": true,
+  "packageMain": "./native-baseline-entry.js",
+  "repeatedInstallRefused": true,
+  "setupOutput": {
+    "checkout": "/tmp/pp-baseline-successor-badlrkj4",
+    "fixtureEntry": "./native-baseline-entry.js",
+    "route": "/send/__baseline-native-fixture",
+    "productionFilesVerified": 30,
+    "warning": "Validation only. Dedicated manual validation controller branches may retain these files. Restore the package backup and remove fixture files before any product/prerequisite/feature branch or product distribution."
+  },
+  "repeatRefusal": "Source mismatch; fixture was prepared for baseline 52ce8006: package.json"
+}

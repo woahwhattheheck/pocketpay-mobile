@@ -1,0 +1,71 @@
+{
+  "nativeExecution": false,
+  "controllerOrProductWrites": false,
+  "deviceOrDispatchOperations": false,
+  "actualArtifactRun": "37379451997",
+  "actualInputSha256": "6fce0dbdb0fff7eb670099d878e995a2ca1d320078a991da32e2718ff5a2fe31",
+  "actualFixtureLine": 794,
+  "actualVaultPrefixLines": 1,
+  "actualBaselinePrefixLines": 0,
+  "originalExactFunctions": {
+    "baseline_cases.py": {
+      "accepted": false,
+      "exceptionType": "RuntimeError",
+      "message": "No actual native fixture records observed"
+    },
+    "ui_baseline.py": {
+      "accepted": false,
+      "exceptionType": "RuntimeError",
+      "message": "No actual native fixture records observed"
+    }
+  },
+  "ledgerStrictHelper": {
+    "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-intro-composed-proposal/validation/pocketpay/baseline/baseline_observer_framing.py",
+    "sha256": "788d2fb8861b52ee6bb84101b05b7ff34cd2707918dfabe17fce3bb91e74c443",
+    "wholeObjectPreserved": true,
+    "objectKeyCount": 15
+  },
+  "actualWholePublicObject": {
+    "event": "bootstrap-ready",
+    "label": "DUMMY TESTNET / MEMORY ONLY / BROADCAST DISABLED",
+    "addLock": 0,
+    "deposit": 0,
+    "withdraw": 0,
+    "secretAccess": 0,
+    "broadcastAttempts": 0,
+    "blockedFetch": 0,
+    "blockedXHR": 0,
+    "balanceReads": 0,
+    "lockReads": 0,
+    "reachabilityReads": 0,
+    "passphraseReads": 0,
+    "lastLock": null,
+    "persistedLocks": 0
+  },
+  "actualEvidenceLimit": "One actual vault bootstrap-ready initializer, addLock/persistedLocks=0. No native vault action/receipt or baseline flow success established. Payload has no source SHA/tree attestation.",
+  "syntheticOnlyChecks": {
+    "negativeFramingCases": [
+      "wrong-prefix",
+      "wrong-tag",
+      "embedded-prefix",
+      "trailing-material",
+      "extra-json",
+      "missing-closing-quote",
+      "nonobject-array",
+      "nonobject-null"
+    ],
+    "allRejected": true,
+    "baselineTokenSubstitution": {
+      "kind": "synthetic-source-derived-framing-only",
+      "actualNativeEvidence": false,
+      "strictWholeObjectPreserved": true,
+      "oldFunctionResult": {
+        "accepted": false,
+        "exceptionType": "RuntimeError",
+        "message": "No actual native fixture records observed"
+      }
+    }
+  },
+  "allPureDifferentialChecksPassed": true,
+  "negativeFramingCasesRejected": 8
+}

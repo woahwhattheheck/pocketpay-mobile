@@ -1,0 +1,42 @@
+{
+  "projectRoot": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair",
+  "serverRoot": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair",
+  "sourceMetroConfigSha256": "f337c9ea10f6c2d6964203a99787137351753dba45ba4f42f61f06708bc13ce9",
+  "getTransformOptions": {
+    "transform": {
+      "experimentalImportSupport": true,
+      "inlineRequires": false
+    }
+  },
+  "actualWorkerOptions": {
+    "experimentalImportSupport": true,
+    "inlineRequires": false,
+    "dev": true,
+    "hot": false,
+    "platform": "android",
+    "type": "module",
+    "minify": false,
+    "customTransformOptions": {
+      "engine": "hermes",
+      "routerRoot": "app"
+    },
+    "unstable_transformProfile": "hermes-stable",
+    "inlinePlatform": true
+  },
+  "babelTransformerPath": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/@expo/metro-config/build/babel-transformer.js",
+  "sourceExts": [
+    "ts",
+    "tsx",
+    "mjs",
+    "js",
+    "jsx",
+    "json",
+    "cjs",
+    "scss",
+    "sass",
+    "css"
+  ],
+  "actualWorkerOutputSha256": "0f0ef0e7e10811da9464a4f63be60286712dc6583df139ca26dba6dcb0f2d932",
+  "factoriesExecuted": 0,
+  "nativeExecution": false
+}

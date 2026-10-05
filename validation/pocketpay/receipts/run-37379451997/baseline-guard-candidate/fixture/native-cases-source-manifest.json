@@ -1,0 +1,20 @@
+{
+  "baseline": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "productionSourceSha256": {
+    "app/(auth)/create.tsx": "c05fe498964bd997d54537f5bfb4fbd45647aecc75eb48542cad8952af95fc27",
+    "app/(auth)/import.tsx": "cd7c80d751abb649e3d26f409ca1b5d390142d80f1e2339c28b60b74a152fc0f",
+    "app/sign-confirmation.tsx": "1bf8f759ff5b52d532a6ba54178060502963d09e4e7f6c59252e790def6c3a48",
+    "app/review-transaction.tsx": "ce1c9a793d40a1d44e3d0df016da722ef917b70c733a31d703ae6aa1219e3b40",
+    "src/components/ContactPicker.tsx": "487a5866036a962afd3c775d602b0caa6a79051e2686b1d35bfb212c9438badf",
+    "src/components/SecretKeyReveal.tsx": "c331584fab862dc5b56e300ceb2c5f9b73801536f5158c7107ca1b62d07d399c",
+    "src/features/contacts/contactStore.ts": "4d7a16ece8e88c8c57e158b380e99e60ad2e08441ee3706f8d887834771ef653",
+    "src/hooks/useConfirm.tsx": "91e75005bee0d6fd584a069ec534799f435d6c093ad36250fb31c4d8e8bbc12d"
+  },
+  "helperSha256": "8fdf745b27d3522418c74528be1d3c2001722d27debaac71907613fd63661551",
+  "validation": {
+    "isolatedTypeScriptDiagnostics": 0,
+    "productSourceEdits": false,
+    "fullTestsRun": false,
+    "emulatorAccess": false
+  }
+}

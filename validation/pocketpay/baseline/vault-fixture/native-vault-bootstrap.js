@@ -117,8 +117,12 @@ stellar.server.root = async () => {
 };
 stellar.server.submitTransaction = rejectBroadcast;
 StellarSdk.rpc.Server.prototype.sendTransaction = rejectBroadcast;
-stellar.mockDepositToVault = rejectAction('deposit');
-stellar.mockWithdrawFromVault = rejectAction('withdraw');
+const blockedDeposit = rejectAction('deposit');
+const blockedWithdraw = rejectAction('withdraw');
+stellar.mockDepositToVault = blockedDeposit;
+stellar.mockWithdrawFromVault = blockedWithdraw;
+if (stellar.mockDepositToVault !== blockedDeposit) throw new Error('Dummy deposit guard did not install.');
+if (stellar.mockWithdrawFromVault !== blockedWithdraw) throw new Error('Dummy withdrawal guard did not install.');
 
 const initializeWallet = async () => {
   useWalletStore.setState({ publicKey, walletChecked: true, error: null, isLoading: false });

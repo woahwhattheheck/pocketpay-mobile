@@ -1,0 +1,50 @@
+{
+  "runtimePath": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair/node_modules/metro-runtime/src/polyfills/require.js",
+  "runtimeSha256": "d1b99ca97dfdffae46b5e71c16878a5b1ccadac2e5741068777953283aa583d1",
+  "actualTransformedStellarSourceSha256": "8a83fd1ec619ca90b199811368d47edbb5a0c4db4609f7be04fab089597561ab",
+  "actualShimSourceSha256": "ca04661f832dd5c516b67e4d1f32eba5fcc5b36c5012ae50876a5125570c5cf1",
+  "actualShimTransformSha256": "bc04d7dc937525e39a3828ac8079624e3609c739cfdfa71dbc3d5d41ff643ba5",
+  "actualTransformedShimDependenciesRequested": [
+    "react-native-get-random-values",
+    "expo-crypto",
+    "text-encoding",
+    "buffer",
+    "process/browser"
+  ],
+  "stellarUninitializedAfterTransformedShimWithDependencyStubs": true,
+  "selectedSlotChecks": {
+    "generateKeypair": {
+      "writable": true,
+      "configurable": false,
+      "deletionRejected": true,
+      "accessorRedefinitionRejected": true,
+      "valueDefinitionAllowedWhileWritable": true
+    },
+    "mockDepositToVault": {
+      "writable": true,
+      "configurable": false,
+      "deletionRejected": true,
+      "accessorRedefinitionRejected": true,
+      "valueDefinitionAllowedWhileWritable": true
+    },
+    "mockWithdrawFromVault": {
+      "writable": true,
+      "configurable": false,
+      "deletionRejected": true,
+      "accessorRedefinitionRejected": true,
+      "valueDefinitionAllowedWhileWritable": true
+    }
+  },
+  "originalAssignmentFailed": true,
+  "preLoadFactorySeamConsumerUsesReplacement": true,
+  "requireAndImportAllShareReplacementNamespace": true,
+  "earlyLoadedModuleRejected": true,
+  "preExistingImportAllCacheObservesReplacement": true,
+  "actualTransformedNamedConsumerUsesReplacement": true,
+  "allUnselectedDescriptorsIdentical": true,
+  "namedConsumerTransformedSha256": "2c90de1c82581d6b290518eb305376d6c1d0bf41fe969b83cce1939130cf8c2c",
+  "harmlessDummyCalls": 2,
+  "originalFunctionCalls": 0,
+  "nativeExecution": false,
+  "boundary": "Installed Metro0.83.3 runtime and actual installed Expo transformed stellar/shim sources in Node VM with harmless SDK/crypto/shim dependency stubs. External shim dependency bodies were not executed. No Hermes/device/native persistence/network/signing."
+}

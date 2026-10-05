@@ -1,0 +1,103 @@
+{
+  "options": {
+    "dev": true,
+    "platform": "android",
+    "type": "module",
+    "projectRoot": "/workspace/scratch/ea8baa184658/pocketpay-infra-repair",
+    "experimentalImportSupport": true,
+    "inlineRequires": false,
+    "customTransformOptions": {
+      "engine": "hermes",
+      "routerRoot": "app"
+    },
+    "enableBabelRCLookup": true,
+    "unstable_transformProfile": "hermes-stable"
+  },
+  "packageVersions": {
+    "expoMetroConfig": "54.0.17",
+    "metroRuntime": "0.83.3",
+    "babelPresetExpo": "54.0.12"
+  },
+  "reports": [
+    {
+      "relative": "src/services/stellar.ts",
+      "sourceSha256": "8a83fd1ec619ca90b199811368d47edbb5a0c4db4609f7be04fab089597561ab",
+      "transformedSha256": "33b62efe8793c62c357ccd9b4727d77812cd7cd1663e86dd7faf95c9240017be",
+      "descriptor": {
+        "enumerable": true,
+        "configurable": false,
+        "hasGetter": true,
+        "hasSetter": false,
+        "hasValue": false
+      },
+      "exportedName": "generateKeypair",
+      "exportedValueType": "function",
+      "sloppyAssignmentReplaced": false,
+      "originalIdentityRetained": true,
+      "strictAssignmentError": "TypeError",
+      "redefineError": "TypeError",
+      "originalFunctionCalls": 0,
+      "boundary": "Actual installed Expo Babel + import support transform; Node VM execution with harmless dependency stubs; not Hermes or native execution."
+    },
+    {
+      "relative": "src/services/stellar.ts",
+      "sourceSha256": "8a83fd1ec619ca90b199811368d47edbb5a0c4db4609f7be04fab089597561ab",
+      "transformedSha256": "33b62efe8793c62c357ccd9b4727d77812cd7cd1663e86dd7faf95c9240017be",
+      "descriptor": {
+        "enumerable": true,
+        "configurable": false,
+        "hasGetter": true,
+        "hasSetter": false,
+        "hasValue": false
+      },
+      "exportedName": "mockDepositToVault",
+      "exportedValueType": "function",
+      "sloppyAssignmentReplaced": false,
+      "originalIdentityRetained": true,
+      "strictAssignmentError": "TypeError",
+      "redefineError": "TypeError",
+      "originalFunctionCalls": 0,
+      "boundary": "Actual installed Expo Babel + import support transform; Node VM execution with harmless dependency stubs; not Hermes or native execution."
+    },
+    {
+      "relative": "src/services/stellar.ts",
+      "sourceSha256": "8a83fd1ec619ca90b199811368d47edbb5a0c4db4609f7be04fab089597561ab",
+      "transformedSha256": "33b62efe8793c62c357ccd9b4727d77812cd7cd1663e86dd7faf95c9240017be",
+      "descriptor": {
+        "enumerable": true,
+        "configurable": false,
+        "hasGetter": true,
+        "hasSetter": false,
+        "hasValue": false
+      },
+      "exportedName": "mockWithdrawFromVault",
+      "exportedValueType": "function",
+      "sloppyAssignmentReplaced": false,
+      "originalIdentityRetained": true,
+      "strictAssignmentError": "TypeError",
+      "redefineError": "TypeError",
+      "originalFunctionCalls": 0,
+      "boundary": "Actual installed Expo Babel + import support transform; Node VM execution with harmless dependency stubs; not Hermes or native execution."
+    },
+    {
+      "relative": "node_modules/expo-clipboard/build/Clipboard.js",
+      "sourceSha256": "5c089835975a18932c157866443e7af7357a285566bc603e3fc9cfe0be1af039",
+      "transformedSha256": "8483b429ba5e72588a217d2803035ff87c40a2afa7c9e2d0824e9c6b724d3a23",
+      "descriptor": {
+        "enumerable": true,
+        "configurable": true,
+        "hasGetter": false,
+        "hasSetter": false,
+        "hasValue": true
+      },
+      "exportedName": "setStringAsync",
+      "exportedValueType": "function",
+      "sloppyAssignmentReplaced": true,
+      "originalIdentityRetained": false,
+      "strictAssignmentError": null,
+      "redefineError": null,
+      "originalFunctionCalls": 0,
+      "boundary": "Actual installed Expo Babel + import support transform; Node VM execution with harmless dependency stubs; not Hermes or native execution."
+    }
+  ]
+}
