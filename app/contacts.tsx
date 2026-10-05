@@ -48,7 +48,7 @@ export default function ContactsScreen() {
   const [foundDuplicate, setFoundDuplicate] = useState<Contact | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const saveInFlight = useRef(false);
-  const conflict = findDuplicateContact(name, publicKey);
+  const conflict = findDuplicateContact(name, publicKey, foundDuplicate?.id);
   const nameWarning = conflict.type === "name" ? conflict.message : undefined;
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
