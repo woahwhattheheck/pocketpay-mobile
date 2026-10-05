@@ -10,6 +10,8 @@ The shared status mapper supports `successful`, `pending`, `failed`, `rejected`,
 
 The screen shows amount, asset, recipient, recorded timestamp, network, and transaction hash where available. Missing or malformed values show an unavailable state. Amount formatting preserves decimal strings rather than converting to floating point. The timestamp records the outcome snapshot and is not necessarily the ledger close time.
 
+History receipts accept both normalized `asset` labels and raw Horizon payment fields. A valid normalized label is retained; otherwise `asset_type: native` maps to `XLM`, and recognized credit-asset types use their valid `asset_code`. Missing, malformed, or unsupported asset metadata stays unknown rather than defaulting to XLM. This is a display label, not issuer verification or a complete asset identity.
+
 ## Public-data boundary and explorer
 
 `createReceiptParams()` whitelists the seven public receipt fields. Never forward a wallet secret, signed envelope, signer result object, or raw error. Arrays/repeated URL parameters and malformed scalars are discarded. Recipient screening accepts public account shapes only; it is not checksum validation or recipient verification. Hash and amount formatting checks are likewise not ledger validation.
@@ -24,6 +26,6 @@ Old history records without a network tag inherit the active app configuration, 
 npm test -- --runInBand __tests__/paymentReceipt.test.ts __tests__/paymentReceiptScreen.test.tsx
 ```
 
-The model tests cover five statuses, legacy flag precedence, malformed parameters, public-only serialization, exact decimal amounts, and explorer network matching. Screen tests cover all five outcomes, missing data, unsupported explorers, link/copy failures, and activity/wallet actions.
+The model tests cover five statuses, legacy flag precedence, malformed parameters, public-only serialization, exact decimal amounts, native/issued history asset mapping, unknown asset fallback, and explorer network matching. Screen tests cover all five outcomes, missing data, unsupported explorers, link/copy failures, and activity/wallet actions.
 
 For device verification, send a testnet payment and open its receipt, open a pending history record, and open an unknown result without retrying the payment. Verify labels, long public addresses, network/date/asset, clipboard feedback, and explorer failure feedback. These are testnet/manual checks, not a request to send real funds.

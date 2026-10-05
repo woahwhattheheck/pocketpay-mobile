@@ -11,6 +11,8 @@ export interface TransactionDetail {
   into?: string;
   amount?: string;
   asset?: string;
+  asset_type?: string;
+  asset_code?: string;
   created_at?: string;
   createdAt?: string;
   timestamp?: string;

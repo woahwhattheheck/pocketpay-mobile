@@ -6,6 +6,7 @@ import {
   readReceiptParams,
   RECEIPT_STATUSES,
   resolveReceiptStatus,
+  resolveReceiptAsset,
 } from '../src/features/transactions/receipt';
 
 const publicReceipt = {
@@ -46,6 +47,36 @@ describe('payment receipt model', () => {
     assert.equal(formatReceiptAmount(readReceiptParams({ amount: '000.0000000', asset: 'XLM' })), '0 XLM');
     assert.equal(formatReceiptAmount(readReceiptParams({ amount: '5' })), '5 (unknown asset)');
     assert.equal(formatReceiptAmount(readReceiptParams({})), 'Unavailable');
+  });
+
+  it('retains native and issued assets from raw history operations in receipt routes', () => {
+    for (const [operation, expected] of [
+      [{ asset_type: 'native' }, 'XLM'],
+      [{ asset_type: 'credit_alphanum4', asset_code: 'USD' }, 'USD'],
+      [{ asset_type: 'credit_alphanum12', asset_code: 'LONGASSET123' }, 'LONGASSET123'],
+    ] as const) {
+      const receipt = createReceiptParams({ ...publicReceipt, asset: resolveReceiptAsset(operation) });
+      assert.equal(receipt.asset, expected);
+      assert.equal(formatReceiptAmount(receipt), `12.5 ${expected}`);
+      assert.deepEqual(Object.keys(receipt), Object.keys(publicReceipt));
+      assert.equal(receipt.status, publicReceipt.status);
+    }
+    assert.equal(resolveReceiptAsset({ asset: 'EUR', asset_type: 'native' }), 'EUR');
+  });
+
+  it('leaves unsupported and malformed history assets unknown instead of defaulting to XLM', () => {
+    for (const operation of [
+      {},
+      { asset_code: 'USD' },
+      { asset_type: 'liquidity_pool_shares', asset_code: 'USD' },
+      { asset_type: 'credit_alphanum4', asset_code: 'TOOLONG' },
+      { asset_type: 'credit_alphanum12', asset_code: ['USD'] },
+      { asset_type: 'credit_alphanum12', asset_code: 'bad/code' },
+    ]) {
+      const receipt = createReceiptParams({ amount: '5', asset: resolveReceiptAsset(operation) });
+      assert.equal(receipt.asset, '');
+      assert.equal(formatReceiptAmount(receipt), '5 (unknown asset)');
+    }
   });
 
   it('offers explorer links only for a valid hash on the matching recorded network', () => {

@@ -61,6 +61,24 @@ function scalar(value: unknown, maxLength: number): string {
   return value.trim();
 }
 
+export interface ReceiptAssetEvidence {
+  asset?: unknown;
+  asset_type?: unknown;
+  asset_code?: unknown;
+}
+
+/** History may contain normalized records or raw Horizon payment operations. */
+export function resolveReceiptAsset(evidence: ReceiptAssetEvidence): string {
+  const normalized = scalar(evidence.asset, 12);
+  if (/^[a-z\d]{1,12}$/i.test(normalized)) return normalized;
+  if (evidence.asset_type === 'native') return 'XLM';
+
+  const maxLength = evidence.asset_type === 'credit_alphanum4' ? 4
+    : evidence.asset_type === 'credit_alphanum12' ? 12 : 0;
+  const code = scalar(evidence.asset_code, maxLength);
+  return /^[a-z\d]{1,12}$/i.test(code) ? code : '';
+}
+
 /** Whitelist route fields; repeated parameters and arbitrary objects are not receipts. */
 export function readReceiptParams(params: ReceiptInput): PaymentReceipt {
   const amount = scalar(params.amount, 128);

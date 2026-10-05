@@ -13,7 +13,7 @@ import { validateTransactionId } from '../../src/utils/validation';
 import { getExplorerTxUrl, fetchOperationById } from '../../src/services/stellar';
 import type { TransactionDetail } from '../../src/features/transactions/types';
 import { getTransactionStatus } from '../../src/features/transactions/helpers';
-import { createReceiptParams, RECEIPT_COPY } from '../../src/features/transactions/receipt';
+import { createReceiptParams, RECEIPT_COPY, resolveReceiptAsset } from '../../src/features/transactions/receipt';
 import { useCopyToClipboard } from '../../src/utils/clipboard';
 
 type DeepLinkLoadState = 'idle' | 'loading' | 'loaded' | 'not_found' | 'error' | 'invalid';
@@ -199,7 +199,7 @@ export default function TransactionDetailScreen() {
         status,
         hash: txHash,
         amount: tx.amount,
-        asset: tx.asset,
+        asset: resolveReceiptAsset(tx),
         destination: tx.to || tx.into,
         date: tx.created_at || tx.createdAt || tx.timestamp,
         network: tx.network || process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET',
