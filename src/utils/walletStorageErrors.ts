@@ -1,3 +1,5 @@
+import { mapSdkError, type SdkErrorGuidance } from './sdkErrorMapper';
+
 export const PERSIST_WALLET_ERROR = 'Failed to persist wallet securely';
 export const RESTORE_WALLET_ERROR = 'Failed to restore wallet securely';
 export const CLEAR_WALLET_ERROR = 'Failed to clear wallet securely';
@@ -11,3 +13,11 @@ export const WALLET_SAVE_FAILURE_MESSAGE =
 
 export const WALLET_CLEAR_FAILURE_MESSAGE =
   'PocketPay could not clear secure storage on this device. Please restart the app and try again, or check your device storage permissions.';
+
+
+/**
+ * Shared wallet-domain classification for SecureStore/Keychain/Keystore
+ * failures. Raw provider messages are never returned to the UI.
+ */
+export const classifyWalletStorageError = (error: unknown): SdkErrorGuidance =>
+  mapSdkError(error, 'wallet');
