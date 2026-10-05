@@ -198,13 +198,42 @@ export default function ReviewTransactionScreen() {
       store.completeSigning(signingResult);
     } catch (err: any) {
       const rawMessage = err?.message || '';
-      // A throw here doesn't prove the transaction was rejected — a client-side
-      // timeout can happen after Horizon already accepted it — so use neutral
-      // copy instead of asserting failure, except for an explicit cancellation.
       const isCancelled = /cancel|abort/i.test(rawMessage);
+      const isDefinitiveFailure = err?.submissionStatus === 'failed';
+      const isUnknownSubmission =
+        err?.submissionStatus === 'unknown' || (!isCancelled && !isDefinitiveFailure);
+
+      // A signed transaction hash is deterministic before Horizon replies. If
+      // acknowledgement is lost, keep that hash in the existing reconciliation
+      // queue so History can resolve it without encouraging a duplicate send.
+      if (
+        isUnknownSubmission &&
+        typeof err?.transactionHash === 'string' &&
+        err.transactionHash
+      ) {
+        addPendingTransaction(err.transactionHash, {
+          id: err.transactionHash,
+          type: 'payment',
+          from: publicKey!,
+          to: destination.trim(),
+          amount: amount.trim(),
+          asset: 'XLM',
+          created_at: new Date().toISOString(),
+          status: 'unknown',
+        });
+      }
+
       store.failSigning({
-        type: isCancelled ? 'user_cancelled' : 'unknown',
-        message: isCancelled ? rawMessage : UNCONFIRMED_SUBMISSION_MESSAGE,
+        type: isCancelled
+          ? 'user_cancelled'
+          : isDefinitiveFailure
+          ? 'network_error'
+          : 'unknown',
+        message: isCancelled
+          ? rawMessage
+          : isDefinitiveFailure
+          ? rawMessage || 'Transaction failed'
+          : UNCONFIRMED_SUBMISSION_MESSAGE,
         raw: err,
       });
     }
@@ -218,8 +247,9 @@ export default function ReviewTransactionScreen() {
     }, 300);
   };
 
-  const handleRetry = () => {
+  const handleCheckHistory = () => {
     store.reset();
+    router.replace('/(tabs)/history');
   };
 
   const handleDismissError = () => {
@@ -323,17 +353,47 @@ export default function ReviewTransactionScreen() {
         </View>
       )}
 
-      {/* Failure State */}
+      {/* Failure / Unknown Submission State */}
       {phase === 'failed' && error && (
-        <View style={[styles.resultCard, { backgroundColor: colors.surface, borderColor: colors.error }]}>
-          <XCircle size={24} color={colors.error} />
+        <View
+          style={[
+            styles.resultCard,
+            {
+              backgroundColor: colors.surface,
+              borderColor: error.type === 'unknown' ? colors.warning : colors.error,
+            },
+          ]}
+        >
+          {error.type === 'unknown' ? (
+            <AlertTriangle size={24} color={colors.warning} />
+          ) : (
+            <XCircle size={24} color={colors.error} />
+          )}
           <View style={styles.statusTextGroup}>
             <View style={styles.statusTitleRow}>
-              <Text style={[styles.statusTitle, { color: colors.error }]}>Transaction Failed</Text>
-              <StatusBadge text="Failed" tone="error" />
+              <Text
+                style={[
+                  styles.statusTitle,
+                  { color: error.type === 'unknown' ? colors.warning : colors.error },
+                ]}
+              >
+                {error.type === 'unknown' ? 'Transaction status unknown' : 'Transaction Failed'}
+              </Text>
+              <StatusBadge
+                text={error.type === 'unknown' ? 'Check status' : 'Failed'}
+                tone={error.type === 'unknown' ? 'warning' : 'error'}
+              />
             </View>
             <Text style={[styles.errorText, { color: colors.textSecondary }]}>{error.message}</Text>
           </View>
+          {error.type === 'unknown' ? (
+            <Button
+              title="Check History"
+              variant="primary"
+              onPress={handleCheckHistory}
+              style={styles.retryButton}
+            />
+          ) : null}
           <Button
             title="Dismiss"
             variant="secondary"
