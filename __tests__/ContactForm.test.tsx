@@ -1,11 +1,13 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import { ContactForm } from '@/components/ContactForm';
-import { useContactStore } from '@/features/contacts/contactStore';
+import { useAppStore } from '@/store/appStore';
 
 // Mock the store
-jest.mock('@/features/contacts/contactStore', () => ({
-  useContactStore: jest.fn(),
+jest.mock('@/store/appStore', () => ({
+  useAppStore: jest.fn(),
 }));
+
+const VALID_ADDRESS = `G${'A'.repeat(55)}`;
 
 describe('ContactForm', () => {
   const mockOnSave = jest.fn();
@@ -14,9 +16,12 @@ describe('ContactForm', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (useContactStore as jest.Mock).mockReturnValue({
-      contacts: [],
-      getContactByAddress: jest.fn(() => undefined),
+    (useAppStore as jest.Mock).mockReturnValue({
+      findDuplicateContact: jest.fn(() => ({
+        isDuplicate: false,
+        type: 'none',
+        message: '',
+      })),
     });
   });
 
@@ -36,7 +41,7 @@ describe('ContactForm', () => {
   });
 
   it('renders edit contact form with pre-filled values', () => {
-    const contact = { id: '1', name: 'Alice', address: 'GABC123' };
+    const contact = { id: '1', name: 'Alice', publicKey: VALID_ADDRESS };
 
     render(
       <ContactForm
@@ -112,7 +117,7 @@ describe('ContactForm', () => {
     fireEvent.changeText(screen.getByPlaceholderText('Contact name'), longName);
     fireEvent.changeText(
       screen.getByPlaceholderText('G...'),
-      'GABC12345678901234567890123456789012345678901234567890'
+      VALID_ADDRESS
     );
 
     fireEvent.press(screen.getByText('Save'));
@@ -130,12 +135,12 @@ describe('ContactForm', () => {
     const mockGetContactByAddress = jest.fn(() => ({
       id: '1',
       name: 'Existing',
-      address: 'GABC123',
+      publicKey: VALID_ADDRESS,
     }));
 
-    (useContactStore as jest.Mock).mockReturnValue({
-      contacts: [{ id: '1', name: 'Existing', address: 'GABC123', createdAt: Date.now() }],
-      getContactByAddress: mockGetContactByAddress,
+    (useAppStore as jest.Mock).mockReturnValue({
+      contacts: [{ id: '1', name: 'Existing', publicKey: VALID_ADDRESS, createdAt: Date.now() }],
+      findDuplicateContact: mockGetContactByAddress,
     });
 
     render(
@@ -148,7 +153,7 @@ describe('ContactForm', () => {
     );
 
     fireEvent.changeText(screen.getByPlaceholderText('Contact name'), 'New Contact');
-    fireEvent.changeText(screen.getByPlaceholderText('G...'), 'GABC123');
+    fireEvent.changeText(screen.getByPlaceholderText('G...'), VALID_ADDRESS);
 
     fireEvent.press(screen.getByText('Save'));
 
@@ -182,7 +187,7 @@ describe('ContactForm', () => {
     await waitFor(() => {
       expect(mockOnSave).toHaveBeenCalledWith(
         'Alice',
-        'GABC12345678901234567890123456789012345678901234567890'
+        VALID_ADDRESS
       );
     });
   });
@@ -202,7 +207,7 @@ describe('ContactForm', () => {
   });
 
   it('shows delete button when editing contact', () => {
-    const contact = { id: '1', name: 'Alice', address: 'GABC123' };
+    const contact = { id: '1', name: 'Alice', publicKey: VALID_ADDRESS };
 
     render(
       <ContactForm
@@ -218,7 +223,7 @@ describe('ContactForm', () => {
   });
 
   it('calls onDelete when delete button is pressed', () => {
-    const contact = { id: '1', name: 'Alice', address: 'GABC123' };
+    const contact = { id: '1', name: 'Alice', publicKey: VALID_ADDRESS };
 
     render(
       <ContactForm
