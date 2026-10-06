@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import { ContactPicker } from '@/components/ContactPicker';
-import { useContactStore } from '@/features/contacts/contactStore';
+import { useAppStore } from '@/store/appStore';
 
 // Mock the store
-jest.mock('@/features/contacts/contactStore', () => ({
-  useContactStore: jest.fn(),
+jest.mock('@/store/appStore', () => ({
+  useAppStore: jest.fn(),
 }));
 
 describe('ContactPicker', () => {
@@ -17,10 +17,10 @@ describe('ContactPicker', () => {
   });
 
   it('renders empty state when no contacts', () => {
-    (useContactStore as jest.Mock).mockReturnValue({
+    (useAppStore as jest.Mock).mockReturnValue({
       contacts: [],
       recentRecipients: [],
-      getContactByAddress: jest.fn(),
+      findContactByPublicKey: jest.fn(),
     });
 
     render(
@@ -37,14 +37,14 @@ describe('ContactPicker', () => {
 
   it('renders saved contacts', () => {
     const mockContacts = [
-      { id: '1', name: 'Alice', address: 'GABC123', createdAt: Date.now() },
-      { id: '2', name: 'Bob', address: 'GDEF456', createdAt: Date.now() },
+      { id: '1', name: 'Alice', publicKey: 'GABC123', createdAt: Date.now() },
+      { id: '2', name: 'Bob', publicKey: 'GDEF456', createdAt: Date.now() },
     ];
 
-    (useContactStore as jest.Mock).mockReturnValue({
+    (useAppStore as jest.Mock).mockReturnValue({
       contacts: mockContacts,
       recentRecipients: [],
-      getContactByAddress: jest.fn(),
+      findContactByPublicKey: jest.fn(),
     });
 
     render(
@@ -61,15 +61,15 @@ describe('ContactPicker', () => {
   });
 
   it('renders recent recipients', () => {
-    const mockGetContactByAddress = jest.fn((addr) => {
+    const mockFindContactByPublicKey = jest.fn((addr) => {
       if (addr === 'GABC123') return { name: 'Alice' };
       return null;
     });
 
-    (useContactStore as jest.Mock).mockReturnValue({
+    (useAppStore as jest.Mock).mockReturnValue({
       contacts: [],
       recentRecipients: ['GABC123', 'GXYZ789'],
-      getContactByAddress: mockGetContactByAddress,
+      findContactByPublicKey: mockFindContactByPublicKey,
     });
 
     render(
@@ -87,13 +87,13 @@ describe('ContactPicker', () => {
 
   it('calls onSelect when contact is pressed', () => {
     const mockContacts = [
-      { id: '1', name: 'Alice', address: 'GABC123', createdAt: Date.now() },
+      { id: '1', name: 'Alice', publicKey: 'GABC123', createdAt: Date.now() },
     ];
 
-    (useContactStore as jest.Mock).mockReturnValue({
+    (useAppStore as jest.Mock).mockReturnValue({
       contacts: mockContacts,
       recentRecipients: [],
-      getContactByAddress: jest.fn(),
+      findContactByPublicKey: jest.fn(),
     });
 
     render(
@@ -109,11 +109,36 @@ describe('ContactPicker', () => {
     expect(mockOnSelect).toHaveBeenCalledWith('GABC123');
   });
 
+  it('calls onEdit for a saved contact', () => {
+    const mockOnEdit = jest.fn();
+    const contact = { id: '1', name: 'Alice', publicKey: 'GABC123' };
+
+    (useAppStore as jest.Mock).mockReturnValue({
+      contacts: [contact],
+      recentRecipients: [],
+      findContactByPublicKey: jest.fn(),
+      removeContact: jest.fn(),
+    });
+
+    render(
+      <ContactPicker
+        visible={true}
+        onSelect={mockOnSelect}
+        onCancel={mockOnCancel}
+        onAddNew={mockOnAddNew}
+        onEdit={mockOnEdit}
+      />
+    );
+
+    fireEvent.press(screen.getByLabelText('Edit Alice'));
+    expect(mockOnEdit).toHaveBeenCalledWith(contact);
+  });
+
   it('calls onAddNew when add button is pressed', () => {
-    (useContactStore as jest.Mock).mockReturnValue({
+    (useAppStore as jest.Mock).mockReturnValue({
       contacts: [],
       recentRecipients: [],
-      getContactByAddress: jest.fn(),
+      findContactByPublicKey: jest.fn(),
     });
 
     render(
@@ -131,14 +156,14 @@ describe('ContactPicker', () => {
 
   it('filters contacts by search query', () => {
     const mockContacts = [
-      { id: '1', name: 'Alice', address: 'GABC123', createdAt: Date.now() },
-      { id: '2', name: 'Bob', address: 'GDEF456', createdAt: Date.now() },
+      { id: '1', name: 'Alice', publicKey: 'GABC123', createdAt: Date.now() },
+      { id: '2', name: 'Bob', publicKey: 'GDEF456', createdAt: Date.now() },
     ];
 
-    (useContactStore as jest.Mock).mockReturnValue({
+    (useAppStore as jest.Mock).mockReturnValue({
       contacts: mockContacts,
       recentRecipients: [],
-      getContactByAddress: jest.fn(),
+      findContactByPublicKey: jest.fn(),
     });
 
     render(
