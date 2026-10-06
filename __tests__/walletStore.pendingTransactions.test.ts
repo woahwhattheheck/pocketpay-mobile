@@ -183,6 +183,64 @@ describe('AC-P2b – concurrent add during an in-flight refresh', () => {
   });
 });
 
+describe('AC-P2c – add during reconciliation persistence', () => {
+  it('keeps a newly-added pending transaction while the reconciled snapshot is being persisted', async () => {
+    useWalletStore.getState().addPendingTransaction('hash1', { id: 'hash1', amount: '10' });
+
+    mockFetchTransactionsPage.mockResolvedValueOnce({
+      records: [{ id: 'op1', transaction_hash: 'hash1', amount: '10.0000000' }] as any,
+      nextCursor: null,
+      hasMore: false,
+    });
+
+    let markPersistenceStarted: () => void = () => {};
+    let releasePersistence: () => void = () => {};
+    const persistenceStarted = new Promise<void>((resolve) => {
+      markPersistenceStarted = resolve;
+    });
+    const persistenceGate = new Promise<void>((resolve) => {
+      releasePersistence = resolve;
+    });
+
+    const mockRemoveItem = AsyncStorage.removeItem as jest.MockedFunction<
+      typeof AsyncStorage.removeItem
+    >;
+    mockRemoveItem.mockImplementationOnce(async () => {
+      markPersistenceStarted();
+      await persistenceGate;
+    });
+
+    const refreshPromise = useWalletStore.getState().refreshWalletData();
+
+    // Wait until refresh has reconciled hash1 and is blocked on persistence.
+    await persistenceStarted;
+
+    // A second send finishes during the storage wait.
+    useWalletStore.getState().addPendingTransaction('hash2', { id: 'hash2', amount: '20' });
+
+    // The in-memory reconciliation must already be committed, so hash2 is
+    // based on the clean post-refresh snapshot rather than stale hash1 state.
+    let state = useWalletStore.getState();
+    expect(state.pendingTransactions['hash1']).toBeUndefined();
+    expect(state.pendingTransactions['hash2']).toBeDefined();
+
+    await act(async () => {
+      releasePersistence();
+      await refreshPromise;
+    });
+
+    state = useWalletStore.getState();
+    expect(state.pendingTransactions['hash1']).toBeUndefined();
+    expect(state.pendingTransactions['hash2']).toBeDefined();
+    expect(state.transactions.some((tx) => tx.id === 'hash2')).toBe(true);
+    expect(
+      state.transactions.filter(
+        (tx) => tx.id === 'hash1' || tx.transaction_hash === 'hash1'
+      )
+    ).toHaveLength(1);
+  });
+});
+
 describe('AC-P2c – overlapping same-wallet refreshes', () => {
   it('keeps the newer refresh result when an older request completes last', async () => {
     let resolveFirst: (value: any) => void = () => {};
