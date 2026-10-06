@@ -23,6 +23,22 @@ There is currently **no server, cloud, or account-based sync**. Contacts
 saved on one device are not available on any other device, and there is no
 PocketPay account tying them together.
 
+## Send Flow Integration and Recent Recipients
+
+The Send screen, contact picker, contact editor, and payment receipt share the
+same `useAppStore` contact records. Manual destination entry remains
+available; choosing a saved contact only fills that same destination field.
+
+Recent recipients are recorded **only from a confirmed payment receipt** when
+both a transaction hash and destination are present. They are normalized,
+deduplicated with newest first, capped at five entries, and persisted locally
+under `@pocketpay_recent_recipients`. A failed or merely initiated send does
+not add a recent recipient.
+
+Editing a contact may change its name or public key. The centralized duplicate
+check prevents changing a contact to an address already owned by another saved
+contact. Deletion still uses the existing confirmation flow.
+
 ## Backup Limitations
 
 - **No cloud backup exists for contacts.** This mirrors the wallet's secret
