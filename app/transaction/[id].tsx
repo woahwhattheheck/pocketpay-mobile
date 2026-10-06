@@ -12,6 +12,7 @@ import { formatAmount } from '../../src/utils/amount';
 import { validateTransactionId } from '../../src/utils/validation';
 import { getExplorerTxUrl, fetchOperationById } from '../../src/services/stellar';
 import type { TransactionDetail } from '../../src/features/transactions/types';
+import { normalizeTransactionRecord } from '../../src/features/transactions/normalization';
 
 type DeepLinkLoadState = 'idle' | 'loading' | 'loaded' | 'not_found' | 'error' | 'invalid';
 
@@ -157,30 +158,29 @@ export default function TransactionDetailScreen() {
     );
   }
 
-  const tx = transaction;
+  const tx = normalizeTransactionRecord(transaction, publicKey);
 
-  const isSent = !!publicKey && tx.from === publicKey;
-  const directionLabel = isSent ? 'Sent' : 'Received';
-  const amountColor = isSent ? COLORS.textPrimary : COLORS.success;
-  const formattedAmount = `${isSent ? '-' : '+'}${tx.amount ? formatAmount(tx.amount) : 'N/A'} ${tx.asset || 'XLM'}`;
-  const formattedDate = tx.createdAt 
-    ? new Date(tx.createdAt).toLocaleString() 
-    : tx.created_at
-    ? new Date(tx.created_at).toLocaleString()
-    : tx.timestamp 
-    ? new Date(tx.timestamp).toLocaleString()
+  const isSent = tx.direction === 'sent';
+  const isReceived = tx.direction === 'received';
+  const directionLabel = isSent ? 'Sent' : isReceived ? 'Received' : 'Activity';
+  const typeLabel =
+    tx.activityKind === 'vault' ? 'Vault activity' : `${directionLabel} ${tx.asset}`;
+  const amountPrefix = isSent ? '-' : isReceived ? '+' : '';
+  const amountColor = isReceived ? COLORS.success : COLORS.textPrimary;
+  const formattedAmount = `${amountPrefix}${tx.amount ? formatAmount(tx.amount) : 'N/A'} ${tx.asset}`;
+  const formattedDate = tx.createdAt
+    ? new Date(tx.createdAt).toLocaleString()
     : 'Unknown date';
 
-  const txHash = tx.hash || tx.transaction_hash || '';
+  const txHash = tx.hash || '';
   const senderAddress = tx.from || '';
   const recipientAddress = tx.to || '';
   const memoText = tx.memo || '';
   const memoType = tx.memo_type || '';
 
-  // Status determination
-  const isPending = tx.is_pending === true;
-  const isFailed = tx.transaction_successful === false;
-  const isSuccessful = !isPending && !isFailed;
+  const isPending = tx.status === 'pending';
+  const isFailed = tx.status === 'failed';
+  const isUnknown = tx.status === 'unknown';
 
   const senderLabel = resolveAddressLabel(senderAddress, contacts);
   const recipientLabel = resolveAddressLabel(recipientAddress, contacts);
@@ -226,6 +226,14 @@ export default function TransactionDetailScreen() {
         label: 'Failed',
         color: COLORS.error,
         bgColor: 'rgba(255, 61, 0, 0.1)',
+      };
+    }
+    if (isUnknown) {
+      return {
+        icon: <AlertCircle color={COLORS.warning} size={18} />,
+        label: 'Unknown',
+        color: COLORS.warning,
+        bgColor: 'rgba(255, 196, 0, 0.1)',
       };
     }
     return {
@@ -285,7 +293,7 @@ export default function TransactionDetailScreen() {
         {/* Type / Direction */}
         <View style={styles.detailRow}>
           <Text style={styles.rowLabel}>Type</Text>
-          <Text style={styles.rowValue}>{directionLabel} XLM</Text>
+          <Text style={styles.rowValue}>{typeLabel}</Text>
         </View>
 
         {/* Status Row with More Details */}
