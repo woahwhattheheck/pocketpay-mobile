@@ -189,7 +189,10 @@ export const matchesTransactionFilter = (
       return true;
     case 'sent':
     case 'received':
-      return transaction.direction === filter;
+      return (
+        transaction.activityKind !== 'vault' &&
+        transaction.direction === filter
+      );
     case 'pending':
     case 'failed':
     case 'unknown':
