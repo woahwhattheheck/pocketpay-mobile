@@ -26,6 +26,8 @@ interface SignerState {
   setActiveSignerType: (type: SignerType) => void;
   setAvailableSigners: (signers: SignerInfo[]) => void;
   startReview: (review: TransactionReview) => void;
+  beginSigningAttempt: () => boolean;
+  setReviewFee: (fee: string) => void;
   enterHandoff: () => void;
   enterSigning: () => void;
   enterSubmitting: () => void;
@@ -59,6 +61,20 @@ export const useSignerStore = create<SignerState>((set, get) => ({
       error: null,
       lastResult: null,
     }),
+
+  beginSigningAttempt: () => {
+    const { phase, currentReview } = get();
+    if (phase !== 'review' || !currentReview) return false;
+    set({ phase: 'handoff' });
+    return true;
+  },
+
+  setReviewFee: (fee) =>
+    set((state) => ({
+      currentReview: state.currentReview
+        ? { ...state.currentReview, fee }
+        : null,
+    })),
 
   enterHandoff: () => set({ phase: 'handoff' }),
 
