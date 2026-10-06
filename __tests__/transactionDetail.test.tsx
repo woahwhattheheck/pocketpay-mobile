@@ -202,6 +202,31 @@ describe('Transaction Detail Screen', () => {
     expect(getAllByText('Pending').length).toBeGreaterThanOrEqual(1);
   });
 
+  it('keeps unknown submissions distinct and preserves their recovery hash', () => {
+    const recoveryHash = mockTx.hash;
+    mockUseLocalSearchParams.mockReturnValue({ id: recoveryHash });
+    setupStore({
+      transactions: [{
+        ...mockTx,
+        id: recoveryHash,
+        hash: '',
+        transaction_hash: '',
+        transaction_successful: undefined,
+        is_pending: false,
+        status: 'unknown',
+      }],
+    });
+
+    const { getAllByText, getByText, getByTestId, queryByText } = render(
+      <TransactionDetailScreen />,
+    );
+
+    expect(getAllByText('Status unknown').length).toBeGreaterThanOrEqual(1);
+    expect(queryByText('Successful')).toBeNull();
+    expect(getByText(recoveryHash)).toBeTruthy();
+    expect(getByTestId('explorer-link-btn')).toBeTruthy();
+  });
+
   it('displays failed transaction status', () => {
     setupStore({
       transactions: [{
