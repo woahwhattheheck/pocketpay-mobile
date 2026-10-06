@@ -21,6 +21,10 @@ import { WalletEmptyState } from '../../src/components/WalletEmptyState';
 import { LoadingState } from '../../src/components/LoadingState';
 import { useNetworkState } from '../../src/hooks/useNetworkState';
 import { groupTransactionsByDate } from '../../src/utils/transactions';
+import {
+  matchesTransactionFilter,
+  normalizeTransactionRecord,
+} from '../../src/features/transactions/normalization';
 import { PendingTransactionQueue } from '../../src/components/PendingTransactionQueue';
 
 const FILTERS = [
@@ -29,6 +33,7 @@ const FILTERS = [
   { label: 'Received', value: 'received' },
   { label: 'Pending', value: 'pending' },
   { label: 'Failed', value: 'failed' },
+  { label: 'Unknown', value: 'unknown' },
   { label: 'Vault', value: 'vault' },
 ] as const;
 
@@ -144,25 +149,13 @@ export default function HistoryScreen() {
     );
   }
 
-  const filteredTransactions = useMemo(() => {
-    return transactions.filter((tx: TransactionRecord) => {
-      if (filter === 'all') return true;
-      
-      const isSent = tx.from === publicKey;
-      const isReceived = tx.to === publicKey || tx.into === publicKey;
-      const isFailed = tx.transaction_successful === false;
-      const isPending = tx.is_pending === true || tx.status === 'pending';
-      const isVault = tx.type === 'invoke_host_function' || tx.is_vault === true;
-
-      if (filter === 'sent') return isSent && !isVault;
-      if (filter === 'received') return isReceived && !isVault;
-      if (filter === 'failed') return isFailed;
-      if (filter === 'pending') return isPending;
-      if (filter === 'vault') return isVault;
-
-      return true;
-    });
-  }, [transactions, filter, publicKey]);
+  const filteredTransactions = useMemo(
+    () =>
+      transactions.filter((tx: TransactionRecord) =>
+        matchesTransactionFilter(normalizeTransactionRecord(tx, publicKey), filter),
+      ),
+    [transactions, filter, publicKey],
+  );
 
   const groupedTransactions = useMemo(
     () => groupTransactionsByDate(filteredTransactions),
