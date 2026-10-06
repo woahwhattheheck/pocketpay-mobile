@@ -182,7 +182,7 @@ export default function ReviewTransactionScreen() {
 
       const signingResult = {
         hash: result.hash,
-        review: store.currentReview!,
+        review: useSignerStore.getState().currentReview!,
         signerType: 'local' as const,
         completedAt: new Date().toISOString(),
       };
@@ -217,7 +217,6 @@ export default function ReviewTransactionScreen() {
     store.reset();
     router.back();
   };
-
   const reviewItems: ReviewItem[] = useMemo(() => {
     const items: ReviewItem[] = [
       { label: 'From', value: publicKey ?? '', truncate: true },
