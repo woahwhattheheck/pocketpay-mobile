@@ -7,6 +7,7 @@ import { TransactionRecord } from '../store/walletStore';
 import { useAppStore } from '../store/appStore';
 import { resolveAddressLabel } from '../utils/contacts';
 import { formatAmount } from '../utils/amount';
+import { normalizeTransactionRecord } from '../features/transactions/normalization';
 import { StatusBadge, BadgeTone } from './StatusBadge';
 
 // Historical Horizon records have no `status` field and are implicitly
@@ -16,6 +17,7 @@ const STATUS_BADGE: Record<string, { text: string; tone: BadgeTone }> = {
   pending: { text: 'Pending', tone: 'info' },
   confirmed: { text: 'Confirmed', tone: 'success' },
   failed: { text: 'Failed', tone: 'error' },
+  unknown: { text: 'Unknown', tone: 'warning' },
 };
 
 export interface TransactionListItemProps extends Omit<TouchableOpacityProps, 'onPress'> {
@@ -52,34 +54,39 @@ export const TransactionListItem: React.FC<TransactionListItemProps> = ({
   const styles = useMemo(() => createStyles(colors), [colors]);
   const contacts = useAppStore((state) => state.contacts);
 
-  const tx = transaction as any;
-  const isSent = !!currentPublicKey && tx.from === currentPublicKey;
+  const tx = normalizeTransactionRecord(transaction, currentPublicKey);
+  const isSent = tx.direction === 'sent';
+  const isReceived = tx.direction === 'received';
 
-  const label = isSent ? 'Sent XLM' : 'Received XLM';
+  const label =
+    tx.activityKind === 'vault'
+      ? 'Vault activity'
+      : isSent
+        ? `Sent ${tx.asset}`
+        : isReceived
+          ? `Received ${tx.asset}`
+          : 'Transaction';
 
+  const amountPrefix = isSent ? '-' : isReceived ? '+' : '';
   const formattedAmount = tx.amount
-    ? `${isSent ? '-' : '+'}${formatAmount(tx.amount)}`
+    ? `${amountPrefix}${formatAmount(tx.amount)}`
     : null;
 
-  const formattedDate = tx.created_at
-    ? new Date(tx.created_at).toLocaleString()
+  const formattedDate = tx.createdAt
+    ? new Date(tx.createdAt).toLocaleString()
     : null;
 
-  // Counterparty: for sent txs show the recipient, for received show the sender
   const counterpartyAddress = isSent
     ? tx.to || null
-    : tx.from || null;
+    : isReceived
+      ? tx.from || null
+      : tx.to || tx.from || null;
 
   const counterpartyLabel = counterpartyAddress
     ? resolveAddressLabel(counterpartyAddress, contacts)
     : null;
 
-  const statusBadge = tx.status ? STATUS_BADGE[tx.status] : undefined;
-
-  const Container = onPress ? TouchableOpacity : View;
-  const containerProps = onPress
-    ? { ...props, onPress: () => onPress(transaction), activeOpacity: 0.7 }
-    : props;
+  const statusBadge = STATUS_BADGE[tx.status];
 
   return (
     <Container
@@ -127,7 +134,7 @@ export const TransactionListItem: React.FC<TransactionListItemProps> = ({
           <Text
             style={[
               styles.amount,
-              { color: isSent ? colors.textPrimary : colors.success },
+              { color: isReceived ? colors.success : colors.textPrimary },
             ]}
           >
             {formattedAmount}
