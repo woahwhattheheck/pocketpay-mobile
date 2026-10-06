@@ -214,7 +214,7 @@ export default function ImportWalletScreen() {
         <View style={styles.infoBanner}>
           <Info color={colors.primary} size={18} />
           <Text style={styles.infoText}>
-            This app runs on <Text style={styles.infoBold}>Testnet</Text>. Only test-net secret keys will work.
+            This app runs on <Text style={styles.infoBold}>Testnet</Text>. Use a key reserved for testing, never one used on Mainnet.
           </Text>
         </View>
 

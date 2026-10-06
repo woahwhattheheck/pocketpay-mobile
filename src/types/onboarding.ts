@@ -43,10 +43,11 @@ export const ONBOARDING_ERROR_MESSAGES: Record<OnboardingError, { title: string;
     message: 'The secret key you entered is not valid. It may be corrupted or incorrectly formatted.',
     guidance: 'Double-check your secret key. It should be 56 characters starting with "S". Try copying it again from your backup.',
   },
+  // Legacy error key retained for compatibility; secret seeds do not encode a network.
   secret_key_wrong_network: {
-    title: 'Wrong Network',
-    message: 'This secret key is for a different Stellar network (not Testnet).',
-    guidance: 'PocketPay only supports Stellar Testnet. Make sure you\'re using a Testnet secret key.',
+    title: 'Network Setup Error',
+    message: 'A network-related error was reported during wallet setup.',
+    guidance: 'Use PocketPay only on Stellar Testnet. Check your connection and try again.',
   },
   import_validation_failed: {
     title: 'Import Failed',
