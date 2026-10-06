@@ -154,6 +154,19 @@ export const useAppStore = create<AppState>((set, get) => ({
         message: `This address is already saved as "${result.duplicateName}".`,
       };
     }
+
+    // Name conflicts are advisory rather than blocking. Check after the
+    // serialized save so concurrent additions observe the latest committed
+    // contact list, while excluding the contact we just added.
+    const nameConflict = get().findDuplicateContact(
+      contact.name,
+      contact.publicKey,
+      contact.id,
+    );
+    if (nameConflict.type === "name") {
+      return nameConflict;
+    }
+
     return { isDuplicate: false, type: "none", message: "" };
   },
 
