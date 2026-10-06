@@ -11,6 +11,39 @@ describe('appStore contact send-flow integration', () => {
     });
   });
 
+  it('migrates the legacy send-flow contact store once', async () => {
+    await AsyncStorage.setItem(
+      'pocketpay-contacts',
+      JSON.stringify({
+        state: {
+          contacts: [
+            { id: 'legacy-1', name: 'Alice', address: ' gaaa ' },
+          ],
+          recentRecipients: [' gaaa ', 'gbbb'],
+        },
+        version: 0,
+      }),
+    );
+
+    useAppStore.setState({
+      contacts: [],
+      recentRecipients: [],
+      isInitialized: false,
+    });
+
+    await useAppStore.getState().initializeApp();
+
+    expect(useAppStore.getState().contacts).toEqual([
+      { id: 'legacy-1', name: 'Alice', publicKey: 'GAAA' },
+    ]);
+    expect(useAppStore.getState().recentRecipients).toEqual(['GAAA', 'GBBB']);
+    expect(await AsyncStorage.getItem('pocketpay-contacts')).toBeNull();
+
+    await useAppStore.getState().removeContact('legacy-1');
+    await useAppStore.getState().initializeApp();
+    expect(useAppStore.getState().contacts).toEqual([]);
+  });
+
   it('keeps five normalized, deduplicated recent recipients with newest first', async () => {
     const { addRecentRecipient } = useAppStore.getState();
 

@@ -60,6 +60,7 @@ const STORAGE_KEYS = {
   CONTACTS: "@pocketpay_contacts",
   RECENT_RECIPIENTS: "@pocketpay_recent_recipients",
   THEME_MODE: "@pocketpay_theme",
+  LEGACY_CONTACTS: "pocketpay-contacts",
 };
 
 const RECENT_RECIPIENT_LIMIT = 5;
@@ -91,25 +92,90 @@ const persistRecentRecipients = async (recentRecipients: string[]) => {
   }
 };
 
+function normalizeRecentRecipients(values: unknown): string[] {
+  if (!Array.isArray(values)) return [];
+
+  const result: string[] = [];
+  for (const value of values) {
+    if (typeof value !== "string") continue;
+    const normalized = normalizeAddress(value);
+    if (normalized && !result.includes(normalized)) {
+      result.push(normalized);
+    }
+    if (result.length === RECENT_RECIPIENT_LIMIT) break;
+  }
+  return result;
+}
+
 function parseStoredRecentRecipients(stored: string | null): string[] {
   if (!stored) return [];
   try {
-    const parsed = JSON.parse(stored);
-    if (!Array.isArray(parsed)) return [];
-
-    const result: string[] = [];
-    for (const value of parsed) {
-      if (typeof value !== "string") continue;
-      const normalized = normalizeAddress(value);
-      if (normalized && !result.includes(normalized)) {
-        result.push(normalized);
-      }
-      if (result.length === RECENT_RECIPIENT_LIMIT) break;
-    }
-    return result;
+    return normalizeRecentRecipients(JSON.parse(stored));
   } catch {
     return [];
   }
+}
+
+function parseLegacyContactStore(stored: string | null): {
+  contacts: Contact[];
+  recentRecipients: string[];
+} {
+  if (!stored) return { contacts: [], recentRecipients: [] };
+
+  try {
+    const parsed = JSON.parse(stored);
+    const state = parsed?.state;
+    const contacts: Contact[] = [];
+    const seen = new Set<string>();
+
+    if (Array.isArray(state?.contacts)) {
+      for (const value of state.contacts) {
+        if (!value || typeof value !== "object") continue;
+        const legacy = value as { id?: unknown; name?: unknown; address?: unknown };
+        if (
+          typeof legacy.id !== "string" ||
+          typeof legacy.name !== "string" ||
+          typeof legacy.address !== "string"
+        ) {
+          continue;
+        }
+
+        const publicKey = normalizeAddress(legacy.address);
+        if (!publicKey || seen.has(publicKey)) continue;
+        seen.add(publicKey);
+        contacts.push({
+          id: legacy.id,
+          name: legacy.name.trim(),
+          publicKey,
+        });
+      }
+    }
+
+    return {
+      contacts,
+      recentRecipients: normalizeRecentRecipients(state?.recentRecipients),
+    };
+  } catch {
+    return { contacts: [], recentRecipients: [] };
+  }
+}
+
+function mergeContacts(primary: Contact[], legacy: Contact[]): Contact[] {
+  const merged = [...primary];
+  const seen = new Set(primary.map((contact) => normalizeAddress(contact.publicKey)));
+
+  for (const contact of legacy) {
+    const normalized = normalizeAddress(contact.publicKey);
+    if (!normalized || seen.has(normalized)) continue;
+    seen.add(normalized);
+    merged.push({ ...contact, publicKey: normalized });
+  }
+
+  return merged;
+}
+
+function mergeRecentRecipients(primary: string[], legacy: string[]): string[] {
+  return normalizeRecentRecipients([...primary, ...legacy]);
 }
 
 /** Parses a stored theme preference, falling back safely if it is missing, malformed, or not a recognized mode. */
@@ -131,19 +197,54 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   initializeApp: async () => {
     try {
-      const [storedContacts, storedRecentRecipients, storedTheme] =
-        await Promise.all([
-          AsyncStorage.getItem(STORAGE_KEYS.CONTACTS),
-          AsyncStorage.getItem(STORAGE_KEYS.RECENT_RECIPIENTS),
-          AsyncStorage.getItem(STORAGE_KEYS.THEME_MODE),
-        ]);
+      const [
+        storedContacts,
+        storedRecentRecipients,
+        storedTheme,
+        storedLegacyContacts,
+      ] = await Promise.all([
+        AsyncStorage.getItem(STORAGE_KEYS.CONTACTS),
+        AsyncStorage.getItem(STORAGE_KEYS.RECENT_RECIPIENTS),
+        AsyncStorage.getItem(STORAGE_KEYS.THEME_MODE),
+        AsyncStorage.getItem(STORAGE_KEYS.LEGACY_CONTACTS),
+      ]);
+
+      const canonicalContacts: Contact[] = storedContacts
+        ? JSON.parse(storedContacts)
+        : [];
+      const canonicalRecentRecipients =
+        parseStoredRecentRecipients(storedRecentRecipients);
+      const legacy = parseLegacyContactStore(storedLegacyContacts);
+      const contacts = mergeContacts(canonicalContacts, legacy.contacts);
+      const recentRecipients = mergeRecentRecipients(
+        canonicalRecentRecipients,
+        legacy.recentRecipients,
+      );
 
       set({
-        contacts: storedContacts ? JSON.parse(storedContacts) : [],
-        recentRecipients: parseStoredRecentRecipients(storedRecentRecipients),
+        contacts,
+        recentRecipients,
         themeMode: parseStoredThemeMode(storedTheme),
         isInitialized: true,
       });
+
+      if (storedLegacyContacts) {
+        try {
+          await Promise.all([
+            AsyncStorage.setItem(
+              STORAGE_KEYS.CONTACTS,
+              JSON.stringify(contacts),
+            ),
+            AsyncStorage.setItem(
+              STORAGE_KEYS.RECENT_RECIPIENTS,
+              JSON.stringify(recentRecipients),
+            ),
+          ]);
+          await AsyncStorage.removeItem(STORAGE_KEYS.LEGACY_CONTACTS);
+        } catch (migrationError) {
+          console.error("Failed to migrate legacy contacts:", migrationError);
+        }
+      }
     } catch (e) {
       console.error("Failed to load app settings:", e);
       set({ isInitialized: true });

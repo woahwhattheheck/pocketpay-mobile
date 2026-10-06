@@ -1,34 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useContactStore } from '@/features/contacts/contactStore';
+import { Alert, View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Contact, useAppStore } from '@/store/appStore';
 import { ContactForm } from '@/components/ContactForm';
 import { useConfirm } from '@/hooks/useConfirm';
 import { User, Edit2, Trash2, Plus } from 'lucide-react-native';
 
 export const ContactManagement: React.FC = () => {
-  const { contacts, addContact, updateContact, deleteContact } = useContactStore();
+  const { contacts, addContactIfUnique, updateContact, removeContact } = useAppStore();
   const { confirm, confirmationDialog } = useConfirm();
   const [showForm, setShowForm] = useState(false);
-  const [editingContact, setEditingContact] = useState<{
-    id: string;
-    name: string;
-    address: string;
-  } | null>(null);
+  const [editingContact, setEditingContact] = useState<Contact | null>(null);
 
   const handleAdd = () => {
     setEditingContact(null);
     setShowForm(true);
   };
 
-  const handleEdit = (contact: { id: string; name: string; address: string }) => {
+  const handleEdit = (contact: Contact) => {
     setEditingContact(contact);
     setShowForm(true);
   };
 
-  const handleDelete = (contact: { id: string; name: string; address: string }) => {
+  const handleDelete = (contact: Contact) => {
     // Truncate address for readability if needed, but prefer the name
     const displayName = contact.name ||
-        (contact.address ? `${contact.address.slice(0, 8)}...${contact.address.slice(-6)}` : 'this contact');
+        (contact.publicKey ? `${contact.publicKey.slice(0, 8)}...${contact.publicKey.slice(-6)}` : 'this contact');
 
     void confirm({
       title: 'Delete Contact',
@@ -36,16 +32,24 @@ export const ContactManagement: React.FC = () => {
       confirmLabel: 'Delete',
       cancelLabel: 'Cancel',
       destructive: true,
-      onConfirm: () => deleteContact(contact.id),
+      onConfirm: () => removeContact(contact.id),
     });
   };
 
-  const handleSave = (name: string, address: string) => {
-    if (editingContact) {
-      updateContact(editingContact.id, name, address);
-    } else {
-      addContact(name, address);
+  const handleSave = async (name: string, address: string) => {
+    const result = editingContact
+      ? await updateContact(editingContact.id, name, address)
+      : await addContactIfUnique({
+          id: Date.now().toString(),
+          name,
+          publicKey: address,
+        });
+
+    if (result.isDuplicate) {
+      Alert.alert('Contact not saved', result.message);
+      return;
     }
+
     setShowForm(false);
     setEditingContact(null);
   };
@@ -83,7 +87,7 @@ export const ContactManagement: React.FC = () => {
                       <View style={styles.contactInfo}>
                         <Text style={styles.contactName}>{contact.name}</Text>
                         <Text style={styles.contactAddress} numberOfLines={1}>
-                          {contact.address}
+                          {contact.publicKey}
                         </Text>
                       </View>
                     </View>
