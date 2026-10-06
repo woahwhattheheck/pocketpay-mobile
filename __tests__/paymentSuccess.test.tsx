@@ -21,10 +21,13 @@ jest.mock('expo-router');
 jest.mock('expo-clipboard', () => ({
   setStringAsync: jest.fn(async () => {}),
 }));
+const mockAddRecentRecipient = jest.fn(async () => {});
+
 jest.mock('../src/store/appStore', () => {
   const mockUseAppStore = jest.fn((selector) => {
     const mockState = {
       contacts: [],
+      addRecentRecipient: mockAddRecentRecipient,
     };
     return selector ? selector(mockState) : mockState;
   });
@@ -67,6 +70,29 @@ beforeEach(() => {
     amount: AMOUNT,
     destination: DESTINATION,
   } as any);
+});
+
+describe('issue #395 – confirmed recent recipients', () => {
+  it('records the destination after a confirmed receipt is rendered', async () => {
+    render(<PaymentSuccessScreen />);
+
+    await waitFor(() => {
+      expect(mockAddRecentRecipient).toHaveBeenCalledWith(DESTINATION);
+    });
+  });
+
+  it('does not record a recent recipient without a transaction hash', async () => {
+    mockUseLocalSearchParams.mockReturnValue({
+      amount: AMOUNT,
+      destination: DESTINATION,
+    } as any);
+
+    render(<PaymentSuccessScreen />);
+
+    await waitFor(() => {
+      expect(mockAddRecentRecipient).not.toHaveBeenCalled();
+    });
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
