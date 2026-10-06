@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView } from 'rea
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { Contact, useAppStore } from '@/store/appStore';
+import { validateAddress } from '@/utils/validation';
 import { X, Edit2, Trash2, Plus } from 'lucide-react-native';
 
 interface ContactFormProps {
@@ -36,14 +37,6 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     setErrors({});
   }, [contact, visible]);
 
-  const validateStellarAddress = (addr: string): boolean => {
-    const trimmed = addr.trim();
-    if (!trimmed.startsWith('G')) return false;
-    if (trimmed.length !== 56) return false;
-    if (!/^[A-Z2-7]+$/.test(trimmed)) return false;
-    return true;
-  };
-
   const validate = (): boolean => {
     const newErrors: { name?: string; address?: string } = {};
 
@@ -55,16 +48,19 @@ export const ContactForm: React.FC<ContactFormProps> = ({
 
     if (!address.trim()) {
       newErrors.address = 'Address is required';
-    } else if (!validateStellarAddress(address.trim())) {
-      newErrors.address = 'Invalid Stellar address (must start with G and be 56 characters)';
     } else {
-      const duplicate = findDuplicateContact(
-        name,
-        address.trim(),
-        contact?.id,
-      );
-      if (duplicate.isDuplicate) {
-        newErrors.address = duplicate.message;
+      const addressError = validateAddress(address.trim());
+      if (addressError) {
+        newErrors.address = addressError;
+      } else {
+        const duplicate = findDuplicateContact(
+          name,
+          address.trim(),
+          contact?.id,
+        );
+        if (duplicate.isDuplicate) {
+          newErrors.address = duplicate.message;
+        }
       }
     }
 
