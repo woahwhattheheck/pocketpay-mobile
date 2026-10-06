@@ -146,6 +146,7 @@ const resetWalletState = () => ({
   transactions: [],
   pendingTransactions: {},
   lastRefreshed: null,
+  isLoading: false,
   isLoadingMore: false,
   hasMoreTransactions: false,
   nextCursor: null,
@@ -225,7 +226,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   setWallet: async (publicKey: string, secretKey: string) => {
     try {
       await SecureStore.setItemAsync(WALLET_KEY, secretKey);
-      set({ publicKey, balance: DEFAULT_BALANCE, transactions: [], pendingTransactions: {}, error: null });
+      set({ publicKey, balance: DEFAULT_BALANCE, transactions: [], pendingTransactions: {}, isLoading: false, error: null });
       return true;
     } catch {
       console.error(PERSIST_WALLET_ERROR);
@@ -298,6 +299,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         fetchXlmBalance(publicKey),
         fetchTransactionsPage(publicKey, TX_PAGE_SIZE),
       ]);
+      if (get().publicKey !== publicKey) return;
 
       // Reconcile: drop any optimistic pending entry whose hash now shows up in the
       // real Horizon response, so it isn't displayed twice. Operation records
@@ -313,6 +315,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       );
 
       await enqueuePendingTransactionsPersist(publicKey, remainingPending);
+      if (get().publicKey !== publicKey) return;
 
       const isZero = balance === '0.0000000';
       set({
@@ -328,6 +331,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         fundingStatus: 'funded',
       });
     } catch (err: any) {
+      if (get().publicKey !== publicKey) return;
       console.error('Failed to refresh wallet data');
       set({
         isLoading: false,
