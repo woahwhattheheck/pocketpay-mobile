@@ -14,6 +14,7 @@ import { StatusBadge, BadgeTone } from './StatusBadge';
 // also falls back to no badge rather than guessing a status.
 const STATUS_BADGE: Record<string, { text: string; tone: BadgeTone }> = {
   pending: { text: 'Pending', tone: 'info' },
+  unknown: { text: 'Status unknown', tone: 'warning' },
   confirmed: { text: 'Confirmed', tone: 'success' },
   failed: { text: 'Failed', tone: 'error' },
 };
