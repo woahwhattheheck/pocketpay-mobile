@@ -9,6 +9,7 @@ import { COLORS, SIZES, RADIUS } from '../../src/constants/theme';
 import { Button } from '../../src/components/Button';
 import { resolveAddressLabel } from '../../src/utils/contacts';
 import { formatAmount } from '../../src/utils/amount';
+import { useCopyToClipboard } from '../../src/utils/clipboard';
 import { validateTransactionId } from '../../src/utils/validation';
 import { getExplorerTxUrl, fetchOperationById } from '../../src/services/stellar';
 import type { TransactionDetail } from '../../src/features/transactions/types';
