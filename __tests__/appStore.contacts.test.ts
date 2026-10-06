@@ -44,6 +44,51 @@ describe('appStore contact send-flow integration', () => {
     expect(useAppStore.getState().contacts).toEqual([]);
   });
 
+  it('does not resurrect a migrated contact when legacy cleanup initially fails', async () => {
+    await AsyncStorage.setItem(
+      'pocketpay-contacts',
+      JSON.stringify({
+        state: {
+          contacts: [
+            { id: 'legacy-1', name: 'Alice', address: ' gaaa ' },
+          ],
+          recentRecipients: ['gaaa'],
+        },
+        version: 0,
+      }),
+    );
+
+    (AsyncStorage.removeItem as jest.Mock).mockRejectedValueOnce(
+      new Error('legacy cleanup failed'),
+    );
+    const consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    useAppStore.setState({
+      contacts: [],
+      recentRecipients: [],
+      isInitialized: false,
+    });
+
+    await useAppStore.getState().initializeApp();
+
+    expect(useAppStore.getState().contacts).toEqual([
+      { id: 'legacy-1', name: 'Alice', publicKey: 'GAAA' },
+    ]);
+    expect(
+      await AsyncStorage.getItem('@pocketpay_legacy_contacts_migrated'),
+    ).toBe('1');
+    expect(await AsyncStorage.getItem('pocketpay-contacts')).not.toBeNull();
+
+    await useAppStore.getState().removeContact('legacy-1');
+    await useAppStore.getState().initializeApp();
+
+    expect(useAppStore.getState().contacts).toEqual([]);
+    expect(await AsyncStorage.getItem('pocketpay-contacts')).toBeNull();
+    consoleError.mockRestore();
+  });
+
   it('keeps five normalized, deduplicated recent recipients with newest first', async () => {
     const { addRecentRecipient } = useAppStore.getState();
 

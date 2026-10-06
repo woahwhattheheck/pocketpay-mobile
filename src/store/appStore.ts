@@ -61,6 +61,7 @@ const STORAGE_KEYS = {
   RECENT_RECIPIENTS: "@pocketpay_recent_recipients",
   THEME_MODE: "@pocketpay_theme",
   LEGACY_CONTACTS: "pocketpay-contacts",
+  LEGACY_CONTACTS_MIGRATED: "@pocketpay_legacy_contacts_migrated",
 };
 
 const RECENT_RECIPIENT_LIMIT = 5;
@@ -202,11 +203,13 @@ export const useAppStore = create<AppState>((set, get) => ({
         storedRecentRecipients,
         storedTheme,
         storedLegacyContacts,
+        storedLegacyMigrationMarker,
       ] = await Promise.all([
         AsyncStorage.getItem(STORAGE_KEYS.CONTACTS),
         AsyncStorage.getItem(STORAGE_KEYS.RECENT_RECIPIENTS),
         AsyncStorage.getItem(STORAGE_KEYS.THEME_MODE),
         AsyncStorage.getItem(STORAGE_KEYS.LEGACY_CONTACTS),
+        AsyncStorage.getItem(STORAGE_KEYS.LEGACY_CONTACTS_MIGRATED),
       ]);
 
       const canonicalContacts: Contact[] = storedContacts
@@ -214,21 +217,17 @@ export const useAppStore = create<AppState>((set, get) => ({
         : [];
       const canonicalRecentRecipients =
         parseStoredRecentRecipients(storedRecentRecipients);
-      const legacy = parseLegacyContactStore(storedLegacyContacts);
-      const contacts = mergeContacts(canonicalContacts, legacy.contacts);
-      const recentRecipients = mergeRecentRecipients(
-        canonicalRecentRecipients,
-        legacy.recentRecipients,
-      );
+      const themeMode = parseStoredThemeMode(storedTheme);
+      const migrationComplete = storedLegacyMigrationMarker === "1";
 
-      set({
-        contacts,
-        recentRecipients,
-        themeMode: parseStoredThemeMode(storedTheme),
-        isInitialized: true,
-      });
+      if (storedLegacyContacts && !migrationComplete) {
+        const legacy = parseLegacyContactStore(storedLegacyContacts);
+        const contacts = mergeContacts(canonicalContacts, legacy.contacts);
+        const recentRecipients = mergeRecentRecipients(
+          canonicalRecentRecipients,
+          legacy.recentRecipients,
+        );
 
-      if (storedLegacyContacts) {
         try {
           await Promise.all([
             AsyncStorage.setItem(
@@ -240,9 +239,50 @@ export const useAppStore = create<AppState>((set, get) => ({
               JSON.stringify(recentRecipients),
             ),
           ]);
-          await AsyncStorage.removeItem(STORAGE_KEYS.LEGACY_CONTACTS);
+          // Commit the migration before exposing imported entries in memory.
+          // If legacy cleanup fails after this marker is durable, future
+          // initialization ignores the stale legacy payload, so a contact
+          // deleted from the canonical store cannot be resurrected.
+          await AsyncStorage.setItem(STORAGE_KEYS.LEGACY_CONTACTS_MIGRATED, "1");
+
+          set({
+            contacts,
+            recentRecipients,
+            themeMode,
+            isInitialized: true,
+          });
+
+          try {
+            await AsyncStorage.removeItem(STORAGE_KEYS.LEGACY_CONTACTS);
+          } catch (cleanupError) {
+            console.error("Failed to remove migrated legacy contacts:", cleanupError);
+          }
         } catch (migrationError) {
           console.error("Failed to migrate legacy contacts:", migrationError);
+          // Do not expose an uncommitted merge. A later initialization can
+          // safely retry from the still-present legacy payload.
+          set({
+            contacts: canonicalContacts,
+            recentRecipients: canonicalRecentRecipients,
+            themeMode,
+            isInitialized: true,
+          });
+        }
+        return;
+      }
+
+      set({
+        contacts: canonicalContacts,
+        recentRecipients: canonicalRecentRecipients,
+        themeMode,
+        isInitialized: true,
+      });
+
+      if (migrationComplete && storedLegacyContacts) {
+        try {
+          await AsyncStorage.removeItem(STORAGE_KEYS.LEGACY_CONTACTS);
+        } catch (cleanupError) {
+          console.error("Failed to remove migrated legacy contacts:", cleanupError);
         }
       }
     } catch (e) {
@@ -250,7 +290,6 @@ export const useAppStore = create<AppState>((set, get) => ({
       set({ isInitialized: true });
     }
   },
-
   addContact: async (contact: Contact) => {
     const { contacts } = get();
     const normalized = normalizeAddress(contact.publicKey);
