@@ -136,34 +136,25 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
-    const { sendXlmTransaction } = await import('../src/services/stellar');
-    const secretKey = await getSecretKey();
-    if (!secretKey) {
-      store.failSigning({
-        type: 'signer_unavailable',
-        message: WALLET_SECRET_ACCESS_MESSAGE,
-      });
-      return;
-    }
-    const fee = await server.fetchBaseFee();
-    store.startReview({
-      requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-      sourcePublicKey: publicKey!,
-      destinationPublicKey: destination.trim(),
-      destinationLabel: destinationContact?.isContact ? destinationContact.label : null,
-      amount: amount.trim(),
-      assetCode: 'XLM',
-      memo: memo.trim() || undefined,
-      network: getNetworkLabel(),
-      createdAt: new Date().toISOString(),
-      timeoutSeconds: 30,
-      fee: fee.toString(),
-    });
-
-    store.enterHandoff();
-    store.enterSigning();
+    // Acquire the submission lock synchronously before any await. A second tap
+    // sees the handoff phase immediately even if React has not rerendered yet.
+    if (!store.beginSigningAttempt()) return;
 
     try {
+      const { sendXlmTransaction } = await import('../src/services/stellar');
+      const secretKey = await getSecretKey();
+      if (!secretKey) {
+        store.failSigning({
+          type: 'signer_unavailable',
+          message: WALLET_SECRET_ACCESS_MESSAGE,
+        });
+        return;
+      }
+
+      const fee = await server.fetchBaseFee();
+      store.setReviewFee(fee.toString());
+      store.enterSigning();
+
       const result = await sendXlmTransaction(
         secretKey,
         destination.trim(),
