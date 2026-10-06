@@ -151,7 +151,7 @@ export default function HistoryScreen() {
       const isSent = tx.from === publicKey;
       const isReceived = tx.to === publicKey || tx.into === publicKey;
       const isFailed = tx.transaction_successful === false;
-      const isPending = tx.is_pending === true || tx.status === 'pending';
+      const isPending = tx.is_pending === true || tx.status === 'pending' || tx.status === 'unknown';
       const isVault = tx.type === 'invoke_host_function' || tx.is_vault === true;
 
       if (filter === 'sent') return isSent && !isVault;
