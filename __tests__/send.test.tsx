@@ -27,6 +27,24 @@ jest.mock('../src/store/appStore', () => {
   const mockUseAppStore = jest.fn((selector) => {
     const mockState = {
       contacts: [],
+      recentRecipients: [],
+      findContactByPublicKey: jest.fn(() => undefined),
+      removeContact: jest.fn(async () => {}),
+      findDuplicateContact: jest.fn(() => ({
+        isDuplicate: false,
+        type: 'none',
+        message: '',
+      })),
+      addContactIfUnique: jest.fn(async () => ({
+        isDuplicate: false,
+        type: 'none',
+        message: '',
+      })),
+      updateContact: jest.fn(async () => ({
+        isDuplicate: false,
+        type: 'none',
+        message: '',
+      })),
     };
     return selector ? selector(mockState) : mockState;
   });
