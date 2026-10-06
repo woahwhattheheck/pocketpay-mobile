@@ -34,16 +34,15 @@ export interface OnlineStatusResult {
   isOnline: boolean;
   /** true while a connectivity check is in flight. */
   isChecking: boolean;
-  /** Manually trigger an immediate connectivity check. */
-  checkNow: () => void;
+  /** Start a connectivity check, or join the one already in flight. */
+  checkNow: () => Promise<void>;
 }
 
 /**
  * Perform a single reachability fetch.
  * Returns true if the fetch succeeds within the timeout, false otherwise.
  */
-async function ping(): Promise<boolean> {
-  const controller = new AbortController();
+async function ping(controller: AbortController): Promise<boolean> {
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
     await fetch(CHECK_URL, {
@@ -74,14 +73,34 @@ export function useOnlineStatus(options?: {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const appStateRef = useRef<AppStateStatus>(AppState.currentState);
 
-  const checkNow = useCallback(async () => {
+  const activeRef = useRef(false);
+  const checkRef = useRef<{
+    controller: AbortController;
+    promise: Promise<void>;
+  } | null>(null);
+
+  const checkNow = useCallback((): Promise<void> => {
+    if (!activeRef.current) return Promise.resolve();
+    if (checkRef.current) return checkRef.current.promise;
+
+    const controller = new AbortController();
     setIsChecking(true);
-    const result = await ping();
-    setIsOnline(result);
-    setIsChecking(false);
+    const promise: Promise<void> = ping(controller)
+      .then((result) => {
+        // Cleanup may have started a replacement check before this settles.
+        if (checkRef.current?.promise === promise) setIsOnline(result);
+      })
+      .finally(() => {
+        if (checkRef.current?.promise !== promise) return;
+        checkRef.current = null;
+        setIsChecking(false);
+      });
+    checkRef.current = { controller, promise };
+    return promise;
   }, []);
 
   useEffect(() => {
+    activeRef.current = true;
     // Perform an initial check immediately.
     checkNow();
 
@@ -103,6 +122,11 @@ export function useOnlineStatus(options?: {
     );
 
     return () => {
+      activeRef.current = false;
+      // Invalidate before aborting: a late result must not affect a new lifecycle.
+      const pending = checkRef.current;
+      checkRef.current = null;
+      pending?.controller.abort();
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
