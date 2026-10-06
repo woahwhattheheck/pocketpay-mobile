@@ -21,15 +21,18 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 }));
 
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useWalletStore } from '../src/store/walletStore';
 
 const mockedSecureStore = SecureStore as jest.Mocked<typeof SecureStore>;
+const mockedAsyncStorage = AsyncStorage as jest.Mocked<typeof AsyncStorage>;
 
 const resetStore = () => {
   useWalletStore.setState({
     publicKey: null,
     balance: '0.0000000',
     transactions: [],
+    pendingTransactions: {},
     isLoading: false,
     error: null,
   });
@@ -74,6 +77,32 @@ describe('walletStore secure storage handling', () => {
     expect(restored).toBe(true);
     expect(useWalletStore.getState().publicKey).toBe('GPUBLICKEY');
     expect(useWalletStore.getState().error).toBeNull();
+  });
+
+  it('restores wallet-scoped unknown transactions after an app restart', async () => {
+    mockedSecureStore.getItemAsync.mockResolvedValueOnce('SVALIDSECRET');
+    mockedAsyncStorage.getItem.mockImplementation(async (key: string) => {
+      if (key === '@pocketpay_pending_transactions:GPUBLICKEY') {
+        return JSON.stringify({
+          'hash-unknown': {
+            id: 'hash-unknown',
+            status: 'unknown',
+            amount: '10.0000000',
+            to: 'GDESTINATION',
+          },
+        });
+      }
+      return null;
+    });
+
+    const restored = await useWalletStore.getState().loadWalletFromStorage();
+
+    expect(restored).toBe(true);
+    expect(mockedAsyncStorage.getItem).toHaveBeenCalledWith(
+      '@pocketpay_pending_transactions:GPUBLICKEY'
+    );
+    expect(useWalletStore.getState().pendingTransactions['hash-unknown']?.status).toBe('unknown');
+    expect(useWalletStore.getState().transactions[0]?.id).toBe('hash-unknown');
   });
 
   it('handles missing stored values without crashing', async () => {
