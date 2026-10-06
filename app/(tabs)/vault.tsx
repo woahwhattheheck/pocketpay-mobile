@@ -69,6 +69,20 @@ export default function VaultScreen() {
   const canWithdraw = isActionSupported(capabilities, 'withdraw');
   const canLock = isActionSupported(capabilities, 'lock');
   const canUnlock = isActionSupported(capabilities, 'unlock');
+  const hasExperimentalActions = (
+    ['deposit', 'withdraw', 'lock', 'unlock'] as const
+  ).some((action) => capabilities[action].status === 'experimental');
+
+  const actionTitle = (
+    label: string,
+    action: 'deposit' | 'withdraw' | 'lock',
+    isSupported: boolean,
+  ) => {
+    const status = capabilities[action].status;
+    if (status === 'loading') return `${label} (Checking…)`;
+    if (status === 'experimental') return `${label} (Experimental)`;
+    return isSupported ? label : `${label} Unavailable`;
+  };
 
   // Vault form
   const depositForm = useVaultDepositForm();
@@ -347,12 +361,22 @@ export default function VaultScreen() {
         <View style={styles.warningBox}>
           <AlertTriangle color={colors.warning} size={24} style={{ marginRight: SIZES.sm }} />
           <Text style={styles.warningText}>
-            No vault contract configured. Set EXPO_PUBLIC_VAULT_CONTRACT_ID in your .env file to
-            connect to a deployed Soroban contract. Running in mock mode — no real funds are
-            moved.
+            Experimental preview: no vault contract configured. Set
+            EXPO_PUBLIC_VAULT_CONTRACT_ID to connect to a deployed Soroban contract.
+            Mock mode does not move real funds.
           </Text>
         </View>
       )}
+
+      {hasExperimentalActions && isContractConfigured ? (
+        <View style={styles.warningBox}>
+          <AlertTriangle color={colors.warning} size={24} style={{ marginRight: SIZES.sm }} />
+          <Text style={styles.warningText}>
+            Experimental / Testnet vault actions are enabled. The integration may change while
+            SDK and contract readiness stabilise; review transaction details before confirming.
+          </Text>
+        </View>
+      ) : null}
 
       {!isAvailable ? (
         <VaultUnavailableState
@@ -380,15 +404,24 @@ export default function VaultScreen() {
           )}
 
           {/* Issue #331: Capability gate explanations */}
-          {(!canDeposit || !canWithdraw || !canLock) && (
+          {(!canDeposit || !canWithdraw || !canLock || !canUnlock) && (
             <View style={styles.capabilityNotice}>
               <Ban color={colors.warning} size={18} style={{ marginRight: SIZES.sm }} />
               <View style={{ flex: 1 }}>
                 <Text style={styles.capabilityNoticeTitle}>Some actions are unavailable</Text>
                 <Text style={styles.capabilityNoticeText}>
-                  {getActionUnsupportedReason(capabilities, 'deposit')}
-                  {getActionUnsupportedReason(capabilities, 'withdraw') ? `\nWithdraw: ${getActionUnsupportedReason(capabilities, 'withdraw')}` : ''}
-                  {getActionUnsupportedReason(capabilities, 'lock') ? `\nLock: ${getActionUnsupportedReason(capabilities, 'lock')}` : ''}
+                  {getActionUnsupportedReason(capabilities, 'deposit')
+                    ? `Deposit: ${getActionUnsupportedReason(capabilities, 'deposit')}`
+                    : ''}
+                  {getActionUnsupportedReason(capabilities, 'withdraw')
+                    ? `\nWithdraw: ${getActionUnsupportedReason(capabilities, 'withdraw')}`
+                    : ''}
+                  {getActionUnsupportedReason(capabilities, 'lock')
+                    ? `\nLock: ${getActionUnsupportedReason(capabilities, 'lock')}`
+                    : ''}
+                  {getActionUnsupportedReason(capabilities, 'unlock')
+                    ? `\nUnlock: ${getActionUnsupportedReason(capabilities, 'unlock')}`
+                    : ''}
                 </Text>
               </View>
             </View>
@@ -405,7 +438,7 @@ export default function VaultScreen() {
           />
           <View style={styles.actions}>
             <AsyncActionButton
-              title={canDeposit ? 'Deposit' : 'Deposit Unavailable'}
+              title={actionTitle('Deposit', 'deposit', canDeposit)}
               onPress={handleDepositPress}
               isLoading={depositForm.isSubmitting || (isSubmitting && pendingAction === 'deposit')}
               loadingText="Depositing…"
@@ -413,7 +446,7 @@ export default function VaultScreen() {
               style={styles.actionButton}
             />
             <AsyncActionButton
-              title={canWithdraw ? 'Withdraw' : 'Withdraw Unavailable'}
+              title={actionTitle('Withdraw', 'withdraw', canWithdraw)}
               variant="secondary"
               onPress={handleWithdrawPress}
               isLoading={isSubmitting && pendingAction === 'withdraw'}
@@ -423,7 +456,7 @@ export default function VaultScreen() {
             />
           </View>
           <AsyncActionButton
-            title={canLock ? 'Set Aside for 30 Days' : 'Lock Unavailable'}
+            title={actionTitle('Set Aside for 30 Days', 'lock', canLock)}
             variant="outline"
             onPress={() => handleAction('lock')}
             isLoading={isSubmitting && pendingAction === 'lock'}
