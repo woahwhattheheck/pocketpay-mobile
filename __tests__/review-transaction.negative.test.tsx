@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 
 jest.mock('expo-router');
 jest.mock('../src/services/stellar', () => ({
@@ -112,6 +112,30 @@ describe('ReviewTransactionScreen negative paths', () => {
       refreshWalletData: jest.fn(),
       addPendingTransaction: jest.fn(),
     } as any);
+  });
+
+  it('clears the review lock before returning to edit', () => {
+    jest.useFakeTimers();
+
+    const { getByText, unmount } = render(<ReviewTransactionScreen />);
+
+    expect(useSignerStore.getState().phase).toBe('review');
+    expect(useSignerStore.getState().currentReview).not.toBeNull();
+
+    fireEvent.press(getByText('Back to Edit'));
+
+    expect(useSignerStore.getState().phase).toBe('cancelled');
+    expect(useSignerStore.getState().currentReview).toBeNull();
+
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
+    expect(useSignerStore.getState().phase).toBe('idle');
+    expect(mockBack).toHaveBeenCalledTimes(1);
+
+    unmount();
+    jest.useRealTimers();
   });
 
   it('submits only once when Sign & Send is double-tapped before rerender', async () => {

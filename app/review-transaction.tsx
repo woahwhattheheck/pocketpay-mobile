@@ -257,7 +257,7 @@ export default function ReviewTransactionScreen() {
         onConfirm={isReviewPhase ? handleConfirmSign : undefined}
         loadingText="Signing…"
         cancelLabel="Back to Edit"
-        onCancel={isReviewPhase ? () => router.back() : undefined}
+        onCancel={isReviewPhase ? handleCancel : undefined}
       />
 
       {/* Signer Info Card */}
