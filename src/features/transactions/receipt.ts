@@ -56,6 +56,17 @@ export function resolveReceiptStatus(evidence: ReceiptStatusEvidence): PaymentRe
   return isReceiptStatus(evidence.status) ? evidence.status : 'unknown';
 }
 
+export type ReceiptSigningErrorType = 'user_cancelled' | 'signer_rejected' | string;
+
+/** Only an explicit pre-submission cancellation/rejection is safe to label rejected. */
+export function resolveSigningErrorReceiptStatus(
+  errorType: ReceiptSigningErrorType | null | undefined,
+): PaymentReceiptStatus {
+  return errorType === 'user_cancelled' || errorType === 'signer_rejected'
+    ? 'rejected'
+    : 'unknown';
+}
+
 function scalar(value: unknown, maxLength: number): string {
   if (typeof value !== 'string' || value.length > maxLength) return '';
   return value.trim();
