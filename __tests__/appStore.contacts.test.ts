@@ -58,7 +58,11 @@ it("blocks normalized duplicate addresses but only warns on duplicate names", as
     isDuplicate: false, type: "name",
   });
   await expect(state().addContactIfUnique({ ...bob, name: " alice " }))
-    .resolves.toMatchObject({ isDuplicate: false });
+    .resolves.toMatchObject({
+      isDuplicate: false,
+      type: "name",
+      message: expect.stringContaining("Alice"),
+    });
   expect(state().contacts).toHaveLength(2);
 });
 
