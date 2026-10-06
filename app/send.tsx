@@ -19,8 +19,7 @@ import { SIZES, RADIUS, ThemeColors } from "../src/constants/theme";
 import { useTheme } from "../src/hooks/useTheme";
 import { sendXlmTransaction } from "../src/services/stellar";
 import { useWalletStore } from "../src/store/walletStore";
-import { useAppStore } from "../src/store/appStore";
-import { useContactStore } from "../src/features/contacts/contactStore";
+import { Contact, useAppStore } from "../src/store/appStore";
 import {
   validateAddress,
   validateAmount,
@@ -59,7 +58,8 @@ export default function SendScreen() {
   const { publicKey, getSecretKey, refreshWalletData, balance, fundingStatus, error } =
     useWalletStore();
   const contacts = useAppStore((state) => state.contacts);
-  const { getContactByAddress, addRecentRecipient } = useContactStore();
+  const addContactIfUnique = useAppStore((state) => state.addContactIfUnique);
+  const updateContact = useAppStore((state) => state.updateContact);
   const { state: networkState, disableWriteActions, retry } = useNetworkState({ error });
 
   const isUnfunded = fundingStatus === 'unfunded';
@@ -73,7 +73,7 @@ export default function SendScreen() {
   const [isScanning, setIsScanning] = useState(false);
   const [showContactPicker, setShowContactPicker] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
-  const [lastSendDestination, setLastSendDestination] = useState("");
+  const [editingContact, setEditingContact] = useState<Contact | null>(null);
 
   const destinationContact =
     destination.trim() && !errors.destination
@@ -119,11 +119,31 @@ export default function SendScreen() {
 
   const handleAddNewContact = () => {
     setShowContactPicker(false);
+    setEditingContact(null);
     setShowContactForm(true);
   };
 
-  const handleSaveContact = (name: string, address: string) => {
-    useContactStore.getState().addContact(name, address);
+  const handleEditContact = (contact: Contact) => {
+    setShowContactPicker(false);
+    setEditingContact(contact);
+    setShowContactForm(true);
+  };
+
+  const handleSaveContact = async (name: string, address: string) => {
+    const result = editingContact
+      ? await updateContact(editingContact.id, name, address)
+      : await addContactIfUnique({
+          id: Date.now().toString(),
+          name,
+          publicKey: address,
+        });
+
+    if (result.isDuplicate) {
+      Alert.alert("Contact not saved", result.message);
+      return;
+    }
+
+    setEditingContact(null);
     setShowContactForm(false);
   };
 
@@ -321,14 +341,15 @@ export default function SendScreen() {
         onCancel={() => setShowContactPicker(false)}
         onSelect={handleSelectContact}
         onAddNew={handleAddNewContact}
+        onEdit={handleEditContact}
       />
 
       <ContactForm
         visible={showContactForm}
-        contact={lastSendDestination ? { id: '', name: '', address: lastSendDestination } : null}
+        contact={editingContact}
         onCancel={() => {
           setShowContactForm(false);
-          setLastSendDestination("");
+          setEditingContact(null);
         }}
         onSave={handleSaveContact}
       />
