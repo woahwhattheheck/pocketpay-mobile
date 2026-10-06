@@ -114,6 +114,23 @@ describe('ReviewTransactionScreen negative paths', () => {
     } as any);
   });
 
+  it('submits only once when Sign & Send is double-tapped before rerender', async () => {
+    mockSendXlmTransaction.mockReturnValueOnce(new Promise(() => {}) as any);
+
+    const { getByText, unmount } = render(<ReviewTransactionScreen />);
+    const signAndSend = getByText('Sign & Send');
+
+    fireEvent.press(signAndSend);
+    fireEvent.press(signAndSend);
+
+    await waitFor(() => {
+      expect(mockSendXlmTransaction).toHaveBeenCalledTimes(1);
+    });
+    expect(useSignerStore.getState().phase).toBe('signing');
+
+    unmount();
+  });
+
   it('shows a safe unconfirmed-submission message when the network request fails', async () => {
     mockSendXlmTransaction.mockRejectedValueOnce(new Error('fetch failed'));
 
