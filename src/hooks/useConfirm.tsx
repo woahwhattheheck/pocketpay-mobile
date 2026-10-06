@@ -16,6 +16,11 @@ export interface ConfirmRequest {
   onConfirm?: () => void | Promise<void>;
 }
 
+interface ActiveConfirmation {
+  request: ConfirmRequest;
+  resolve: (confirmed: boolean) => void;
+}
+
 export interface UseConfirmResult {
   /**
    * Opens the dialog and resolves `true` once the user confirms (and any
@@ -52,44 +57,49 @@ export interface UseConfirmResult {
  * ```
  */
 export function useConfirm(): UseConfirmResult {
-  const [request, setRequest] = useState<ConfirmRequest | null>(null);
-  const resolverRef = useRef<((confirmed: boolean) => void) | null>(null);
+  const [active, setActive] = useState<ActiveConfirmation | null>(null);
+  const activeRef = useRef<ActiveConfirmation | null>(null);
+  const request = active?.request ?? null;
 
-  const settle = useCallback((confirmed: boolean) => {
-    const resolve = resolverRef.current;
-    resolverRef.current = null;
-    setRequest(null);
-    resolve?.(confirmed);
+  const settle = useCallback((expected: ActiveConfirmation, confirmed: boolean) => {
+    // A superseded callback must not close or resolve the replacement request.
+    if (activeRef.current !== expected) return;
+    activeRef.current = null;
+    setActive(null);
+    expected.resolve(confirmed);
   }, []);
 
   const confirm = useCallback(
     (next: ConfirmRequest) => {
       // A second request while one is open supersedes it; the superseded caller
       // resolves `false` so its promise never dangles.
-      resolverRef.current?.(false);
+      activeRef.current?.resolve(false);
 
       return new Promise<boolean>((resolve) => {
-        resolverRef.current = resolve;
-        setRequest(next);
+        // Every invocation has its own identity, even if options are reused.
+        const pending = { request: next, resolve };
+        activeRef.current = pending;
+        setActive(pending);
       });
     },
     [],
   );
 
   const handleConfirm = useCallback(async () => {
-    // Captured before awaiting: `settle` clears the request, and a later
-    // supersede must not run this request's work twice.
-    const pending = request;
-    if (!pending) return;
+    // Ignore stale rendered handlers, and retain this identity across the await.
+    const pending = active;
+    if (!pending || activeRef.current !== pending) return;
 
     try {
-      await pending.onConfirm?.();
+      await pending.request.onConfirm?.();
     } finally {
-      settle(true);
+      settle(pending, true);
     }
-  }, [request, settle]);
+  }, [active, settle]);
 
-  const handleCancel = useCallback(() => settle(false), [settle]);
+  const handleCancel = useCallback(() => {
+    if (active) settle(active, false);
+  }, [active, settle]);
 
   const confirmationDialog = useMemo(() => {
     if (!request) return null;
