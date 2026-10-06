@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import { Input } from '@/components/Input';
-import { useContactStore, Contact } from '@/features/contacts/contactStore';
+import { useAppStore, Contact } from '@/store/appStore';
 import { useConfirm } from '@/hooks/useConfirm';
 import { X, User, Clock, Trash2, Edit2 } from 'lucide-react-native';
 
@@ -10,7 +10,7 @@ interface ContactPickerProps {
   onSelect: (address: string) => void;
   onCancel: () => void;
   onAddNew: () => void;
-  onEdit: (contact: Contact) => void;
+  onEdit?: (contact: Contact) => void;
 }
 
 export const ContactPicker: React.FC<ContactPickerProps> = ({
@@ -21,7 +21,7 @@ export const ContactPicker: React.FC<ContactPickerProps> = ({
                                                               onEdit
                                                             }) => {
   const [search, setSearch] = useState('');
-  const { contacts, recentRecipients, getContactByAddress, deleteContact } = useContactStore();
+  const { contacts, recentRecipients, findContactByPublicKey, removeContact } = useAppStore();
   const { confirm, confirmationDialog } = useConfirm();
 
   const filteredContacts = useMemo(() => {
@@ -30,23 +30,23 @@ export const ContactPicker: React.FC<ContactPickerProps> = ({
     return contacts.filter(
         (c) =>
             c.name.toLowerCase().includes(query) ||
-            c.address.toLowerCase().includes(query)
+            c.publicKey.toLowerCase().includes(query)
     );
   }, [contacts, search]);
 
   const recentWithNames = useMemo(() => {
     return recentRecipients
         .map((addr) => {
-          const contact = getContactByAddress(addr);
-          return { address: addr, name: contact?.name };
+          const contact = findContactByPublicKey(addr);
+          return { publicKey: addr, name: contact?.name };
         })
         .slice(0, 5);
-  }, [recentRecipients, getContactByAddress]);
+  }, [recentRecipients, findContactByPublicKey]);
 
   const handleDelete = async (contact: Contact) => {
     // Truncate address for readability if name is not available
     const displayName = contact.name ||
-        (contact.address ? `${contact.address.slice(0, 8)}...${contact.address.slice(-6)}` : 'this contact');
+        (contact.publicKey ? `${contact.publicKey.slice(0, 8)}...${contact.publicKey.slice(-6)}` : 'this contact');
 
     await confirm({
       title: 'Delete Contact',
@@ -54,7 +54,7 @@ export const ContactPicker: React.FC<ContactPickerProps> = ({
       confirmLabel: 'Delete',
       cancelLabel: 'Cancel',
       destructive: true,
-      onConfirm: () => deleteContact(contact.id),
+      onConfirm: () => removeContact(contact.id),
     });
   };
 
@@ -85,14 +85,14 @@ export const ContactPicker: React.FC<ContactPickerProps> = ({
                       <Text style={styles.sectionTitle}>Recent Recipients</Text>
                       {recentWithNames.map((item) => (
                           <TouchableOpacity
-                              key={item.address}
+                              key={item.publicKey}
                               style={styles.contactItem}
-                              onPress={() => onSelect(item.address)}
+                              onPress={() => onSelect(item.publicKey)}
                           >
                             <View style={styles.icon}><Clock size={20} color="#666" /></View>
                             <View style={styles.contactInfo}>
                               <Text style={styles.contactName}>{item.name || 'Unknown'}</Text>
-                              <Text style={styles.contactAddress} numberOfLines={1}>{item.address}</Text>
+                              <Text style={styles.contactAddress} numberOfLines={1}>{item.publicKey}</Text>
                             </View>
                           </TouchableOpacity>
                       ))}
@@ -111,19 +111,31 @@ export const ContactPicker: React.FC<ContactPickerProps> = ({
                           <View key={contact.id} style={styles.contactRow}>
                             <TouchableOpacity
                                 style={[styles.contactItem, { flex: 1 }]}
-                                onPress={() => onSelect(contact.address)}
+                                onPress={() => onSelect(contact.publicKey)}
                             >
                               <View style={styles.icon}><User size={20} color="#666" /></View>
                               <View style={styles.contactInfo}>
                                 <Text style={styles.contactName}>{contact.name}</Text>
-                                <Text style={styles.contactAddress} numberOfLines={1}>{contact.address}</Text>
+                                <Text style={styles.contactAddress} numberOfLines={1}>{contact.publicKey}</Text>
                               </View>
                             </TouchableOpacity>
                             <View style={styles.actionButtons}>
-                              <TouchableOpacity onPress={() => onEdit(contact)} style={styles.actionBtn}>
-                                <Edit2 size={18} color="#0066cc" />
-                              </TouchableOpacity>
-                              <TouchableOpacity onPress={() => handleDelete(contact)} style={styles.actionBtn}>
+                              {onEdit ? (
+                                <TouchableOpacity
+                                  onPress={() => onEdit(contact)}
+                                  style={styles.actionBtn}
+                                  accessibilityLabel={`Edit ${contact.name}`}
+                                  accessibilityRole="button"
+                                >
+                                  <Edit2 size={18} color="#0066cc" />
+                                </TouchableOpacity>
+                              ) : null}
+                              <TouchableOpacity
+                                onPress={() => handleDelete(contact)}
+                                style={styles.actionBtn}
+                                accessibilityLabel={`Delete ${contact.name}`}
+                                accessibilityRole="button"
+                              >
                                 <Trash2 size={18} color="#ff4444" />
                               </TouchableOpacity>
                             </View>
