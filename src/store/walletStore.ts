@@ -346,9 +346,18 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     const state = get();
     const pendingTransactions = { ...state.pendingTransactions, [hash]: pendingRecord };
 
+    const transactionsWithoutSameOptimisticHash = state.transactions.filter((record) => {
+      if (record.status !== 'pending' && record.status !== 'unknown') return true;
+      return (
+        record.id !== hash &&
+        record.hash !== hash &&
+        record.transaction_hash !== hash
+      );
+    });
+
     set({
       pendingTransactions,
-      transactions: [pendingRecord, ...state.transactions],
+      transactions: [pendingRecord, ...transactionsWithoutSameOptimisticHash],
     });
 
     if (state.publicKey) {
