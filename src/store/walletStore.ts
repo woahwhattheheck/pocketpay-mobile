@@ -319,12 +319,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         Object.entries(get().pendingTransactions).filter(([hash]) => !confirmedHashes.has(hash))
       );
 
-      await enqueuePendingTransactionsPersist(publicKey, remainingPending);
-      if (
-        get().publicKey !== publicKey ||
-        requestGeneration !== refreshRequestGeneration
-      ) return;
-
+      // Commit the reconciled snapshot before waiting on storage. A new
+      // optimistic transaction can be added while persistence is in flight; if
+      // this set happened afterwards, the older refresh snapshot would erase it
+      // from memory and its queued write could resurrect already-confirmed rows.
       const isZero = balance === '0.0000000';
       set({
         balance,
@@ -338,6 +336,12 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         // Also update funding status: if we got balance data, the account exists
         fundingStatus: 'funded',
       });
+
+      // Writes are serialized. Any optimistic add that happens while this await
+      // is pending observes the reconciled in-memory state above and queues a
+      // newer snapshot behind this one. Never write remainingPending to memory
+      // again after the await.
+      await enqueuePendingTransactionsPersist(publicKey, remainingPending);
     } catch (err: any) {
       if (
         get().publicKey !== publicKey ||
