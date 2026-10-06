@@ -29,6 +29,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 }));
 
 import { fetchTransactionsPage, fetchXlmBalance } from '../src/services/stellar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useWalletStore } from '../src/store/walletStore';
 
 const mockFetchTransactionsPage = fetchTransactionsPage as jest.MockedFunction<
@@ -106,6 +107,9 @@ describe('AC-P3 – reconcile on refresh', () => {
     expect(
       state.transactions.filter((t) => t.id === 'hash1' || t.transaction_hash === 'hash1')
     ).toHaveLength(1);
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
+      '@pocketpay_pending_transactions:GPUBLIC123'
+    );
   });
 
   it('reconciles using the hash field on the submit response, not the Horizon operation id', async () => {
