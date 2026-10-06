@@ -183,6 +183,49 @@ describe('AC-P2b – concurrent add during an in-flight refresh', () => {
   });
 });
 
+describe('AC-P2c – overlapping same-wallet refreshes', () => {
+  it('keeps the newer refresh result when an older request completes last', async () => {
+    let resolveFirst: (value: any) => void = () => {};
+    let resolveSecond: (value: any) => void = () => {};
+    const firstPage = new Promise((resolve) => {
+      resolveFirst = resolve;
+    });
+    const secondPage = new Promise((resolve) => {
+      resolveSecond = resolve;
+    });
+
+    mockFetchTransactionsPage
+      .mockReturnValueOnce(firstPage as any)
+      .mockReturnValueOnce(secondPage as any);
+
+    const firstRefresh = useWalletStore.getState().refreshWalletData();
+    const secondRefresh = useWalletStore.getState().refreshWalletData();
+
+    await act(async () => {
+      resolveSecond({
+        records: [{ id: 'newer-operation', transaction_hash: 'newer-hash' }],
+        nextCursor: 'newer-cursor',
+        hasMore: true,
+      });
+      await secondRefresh;
+    });
+
+    await act(async () => {
+      resolveFirst({
+        records: [{ id: 'older-operation', transaction_hash: 'older-hash' }],
+        nextCursor: 'older-cursor',
+        hasMore: true,
+      });
+      await firstRefresh;
+    });
+
+    const state = useWalletStore.getState();
+    expect(state.transactions.map((tx) => tx.id)).toEqual(['newer-operation']);
+    expect(state.nextCursor).toBe('newer-cursor');
+    expect(state.hasMoreTransactions).toBe(true);
+  });
+});
+
 describe('AC-P4 – unreconciled pending entries stay visible', () => {
   it('keeps a pending entry when refresh does not bring back its hash yet', async () => {
     useWalletStore.getState().addPendingTransaction('hash1', { id: 'hash1', amount: '10' });
