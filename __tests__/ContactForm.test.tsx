@@ -55,7 +55,7 @@ describe('ContactForm', () => {
 
     expect(screen.getByText('Edit Contact')).toBeTruthy();
     expect(screen.getByDisplayValue('Alice')).toBeTruthy();
-    expect(screen.getByDisplayValue('GABC123')).toBeTruthy();
+    expect(screen.getByDisplayValue(VALID_ADDRESS)).toBeTruthy();
   });
 
   it('shows validation errors for empty fields', async () => {
@@ -132,15 +132,14 @@ describe('ContactForm', () => {
   });
 
   it('detects duplicate address when adding new contact', async () => {
-    const mockGetContactByAddress = jest.fn(() => ({
-      id: '1',
-      name: 'Existing',
-      publicKey: VALID_ADDRESS,
+    const mockFindDuplicateContact = jest.fn(() => ({
+      isDuplicate: true,
+      type: 'address',
+      message: 'This address is already saved as "Existing".',
     }));
 
     (useAppStore as jest.Mock).mockReturnValue({
-      contacts: [{ id: '1', name: 'Existing', publicKey: VALID_ADDRESS, createdAt: Date.now() }],
-      findDuplicateContact: mockGetContactByAddress,
+      findDuplicateContact: mockFindDuplicateContact,
     });
 
     render(
@@ -179,7 +178,7 @@ describe('ContactForm', () => {
     fireEvent.changeText(screen.getByPlaceholderText('Contact name'), 'Alice');
     fireEvent.changeText(
       screen.getByPlaceholderText('G...'),
-      'GABC12345678901234567890123456789012345678901234567890'
+      VALID_ADDRESS
     );
 
     fireEvent.press(screen.getByText('Save'));
