@@ -2,7 +2,7 @@
  * QrScanner
  *
  * A reusable camera overlay that:
- *  - Requests camera permission on mount
+ *  - Explains camera access before the user requests permission
  *  - Scans QR codes and validates the result as a Stellar public key
  *  - Calls onScan with the valid address, or onError with a descriptive message
  *  - Exposes a close button that calls onClose
@@ -10,7 +10,7 @@
  * Accessibility: all interactive elements carry accessibilityLabel / accessibilityRole.
  */
 
-import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import React, { useMemo, useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -42,11 +42,23 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
   const [permission, requestPermission] = useCameraPermissions();
   const lastScanTime = useRef<number>(0);
   const [hasScanned, setHasScanned] = useState(false);
+  const permissionRequestInFlight = useRef(false);
+  const [isRequestingPermission, setIsRequestingPermission] = useState(false);
+  const [permissionError, setPermissionError] = useState<string | null>(null);
 
-  // Request permission automatically on mount if not yet determined.
-  useEffect(() => {
-    if (permission && !permission.granted && permission.canAskAgain) {
-      requestPermission();
+  const handleRequestPermission = useCallback(async () => {
+    if (permissionRequestInFlight.current || !permission || permission.granted || !permission.canAskAgain) return;
+
+    permissionRequestInFlight.current = true;
+    setIsRequestingPermission(true);
+    setPermissionError(null);
+    try {
+      await requestPermission();
+    } catch {
+      setPermissionError('Camera access could not be requested. Try again or enter the address manually.');
+    } finally {
+      permissionRequestInFlight.current = false;
+      setIsRequestingPermission(false);
     }
   }, [permission, requestPermission]);
 
@@ -78,24 +90,46 @@ export const QrScanner: React.FC<QrScannerProps> = ({ onScan, onError, onClose }
       <View style={styles.centred} accessibilityLiveRegion="polite">
         <ActivityIndicator color={colors.primary} size="large" />
         <Text style={styles.statusText}>Checking camera permission…</Text>
+        <TouchableOpacity
+          style={styles.closeButtonFallback}
+          onPress={onClose}
+          accessibilityLabel="Close scanner"
+          accessibilityRole="button"
+        >
+          <Text style={styles.closeButtonFallbackText}>Cancel</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  // ── Permission: denied ─────────────────────────────────────────────────────
+  // ── Permission: not granted ─────────────────────────────────────────────────────
   if (!permission.granted) {
     return (
       <View style={styles.centred}>
         <ScanLine color={colors.textMuted} size={48} style={{ marginBottom: SIZES.md }} />
-        <Text style={styles.statusText}>Camera access is required to scan QR codes.</Text>
+        <Text style={styles.statusText}>
+          Allow camera access to scan a Stellar wallet address QR code.
+        </Text>
+        <Text style={styles.subText}>
+          You can cancel and enter the recipient address manually instead.
+        </Text>
+        {permissionError && (
+          <Text style={styles.subText} accessibilityRole="alert" accessibilityLiveRegion="polite">
+            {permissionError}
+          </Text>
+        )}
         {permission.canAskAgain ? (
           <TouchableOpacity
             style={styles.permissionButton}
-            onPress={requestPermission}
+            onPress={handleRequestPermission}
+            disabled={isRequestingPermission}
+            accessibilityState={{ disabled: isRequestingPermission, busy: isRequestingPermission }}
             accessibilityLabel="Grant camera permission"
             accessibilityRole="button"
           >
-            <Text style={styles.permissionButtonText}>Grant Permission</Text>
+            <Text style={styles.permissionButtonText}>
+              {isRequestingPermission ? 'Requesting…' : 'Grant Permission'}
+            </Text>
           </TouchableOpacity>
         ) : (
           <Text style={styles.subText}>
