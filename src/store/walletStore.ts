@@ -366,7 +366,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   },
 
   loadMoreTransactions: async () => {
-    const { publicKey, isLoadingMore, hasMoreTransactions, nextCursor, transactions } = get();
+    const { publicKey, isLoadingMore, hasMoreTransactions, nextCursor } = get();
 
     // Guard: nothing to do if already loading or no more pages.
     if (!publicKey || isLoadingMore || !hasMoreTransactions || !nextCursor) return;
@@ -375,21 +375,33 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     try {
       const page = await fetchTransactionsPage(publicKey, TX_PAGE_SIZE, nextCursor);
 
-      // Deduplicate: build a set of existing IDs then filter the new records.
-      const existingIds = new Set(transactions.map((tx) => tx.id));
-      const newRecords = (page.records as TransactionRecord[]).filter(
-        (tx) => !existingIds.has(tx.id)
-      );
+      set((state) => {
+        // A refresh or wallet change may have replaced this pagination request.
+        if (state.publicKey !== publicKey || state.nextCursor !== nextCursor || !state.isLoadingMore) {
+          return state;
+        }
 
-      set({
-        transactions: [...transactions, ...newRecords],
-        nextCursor: page.nextCursor,
-        hasMoreTransactions: page.hasMore,
-        isLoadingMore: false,
+        // Preserve records added or updated while the older page was loading.
+        const existingIds = new Set(state.transactions.map((tx) => tx.id));
+        const newRecords = (page.records as TransactionRecord[]).filter(
+          (tx) => !existingIds.has(tx.id)
+        );
+
+        return {
+          transactions: [...state.transactions, ...newRecords],
+          nextCursor: page.nextCursor,
+          hasMoreTransactions: page.hasMore,
+          isLoadingMore: false,
+        };
       });
     } catch (err: any) {
       console.error('Failed to load more transactions:', err);
-      set({ isLoadingMore: false, error: err.message || 'Failed to load more' });
+      set((state) => {
+        if (state.publicKey !== publicKey || state.nextCursor !== nextCursor || !state.isLoadingMore) {
+          return state;
+        }
+        return { isLoadingMore: false, error: err.message || 'Failed to load more' };
+      });
     }
   },
 
