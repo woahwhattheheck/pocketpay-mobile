@@ -73,8 +73,12 @@ returns either a payload or field-specific errors.
   information, so its sender must select Testnet separately.
 - **Amount:** optional, but when present it must pass the shared positive-decimal
   validation used by payment flows.
-- **Memo:** optional, but when present it must fit the Stellar 28-byte text-memo
-  limit. A memo type without a memo is rejected.
+- **Memo:** optional. The validated mobile receive flow currently supports
+  `MEMO_TEXT` only and enforces Stellar's 28-byte UTF-8 text-memo limit.
+  `MEMO_ID`, `MEMO_HASH`, and `MEMO_RETURN` remain representable by the
+  low-level formatter for forward compatibility, but validated mobile requests
+  reject them rather than applying text-memo rules to a different memo type. A
+  memo type without a memo is also rejected.
 - **Issued assets:** the low-level formatter can still represent
   `asset_code`/`asset_issuer` together for forward compatibility, but the
   current mobile screen is XLM-only. The validated mobile path therefore rejects
