@@ -139,7 +139,7 @@ export const validateAmount = (
   }
 
   const value = Number(trimmed);
-  if (!/^\d+(\.\d+)?$/.test(trimmed) || Number.isNaN(value)) {
+  if (!/^\d+(\.\d+)?$/.test(trimmed) || !Number.isFinite(value)) {
     return "Please enter a valid number.";
   }
 
