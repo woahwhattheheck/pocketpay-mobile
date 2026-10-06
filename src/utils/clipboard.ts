@@ -54,8 +54,8 @@ export function useCopyToClipboard(resetDelayMs = COPY_FEEDBACK_DURATION_MS) {
   const copy = useCallback(
     async (text: string, fieldKey: string): Promise<CopyResult> => {
       const result = await copyToClipboard(text);
+      reset();
       if (result.ok) {
-        reset();
         setCopiedField(fieldKey);
         timeoutRef.current = setTimeout(() => {
           setCopiedField(null);
