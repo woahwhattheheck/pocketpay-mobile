@@ -16,13 +16,15 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'rea
 import { RefreshCw, AlertTriangle, EyeOff } from 'lucide-react-native';
 import { SIZES, RADIUS, ThemeColors } from '../constants/theme';
 import { useTheme } from '../hooks/useTheme';
-import type { BalanceState } from '../types/balance';
-import { describeBalanceState } from '../types/balance';
+import type { BalanceRefreshState, BalanceState } from '../types/balance';
+import { describeBalanceRefreshState, describeBalanceState } from '../types/balance';
 import { formatAmount } from '../utils/amount';
 
 export interface BalanceDisplayProps {
   /** The current balance state. */
   state: BalanceState;
+  /** Refresh lifecycle; cached balance may remain available while this is stale/failed/offline. */
+  refreshState?: BalanceRefreshState;
   /** The numeric balance, only meaningful when state is 'available'. */
   balance: string;
   /** The wallet public key for display. */
@@ -49,6 +51,7 @@ function formatRelativeTime(timestamp: number): string {
 
 export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
   state,
+  refreshState = 'idle',
   balance,
   publicKey,
   onRetry,
@@ -59,6 +62,10 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const copy = useMemo(() => describeBalanceState(state), [state]);
+  const refreshCopy = useMemo(
+    () => describeBalanceRefreshState(refreshState),
+    [refreshState],
+  );
 
   // ── Loading state ─────────────────────────────────────────────────
   if (state === 'idle' || state === 'loading') {
@@ -80,29 +87,31 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
 
   // ── Unavailable state ────────────────────────────────────────────
   if (state === 'unavailable') {
+    const unavailableCopy =
+      refreshState === 'failed' || refreshState === 'offline' ? refreshCopy : copy;
     return (
       <View
         style={[styles.card, styles.cardUnavailable]}
         accessibilityRole="alert"
-        accessibilityLabel={`Balance unavailable. ${copy.message}`}
+        accessibilityLabel={`${unavailableCopy.title}. ${unavailableCopy.message}`}
       >
         <View style={styles.unavailableHeader}>
           <AlertTriangle color={colors.warning} size={18} style={{ marginRight: SIZES.sm }} />
-          <Text style={styles.unavailableTitle}>{copy.title}</Text>
+          <Text style={styles.unavailableTitle}>{unavailableCopy.title}</Text>
         </View>
-        <Text style={styles.unavailableMessage}>{copy.message}</Text>
+        <Text style={styles.unavailableMessage}>{unavailableCopy.message}</Text>
         {publicKey ? (
           <Text style={styles.publicKey} numberOfLines={1} ellipsizeMode="middle">
             {publicKey}
           </Text>
         ) : null}
-        {onRetry && copy.retryLabel ? (
+        {onRetry && unavailableCopy.retryLabel ? (
           <TouchableOpacity
             style={styles.retryButton}
             onPress={onRetry}
             disabled={isRetrying}
             accessibilityRole="button"
-            accessibilityLabel={copy.retryLabel}
+            accessibilityLabel={unavailableCopy.retryLabel}
             activeOpacity={0.7}
           >
             <RefreshCw
@@ -111,7 +120,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
               style={{ marginRight: 4 }}
             />
             <Text style={[styles.retryText, isRetrying && styles.retryTextDisabled]}>
-              {isRetrying ? 'Refreshing…' : copy.retryLabel}
+              {isRetrying ? 'Refreshing…' : unavailableCopy.retryLabel}
             </Text>
           </TouchableOpacity>
         ) : null}
@@ -139,6 +148,35 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
           <Text style={styles.lastRefreshedText}>
             Updated {formatRelativeTime(lastRefreshed)}
           </Text>
+        </View>
+      )}
+      {refreshState !== 'idle' && refreshState !== 'loading' && (
+        <View
+          style={styles.refreshStatus}
+          accessibilityLiveRegion="polite"
+          testID="balance-refresh-status"
+        >
+          <Text style={styles.refreshStatusTitle}>{refreshCopy.title}</Text>
+          <Text style={styles.refreshStatusMessage}>{refreshCopy.message}</Text>
+          {onRetry && refreshCopy.retryLabel ? (
+            <TouchableOpacity
+              style={styles.retryButton}
+              onPress={onRetry}
+              disabled={isRetrying}
+              accessibilityRole="button"
+              accessibilityLabel={refreshCopy.retryLabel}
+              activeOpacity={0.7}
+            >
+              <RefreshCw
+                color={isRetrying ? colors.textMuted : colors.primary}
+                size={14}
+                style={{ marginRight: 4 }}
+              />
+              <Text style={[styles.retryText, isRetrying && styles.retryTextDisabled]}>
+                {isRetrying ? 'Refreshing…' : refreshCopy.retryLabel}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       )}
       {isZero && (
@@ -201,6 +239,26 @@ const createStyles = (colors: ThemeColors) =>
     lastRefreshedText: {
       color: colors.textMuted,
       fontSize: 11,
+    },
+    refreshStatus: {
+      width: '100%',
+      alignItems: 'center',
+      marginTop: SIZES.sm,
+      paddingTop: SIZES.sm,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+    },
+    refreshStatusTitle: {
+      color: colors.textSecondary,
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    refreshStatusMessage: {
+      color: colors.textMuted,
+      fontSize: 11,
+      textAlign: 'center',
+      lineHeight: 16,
+      marginTop: 2,
     },
     loadingRow: {
       flexDirection: 'row',

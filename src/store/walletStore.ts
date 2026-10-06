@@ -3,13 +3,14 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StellarSdk from '@stellar/stellar-sdk';
 import { fetchXlmBalance, fetchTransactionsPage, fetchAccountDetails, fundWithFriendbot, PaymentRecord } from '../services/stellar';
-import type { BalanceState, FundingStatus } from '../types/balance';
+import type { BalanceRefreshState, BalanceState, FundingStatus } from '../types/balance';
 import {
   CLEAR_WALLET_ERROR,
   PERSIST_WALLET_ERROR,
   READ_WALLET_ERROR,
   RESTORE_WALLET_ERROR,
 } from '../utils/walletStorageErrors';
+import { classifyNetworkError } from '../hooks/useNetworkStatus';
 
 const WALLET_KEY = 'pocketpay_wallet_secret';
 // Tracks whether the post-creation backup reminder has been acknowledged.
@@ -45,8 +46,10 @@ interface WalletState {
   walletChecked: boolean;
 
   // ---- Issue #329: Balance state ----
-  /** Tracks the lifecycle of the balance fetch — not just its value. */
+  /** Tracks whether the numeric balance itself is currently usable. */
   balanceState: BalanceState;
+  /** Tracks the current/most-recent balance refresh attempt. */
+  balanceRefreshState: BalanceRefreshState;
 
   // ---- Issue #330: Account funding status ----
   /** Whether the account exists on the Stellar network. */
@@ -91,6 +94,7 @@ const resetWalletState = () => ({
   hasMoreTransactions: false,
   nextCursor: null,
   balanceState: 'idle' as BalanceState,
+  balanceRefreshState: 'idle' as BalanceRefreshState,
   fundingStatus: 'unknown' as FundingStatus,
 });
 
@@ -138,6 +142,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   fundError: null,
   error: null,
   balanceState: 'idle' as BalanceState,
+  balanceRefreshState: 'idle' as BalanceRefreshState,
   fundingStatus: 'unknown' as FundingStatus,
   isLoadingMore: false,
   hasMoreTransactions: false,
@@ -166,7 +171,16 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   setWallet: async (publicKey: string, secretKey: string) => {
     try {
       await SecureStore.setItemAsync(WALLET_KEY, secretKey);
-      set({ publicKey, balance: DEFAULT_BALANCE, transactions: [], pendingTransactions: {}, error: null });
+      set({
+        publicKey,
+        balance: DEFAULT_BALANCE,
+        transactions: [],
+        pendingTransactions: {},
+        lastRefreshed: null,
+        balanceState: 'idle',
+        balanceRefreshState: 'idle',
+        error: null,
+      });
       return true;
     } catch {
       console.error(PERSIST_WALLET_ERROR);
@@ -220,10 +234,20 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   },
 
   refreshWalletData: async () => {
-    const { publicKey } = get();
-    if (!publicKey) return;
+    const { publicKey, isLoading, lastRefreshed } = get();
+    if (!publicKey || isLoading) return;
 
-    set({ isLoading: true, error: null, balanceState: 'loading', isLoadingMore: false, nextCursor: null, hasMoreTransactions: false });
+    const hasCachedBalance = lastRefreshed !== null;
+    set({
+      isLoading: true,
+      error: null,
+      balanceState: hasCachedBalance ? 'available' : 'loading',
+      balanceRefreshState: hasCachedBalance ? 'stale' : 'loading',
+      isLoadingMore: false,
+      nextCursor: null,
+      hasMoreTransactions: false,
+    });
+
     try {
       const [balance, page] = await Promise.all([
         fetchXlmBalance(publicKey),
@@ -243,7 +267,6 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         Object.entries(get().pendingTransactions).filter(([hash]) => !confirmedHashes.has(hash))
       );
 
-      const isZero = balance === '0.0000000';
       set({
         balance,
         transactions: [...Object.values(remainingPending), ...page.records],
@@ -253,15 +276,22 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         lastRefreshed: Date.now(),
         isLoading: false,
         balanceState: 'available',
+        balanceRefreshState: 'refreshed',
         // Also update funding status: if we got balance data, the account exists
         fundingStatus: 'funded',
       });
     } catch (err: any) {
       console.error('Failed to refresh wallet data');
+      const message = err?.message || 'Failed to sync data';
+      const refreshFailure =
+        classifyNetworkError(message) === 'offline' ? 'offline' : 'failed';
+
       set({
         isLoading: false,
-        balanceState: 'unavailable',
-        error: err.message || 'Failed to sync data',
+        // Preserve a previously fetched balance instead of blanking safe cached data.
+        balanceState: hasCachedBalance ? 'available' : 'unavailable',
+        balanceRefreshState: refreshFailure,
+        error: message,
       });
     }
   },
