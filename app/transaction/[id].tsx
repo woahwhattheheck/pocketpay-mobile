@@ -171,16 +171,17 @@ export default function TransactionDetailScreen() {
     ? new Date(tx.timestamp).toLocaleString()
     : 'Unknown date';
 
-  const txHash = tx.hash || tx.transaction_hash || '';
+  const txHash = tx.hash || tx.transaction_hash || ((tx.status === 'pending' || tx.status === 'unknown') ? tx.id : '');
   const senderAddress = tx.from || '';
   const recipientAddress = tx.to || '';
   const memoText = tx.memo || '';
   const memoType = tx.memo_type || '';
 
   // Status determination
-  const isPending = tx.is_pending === true;
-  const isFailed = tx.transaction_successful === false;
-  const isSuccessful = !isPending && !isFailed;
+  const isUnknown = tx.status === 'unknown';
+  const isPending = tx.status === 'pending' || tx.is_pending === true;
+  const isFailed = tx.status === 'failed' || tx.transaction_successful === false;
+  const isSuccessful = !isUnknown && !isPending && !isFailed;
 
   const senderLabel = resolveAddressLabel(senderAddress, contacts);
   const recipientLabel = resolveAddressLabel(recipientAddress, contacts);
@@ -212,6 +213,14 @@ export default function TransactionDetailScreen() {
   };
 
   const getStatusConfig = () => {
+    if (isUnknown) {
+      return {
+        icon: <AlertCircle color={COLORS.warning} size={18} />,
+        label: 'Status unknown',
+        color: COLORS.warning,
+        bgColor: 'rgba(255, 196, 0, 0.1)',
+      };
+    }
     if (isPending) {
       return {
         icon: <Clock color={COLORS.warning} size={18} />,
