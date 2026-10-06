@@ -31,6 +31,7 @@ export interface DuplicateCheckResult {
 
 interface AppState {
   contacts: Contact[];
+  recentRecipients: string[];
   themeMode: ThemeMode;
   isInitialized: boolean;
 
@@ -38,7 +39,12 @@ interface AppState {
   initializeApp: () => Promise<void>;
   addContact: (contact: Contact) => Promise<{ success: boolean; duplicateName?: string }>;
   addContactIfUnique: (contact: Contact) => Promise<DuplicateCheckResult>;
-  updateContact: (id: string, name: string) => Promise<void>;
+  updateContact: (
+    id: string,
+    name: string,
+    publicKey?: string,
+  ) => Promise<DuplicateCheckResult>;
+  addRecentRecipient: (publicKey: string) => Promise<void>;
   removeContact: (id: string) => Promise<void>;
   findContactByPublicKey: (publicKey: string) => Contact | undefined;
   findContactByName: (name: string) => Contact | undefined;
@@ -52,8 +58,11 @@ interface AppState {
 
 const STORAGE_KEYS = {
   CONTACTS: "@pocketpay_contacts",
+  RECENT_RECIPIENTS: "@pocketpay_recent_recipients",
   THEME_MODE: "@pocketpay_theme",
 };
+
+const RECENT_RECIPIENT_LIMIT = 5;
 
 /**
  * @deprecated Use normalizeAddress from src/utils/address instead.
@@ -71,6 +80,38 @@ const persistContacts = async (contacts: Contact[]) => {
   }
 };
 
+const persistRecentRecipients = async (recentRecipients: string[]) => {
+  try {
+    await AsyncStorage.setItem(
+      STORAGE_KEYS.RECENT_RECIPIENTS,
+      JSON.stringify(recentRecipients),
+    );
+  } catch (e) {
+    console.error("Failed to save recent recipients:", e);
+  }
+};
+
+function parseStoredRecentRecipients(stored: string | null): string[] {
+  if (!stored) return [];
+  try {
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) return [];
+
+    const result: string[] = [];
+    for (const value of parsed) {
+      if (typeof value !== "string") continue;
+      const normalized = normalizeAddress(value);
+      if (normalized && !result.includes(normalized)) {
+        result.push(normalized);
+      }
+      if (result.length === RECENT_RECIPIENT_LIMIT) break;
+    }
+    return result;
+  } catch {
+    return [];
+  }
+}
+
 /** Parses a stored theme preference, falling back safely if it is missing, malformed, or not a recognized mode. */
 function parseStoredThemeMode(stored: string | null): ThemeMode {
   if (!stored) return DEFAULT_THEME_MODE;
@@ -84,18 +125,22 @@ function parseStoredThemeMode(stored: string | null): ThemeMode {
 
 export const useAppStore = create<AppState>((set, get) => ({
   contacts: [],
+  recentRecipients: [],
   themeMode: DEFAULT_THEME_MODE,
   isInitialized: false,
 
   initializeApp: async () => {
     try {
-      const [storedContacts, storedTheme] = await Promise.all([
-        AsyncStorage.getItem(STORAGE_KEYS.CONTACTS),
-        AsyncStorage.getItem(STORAGE_KEYS.THEME_MODE),
-      ]);
+      const [storedContacts, storedRecentRecipients, storedTheme] =
+        await Promise.all([
+          AsyncStorage.getItem(STORAGE_KEYS.CONTACTS),
+          AsyncStorage.getItem(STORAGE_KEYS.RECENT_RECIPIENTS),
+          AsyncStorage.getItem(STORAGE_KEYS.THEME_MODE),
+        ]);
 
       set({
         contacts: storedContacts ? JSON.parse(storedContacts) : [],
+        recentRecipients: parseStoredRecentRecipients(storedRecentRecipients),
         themeMode: parseStoredThemeMode(storedTheme),
         isInitialized: true,
       });
@@ -130,12 +175,31 @@ export const useAppStore = create<AppState>((set, get) => ({
     return { success: true };
   },
 
-  updateContact: async (id: string, name: string) => {
-    const newContacts = get().contacts.map((c) =>
-      c.id === id ? { ...c, name: name.trim() } : c,
+  updateContact: async (
+    id: string,
+    name: string,
+    publicKey?: string,
+  ) => {
+    const contacts = get().contacts;
+    const existing = contacts.find((contact) => contact.id === id);
+    if (!existing) {
+      return { isDuplicate: false, type: "none", message: "" };
+    }
+
+    const nextPublicKey = normalizeAddress(publicKey ?? existing.publicKey);
+    const duplicateCheck = get().findDuplicateContact(name, nextPublicKey, id);
+    if (duplicateCheck.isDuplicate) {
+      return duplicateCheck;
+    }
+
+    const newContacts = contacts.map((contact) =>
+      contact.id === id
+        ? { ...contact, name: name.trim(), publicKey: nextPublicKey }
+        : contact,
     );
     set({ contacts: newContacts });
     await persistContacts(newContacts);
+    return duplicateCheck;
   },
 
   addContactIfUnique: async (contact: Contact) => {
@@ -150,6 +214,21 @@ export const useAppStore = create<AppState>((set, get) => ({
 
     await get().addContact(contact);
     return { isDuplicate: false, type: "none", message: "" };
+  },
+
+  addRecentRecipient: async (publicKey: string) => {
+    const normalized = normalizeAddress(publicKey);
+    if (!normalized) return;
+
+    const recentRecipients = [
+      normalized,
+      ...get().recentRecipients.filter(
+        (recipient) => normalizeAddress(recipient) !== normalized,
+      ),
+    ].slice(0, RECENT_RECIPIENT_LIMIT);
+
+    set({ recentRecipients });
+    await persistRecentRecipients(recentRecipients);
   },
 
   removeContact: async (id: string) => {
