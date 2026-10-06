@@ -18,6 +18,7 @@ const WALLET_KEY = 'pocketpay_wallet_secret';
 // otherwise the in-memory `showBackupReminder` flag resets to false on the
 // next launch and the user never sees the warning again.
 const BACKUP_ACK_KEY = '@pocketpay_backup_acknowledged';
+const PENDING_TX_KEY_PREFIX = '@pocketpay_pending_transactions:';
 const DEFAULT_BALANCE = '0.0000000';
 const TX_PAGE_SIZE = 20;
 
@@ -25,6 +26,64 @@ const TX_PAGE_SIZE = 20;
 // until a proper typed SDK wrapper is available.
 export type TransactionStatus = 'pending' | 'unknown' | 'confirmed' | 'failed';
 export type TransactionRecord = Record<string, any> & { id: string; status?: TransactionStatus };
+
+const pendingTransactionsKey = (publicKey: string) => `${PENDING_TX_KEY_PREFIX}${publicKey}`;
+
+const isPersistedPendingRecord = (hash: string, value: unknown): value is TransactionRecord => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  return (
+    record.id === hash &&
+    (record.status === 'pending' || record.status === 'unknown')
+  );
+};
+
+const readPendingTransactions = async (
+  publicKey: string
+): Promise<Record<string, TransactionRecord>> => {
+  try {
+    const raw = await AsyncStorage.getItem(pendingTransactionsKey(publicKey));
+    if (!raw) return {};
+
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
+
+    return Object.fromEntries(
+      Object.entries(parsed).filter(([hash, value]) => isPersistedPendingRecord(hash, value))
+    );
+  } catch {
+    console.warn('Failed to restore pending transaction state');
+    return {};
+  }
+};
+
+const persistPendingTransactions = async (
+  publicKey: string,
+  pending: Record<string, TransactionRecord>
+): Promise<void> => {
+  try {
+    const key = pendingTransactionsKey(publicKey);
+    if (Object.keys(pending).length === 0) {
+      await AsyncStorage.removeItem(key);
+      return;
+    }
+    await AsyncStorage.setItem(key, JSON.stringify(pending));
+  } catch {
+    console.warn('Failed to persist pending transaction state');
+  }
+};
+
+// Serialize writes so a slower older snapshot cannot overwrite a newer one.
+let pendingPersistQueue: Promise<void> = Promise.resolve();
+const enqueuePendingTransactionsPersist = (
+  publicKey: string,
+  pending: Record<string, TransactionRecord>
+): Promise<void> => {
+  pendingPersistQueue = pendingPersistQueue
+    .catch(() => undefined)
+    .then(() => persistPendingTransactions(publicKey, pending));
+  return pendingPersistQueue;
+};
 
 interface WalletState {
   publicKey: string | null;
@@ -209,7 +268,17 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         // Non-critical: default to not re-showing the reminder on read failure.
       }
 
-      set({ publicKey: keypair.publicKey(), error: null, showBackupReminder, walletChecked: true });
+      const publicKey = keypair.publicKey();
+      const pendingTransactions = await readPendingTransactions(publicKey);
+
+      set({
+        publicKey,
+        pendingTransactions,
+        transactions: Object.values(pendingTransactions),
+        error: null,
+        showBackupReminder,
+        walletChecked: true,
+      });
       return true;
     } catch {
       console.error(RESTORE_WALLET_ERROR);
@@ -243,6 +312,8 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         Object.entries(get().pendingTransactions).filter(([hash]) => !confirmedHashes.has(hash))
       );
 
+      await enqueuePendingTransactionsPersist(publicKey, remainingPending);
+
       const isZero = balance === '0.0000000';
       set({
         balance,
@@ -272,10 +343,17 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     // ordinary pending transactions.
     const status: TransactionStatus = tx.status === 'unknown' ? 'unknown' : 'pending';
     const pendingRecord: TransactionRecord = { ...tx, status };
-    set((state) => ({
-      pendingTransactions: { ...state.pendingTransactions, [hash]: pendingRecord },
+    const state = get();
+    const pendingTransactions = { ...state.pendingTransactions, [hash]: pendingRecord };
+
+    set({
+      pendingTransactions,
       transactions: [pendingRecord, ...state.transactions],
-    }));
+    });
+
+    if (state.publicKey) {
+      void enqueuePendingTransactionsPersist(state.publicKey, pendingTransactions);
+    }
   },
 
   loadMoreTransactions: async () => {
@@ -307,8 +385,12 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   },
 
   clearWallet: async () => {
+    const publicKey = get().publicKey;
     try {
       await SecureStore.deleteItemAsync(WALLET_KEY);
+      if (publicKey) {
+        await enqueuePendingTransactionsPersist(publicKey, {});
+      }
       set({ ...resetWalletState(), showBackupReminder: false, error: null });
       try {
         await AsyncStorage.removeItem(BACKUP_ACK_KEY);
