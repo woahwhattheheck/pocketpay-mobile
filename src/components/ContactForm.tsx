@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { useContactStore } from '@/features/contacts/contactStore';
+import { Contact, useAppStore } from '@/store/appStore';
 import { X, Edit2, Trash2, Plus } from 'lucide-react-native';
 
 interface ContactFormProps {
   visible: boolean;
-  contact?: { id: string; name: string; address: string } | null;
+  contact?: Contact | null;
   onSave: (name: string, address: string) => void;
   onCancel: () => void;
   onDelete?: () => void;
@@ -23,12 +23,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [errors, setErrors] = useState<{ name?: string; address?: string }>({});
-  const { getContactByAddress } = useContactStore();
+  const { findDuplicateContact } = useAppStore();
 
   useEffect(() => {
     if (contact) {
       setName(contact.name);
-      setAddress(contact.address);
+      setAddress(contact.publicKey);
     } else {
       setName('');
       setAddress('');
@@ -58,10 +58,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     } else if (!validateStellarAddress(address.trim())) {
       newErrors.address = 'Invalid Stellar address (must start with G and be 56 characters)';
     } else {
-      // Check for duplicate address (only if not editing the same contact)
-      const existingContact = getContactByAddress(address.trim());
-      if (existingContact && (!contact || existingContact.id !== contact.id)) {
-        newErrors.address = `Address already saved as "${existingContact.name}"`;
+      const duplicate = findDuplicateContact(
+        name,
+        address.trim(),
+        contact?.id,
+      );
+      if (duplicate.isDuplicate) {
+        newErrors.address = duplicate.message;
       }
     }
 
