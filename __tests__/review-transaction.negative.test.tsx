@@ -125,6 +125,12 @@ describe('ReviewTransactionScreen negative paths', () => {
       expect(getByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeTruthy();
       expect(getByText('Go Back')).toBeTruthy();
     });
+
+    fireEvent.press(getByText('View Receipt'));
+    expect(mockReplace).toHaveBeenLastCalledWith(expect.objectContaining({
+      pathname: '/payment-receipt',
+      params: expect.objectContaining({ status: 'unknown' }),
+    }));
   });
 
   it('surfaces a clear insufficient-balance failure from submission', async () => {
@@ -137,6 +143,21 @@ describe('ReviewTransactionScreen negative paths', () => {
       expect(getByText('Transaction Failed')).toBeTruthy();
       expect(getByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeTruthy();
     });
+  });
+
+  it('maps an explicit signer rejection to a rejected receipt', () => {
+    useSignerStore.getState().failSigning({
+      type: 'signer_rejected',
+      message: 'Signing request rejected',
+    });
+
+    const { getByText } = render(<ReviewTransactionScreen />);
+    fireEvent.press(getByText('View Receipt'));
+
+    expect(mockReplace).toHaveBeenLastCalledWith(expect.objectContaining({
+      pathname: '/payment-receipt',
+      params: expect.objectContaining({ status: 'rejected' }),
+    }));
   });
 
   it('shows the cancelled state clearly when signing is aborted before submission', () => {

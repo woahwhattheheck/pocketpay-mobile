@@ -31,7 +31,7 @@ import {
   StatusBadge,
 } from '@/components';
 import { UNCONFIRMED_SUBMISSION_MESSAGE } from '../src/utils/paymentErrors';
-import { createReceiptParams } from '../src/features/transactions/receipt';
+import { createReceiptParams, resolveSigningErrorReceiptStatus } from '../src/features/transactions/receipt';
 
 /** Copy for each in-flight signing phase, shared by the visible card and its screen-reader label. */
 const PHASE_COPY = {
@@ -234,8 +234,10 @@ export default function ReviewTransactionScreen() {
 
   const handleViewReceipt = () => {
     const receiptParams = createReceiptParams({
-      // A transport/signing error is not evidence of a rejected ledger transaction.
-      status: phase === 'cancelled' ? 'rejected' : 'unknown',
+      // Only an explicit pre-submission cancellation/rejection is safe to call rejected.
+      status: phase === 'cancelled'
+        ? 'rejected'
+        : resolveSigningErrorReceiptStatus(error?.type),
       amount: amount.trim(),
       asset: 'XLM',
       destination: destination.trim(),
