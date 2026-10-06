@@ -63,6 +63,33 @@ describe('AC-P1 – addPendingTransaction', () => {
   });
 });
 
+describe('AC-P1a – repeated hash replaces the optimistic row', () => {
+  it('keeps one visible optimistic row when the same deterministic hash is added again', () => {
+    useWalletStore.getState().addPendingTransaction('hash1', {
+      id: 'hash1',
+      amount: '10.0000000',
+    });
+    useWalletStore.getState().addPendingTransaction('hash1', {
+      id: 'hash1',
+      amount: '10.0000000',
+      status: 'unknown',
+    });
+
+    const state = useWalletStore.getState();
+    expect(Object.keys(state.pendingTransactions)).toEqual(['hash1']);
+    expect(
+      state.transactions.filter(
+        (tx) =>
+          (tx.status === 'pending' || tx.status === 'unknown') &&
+          (tx.id === 'hash1' || tx.hash === 'hash1' || tx.transaction_hash === 'hash1')
+      )
+    ).toHaveLength(1);
+    expect(state.transactions[0]).toEqual(
+      expect.objectContaining({ id: 'hash1', status: 'unknown' })
+    );
+  });
+});
+
 describe('AC-P1b – preserve unknown submission state', () => {
   it('keeps an acknowledgement-lost transaction marked unknown for reconciliation', () => {
     useWalletStore.getState().addPendingTransaction('hash-unknown', {
