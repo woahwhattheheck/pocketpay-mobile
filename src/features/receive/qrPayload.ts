@@ -92,8 +92,13 @@ export function validateReceivePayload(
 
   const trimmedMemo = params.memo?.trim();
   if (trimmedMemo) {
-    const memoError = validateMemo(trimmedMemo);
-    if (memoError) errors.memo = memoError;
+    const memoType = params.memoType ?? 'MEMO_TEXT';
+    if (memoType !== 'MEMO_TEXT') {
+      errors.memo = 'The mobile receive flow currently supports text memos only.';
+    } else {
+      const memoError = validateMemo(trimmedMemo);
+      if (memoError) errors.memo = memoError;
+    }
   } else if (params.memoType) {
     errors.memo = 'Memo type requires a memo value.';
   }
