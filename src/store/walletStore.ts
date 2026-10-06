@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StellarSdk from '@stellar/stellar-sdk';
-import { fetchXlmBalance, fetchTransactionsPage, fetchAccountDetails, fundWithFriendbot, PaymentRecord } from '../services/stellar';
+import { fetchXlmBalanceBreakdown, fetchTransactionsPage, fetchAccountDetails, fundWithFriendbot, PaymentRecord } from '../services/stellar';
 import type { BalanceState, FundingStatus } from '../types/balance';
 import {
   CLEAR_WALLET_ERROR,
@@ -29,6 +29,8 @@ export type TransactionRecord = Record<string, any> & { id: string; status?: Tra
 interface WalletState {
   publicKey: string | null;
   balance: string;
+  reservedBalance: string;
+  availableBalance: string;
   transactions: TransactionRecord[];
   // Optimistic entries for sends that resolved locally but haven't shown up in a
   // Horizon refresh yet, keyed by transaction hash so concurrent sends don't
@@ -84,6 +86,8 @@ interface WalletState {
 const resetWalletState = () => ({
   publicKey: null,
   balance: DEFAULT_BALANCE,
+  reservedBalance: DEFAULT_BALANCE,
+  availableBalance: DEFAULT_BALANCE,
   transactions: [],
   pendingTransactions: {},
   lastRefreshed: null,
@@ -130,6 +134,8 @@ const clearStoredSecrets = async () => {
 export const useWalletStore = create<WalletState>((set, get) => ({
   publicKey: null,
   balance: DEFAULT_BALANCE,
+  reservedBalance: DEFAULT_BALANCE,
+  availableBalance: DEFAULT_BALANCE,
   transactions: [],
   pendingTransactions: {},
   lastRefreshed: null,
@@ -166,7 +172,15 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   setWallet: async (publicKey: string, secretKey: string) => {
     try {
       await SecureStore.setItemAsync(WALLET_KEY, secretKey);
-      set({ publicKey, balance: DEFAULT_BALANCE, transactions: [], pendingTransactions: {}, error: null });
+      set({
+        publicKey,
+        balance: DEFAULT_BALANCE,
+        reservedBalance: DEFAULT_BALANCE,
+        availableBalance: DEFAULT_BALANCE,
+        transactions: [],
+        pendingTransactions: {},
+        error: null,
+      });
       return true;
     } catch {
       console.error(PERSIST_WALLET_ERROR);
@@ -225,10 +239,15 @@ export const useWalletStore = create<WalletState>((set, get) => ({
 
     set({ isLoading: true, error: null, balanceState: 'loading', isLoadingMore: false, nextCursor: null, hasMoreTransactions: false });
     try {
-      const [balance, page] = await Promise.all([
-        fetchXlmBalance(publicKey),
+      const [balanceBreakdown, page] = await Promise.all([
+        fetchXlmBalanceBreakdown(publicKey),
         fetchTransactionsPage(publicKey, TX_PAGE_SIZE),
       ]);
+      const {
+        total: balance,
+        reserved: reservedBalance,
+        available: availableBalance,
+      } = balanceBreakdown;
 
       // Reconcile: drop any optimistic pending entry whose hash now shows up in the
       // real Horizon response, so it isn't displayed twice. Operation records
@@ -243,9 +262,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         Object.entries(get().pendingTransactions).filter(([hash]) => !confirmedHashes.has(hash))
       );
 
-      const isZero = balance === '0.0000000';
       set({
         balance,
+        reservedBalance,
+        availableBalance,
         transactions: [...Object.values(remainingPending), ...page.records],
         pendingTransactions: remainingPending,
         nextCursor: page.nextCursor,

@@ -2,6 +2,7 @@ import * as StellarSdk from '@stellar/stellar-sdk';
 import * as ExpoCrypto from 'expo-crypto';
 import { Buffer } from 'buffer';
 import { extractPaymentResultCode } from '../utils/paymentErrors';
+import { getXlmBalanceBreakdown, type XlmBalanceBreakdown } from '../utils/amount';
 
 export const server = new StellarSdk.Horizon.Server(
   process.env.EXPO_PUBLIC_STELLAR_HORIZON_URL || 'https://horizon-testnet.stellar.org'
@@ -48,20 +49,38 @@ export const fetchAccountDetails = async (publicKey: string) => {
 };
 
 /**
- * Fetch the XLM balance for a given public key.
+ * Fetch native XLM total, reserve, and spendable balance from one Horizon read.
  */
-export const fetchXlmBalance = async (publicKey: string): Promise<string> => {
+export const fetchXlmBalanceBreakdown = async (
+  publicKey: string
+): Promise<XlmBalanceBreakdown> => {
   try {
     const account = await fetchAccountDetails(publicKey);
     const nativeBalance = account.balances.find((b: any) => b.asset_type === 'native');
-    return nativeBalance ? nativeBalance.balance : '0.0000000';
+    if (!nativeBalance) {
+      return { total: '0.0000000', reserved: '0.0000000', available: '0.0000000' };
+    }
+
+    return getXlmBalanceBreakdown(
+      nativeBalance.balance,
+      account.subentry_count ?? 0,
+      nativeBalance.selling_liabilities ?? '0',
+    );
   } catch (error: any) {
-    // If account is not found (unfunded), balance is 0
+    // If account is not found (unfunded), preserve the historical all-zero behavior.
     if (isNotFoundError(error)) {
-      return '0.0000000';
+      return { total: '0.0000000', reserved: '0.0000000', available: '0.0000000' };
     }
     throw error;
   }
+};
+
+/**
+ * Fetch the total XLM balance for compatibility with existing callers.
+ */
+export const fetchXlmBalance = async (publicKey: string): Promise<string> => {
+  const { total } = await fetchXlmBalanceBreakdown(publicKey);
+  return total;
 };
 
 /**

@@ -132,6 +132,7 @@ export function validateContactName(
 export const validateAmount = (
   amount: string,
   balance?: string,
+  reservedBalance: string | number = MIN_XLM_RESERVE,
 ): string | null => {
   const trimmed = amount.trim();
 
@@ -156,13 +157,18 @@ export const validateAmount = (
   if (balance !== undefined) {
     const balanceValue = Number(balance);
     if (!Number.isNaN(balanceValue)) {
-      const availableToSend = getMaxSendableAmount(balanceValue);
+      const parsedReserve = Number(reservedBalance);
+      const reserve =
+        Number.isFinite(parsedReserve) && parsedReserve >= 0
+          ? parsedReserve
+          : MIN_XLM_RESERVE;
+      const availableToSend = getMaxSendableAmount(balanceValue, reserve);
       if (value > Number(availableToSend)) {
         return [
           "Insufficient available balance.",
           `Required: ${formatAmount(trimmed)} XLM.`,
           `Available to send: ${formatAmount(availableToSend)} XLM.`,
-          `Reserved: ${formatAmount(MIN_XLM_RESERVE)} XLM.`,
+          `Reserved: ${formatAmount(reserve)} XLM.`,
         ].join(" ");
       }
     }

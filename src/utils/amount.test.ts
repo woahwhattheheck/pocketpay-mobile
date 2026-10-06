@@ -1,4 +1,4 @@
-import { formatAmount, getMaxSendableAmount } from './amount';
+import { formatAmount, getMaxSendableAmount, getXlmBalanceBreakdown } from './amount';
 import { validateAmount } from './validation';
 
 describe('getMaxSendableAmount', () => {
@@ -89,6 +89,23 @@ describe('validateAmount balance guidance', () => {
   it('uses the same actionable breakdown when the amount exceeds the total balance', () => {
     expect(validateAmount('12', '10')).toBe(
       'Insufficient available balance. Required: 12 XLM. Available to send: 9 XLM. Reserved: 1 XLM.',
+    );
+  });
+});
+
+
+describe('dynamic XLM reserve breakdown', () => {
+  it('uses Horizon subentries to validate the actual spendable balance', () => {
+    const breakdown = getXlmBalanceBreakdown('10', 2, '0');
+
+    expect(breakdown).toEqual({
+      total: '10.0000000',
+      reserved: '2.0000000',
+      available: '8.0000000',
+    });
+    expect(validateAmount('8', breakdown.total, breakdown.reserved)).toBeNull();
+    expect(validateAmount('9', breakdown.total, breakdown.reserved)).toBe(
+      'Insufficient available balance. Required: 9 XLM. Available to send: 8 XLM. Reserved: 2 XLM.',
     );
   });
 });

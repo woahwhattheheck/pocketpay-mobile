@@ -27,11 +27,7 @@ import {
   validateMemo,
 } from "../src/utils/validation";
 import { resolveAddressLabel } from "../src/utils/contacts";
-import {
-  formatAmount,
-  getMaxSendableAmount,
-  MIN_XLM_RESERVE,
-} from "../src/utils/amount";
+import { formatAmount } from "../src/utils/amount";
 import { WALLET_SECRET_ACCESS_MESSAGE } from "../src/utils/walletStorageErrors";
 import {
   Send as SendIcon,
@@ -60,15 +56,22 @@ export default function SendScreen() {
   const router = useRouter();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const { publicKey, getSecretKey, refreshWalletData, balance, fundingStatus, error } =
-    useWalletStore();
+  const {
+    publicKey,
+    getSecretKey,
+    refreshWalletData,
+    balance,
+    reservedBalance,
+    availableBalance,
+    fundingStatus,
+    error,
+  } = useWalletStore();
   const contacts = useAppStore((state) => state.contacts);
   const { getContactByAddress, addRecentRecipient } = useContactStore();
   const { state: networkState, disableWriteActions, retry } = useNetworkState({ error });
 
   const isUnfunded = fundingStatus === 'unfunded';
   const sendDisabled = isUnfunded || !publicKey || disableWriteActions;
-  const availableToSend = getMaxSendableAmount(balance);
 
   const [destination, setDestination] = useState("");
   const [amount, setAmount] = useState("");
@@ -100,7 +103,7 @@ export default function SendScreen() {
     setErrors((prev) => ({
       ...prev,
       amount: value.trim()
-        ? (validateAmount(value, balance) ?? undefined)
+        ? (validateAmount(value, balance, reservedBalance) ?? undefined)
         : undefined,
     }));
   };
@@ -147,18 +150,18 @@ export default function SendScreen() {
   };
 
   const handleSetMaxAmount = () => {
-    const maxAmount = getMaxSendableAmount(balance);
+    const maxAmount = availableBalance;
     setAmount(maxAmount);
     setErrors((prev) => ({
       ...prev,
-      amount: validateAmount(maxAmount, balance) ?? undefined,
+      amount: validateAmount(maxAmount, balance, reservedBalance) ?? undefined,
     }));
   };
 
   const handleSend = () => {
     const fieldErrors: FieldErrors = {
       destination: validateAddress(destination, publicKey) ?? undefined,
-      amount: validateAmount(amount, balance) ?? undefined,
+      amount: validateAmount(amount, balance, reservedBalance) ?? undefined,
       memo: validateMemo(memo) ?? undefined,
     };
     setErrors(fieldErrors);
@@ -192,7 +195,7 @@ export default function SendScreen() {
       >
         <ScreenHeader
           title="Send XLM"
-          subtitle={`Available to send: ${formatAmount(availableToSend)} XLM`}
+          subtitle={`Available to send: ${formatAmount(availableBalance)} XLM`}
         />
 
         {/* Issue #330: Show unfunded account warning */}
@@ -259,7 +262,7 @@ export default function SendScreen() {
             onChangeText={handleAmountChange}
             error={errors.amount}
             keyboardType="decimal-pad"
-            helperText={`Balance: ${formatAmount(balance)} XLM · Reserved: ${formatAmount(MIN_XLM_RESERVE)} XLM`}
+            helperText={`Balance: ${formatAmount(balance)} XLM · Reserved: ${formatAmount(reservedBalance)} XLM`}
             rightIcon={
               <TouchableOpacity
                 onPress={handleSetMaxAmount}

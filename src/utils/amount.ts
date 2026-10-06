@@ -4,6 +4,44 @@
  */
 export const MIN_XLM_RESERVE = 1;
 
+export const STELLAR_BASE_RESERVE_XLM = 0.5;
+
+export interface XlmBalanceBreakdown {
+  total: string;
+  reserved: string;
+  available: string;
+}
+
+/**
+ * Derive the native XLM amounts that are safe to present to the send flow.
+ * Horizon's subentry count drives the account minimum balance while native
+ * selling liabilities are already committed and therefore not spendable.
+ */
+export function getXlmBalanceBreakdown(
+  totalBalance: string | number,
+  subentryCount: number,
+  sellingLiabilities: string | number = 0,
+): XlmBalanceBreakdown {
+  const total = Number(totalBalance);
+  const liabilities = Number(sellingLiabilities);
+  const entries = Number.isFinite(subentryCount)
+    ? Math.max(0, Math.floor(subentryCount))
+    : 0;
+  const normalizedTotal = Number.isFinite(total) ? Math.max(0, total) : 0;
+  const normalizedLiabilities = Number.isFinite(liabilities)
+    ? Math.max(0, liabilities)
+    : 0;
+  const reserved =
+    (2 + entries) * STELLAR_BASE_RESERVE_XLM + normalizedLiabilities;
+  const available = Math.max(0, normalizedTotal - reserved);
+
+  return {
+    total: normalizedTotal.toFixed(7),
+    reserved: reserved.toFixed(7),
+    available: available.toFixed(7),
+  };
+}
+
 /**
  * Calculate the maximum amount that can be sent from a wallet,
  * accounting for the minimum XLM reserve requirement.
