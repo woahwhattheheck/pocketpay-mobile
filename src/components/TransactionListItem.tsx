@@ -88,6 +88,11 @@ export const TransactionListItem: React.FC<TransactionListItemProps> = ({
 
   const statusBadge = STATUS_BADGE[tx.status];
 
+  const Container = onPress ? TouchableOpacity : View;
+  const containerProps = onPress
+    ? { ...props, onPress: () => onPress(transaction), activeOpacity: 0.7 }
+    : props;
+
   return (
     <Container
       style={[
