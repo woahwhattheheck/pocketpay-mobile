@@ -1,0 +1,279 @@
+{
+  "independentCases": [
+    {
+      "case": "Exact old/new recorder AST after real sheet predicate crosses expiry",
+      "nativeSpawns": 0,
+      "newModeledSpawns": 0,
+      "oldModeledSpawns": 1,
+      "originalRecorderArgsPreserved": true
+    },
+    {
+      "artifactFilesWritten": 0,
+      "case": "Actual primary dump dynamically resolves installed namespace ADB; raw result returns at expiry",
+      "lateTargetAccepted": false,
+      "modeledCallsStartedExpired": 0,
+      "modeledCallsStartedLive": 1,
+      "stableAssignment": false
+    },
+    {
+      "artifactFilesWritten": 0,
+      "case": "Actual immutable gap dump dynamically resolves installed ADB; expiry preserves original UnsafeEnvironment class and blocks cleanup",
+      "lateTargetAccepted": false,
+      "modeledCallsStartedExpired": 0,
+      "modeledCallsStartedLive": 1
+    },
+    {
+      "callbackEntries": 1,
+      "case": "Actual primary four-case loop after first callback crosses expiry",
+      "deadlineResets": 0,
+      "expiredFailureCaptureCalls": 0,
+      "laterCallbacksBlocked": 3,
+      "modeledGuestCallsStartedLive": 1
+    },
+    {
+      "case": "Actual immutable gap dispatch initially expired",
+      "firstCallbackEntries": 1,
+      "modeledGuestCalls": 0,
+      "originalLaunchCalls": 0,
+      "remainingCallbacksBlocked": 2
+    },
+    {
+      "case": "AST and byte-level preserved outcome/recording/helper/fixture contracts",
+      "gapDecoderLaunchTapHelpersUnchanged": true,
+      "hostHelperFilesByteEqual": 4,
+      "originalFixturesByteEqual": 5,
+      "primaryOutcomeHelpersUnchanged": true,
+      "recorderUnchangedExceptPointGuard": true
+    }
+  ],
+  "inputFilesSha256": {
+    "inputs/final/README.md": {
+      "bytes": 2777,
+      "sha256": "32dd24419575a78cf982568d5314f9a07d99417dc616f293b9575eef705595f7"
+    },
+    "inputs/final/expo_go_intro.py": {
+      "bytes": 4134,
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae"
+    },
+    "inputs/final/expo_ordinary_menu.py": {
+      "bytes": 17364,
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9"
+    },
+    "inputs/final/fixtures/final-logcat-original.txt": {
+      "bytes": 184969,
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e"
+    },
+    "inputs/final/fixtures/ordinary-menu-original.xml": {
+      "bytes": 13792,
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38"
+    },
+    "inputs/final/fixtures/primary-logcat-original.txt": {
+      "bytes": 199612,
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f"
+    },
+    "inputs/final/fixtures/retry-intro-original.xml": {
+      "bytes": 13631,
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04"
+    },
+    "inputs/final/fixtures/review-original.xml": {
+      "bytes": 9146,
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259"
+    },
+    "inputs/final/independent-peer-review.json": {
+      "bytes": 1496,
+      "sha256": "7eb29ca8a2c9e726eda67128cc8aafddd344d45577353dbeda59acc03a685fd3"
+    },
+    "inputs/final/native_overlay.py": {
+      "bytes": 455,
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09"
+    },
+    "inputs/final/observer_framing.py": {
+      "bytes": 2059,
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2"
+    },
+    "inputs/final/provenance.json": {
+      "bytes": 3198,
+      "sha256": "3dc14dca00d1d5f7575072a9b0f16ed426ac721a024c10a232e98eb607f2fb62"
+    },
+    "inputs/final/pure-checks.log": {
+      "bytes": 5994,
+      "sha256": "9f066fa00e3514bd21cefe1e43004a3fefd6e56cb658994b7249dd112bd03157"
+    },
+    "inputs/final/retry-gap-runner.py": {
+      "bytes": 3427,
+      "sha256": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd"
+    },
+    "inputs/final/retry-gap-runner.py.diff": {
+      "bytes": 371,
+      "sha256": "e550c06a4bbd9e917ccaa03bc916ad683e68fcae6128a99f746f66987729f205"
+    },
+    "inputs/final/retry-primary-ui.py": {
+      "bytes": 17382,
+      "sha256": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98"
+    },
+    "inputs/final/retry-primary-ui.py.diff": {
+      "bytes": 2599,
+      "sha256": "5bb06dae419759f49456c8e5cbbc33c7b79e39ffc0de596ea59409643e676672"
+    },
+    "inputs/final/retry_host_adapter.py": {
+      "bytes": 12303,
+      "sha256": "d3e7eea55cd074636ebc5a7d29184845f99d430e35b19fb2c6c7ab179bb92a4e"
+    },
+    "inputs/final/retry_host_adapter.py.diff": {
+      "bytes": 3610,
+      "sha256": "4263fca6ee28e8bcf1ac1f5ba5bc2f5a1590794e5c4d36ff1675bdadc897e74d"
+    },
+    "inputs/final/test_retry_deadline.py": {
+      "bytes": 12427,
+      "sha256": "da7413de05477b444115ee44fa58587655145bf3f8e958feab4a9fdfa83a4b5f"
+    },
+    "inputs/final/test_retry_host_adapter.py": {
+      "bytes": 16356,
+      "sha256": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a"
+    },
+    "inputs/immutable-controller/retry/observation_helpers.py": {
+      "bytes": 6920,
+      "sha256": "7428a4abdfaaee868af823fb827b55b0feb505432889051a6addc7124cd06108"
+    },
+    "inputs/immutable-controller/retry/retry_gap_ui.py": {
+      "bytes": 7926,
+      "sha256": "512601a9ddddbecf325c8c80ea29e247be272a1a6f26c37002c54bde943933a1"
+    },
+    "inputs/parent-15ab/expo_go_intro.py": {
+      "bytes": 4134,
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae"
+    },
+    "inputs/parent-15ab/expo_ordinary_menu.py": {
+      "bytes": 17364,
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9"
+    },
+    "inputs/parent-15ab/fixtures/final-logcat-original.txt": {
+      "bytes": 184969,
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e"
+    },
+    "inputs/parent-15ab/fixtures/ordinary-menu-original.xml": {
+      "bytes": 13792,
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38"
+    },
+    "inputs/parent-15ab/fixtures/primary-logcat-original.txt": {
+      "bytes": 199612,
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f"
+    },
+    "inputs/parent-15ab/fixtures/retry-intro-original.xml": {
+      "bytes": 13631,
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04"
+    },
+    "inputs/parent-15ab/fixtures/review-original.xml": {
+      "bytes": 9146,
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259"
+    },
+    "inputs/parent-15ab/native_overlay.py": {
+      "bytes": 455,
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09"
+    },
+    "inputs/parent-15ab/observer_framing.py": {
+      "bytes": 2059,
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2"
+    },
+    "inputs/parent-15ab/provenance.json": {
+      "bytes": 3610,
+      "sha256": "15abefc15d4a2cf07f054bac4e59a56f786af2e171e76ebc00f8457e239fe436"
+    },
+    "inputs/parent-15ab/retry-gap-runner.py": {
+      "bytes": 3400,
+      "sha256": "4c6a8cce90a0fc8b015abbeb631101c9daf525c804d745fea4d58aaa5570e4c3"
+    },
+    "inputs/parent-15ab/retry-primary-ui.py": {
+      "bytes": 16550,
+      "sha256": "4dae5e9fa35f818d96f1c63b41be8a875a70da5cab35a84aec3e427fae66895e"
+    },
+    "inputs/parent-15ab/retry_host_adapter.py": {
+      "bytes": 11229,
+      "sha256": "c782a8b7b686917dcb08ac2b884efd9b3bfc3c890b4383947a9a259f33060de4"
+    }
+  },
+  "limitations": [
+    "Pure modeled boundaries are not native product execution or new original media.",
+    "A raw command started while live may return at expiry; the result is rejected and no subsequent guest command is allowed.",
+    "Original independent per-case launch remains unchanged; no launch retry, URI redelivery, route reset, fixture regeneration, or outcome relaxation.",
+    "Root composition custody review is separate from this frozen successor review."
+  ],
+  "peerFilesSha256": {
+    "peer_checks.py": {
+      "bytes": 9527,
+      "sha256": "d006474690660e54fe005151c83766f3681844a5fe32d414ca1c54c66e5e8d86"
+    },
+    "pure-peer.log": {
+      "bytes": 6994,
+      "sha256": "24147134ed8cfa636e54c408e0a0fbcac6c8215d94859c53645ff7febcb427d5"
+    },
+    "run_pure.py": {
+      "bytes": 1470,
+      "sha256": "28ee51c5ab1faf5893de1d8c31c848a312b056b53f3d6252158e636667c2b1d3"
+    },
+    "subprocess-guard.json": {
+      "bytes": 242,
+      "sha256": "0b0d01fc9c8da8544b9945b20b269da10c2e2bcc0e271df5ed78066522a0c676"
+    }
+  },
+  "reviewer": "/root/submitted_pr_checks",
+  "scope": "Independent pure source review only. No native ADB, new run, source/ref/PR/body/comment/Slack mutation.",
+  "sourceReview": {
+    "SubprocessErrorAtExpiryConvertedToUnsuppressedBoundException": true,
+    "actualProductActionOnceContractPreserved": true,
+    "caseOrHostDeadlineResets": 0,
+    "deadlineAssignments": 1,
+    "gapHelpersNamespaceAdbInstalled": true,
+    "globalDeadlineSeconds": 600,
+    "originalDefaultOrShorterTimeoutPreservedWhenLower": true,
+    "pretargetAndPreacceptGuards": true,
+    "primaryNamespaceAdbInstalled": true,
+    "productSourceOutcomeObserverFixtureDecoderSemanticsChanged": false,
+    "rawAdbPreAndPostReturnGuards": true,
+    "rawAdbTimeoutCappedToRemainingBudget": true,
+    "rawDumpPreAndPostReturnGuards": true,
+    "recordingPopenPointGuard": true,
+    "uriRedelivery": false
+  },
+  "status": "CLEAR for the exact frozen deadline-only successor; native product evidence remains pending",
+  "subject": {
+    "baseControllerSha": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+    "baseControllerTree": "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67",
+    "manifestFilesVerified": 20,
+    "manifestMismatches": [],
+    "manifestSha256": "3dc14dca00d1d5f7575072a9b0f16ed426ac721a024c10a232e98eb607f2fb62",
+    "parentLateHostProvenanceSha256": "15abefc15d4a2cf07f054bac4e59a56f786af2e171e76ebc00f8457e239fe436",
+    "path": "/workspace/scratch/ea8baa184658/pocketpay-retry-deadline-local-candidate",
+    "runtimeSha256": {
+      "retry-gap-runner.py": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd",
+      "retry-primary-ui.py": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98",
+      "retry_host_adapter.py": "d3e7eea55cd074636ebc5a7d29184845f99d430e35b19fb2c6c7ab179bb92a4e"
+    },
+    "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+    "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060"
+  },
+  "validation": {
+    "additionalIndependentTests": 6,
+    "command": "python3 -B run_pure.py > pure-peer.log 2>&1",
+    "errors": 0,
+    "exitCode": 0,
+    "failures": 0,
+    "ownerPureTests": 36,
+    "subprocessGuard": {
+      "errors": 0,
+      "failures": 0,
+      "installedBeforeSubjectImport": true,
+      "nativeAdbExecuted": false,
+      "tests": 42,
+      "unmockedAttemptCounts": {
+        "Popen": 0,
+        "call": 0,
+        "check_call": 0,
+        "check_output": 0,
+        "run": 0
+      }
+    },
+    "totalPassed": 42,
+    "workdir": "/workspace/scratch/ea8baa184658/pocketpay-retry-deadline-independent-review"
+  }
+}

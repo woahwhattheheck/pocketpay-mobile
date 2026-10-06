@@ -1,0 +1,86 @@
+--- 15ab/retry_host_adapter.py
++++ deadline/retry_host_adapter.py
+@@ -19,6 +19,10 @@
+     'primary': 'POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER',
+     'gap': 'POCKETPAY_RETRY_GAP_NATIVE_OBSERVER',
+ }
++
++
++class RetryBoundExpired(RuntimeError):
++    """No further guest commands after the original collector bound."""
+ 
+ 
+ class RetryHostAdapter:
+@@ -37,6 +41,7 @@
+         self.intro_bounds = intro_bounds
+         self.raw_dump = namespace['dump']
+         self.raw_adb = namespace['adb']
++        self.expired_type = namespace.get('UnsafeEnvironment', RetryBoundExpired)
+         self.output = Path(namespace['ROOT'])
+         self.deadline = time.monotonic() + 600
+         self.developer_sheet_dismissals = 0
+@@ -50,19 +55,39 @@
+     def begin_case(self, outcome):
+         # Only the original independent-case launch resets these observations.
+         # This method contains no guest command and is never called by settling.
++        self.require_live()
+         self.outcome = outcome
+         self.stable = False
+         self.expected = ()
+ 
+     def adb(self, *args, **kwargs):
++        self.require_live()
++        # Both actual frozen raw ADB functions accept a subprocess timeout.
++        # Preserve their default bounds while clipping to this same clock.
++        remaining = self.deadline - time.monotonic()
++        if remaining <= 0:
++            self.require_live()
++        options = dict(kwargs)
++        default_timeout = 30 if self.kind == 'primary' else 25
++        options['timeout'] = min(options.get('timeout', default_timeout), remaining)
++        try:
++            result = self.raw_adb(*args, **options)
++        except subprocess.SubprocessError:
++            self.require_live()
++            raise
++        self.require_live()
++        return result
++
++    def require_live(self):
+         if time.monotonic() >= self.deadline:
+-            raise RuntimeError('Retry host adapter exceeded its original 600-second bound')
+-        return self.raw_adb(*args, **kwargs)
++            raise self.expired_type('Retry collector exceeded its original global 600-second bound; no further guest command permitted')
+ 
+     def dump(self):
+         # Shared host helpers must receive this bound raw callback, not the
+         # product wait/capture wrapper, or they would recursively settle.
++        self.require_live()
+         tree = self.raw_dump()
++        self.require_live()
+         assert_no_native_error_overlay(tree)
+         return tree, ET.tostring(tree, encoding='unicode')
+ 
+@@ -165,6 +190,7 @@
+             raise RuntimeError('Retry signer state changed during host closure; reset cannot be excluded')
+ 
+     def uncovered(self, required=(), *, accept=False):
++        self.require_live()
+         if self._settling:
+             raise RuntimeError('Recursive Retry host settling is forbidden')
+         tree, _ = self.dump()
+@@ -200,12 +226,14 @@
+         self.host.overlay_guard(tree)
+         if intro_sheet(tree) or self.host.has_host_sheet(tree):
+             raise RuntimeError('Retry target is still covered by host chrome')
++        self.require_live()
+         if required:
+             labels = [(node.get('text', '')+' '+node.get('content-desc', '')).casefold()
+                       for node in tree.iter('node')]
+             if not any(target.casefold() in value for target in required for value in labels):
+                 raise RuntimeError('Fresh uncovered Retry target was not observed: '+repr(required))
+         if accept:
++            self.require_live()
+             self.stable = True
+             self.expected = tuple(required)
+         return tree

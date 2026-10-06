@@ -1,0 +1,1204 @@
+--------- beginning of main
+10-05 23:22:18.379   520   758 D ConnectivityService: releasing NetworkRequest [ REQUEST id=182, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ] (release request)
+--------- beginning of system
+10-05 23:22:18.384   826   884 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@c1d08dd animAttr=0x11 type=CLOSE isEntrance=false
+10-05 23:22:18.385   826   884 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@c63adc2
+10-05 23:22:18.390  1692  1692 I A       : Created gRPC endpoint to "search" for service class com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService
+10-05 23:22:18.405   826   884 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#18)android.os.BinderProxy@da98069@0
+10-05 23:22:18.406  1692  2613 I A       : Using proto config with mendel
+10-05 23:22:18.407   520   537 V WindowManager: Finish Transition #18: created at 10-05 23:22:18.299 collect-started=0.017ms request-sent=0.063ms started=6.527ms ready=6.519ms sent=73.938ms finished=107.119ms
+10-05 23:22:18.407  1692  2613 W A       : Queue length for executor EventBus is now 11. Perhaps some tasks are too long, or the pool is too small.
+10-05 23:22:18.413  1692  2613 I A       : Using proto config with mendel
+10-05 23:22:18.423   520  1975 W WindowManager: Exception thrown during dispatchAppVisibility Window{b6ba592 u0 host.exp.exponent/host.exp.exponent.experience.ExperienceActivity EXITING}
+10-05 23:22:18.423   520  1975 W WindowManager: android.os.DeadObjectException
+10-05 23:22:18.423   520  1975 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at android.view.IWindow$Stub$Proxy.dispatchAppVisibility(IWindow.java:546)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.WindowState.sendAppVisibilityToClients(WindowState.java:3271)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.WindowContainer.sendAppVisibilityToClients(WindowContainer.java:1221)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.WindowToken.setClientVisible(WindowToken.java:409)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.ActivityRecord.setClientVisible(ActivityRecord.java:6946)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.ActivityRecord.postApplyAnimation(ActivityRecord.java:5637)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.ActivityRecord.commitVisibility(ActivityRecord.java:5580)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.Transition.finishTransition(Transition.java:1151)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.TransitionController.finishTransition(TransitionController.java:868)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.finishTransition(WindowOrganizerController.java:396)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at android.window.IWindowOrganizerController$Stub.onTransact(IWindowOrganizerController.java:286)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.onTransact(WindowOrganizerController.java:181)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at android.os.Binder.execTransactInternal(Binder.java:1344)
+10-05 23:22:18.423   520  1975 W WindowManager: 	at android.os.Binder.execTransact(Binder.java:1275)
+10-05 23:22:18.425   520  1975 I Process : Sending signal. PID: 7765 SIG: 9
+10-05 23:22:18.437   520   533 I ImeTracker: com.google.android.apps.nexuslauncher:585015d2: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+10-05 23:22:18.441   826   884 V WindowManagerShell: Track 0 became idle
+10-05 23:22:18.441   826   884 V WindowManagerShell: All active transition animations finished
+10-05 23:22:18.441   826   884 W Looper  : Slow dispatch took 36ms wmshell.main h=android.os.Handler c=com.android.wm.shell.transition.DefaultTransitionHandler$$ExternalSyntheticLambda0@d10db9e m=0
+10-05 23:22:18.441   520   533 I ImeTracker: com.google.android.apps.nexuslauncher:585015d2: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-05 23:22:18.442   520   540 W ActivityManager: setHasOverlayUi called on unknown pid: 7765
+10-05 23:22:18.442  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227 
+10-05 23:22:18.443   826   909 D EGL_emulation: app_time_stats: avg=2304.53ms min=496.33ms max=4112.72ms count=2
+10-05 23:22:18.448  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+10-05 23:22:18.448  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.google.android.apps.nexuslauncher fieldId=0 fieldName=null extras=null}, false)
+10-05 23:22:18.448  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+10-05 23:22:18.448  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+10-05 23:22:18.449   400   400 E BpTransactionCompletedListener: Failed to transact (-32)
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil:  query= size=15
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=google fitbit air fitness tracker,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=google fitbit air fitness tracker searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 89395366-7779-46c2-b44e-ad1a01b08e26
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=fasting,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=fasting searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: fe6ac14a-b94b-431d-ad46-7f62acf69ede
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=ai stocks nvidia and broadcom,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=ai stocks nvidia and broadcom searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: e451463c-2231-403c-a968-ca7877c74db6
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=brad keselowski rfk racing departure,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=brad keselowski rfk racing departure searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: b123a948-4e65-4086-9fa5-2a70bc2e3dcf
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=guatemala jaguar wildlife camera trap,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=guatemala jaguar wildlife camera trap searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 1158e258-d291-4642-8e48-92c755c54b74
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=air jordan,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=air jordan searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 9129ea01-2322-4a8c-b3a2-175747f3f935
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=decaffeinated coffee,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=decaffeinated coffee searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 81debd0d-deca-4246-89ae-2365282efb46
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=extra_tall_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{bitmap_url=data:image/jpeg;base64,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,suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=true,is_personal=false,suggest_raw_text=ice cream float,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=Ice cream float searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 0292c06f-7ca2-47c6-9b07-17dc2823fd3b
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=extra_tall_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{bitmap_url=data:image/png;base64,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,suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=true,is_personal=false,suggest_raw_text=pittsburgh steelers,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=Pittsburgh Steelers searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: d4f4
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=new lord of the rings movie,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=new lord of the rings movie searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: d744aae9-c94d-440e-9b60-5eff68b9caca
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=super el niño,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=super el niño searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: d0ac7a13-d64e-4abc-a5ee-2af343698195
+10-05 23:22:18.459  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=windows 11 26h2 ram usage,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=windows 11 26h2 ram usage searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: e3b5bc60-6c95-476c-9d42-ba9b6267bcb6
+10-05 23:22:18.460  1082  1082 D SearchTargetUtil: layoutType=extra_tall_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{bitmap_url=data:image/jpeg;base64,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,suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=true,is_personal=false,suggest_raw_text=pokémon winds and waves,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=Pokémon Winds and Waves searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=
+10-05 23:22:18.460  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=social security 2027 cola increase,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=social security 2027 cola increase searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 622d5f68-2168-45d2-bf9f-2761913a0924
+10-05 23:22:18.460  1082  1082 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=nascar cup series standings,group_id=web95320,response_id=afde8817-b8e5-45ca-bca3-24c534a9d88c,support_query_builder=false,} searchAction=nascar cup series standings searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 8c656b40-afbe-4549-bdb8-640961089cd4
+10-05 23:22:18.467   520   533 W ActivityTaskManager: callingPackage for (uid=2000, pid=7996) has no WPC
+10-05 23:22:18.471   520   533 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10192; state: DISABLED
+10-05 23:22:18.471   520   533 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10192; state: DISABLED
+10-05 23:22:18.471   520   533 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10192; state: DISABLED
+10-05 23:22:18.471   520   533 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10192; state: DISABLED
+10-05 23:22:18.471   520   533 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10192; state: DISABLED
+10-05 23:22:18.471   520   533 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10192; state: DISABLED
+10-05 23:22:18.472   520   533 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10192; state: DISABLED
+10-05 23:22:18.472   520   533 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10192; state: DISABLED
+10-05 23:22:18.472   520   533 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10192; state: DISABLED
+10-05 23:22:18.472   520   533 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10192; state: DISABLED
+10-05 23:22:18.472   520   533 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10192; state: DISABLED
+10-05 23:22:18.473   520   533 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10192; state: DISABLED
+10-05 23:22:18.473   520   533 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10192; state: DISABLED
+10-05 23:22:18.473   520   533 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10192; state: DISABLED
+10-05 23:22:18.473   520   533 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10192; state: DISABLED
+10-05 23:22:18.473   520   533 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10192; state: DISABLED
+10-05 23:22:18.474   520   533 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10192; state: ENABLED
+10-05 23:22:18.475   520   533 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10192; state: DISABLED
+10-05 23:22:18.475   520   533 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10192; state: DISABLED
+10-05 23:22:18.478   520   533 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10192; state: ENABLED
+10-05 23:22:18.479   826   884 V WindowManagerShell: Transition requested: android.os.BinderProxy@d4bd67f TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=19 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... flg=0x10000000 pkg=host.exp.exponent cmp=host.exp.exponent/.LauncherActivity } baseActivity=ComponentInfo{host.exp.exponent/host.exp.exponent.LauncherActivity} topActivity=ComponentInfo{host.exp.exponent/host.exp.exponent.LauncherActivity} origActivity=null realActivity=ComponentInfo{host.exp.exponent/host.exp.exponent.LauncherActivity} numActivities=1 lastActiveTime=212741 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@9df364c} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{15d7695 host.exp.exponent.LauncherActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-05 23:22:18.480   520   533 I ActivityTaskManager: START u0 {act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... flg=0x10000000 pkg=host.exp.exponent cmp=host.exp.exponent/.LauncherActivity} with LAUNCH_SINGLE_TASK from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-05 23:22:18.480   520   540 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+10-05 23:22:18.481   520   548 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+10-05 23:22:18.496   336   336 D Zygote  : Forked child process 7999
+10-05 23:22:18.500   400   400 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+10-05 23:22:18.525   520   548 I ActivityManager: Start proc 7999:host.exp.exponent/u0a192 for next-top-activity {host.exp.exponent/host.exp.exponent.LauncherActivity}
+10-05 23:22:18.559  7999  7999 I st.exp.exponent: Using CollectorTypeCC GC.
+10-05 23:22:18.561  7999  7999 W st.exp.exponent: Unexpected CPU variant for x86: x86_64.
+10-05 23:22:18.561  7999  7999 W st.exp.exponent: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+10-05 23:22:18.566  7999  7999 E st.exp.exponent: Not starting debugger since process cannot load the jdwp agent.
+10-05 23:22:18.585   520   599 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+10-05 23:22:18.608  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10192; state: ENABLED
+10-05 23:22:18.608  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 10192; state: ENABLED
+10-05 23:22:18.609   520  1975 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10192; state: ENABLED
+10-05 23:22:18.615  7999  7999 D nativeloader: Configuring clns-6 for other apk /system/framework/org.apache.http.legacy.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/lib/x86_64:/data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/host.exp.exponent
+10-05 23:22:18.637  7999  7999 D nativeloader: Configuring clns-7 for other apk /data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/lib/x86_64:/data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/host.exp.exponent
+10-05 23:22:18.638   520   606 D ActivityManager: freezing 1721 com.google.process.gservices
+10-05 23:22:18.645   520  1709 W ActivityTaskManager: takeTaskSnapshot: taskId=19 not found or not visible
+10-05 23:22:18.666  7999  7999 V GraphicsEnvironment: Currently set values for:
+10-05 23:22:18.667  7999  7999 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+10-05 23:22:18.667  7999  7999 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+10-05 23:22:18.667  7999  7999 V GraphicsEnvironment: ANGLE GameManagerService for host.exp.exponent: false
+10-05 23:22:18.667  7999  7999 V GraphicsEnvironment: host.exp.exponent is not listed in per-application setting
+10-05 23:22:18.667  7999  7999 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+10-05 23:22:18.669  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 183155436; UID 10192; state: ENABLED
+10-05 23:22:18.670  7999  7999 D SessionsDependencies: Dependency to CRASHLYTICS added.
+10-05 23:22:18.671  7999  7999 I FirebaseApp: Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+10-05 23:22:18.676  7999  7999 D FirebaseSessions: Initializing Firebase Sessions SDK.
+10-05 23:22:18.677  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 3400644; UID 10192; state: ENABLED
+10-05 23:22:18.677  7999  7999 I FirebaseCrashlytics: Initializing Firebase Crashlytics 19.3.0 for host.exp.exponent
+10-05 23:22:18.683  7999  7999 D SessionsDependencies: Subscriber CRASHLYTICS registered.
+10-05 23:22:18.691  7999  8021 W ziparchive: Unable to open '/data/user_de/0/com.google.android.gms/app_chimera/m/00000002/DynamiteLoader.dm': No such file or directory
+10-05 23:22:18.691  7999  8021 W ziparchive: Unable to open '/data/user_de/0/com.google.android.gms/app_chimera/m/00000002/DynamiteLoader.dm': No such file or directory
+10-05 23:22:18.691  7999  8022 D LifecycleServiceBinder: Binding service to application.
+10-05 23:22:18.695  7999  8021 I DynamiteModule: Considering local module com.google.android.gms.measurement.dynamite:78 and remote module com.google.android.gms.measurement.dynamite:90
+10-05 23:22:18.695  7999  8021 I DynamiteModule: Selected remote version of com.google.android.gms.measurement.dynamite, version >= 90
+10-05 23:22:18.695  7999  8021 V DynamiteModule: Dynamite loader version >= 2, using loadModule2NoCrashUtils
+10-05 23:22:18.697  7999  7999 I FirebaseInitProvider: FirebaseApp initialization successful
+10-05 23:22:18.703  7999  7999 D WM-WrkMgrInitializer: Initializing WorkManager with default configuration.
+10-05 23:22:18.706  7999  7999 D WM-PackageManagerHelper: Skipping component enablement for androidx.work.impl.background.systemjob.SystemJobService
+10-05 23:22:18.706  7999  7999 D WM-Schedulers: Created SystemJobScheduler and enabled SystemJobService
+10-05 23:22:18.720  7999  8021 W ziparchive: Unable to open '/data/user_de/0/com.google.android.gms/app_chimera/m/00000007/MeasurementDynamite.dm': No such file or directory
+10-05 23:22:18.720  7999  8021 W ziparchive: Unable to open '/data/user_de/0/com.google.android.gms/app_chimera/m/00000007/MeasurementDynamite.dm': No such file or directory
+10-05 23:22:18.723  7999  8030 D libcrashlytics: Initializing libcrashlytics version 3.2.0
+10-05 23:22:18.733  7999  7999 W SoLoader: Initializing SoLoader: 0
+10-05 23:22:18.733  7999  7999 W SoLoader: Recording new base apk path: /data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/base.apk
+10-05 23:22:18.733  7999  7999 W SoLoader: Previously recorded 0 base apk paths.
+10-05 23:22:18.734  7999  7999 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+10-05 23:22:18.734  7999  7999 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+10-05 23:22:18.734  7999  7999 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/base.apk!/lib/x86_64]]
+10-05 23:22:18.737  7999  7999 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~j7FJTgqz5e9XCu7TAYwSOA==/host.exp.exponent-25Jv1UnQXNDVyTgb0nHc3g==/lib/x86_64 flags = 0]]
+10-05 23:22:18.737  7999  7999 I SoLoader: init finish: 4 SO sources prepared
+10-05 23:22:18.737  7999  7999 W SoLoader: SoLoader initialized: 8
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Entering merged library JNI_OnLoad.
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing 12 pre-merged libs (including stub)
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register libfabricjni_so.  onload_func: 0x76929747b0a0
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register libreact_devsupportjni_so.  onload_func: 0x7692975599b0
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register libreact_featureflagsjni_so.  onload_func: 0x76929756c520
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register libreact_newarchdefaults_so.  onload_func: 0x769297593420
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register libreactnativeblob_so.  onload_func: 0x76929763ac80
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_so.  onload_func: 0x769297655dd0
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_common_so.  onload_func: 0x76929765c340
+10-05 23:22:18.743  7999  7999 D jni_lib_merge: Preparing to register librninstance_so.  onload_func: 0x76929767a640
+10-05 23:22:18.744  7999  7999 D jni_lib_merge: Preparing to register libturbomodulejsijni_so.  onload_func: 0x769297725d70
+10-05 23:22:18.744  7999  7999 D jni_lib_merge: Preparing to register libuimanagerjni_so.  onload_func: 0x76929772dca0
+10-05 23:22:18.744  7999  7999 D jni_lib_merge: Preparing to register libyoga_so.  onload_func: 0x769297735320
+10-05 23:22:18.744  7999  7999 D jni_lib_merge: About to register 11 actual methods.
+10-05 23:22:18.745  7999  7999 D jni_lib_merge: Entering merged library JNI_OnLoad.
+10-05 23:22:18.745  7999  7999 D jni_lib_merge: Preparing 12 pre-merged libs (including stub)
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libfabricjni_so.  onload_func: 0x76929747b0a0
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libreact_devsupportjni_so.  onload_func: 0x7692975599b0
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libreact_featureflagsjni_so.  onload_func: 0x76929756c520
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libreact_newarchdefaults_so.  onload_func: 0x769297593420
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libreactnativeblob_so.  onload_func: 0x76929763ac80
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_so.  onload_func: 0x769297655dd0
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_common_so.  onload_func: 0x76929765c340
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register librninstance_so.  onload_func: 0x76929767a640
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libturbomodulejsijni_so.  onload_func: 0x769297725d70
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libuimanagerjni_so.  onload_func: 0x76929772dca0
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: Preparing to register libyoga_so.  onload_func: 0x769297735320
+10-05 23:22:18.746  7999  7999 D jni_lib_merge: About to register 11 actual methods.
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Entering merged library JNI_OnLoad.
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing 12 pre-merged libs (including stub)
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libfabricjni_so.  onload_func: 0x76929747b0a0
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libreact_devsupportjni_so.  onload_func: 0x7692975599b0
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libreact_featureflagsjni_so.  onload_func: 0x76929756c520
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libreact_newarchdefaults_so.  onload_func: 0x769297593420
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libreactnativeblob_so.  onload_func: 0x76929763ac80
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_so.  onload_func: 0x769297655dd0
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_common_so.  onload_func: 0x76929765c340
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register librninstance_so.  onload_func: 0x76929767a640
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libturbomodulejsijni_so.  onload_func: 0x769297725d70
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libuimanagerjni_so.  onload_func: 0x76929772dca0
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: Preparing to register libyoga_so.  onload_func: 0x769297735320
+10-05 23:22:18.747  7999  7999 D jni_lib_merge: About to register 11 actual methods.
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Entering merged library JNI_OnLoad.
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing 12 pre-merged libs (including stub)
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libfabricjni_so.  onload_func: 0x76929747b0a0
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libreact_devsupportjni_so.  onload_func: 0x7692975599b0
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libreact_featureflagsjni_so.  onload_func: 0x76929756c520
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libreact_newarchdefaults_so.  onload_func: 0x769297593420
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libreactnativeblob_so.  onload_func: 0x76929763ac80
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_so.  onload_func: 0x769297655dd0
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_common_so.  onload_func: 0x76929765c340
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register librninstance_so.  onload_func: 0x76929767a640
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libturbomodulejsijni_so.  onload_func: 0x769297725d70
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libuimanagerjni_so.  onload_func: 0x76929772dca0
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: Preparing to register libyoga_so.  onload_func: 0x769297735320
+10-05 23:22:18.750  7999  7999 D jni_lib_merge: About to register 11 actual methods.
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Entering merged library JNI_OnLoad.
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing 12 pre-merged libs (including stub)
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libfabricjni_so.  onload_func: 0x76929747b0a0
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libreact_devsupportjni_so.  onload_func: 0x7692975599b0
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libreact_featureflagsjni_so.  onload_func: 0x76929756c520
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libreact_newarchdefaults_so.  onload_func: 0x769297593420
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libreactnativeblob_so.  onload_func: 0x76929763ac80
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_so.  onload_func: 0x769297655dd0
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libreactnativejni_common_so.  onload_func: 0x76929765c340
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register librninstance_so.  onload_func: 0x76929767a640
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libturbomodulejsijni_so.  onload_func: 0x769297725d70
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libuimanagerjni_so.  onload_func: 0x76929772dca0
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: Preparing to register libyoga_so.  onload_func: 0x769297735320
+10-05 23:22:18.752  7999  7999 D jni_lib_merge: About to register 11 actual methods.
+10-05 23:22:18.754   520   534 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10192. pid: 7999
+10-05 23:22:18.758  7999  8027 D CompatibilityChangeReporter: Compat change id reported: 194532703; UID 10192; state: ENABLED
+10-05 23:22:18.758  7999  8027 D CompatibilityChangeReporter: Compat change id reported: 253665015; UID 10192; state: ENABLED
+10-05 23:22:18.759   520   534 D CompatibilityChangeReporter: Compat change id reported: 271850009; UID 10192; state: ENABLED
+10-05 23:22:18.759   520   534 D CompatibilityChangeReporter: Compat change id reported: 253665015; UID 10192; state: ENABLED
+10-05 23:22:18.759   520   534 D CompatibilityChangeReporter: Compat change id reported: 194532703; UID 10192; state: ENABLED
+10-05 23:22:18.761  7999  8030 D libcrashlytics: Initializing native crash handling successful.
+10-05 23:22:18.761  7999  8032 D CompatibilityChangeReporter: Compat change id reported: 160794467; UID 10192; state: ENABLED
+10-05 23:22:18.767  7999  7999 D AppCompatDelegate: Checking for metadata for AppLocalesMetadataHolderService : Service not found
+10-05 23:22:18.779  7999  7999 W SoLoader: SoLoader already initialized
+10-05 23:22:18.781  7999  7999 D h       : Using embedded Expo kernel manifest: {"id":"5794490b-0131-4e99-8dbf-e3f5af2ddb45","createdAt":"2025-09-11T14:44:21.297Z","runtimeVersion":"54.0.0","launchAsset":{"hash":"D5YHlJs3a8Wv88j4JfIU0y1pW4a0baEK4bPPqfGmazY","key":"22de04e436f2b16d15457417a5402153","contentType":"application\/javascript","url":"https:\/\/assets.eascdn.net\/GyTRSsdZ8sGAHTJoZUy0GRqHqRPlKjf4mIDoq3KMb7w?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},"assets":[{"hash":"YeirpaTpgf4iz3yOi82-oAR251xiw38Bv37jM2HWhCg","key":"6e435534bd35da5fef04168860a9b8fa","contentType":"font\/ttf","fileExtension":".ttf","url":"https:\/\/assets.eascdn.net\/DHrVvHO_E3UMRekAVSe2Zlq8s_atMSwFl9Atq2aTy8w?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"-iq30lV4GbK_5QCeRoRO-nFwzxd753NdQ6oqwSlfHVQ","key":"b4eb097d35f44ed943676fd56f6bdc51","contentType":"font\/ttf","fileExtension":".ttf","url":"https:\/\/assets.eascdn.net\/XnOBVccehfKLW9rMBYUCc-VhyHZzTI1ycP3XlCspgcE?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"7xSfCL3S_wmk4shXNHa3sPP7sVtiOVSt5ZiZ5xdb7do","key":"4e85bc9ebe07e0340c9c4fc2f6c38908","contentType":"font\/ttf","fileExtension":".ttf","url":"https:\/\/assets.eascdn.net\/iIxOYwe_3gl5flQPjaaNzvd8vR7QAtWGZOunEfTbUnk?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"i2Gkx-9w3JJ1PwSUl2SC9m_UFQ7CPfx3KrZeEDc6-lU","key":"778ffc9fe8773a878e9c30a6304784de","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/idnX8z03q4vGLzhYMPaQGBADjhqvWe67_afPqJ1vGzM?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"kGZm3WiTRq2iMs42ia3vkHtCV_obWT8DY40rlJf2SIQ","key":"c79c3606a1cf168006ad3979763c7e0c","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/k-3xHp3vP8mR36WdccUZVPTRJKpP-zlyboWdkXCIQpQ?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"_6fuRbdkBbpzkhSVAI99aMneY5X0tpQdsGNGX244IyA","key":"02bc1fa7c0313217bde2d65ccbff40c9","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/lfqeUjiWFXwowhxVDBEzxsbTOEzYxMLebljy5Bh1mpU?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"hM9es7ICUPaeDkczvrTaX0F_BoKJKlrRteYlcHU8IbE","key":"35ba0eaec5a4f5ed12ca16fabeae451d","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/fMoMrsUeB5xWw_Ugn8FqGJf-M2pld2hkXKR704z0MM8?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"mtuMXvypMuK3MrKT2oE70uMZUiYwVrzp4lF_7A8LanY","key":"0a328cd9c1afd0afe8e3b1ec5165b1b4","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/LM4SxB4vhDe2iN4tYT0dAlPP_dsY-Zme_H-JpULtHa8?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"yGu0he7mh-BsUA_EI09RpnhLRTDCrhHQx2SBEQvOMQU","key":"3cd68ccdb8938e3711da2e8831b85493","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/A08F4i_QzJW79C3BCIZYmmpH_p2FkQbdTQZ_2hVWDeg?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"0Dpc16Zu8QxRR5FvnVh4stCgpa1G9AWjHNmWfvqlWv0","key":"61ca7e64b7d605716c57706cef640b9a","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/04lOdmTXc1loPyqacYwao1j0xlM34n0vGxtIFY7ETTs?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"q1YT0s5w-mfFkm6DE1NmSUUZn8GV-m_nbF_jzsRS4xo","key":"aff2c65b39a296d4f7e96d0f58169170","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/4s0taS6e9_zozzhgsa6FogUB4b0LQc1LMNbBLkxlIz0?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"xOVOagp95jaqFTN4-8YupKQWlb_t-Af5Dfexj_1zP2c","key":"d8e7601e3df962f83c62371ac14964d8","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/g6PisuFJa8j79kTi3ZKboB3DcerIBZXujlFBVhXkh1s?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"yGu0he7mh-BsUA_EI09RpnhLRTDCrhHQx2SBEQvOMQU","key":"3cd68ccdb8938e3711da2e8831b85493","contentType":"image\/png","fileExtension":".png","url":"https:\/\/assets.eascdn.net\/A08F4i_QzJW79C3BCIZYmmpH_p2FkQbdTQZ_2hVWDeg?project=6b6c6660-df76-11e6-b9b4-59d1587e6774"},{"hash":"IyXFOnPlTEOMu8YN_92LUT1HG6QuL1ZxPvQEuV4Mofw","key":"0747a1317bbe9c6fc340b889ef8ab3ae","co
+10-05 23:22:18.782  7999  7999 W SoLoader: SoLoader already initialized
+10-05 23:22:18.789   826   907 D SplashScreenView: Build android.window.SplashScreenView{8ebe711 V.E...... ......ID 0,0-0,0}
+10-05 23:22:18.789   826   907 D SplashScreenView: Icon: view: android.widget.ImageView{4fec076 V.ED..... ......I. 0,0-0,0 #10204f0 android:id/splashscreen_icon_view} drawable: com.android.wm.shell.startingsurface.SplashscreenIconDrawableFactory$ImmobileIconDrawable@601677 size: 384
+10-05 23:22:18.789   826   907 D SplashScreenView: Branding: view: android.view.View{6cc02e4 G.ED..... ......I. 0,0-0,0 #10204ef android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+10-05 23:22:18.795   520   534 I ActivityTaskManager: START u0 {flg=0xc080000 cmp=host.exp.exponent/.experience.ExperienceActivity (has extras)} with LAUNCH_MULTIPLE from uid 10192 (BAL_ALLOW_VISIBLE_WINDOW) result code=0
+10-05 23:22:18.798  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 263076149; UID 10192; state: ENABLED
+10-05 23:22:18.800   520  1701 D CoreBackPreview: Window{71cdf3 u0 Splash Screen host.exp.exponent}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@233bd29, mPriority=0, mIsAnimationCallback=false}
+10-05 23:22:18.818  7999  8030 I FirebaseCrashlytics: Saved version control info
+10-05 23:22:18.837  7999  8041 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+10-05 23:22:18.853  7999  8022 D SessionLifecycleClient: Queued message 1. Queue size 1
+10-05 23:22:18.863  7999  8041 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+10-05 23:22:18.864  7999  8041 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+10-05 23:22:18.875  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10192; state: DISABLED
+10-05 23:22:18.876  7999  7999 W OpenGLRenderer: Unknown dataspace 0
+10-05 23:22:18.886  7999  8024 D TrafficStats: tagSocket(89) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:18.889  7999  8043 I FA      : App measurement initialized, version: 77033
+10-05 23:22:18.889  7999  8043 I FA      : To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+10-05 23:22:18.889  7999  8043 I FA      : To enable faster debug mode event logging run:
+10-05 23:22:18.889  7999  8043 I FA      :   adb shell setprop debug.firebase.analytics.app host.exp.exponent
+10-05 23:22:18.890  7999  7999 D SessionLifecycleService: Service bound to new client on process 7999
+10-05 23:22:18.891  7999  8048 D SessionLifecycleService: App has not yet foregrounded. Using previously stored session.
+10-05 23:22:18.892  7999  8048 D SessionLifecycleService: Client android.os.Messenger@91c722b bound at 213153. Clients: 1
+10-05 23:22:18.895   520   534 D CoreBackPreview: Window{36a99d u0 host.exp.exponent/host.exp.exponent.LauncherActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@3e25fe0, mPriority=0, mIsAnimationCallback=false}
+10-05 23:22:18.909  7999  8039 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+--------- beginning of kernel
+10-05 23:22:19.103     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+10-05 23:22:18.922   135   135 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+10-05 23:22:18.922  7999  8039 I Gralloc4: mapper 4.x is not supported
+10-05 23:22:18.955  5777  5777 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.measurement.START pkg=com.google.android.gms }
+10-05 23:22:18.956  5777  5777 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.measurement.START pkg=com.google.android.gms }
+10-05 23:22:18.968  7999  8043 I FA      : Tag Manager is not found and thus will not be used
+10-05 23:22:19.023  7999  7999 W dev.expo.updates: {"timestamp":1791242539023,"message":"The expo-updates system is disabled due to an invalid configuration. Ensure a valid URL is supplied.","code":"InitializationError","level":"warn"}
+10-05 23:22:19.024  7999  7999 W unknown:BridgelessReact: ReactHost{0}.onHostResume(activity)
+10-05 23:22:19.024  7999  7999 D Event   : No subscribers registered for event class Zh.r$c
+10-05 23:22:19.024  7999  7999 D Event   : No subscribers registered for event class th.g
+10-05 23:22:19.024  7999  7999 D r       : Kernel started running.
+10-05 23:22:19.025  7999  8018 D SessionLifecycleClient: Queued message 2. Queue size 1
+10-05 23:22:19.025  7999  8018 D SessionLifecycleClient: Queued message 1. Queue size 2
+10-05 23:22:19.028   826   884 V WindowManagerShell: onTransitionReady android.os.BinderProxy@d4bd67f: {id=19 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@1fc618b} m=OPEN f=MOVE_TO_TOP leash=Surface(name=Task=20)/@0xec2ca7c sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@ab01268} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xa8a2f05 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+10-05 23:22:19.028   826   884 V WindowManagerShell: Playing animation for (#19)android.os.BinderProxy@d4bd67f@0
+10-05 23:22:19.028   826   884 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@5f5285b
+10-05 23:22:19.028   826   884 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@d1018f8
+10-05 23:22:19.028   826   884 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@f4661d1
+10-05 23:22:19.028   826   884 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@b6b8436
+10-05 23:22:19.028   826   884 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+10-05 23:22:19.028   826   884 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@6d3ef37
+10-05 23:22:19.028   826   884 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@6a9cca4
+10-05 23:22:19.029   826   884 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@d7e4a0d
+10-05 23:22:19.029   826   884 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=19 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@1fc618b} m=OPEN f=MOVE_TO_TOP leash=Surface(name=Task=20)/@0xec2ca7c sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@ab01268} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xa8a2f05 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+10-05 23:22:19.029   826   884 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@1885bc4, appThread = android.app.IApplicationThread$Stub$Proxy@9cfaad, debugName = LauncherToDream }}
+10-05 23:22:19.029   826   884 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@605a1e2, appThread = android.app.IApplicationThread$Stub$Proxy@e84f973, debugName = QuickstepLaunchHome }}
+10-05 23:22:19.029   826   884 V WindowManagerShell:  Delegate animation for #19 to null
+10-05 23:22:19.029   826   884 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@c63adc2
+10-05 23:22:19.029   826   884 V WindowManagerShell: start default transition animation, info = {id=19 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@1fc618b} m=OPEN f=MOVE_TO_TOP leash=Surface(name=Task=20)/@0xec2ca7c sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@ab01268} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xa8a2f05 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+10-05 23:22:19.029   826   884 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@6f63326 animAttr=0x13 type=OPEN isEntrance=false
+10-05 23:22:19.029   520   537 V WindowManager: Sent Transition #19 createdAt=10-05 23:22:18.474 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=19 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... flg=0x10000000 pkg=host.exp.exponent cmp=host.exp.exponent/.LauncherActivity } baseActivity=ComponentInfo{host.exp.exponent/host.exp.exponent.LauncherActivity} topActivity=ComponentInfo{host.exp.exponent/host.exp.exponent.LauncherActivity} origActivity=null realActivity=ComponentInfo{host.exp.exponent/host.exp.exponent.LauncherActivity} numActivities=1 lastActiveTime=212741 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{b630409 Task{3a7a29b #19 type=standard A=10192:host.exp.exponent}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{c59a60e host.exp.exponent.LauncherActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-05 23:22:19.029   520   537 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+10-05 23:22:19.029   520   537 V WindowManager:     info={id=19 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{f98282f Task{2032e44 #20 type=standard A=10192:host.exp.exponent}}} m=OPEN f=MOVE_TO_TOP leash=Surface(name=Task=20)/@0x44541d3 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{RemoteToken{ffbf59c Task{c334f34 #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xdbaad7b sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+10-05 23:22:19.029  7999  7999 D SessionLifecycleClient: Connected to SessionLifecycleService. Queue size 2
+10-05 23:22:19.030   826   884 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@7025bb2 animAttr=0x12 type=OPEN isEntrance=true
+10-05 23:22:19.030   826   884 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@c63adc2
+10-05 23:22:19.030  7999  8028 D SessionLifecycleClient: Sending lifecycle 2 to service
+10-05 23:22:19.031  7999  8028 D SessionLifecycleClient: Sending lifecycle 1 to service
+10-05 23:22:19.032  7999  7999 E r       : java.lang.NoSuchFieldException: No field numActivities in class Landroid/app/ActivityManager$RecentTaskInfo; (declaration of 'android.app.ActivityManager$RecentTaskInfo' appears in /system/framework/framework.jar)
+10-05 23:22:19.032  7999  8048 D SessionLifecycleService: Activity backgrounding at 213294
+10-05 23:22:19.032  7999  8048 D SessionLifecycleService: Activity foregrounding at 213294.
+10-05 23:22:19.032  7999  8048 D SessionLifecycleService: Cold start detected.
+10-05 23:22:19.036   826   884 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#19)android.os.BinderProxy@d4bd67f@0
+10-05 23:22:19.037   520   537 V WindowManager: Finish Transition #19: created at 10-05 23:22:18.474 collect-started=0.018ms request-sent=4.949ms started=7.264ms ready=553.268ms sent=554.044ms finished=563.376ms
+10-05 23:22:19.038   826   884 V WindowManagerShell: Track 0 became idle
+10-05 23:22:19.038   826   884 V WindowManagerShell: All active transition animations finished
+10-05 23:22:19.039  7999  8048 D SessionLifecycleService: Generated new session.
+10-05 23:22:19.039  7999  8048 D SessionLifecycleService: Broadcasting new session
+10-05 23:22:19.040  7999  8030 D SessionFirelogPublisher: Data Collection is enabled for at least one Subscriber
+10-05 23:22:19.042  7999  8030 D EventGDTLogger: Session Event Type: SESSION_START
+10-05 23:22:19.042  7999  8030 D SessionFirelogPublisher: Successfully logged Session Start event.
+10-05 23:22:19.048  7999  7999 W a       : Could not find listener for key: experienceActivityKernelDidLoad
+10-05 23:22:19.064  7999  7999 D OpenGLRenderer: --- Failed to create image decoder with message 'unimplemented'
+10-05 23:22:19.064  7999  8063 E h       : java.net.MalformedURLException: Attempt to invoke virtual method 'int java.lang.String.length()' on a null object reference
+10-05 23:22:19.064  7999  8063 D OpenGLRenderer: --- Failed to create image decoder with message 'unimplemented'
+10-05 23:22:19.069   826   909 D EGL_emulation: app_time_stats: avg=2410.49ms min=3.70ms max=6268.80ms count=3
+10-05 23:22:19.074  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 210923482; UID 10192; state: ENABLED
+10-05 23:22:19.076  7999  7999 W SoLoader: SoLoader already initialized
+10-05 23:22:19.076  7999  7999 W a       : Could not find listener for key: experienceIdSetForActivity
+10-05 23:22:19.078  7999  7999 D OpenGLRenderer: --- Failed to create image decoder with message 'unimplemented'
+10-05 23:22:19.078  7999  8063 E h       : java.net.MalformedURLException: Attempt to invoke virtual method 'int java.lang.String.length()' on a null object reference
+10-05 23:22:19.079  7999  7999 W a       : Could not find listener for key: loadBundleForExperienceActivity
+10-05 23:22:19.079  7999  8066 D TrafficStats: tagSocket(122) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:19.080  7999  8063 D OpenGLRenderer: --- Failed to create image decoder with message 'unimplemented'
+10-05 23:22:19.082  7999  7999 W SoLoader: SoLoader already initialized
+10-05 23:22:19.083  7999  8028 D SessionLifecycleClient: Sending lifecycle 1 to service
+10-05 23:22:19.085  7999  8048 D SessionLifecycleService: Activity foregrounding at 213346.
+10-05 23:22:19.108  7999  7999 D SessionLifecycleClient: Session update received.
+10-05 23:22:19.109  7999  7999 E g       : java.lang.RuntimeException: A TaskDescription's primary color should be opaque
+10-05 23:22:19.109  7999  7999 E g       : java.lang.RuntimeException: A TaskDescription's primary color should be opaque
+10-05 23:22:19.110  7999  8018 D SessionLifecycleClient: Notified CRASHLYTICS of new session b3c8c5262c194597ad68271f589d5012
+10-05 23:22:19.123   520  1701 D CoreBackPreview: Window{82a2b41 u0 host.exp.exponent/host.exp.exponent.experience.ExperienceActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@c580179, mPriority=0, mIsAnimationCallback=false}
+10-05 23:22:19.139   520  1701 W ActivityTaskManager: takeTaskSnapshot: taskId=19 not found or not visible
+10-05 23:22:19.297   520   537 I ActivityTaskManager: Displayed host.exp.exponent/.experience.ExperienceActivity for user 0: +828ms
+10-05 23:22:19.301  7999  7999 W unknown:BridgelessReact: ReactHost{1}.startSurface(surfaceId = 0): Schedule
+10-05 23:22:19.301  7999  7999 W unknown:BridgelessReact: ReactHost{1}.attachSurface(surfaceId = 0)
+10-05 23:22:19.301  7999  7999 W unknown:BridgelessReact: ReactHost{1}.onHostResume(activity)
+10-05 23:22:19.301  7999  7999 W unknown:ReactNative: Packager connection already open, nooping.
+10-05 23:22:19.313   826   899 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@b5a313
+10-05 23:22:19.313   520   533 W InputManager-JNI: Input channel object '71cdf3 Splash Screen host.exp.exponent (client)' was disposed without first being removed with the input manager!
+10-05 23:22:19.315   520  1701 D CoreBackPreview: Window{71cdf3 u0 Splash Screen host.exp.exponent EXITING}: Setting back callback null
+10-05 23:22:19.320  7999  8073 W unknown:BridgelessReact: ReactHost{1}.getOrCreateReactInstanceTask()
+10-05 23:22:19.320  7999  8073 W unknown:BridgelessReact: ReactHost{1}.getOrCreateReactInstanceTask(): Start
+10-05 23:22:19.320  7999  8073 W unknown:BridgelessReact: ReactHost{1}.getJSBundleLoader()
+10-05 23:22:19.320  7999  8073 W unknown:BridgelessReact: ReactHost{1}.isMetroRunning()
+10-05 23:22:19.322  1082  1124 I ImeTracker: com.google.android.apps.nexuslauncher:de10719: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+10-05 23:22:19.323   520   534 I ImeTracker: com.google.android.apps.nexuslauncher:de10719: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-05 23:22:19.325  1692  3150 I PBSessionCacheImpl: Deleted sessionId[7443285939146089] from persistence.
+10-05 23:22:19.326  1082  2232 D OneSearchSuggestProvider: Shut down the binder channel
+10-05 23:22:19.326  1082  5720 I IPCThreadState: oneway function results for code 2 on binder at 0x7694f728dd30 will be dropped but finished with status UNKNOWN_TRANSACTION
+10-05 23:22:19.328  7999  8074 D TrafficStats: tagSocket(142) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:19.329  1692  2613 W SearchServiceCore: Abort, client detached.
+10-05 23:22:19.371  7999  8079 D TrafficStats: tagSocket(132) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:19.373   520  1975 D CoreBackPreview: Window{3a0982b u0 PopupWindow:3971892}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@d7a5e21, mPriority=0, mIsAnimationCallback=false}
+10-05 23:22:19.375  7999  8080 D TrafficStats: tagSocket(133) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:19.386  7999  8079 W unknown:BridgelessReact: ReactHost{1}.isMetroRunning(): Async result = true
+10-05 23:22:19.466  7999  8073 W unknown:BridgelessReact: ReactHost{1}.loadJSBundleFromMetro()
+10-05 23:22:19.508  8075  8075 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-05 23:22:19.511  8075  8075 I AndroidRuntime: Using default boot image
+10-05 23:22:19.511  8075  8075 I AndroidRuntime: Leaving lock profiling enabled
+10-05 23:22:19.513  8075  8075 I app_process: Core platform API reporting enabled, enforcing=false
+10-05 23:22:19.513  8075  8075 I app_process: Using CollectorTypeCC GC.
+10-05 23:22:19.518   520  1701 D CompatibilityChangeReporter: Compat change id reported: 214016041; UID 10192; state: ENABLED
+10-05 23:22:19.518   520  1701 I ImeTracker: host.exp.exponent:5dcd4019: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+10-05 23:22:19.518   520  1701 I ImeTracker: host.exp.exponent:5dcd4019: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-05 23:22:19.519  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227 
+10-05 23:22:19.520  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+10-05 23:22:19.520  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=host.exp.exponent fieldId=0 fieldName=null extras=null}, false)
+10-05 23:22:19.520  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+10-05 23:22:19.521  1538  1538 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+10-05 23:22:19.521  7999  7999 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@26ac821
+10-05 23:22:19.521   520  1975 D CoreBackPreview: Window{36a99d u0 host.exp.exponent/host.exp.exponent.LauncherActivity}: Setting back callback null
+10-05 23:22:19.522   520  1701 W InputManager-JNI: Input channel object '36a99d host.exp.exponent/host.exp.exponent.LauncherActivity (client)' was disposed without first being removed with the input manager!
+10-05 23:22:19.526  5788  5805 I FontLog : Received query Noto Color Emoji Compat, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+10-05 23:22:19.526  5788  5805 I FontLog : Query [emojicompat-emoji-font] resolved to {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} [CONTEXT service_id=132 ]
+10-05 23:22:19.527  5788  5805 I FontLog : Fetch {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+10-05 23:22:19.532  5788  6158 I FontLog : Pulling font file for id = 5, cache size = 5 [CONTEXT service_id=132 ]
+10-05 23:22:19.540  5788  5805 I FontLog : Pulling font file for id = 5, cache size = 5 [CONTEXT service_id=132 ]
+10-05 23:22:19.575   520  1701 D CoreBackPreview: Window{b25afb8 u0 PopupWindow:a6a40b5}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@4620f64, mPriority=0, mIsAnimationCallback=false}
+10-05 23:22:19.579  8075  8075 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-05 23:22:19.589  8075  8075 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+10-05 23:22:19.589  8075  8075 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+10-05 23:22:19.593  8075  8075 W app_process: Unexpected CPU variant for x86: x86_64.
+10-05 23:22:19.593  8075  8075 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+10-05 23:22:19.594  8075  8075 W app_process: ClassLoaderContext shared library size mismatch. Expected=2, found=0 (PCL[]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]} | PCL[])
+10-05 23:22:19.595  8075  8075 W app_process: ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[]{PCL[/system/framework/android.test.runner.jar*4168958247]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]}#PCL[/system/framework/android.test.base.jar*836642756]} | PCL[/system/framework/android.test.runner.jar*4168958247])
+10-05 23:22:19.643  8075  8075 W libc    : Access denied finding property "ro.product.name_for_attestation"
+10-05 23:22:19.643  8075  8075 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+10-05 23:22:19.643  8075  8075 W libc    : Access denied finding property "ro.product.model_for_attestation"
+10-05 23:22:19.645  8075  8075 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-05 23:22:19.642  8075  8075 W main    : type=1400 audit(0.0:226): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:19.642  8075  8075 W main    : type=1400 audit(0.0:227): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:19.642  8075  8075 W main    : type=1400 audit(0.0:228): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:19.671  8075  8075 D UiAutomationConnection: Created on user UserHandle{0}
+10-05 23:22:19.672  8075  8075 I UiAutomation: Initialized for user 0 on display 0
+10-05 23:22:19.672  8075  8075 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+10-05 23:22:19.687   520  1701 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-05 23:22:19.687   520  1701 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+10-05 23:22:19.696   520  1701 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:19.697   520   520 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-05 23:22:19.698  1692  2322 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+10-05 23:22:19.700  1692  2322 I A       : Nga state changed to NgaStateDetails{state=DISABLED, isSpecialExperience=false}
+10-05 23:22:19.704  1647  6635 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:19.704  1647  6635 I A       : [Memory] eligibility: StashEligibility{4}
+10-05 23:22:19.705  1605  2321 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:19.705  1647  2091 I A       : Unsubscribed to apa or classic variant change.
+10-05 23:22:19.709  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:19.709  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:19.709  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:19.709  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:19.710  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:19.710  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:19.710  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:19.710  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:19.710  8075  8098 V UiAutomation: Init UiAutomation@95389ba[id=60, displayId=0, flags=0]
+10-05 23:22:19.714  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:19.730  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:19.731   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:19.762   520   533 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:19.762  1605  2321 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:19.762  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:19.762  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:19.762  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:19.762  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:19.762  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:19.762  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:19.762  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:19.763  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:19.763  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:19.763  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:19.763   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:19.805  7999  7999 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@a018f97
+10-05 23:22:19.805  7999  8079 W unknown:BridgelessReact: ReactHost{1}.loadJSBundleFromMetro(): Creating BundleLoader
+10-05 23:22:19.805   520   533 D CoreBackPreview: Window{b25afb8 u0 PopupWindow:a6a40b5}: Setting back callback null
+10-05 23:22:19.806   520   533 W InputManager-JNI: Input channel object 'b25afb8 PopupWindow:a6a40b5 (client)' was disposed without first being removed with the input manager!
+10-05 23:22:19.808  7999  7999 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@349d8b6
+10-05 23:22:19.808   520   533 D CoreBackPreview: Window{3a0982b u0 PopupWindow:3971892}: Setting back callback null
+10-05 23:22:19.808   520   533 W InputManager-JNI: Input channel object '3a0982b PopupWindow:3971892 (client)' was disposed without first being removed with the input manager!
+10-05 23:22:19.810  7999  8073 W unknown:BridgelessReact: ReactHost{1}.getOrCreateReactContext(): Creating BridgelessReactContext
+10-05 23:22:19.811  7999  8073 W unknown:BridgelessReact: ReactHost{1}.getOrCreateReactInstanceTask(): Creating ReactInstance
+10-05 23:22:19.814  7999  8101 D TrafficStats: tagSocket(135) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:19.820  7999  8073 D jni_lib_merge: Entering merged library JNI_OnLoad.
+10-05 23:22:19.820  7999  8073 D jni_lib_merge: Preparing 4 pre-merged libs (including stub)
+10-05 23:22:19.820  7999  8073 D jni_lib_merge: Preparing to register libhermes_executor_so.  onload_func: 0x76928e2636f0
+10-05 23:22:19.820  7999  8073 D jni_lib_merge: Preparing to register libhermesinstancejni_so.  onload_func: 0x76928e26f950
+10-05 23:22:19.820  7999  8073 D jni_lib_merge: Preparing to register libjsijniprofiler_so.  onload_func: 0x76928e2700e0
+10-05 23:22:19.820  7999  8073 D jni_lib_merge: About to register 3 actual methods.
+10-05 23:22:19.856  7999  8073 I ExpoModulesCore: ✅ AppContext was initialized
+10-05 23:22:19.874  7999  8073 W unknown:BridgelessReact: ReactHost{1}.getOrCreateReactInstanceTask(): Loading JS Bundle
+10-05 23:22:19.874  7999  8073 W unknown:BridgelessReact: ReactHost{1}.getOrCreateReactInstanceTask(): Calling DevSupportManagerBase.onNewReactContextCreated(reactContext)
+10-05 23:22:19.875  7999  7999 W unknown:ReactNative: Packager connection already open, nooping.
+10-05 23:22:19.875  7999  8100 W unknown:Fresco: Fresco has already been initialized! `Fresco.initialize(...)` should only be called 1 single time to avoid memory leaks!
+10-05 23:22:19.878  7999  8100 W unknown:ImagePipelineFactory: ImagePipelineFactory has already been initialized! `ImagePipelineFactory.initialize(...)` should only be called once to avoid unexpected behavior.
+10-05 23:22:19.879  7999  7999 W unknown:BridgelessReact: ReactContext.onHostResume()
+10-05 23:22:19.880  7999  8073 W unknown:BridgelessReact: ReactHost{1}.startSurface(surfaceId = 0): Execute
+10-05 23:22:19.882  7999  7999 W unknown:BridgelessReact: ReactHost{1}.getOrCreateReactInstanceTask(): Executing ReactInstanceEventListeners
+10-05 23:22:20.095  7999  8100 I WebViewFactory: Loading com.google.android.webview version 113.0.5672.136 (code 567263637)
+10-05 23:22:20.096  7999  8100 W ziparchive: Unable to open '/data/app/~~E0vxJNva_4miR3Z7aliV0g==/com.google.android.trichromelibrary_567263637-mnYNgcK-h04oCkyKg2FvvQ==/TrichromeLibrary.dm': No such file or directory
+10-05 23:22:20.096  7999  8100 W ziparchive: Unable to open '/data/app/~~E0vxJNva_4miR3Z7aliV0g==/com.google.android.trichromelibrary_567263637-mnYNgcK-h04oCkyKg2FvvQ==/TrichromeLibrary.dm': No such file or directory
+10-05 23:22:20.097  7999  8100 W st.exp.exponent: Entry not found
+10-05 23:22:20.097  7999  8100 D nativeloader: Configuring clns-8 for other apk /data/app/~~E0vxJNva_4miR3Z7aliV0g==/com.google.android.trichromelibrary_567263637-mnYNgcK-h04oCkyKg2FvvQ==/TrichromeLibrary.apk. target_sdk_version=34, uses_libraries=ALL, library_path=/data/app/~~qedakp045tHtR7-VjlHdmg==/com.google.android.webview-hFPmG08yglLWrS_Tk455mg==/lib/x86_64:/data/app/~~qedakp045tHtR7-VjlHdmg==/com.google.android.webview-hFPmG08yglLWrS_Tk455mg==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~E0vxJNva_4miR3Z7aliV0g==/com.google.android.trichromelibrary_567263637-mnYNgcK-h04oCkyKg2FvvQ==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+10-05 23:22:20.100  7999  8100 D nativeloader: Configuring clns-9 for other apk /data/app/~~qedakp045tHtR7-VjlHdmg==/com.google.android.webview-hFPmG08yglLWrS_Tk455mg==/WebViewGoogle.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~qedakp045tHtR7-VjlHdmg==/com.google.android.webview-hFPmG08yglLWrS_Tk455mg==/lib/x86_64:/data/app/~~qedakp045tHtR7-VjlHdmg==/com.google.android.webview-hFPmG08yglLWrS_Tk455mg==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~E0vxJNva_4miR3Z7aliV0g==/com.google.android.trichromelibrary_567263637-mnYNgcK-h04oCkyKg2FvvQ==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+10-05 23:22:20.111  7999  8100 I cr_WVCFactoryProvider: Loaded version=113.0.5672.136 minSdkVersion=29 isBundle=false multiprocess=true packageId=2
+10-05 23:22:20.115  7999  8100 I cr_LibraryLoader: Successfully loaded native library
+10-05 23:22:20.115  7999  8100 I cr_CachingUmaRecorder: Flushed 8 samples from 8 histograms.
+10-05 23:22:20.120  7999  8115 D TrafficStats: tagSocket(158) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:20.126  7999  8112 I cr_VariationsUtils: Failed reading seed file "/data/user/0/host.exp.exponent/app_webview/variations_seed_new"
+10-05 23:22:20.129   520  1701 D ConnectivityService: requestNetwork for uid/pid:10192/7999 activeRequest: null callbackRequest: 183 [NetworkRequest [ REQUEST id=184, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
+10-05 23:22:20.130   520   758 D ConnectivityService: NetReassign [184 : null → 100] [c 0] [a 1] [i 0]
+10-05 23:22:20.130   520   751 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=184, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:20.130   520   751 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=184, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:20.130   520   751 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=184, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:20.130   520   751 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=184, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:20.136  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativekeyboardcontroller.OverKeyboardViewManager
+10-05 23:22:20.136  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class Hc.d
+10-05 23:22:20.136  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FeMergeManager
+10-05 23:22:20.137  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.VirtualViewManager$c
+10-05 23:22:20.137  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$LinearGradientManager
+10-05 23:22:20.137  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ScreenContainerViewManager
+10-05 23:22:20.137  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.uimanager.LayoutShadowNode
+10-05 23:22:20.137  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.gamma.tabs.TabsHostViewManager
+10-05 23:22:20.138  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class expo.modules.kotlin.views.GroupViewManagerWrapper
+10-05 23:22:20.138  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapCircleManager
+10-05 23:22:20.138  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FeColorMatrixManager
+10-05 23:22:20.139  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$SymbolManager
+10-05 23:22:20.139  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$PatternManager
+10-05 23:22:20.139  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.th3rdwave.safeareacontext.SafeAreaViewManager
+10-05 23:22:20.139  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.th3rdwave.safeareacontext.p
+10-05 23:22:20.140  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.SvgViewManager
+10-05 23:22:20.140  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ScreenViewManager
+10-05 23:22:20.140  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$UseViewManager
+10-05 23:22:20.140  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class expo.modules.kotlin.views.SimpleViewManagerWrapper
+10-05 23:22:20.141  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$TSpanViewManager
+10-05 23:22:20.141  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FilterManager
+10-05 23:22:20.141  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$MarkerManager
+10-05 23:22:20.141  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.SearchBarManager
+10-05 23:22:20.142  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.th3rdwave.safeareacontext.SafeAreaProviderManager
+10-05 23:22:20.142  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapGradientPolylineManager
+10-05 23:22:20.142  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.gesturehandler.react.RNGestureHandlerButtonViewManager
+10-05 23:22:20.142  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$ForeignObjectManager
+10-05 23:22:20.142  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$GroupViewManager
+10-05 23:22:20.142  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$TextViewManager
+10-05 23:22:20.143  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$ImageViewManager
+10-05 23:22:20.143  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FeCompositeManager
+10-05 23:22:20.143  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$RadialGradientManager
+10-05 23:22:20.143  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ScreenStackHeaderConfigViewManager
+10-05 23:22:20.143  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.GooglePayButtonManager
+10-05 23:22:20.144  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FeOffsetManager
+10-05 23:22:20.144  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapPolygonManager
+10-05 23:22:20.144  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$PathViewManager
+10-05 23:22:20.144  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ScreenStackHeaderSubviewManager
+10-05 23:22:20.144  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativecommunity.picker.ReactDialogPickerManager
+10-05 23:22:20.145  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativecommunity.picker.k
+10-05 23:22:20.145  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.pushprovisioning.AddToWalletButtonManager
+10-05 23:22:20.145  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativekeyboardcontroller.KeyboardBackgroundViewManager
+10-05 23:22:20.145  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$DefsViewManager
+10-05 23:22:20.145  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapUrlTileManager
+10-05 23:22:20.145  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ScreenFooterManager
+10-05 23:22:20.146  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.gamma.tabs.TabScreenViewManager
+10-05 23:22:20.146  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.CardFormViewManager
+10-05 23:22:20.146  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.EmbeddedPaymentElementViewManager
+10-05 23:22:20.146  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapManager
+10-05 23:22:20.147  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FeGaussianBlurManager
+10-05 23:22:20.147  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativecommunity.slider.ReactSliderManager
+10-05 23:22:20.147  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapMarkerManager
+10-05 23:22:20.147  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapLocalTileManager
+10-05 23:22:20.148  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.StripeContainerManager
+10-05 23:22:20.148  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ModalScreenViewManager
+10-05 23:22:20.148  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapPolylineManager
+10-05 23:22:20.148  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$ClipPathViewManager
+10-05 23:22:20.148  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativekeyboardcontroller.KeyboardGestureAreaViewManager
+10-05 23:22:20.148  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FeBlendManager
+10-05 23:22:20.149  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$CircleViewManager
+10-05 23:22:20.149  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ScreenStackViewManager
+10-05 23:22:20.149  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.CardFieldViewManager
+10-05 23:22:20.150  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.airbnb.android.react.lottie.LottieAnimationViewManager
+10-05 23:22:20.150  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapCalloutManager
+10-05 23:22:20.150  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.addresssheet.AddressSheetViewManager
+10-05 23:22:20.150  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$EllipseViewManager
+10-05 23:22:20.151  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapHeatmapManager
+10-05 23:22:20.151  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$LineViewManager
+10-05 23:22:20.151  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativecommunity.webview.RNCWebViewManager
+10-05 23:22:20.152  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$FeFloodManager
+10-05 23:22:20.152  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.shopify.reactnative.skia.SkiaPictureViewManager
+10-05 23:22:20.152  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativekeyboardcontroller.KeyboardControllerViewManager
+10-05 23:22:20.152  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapWMSTileManager
+10-05 23:22:20.152  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class org.reactnative.maskedview.RNCMaskedViewManager
+10-05 23:22:20.152  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$MaskManager
+10-05 23:22:20.153  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.rnscreens.ScreenContentWrapperManager
+10-05 23:22:20.153  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$RectViewManager
+10-05 23:22:20.153  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.horcrux.svg.RenderableViewManager$TextPathViewManager
+10-05 23:22:20.153  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativepagerview.PagerViewViewManager
+10-05 23:22:20.154  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativestripesdk.AuBECSDebitFormViewManager
+10-05 23:22:20.154  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.rnmaps.maps.MapOverlayManager
+10-05 23:22:20.154  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.swmansion.gesturehandler.react.RNGestureHandlerRootViewManager
+10-05 23:22:20.154  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.reactnativecommunity.picker.ReactDropdownPickerManager
+10-05 23:22:20.177  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.debuggingoverlay.DebuggingOverlayManager
+10-05 23:22:20.177  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.safeareaview.ReactSafeAreaViewManager
+10-05 23:22:20.177  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.safeareaview.ReactSafeAreaViewShadowNode
+10-05 23:22:20.177  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.modal.ReactModalHostManager
+10-05 23:22:20.178  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.frescosupport.FrescoBasedReactTextInlineImageViewManager
+10-05 23:22:20.178  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.frescosupport.FrescoBasedReactTextInlineImageShadowNode
+10-05 23:22:20.179  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.progressbar.ReactProgressBarViewManager
+10-05 23:22:20.179  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.progressbar.ProgressBarShadowNode
+10-05 23:22:20.179  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.scroll.ReactHorizontalScrollViewManager
+10-05 23:22:20.180  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.image.ReactImageManager
+10-05 23:22:20.180  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.ReactTextViewManager
+10-05 23:22:20.180  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.ReactTextShadowNode
+10-05 23:22:20.181  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.scroll.ReactHorizontalScrollContainerViewManager
+10-05 23:22:20.181  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.unimplementedview.ReactUnimplementedViewManager
+10-05 23:22:20.182  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.scroll.ReactScrollViewManager
+10-05 23:22:20.182  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.view.ReactViewManager
+10-05 23:22:20.183  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.drawer.ReactDrawerLayoutManager
+10-05 23:22:20.183  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.switchview.ReactSwitchManager
+10-05 23:22:20.184  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.switchview.ReactSwitchShadowNode
+10-05 23:22:20.184  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.ReactVirtualTextViewManager
+10-05 23:22:20.184  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.ReactVirtualTextShadowNode
+10-05 23:22:20.184  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.swiperefresh.SwipeRefreshLayoutManager
+10-05 23:22:20.185  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.ReactRawTextManager
+10-05 23:22:20.185  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.text.ReactRawTextShadowNode
+10-05 23:22:20.185  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.textinput.ReactTextInputManager
+10-05 23:22:20.185  7999  8099 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.views.textinput.ReactTextInputShadowNode
+10-05 23:22:20.209  7999  8099 E AVManager: Cannot install JSI bindings for AV module because JS context is not available
+10-05 23:22:20.209  7999  8099 W BridgelessReactContext: [WARNING] Bridgeless doesn't support CatalystInstance. Accessing an API that's not part of the new architecture is not encouraged usage.
+10-05 23:22:20.210  7999  8099 I ExpoModulesCore: ✅ JSI interop was installed
+10-05 23:22:20.214   520   758 D ConnectivityService: NetReassign [no changes] [c 1] [a 0] [i 0]
+10-05 23:22:20.222  7999  8099 I ExpoModulesCore: ✅ Constants were exported
+10-05 23:22:20.244  7999  8124 D TrafficStats: tagSocket(165) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:20.275  7999  8099 I ReactNativeJS: '[shim] crypto.getRandomValues installed:', true
+10-05 23:22:20.463  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER', '{"event":"primary-observer-ready","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"unknown","counters":{"submitObserved":0,"readObserved":0,"secretCalls":0,"signingCalls":0,"broadcastAttempts":0,"rpcWrites":0,"walletSaveAttempts":0},"submitCalls":0,"readCalls":0,"transactionHash":null,"phase":"idle","unknownPresent":false,"unknownIdentity":null,"unknownHash":null,"lastLookup":null}'
+10-05 23:22:20.551  7999  8099 D CompatibilityChangeReporter: Compat change id reported: 289878283; UID 10192; state: ENABLED
+10-05 23:22:20.553  7999  8099 I ReactNativeJS: Running "main" with {"rootTag":1,"initialProps":{"exp":{"initialUri":"exp://127.0.0.1:8081/--/__retry-gap-observer-native-fixture?outcome=mismatch","shell":false,"manifestString":"{\"id\":\"c4d30aaa-7b24-4b37-a93a-0911c7275bc2\",\"createdAt\":\"2026-10-05T23:22:19.093Z\",\"runtimeVersion\":\"exposdk:54.0.0\",\"launchAsset\":{\"key\":\"bundle\",\"contentType\":\"application\\/javascript\",\"url\":\"http:\\/\\/127.0.0.1:8081\\/primary-validation-entry.bundle?platform=android&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.bytecode=1&transform.routerRoot=app&unstable_transformProfile=hermes-stable\"},\"assets\":[],\"metadata\":{},\"extra\":{\"eas\":{},\"expoClient\":{\"name\":\"stellar-pocketpay-mobile\",\"slug\":\"stellar-pocketpay-mobile\",\"version\":\"1.0.0\",\"scheme\":\"stellar-pocketpay\",\"orientation\":\"portrait\",\"icon\":\".\\/assets\\/icon.png\",\"userInterfaceStyle\":\"light\",\"newArchEnabled\":true,\"splash\":{\"image\":\".\\/assets\\/splash-icon.png\",\"resizeMode\":\"contain\",\"backgroundColor\":\"#ffffff\"},\"ios\":{\"supportsTablet\":true,\"infoPlist\":{\"NSFaceIDUsageDescription\":\"PocketPay uses Face ID to lock and protect your wallet.\"}},\"android\":{\"adaptiveIcon\":{\"foregroundImage\":\".\\/assets\\/adaptive-icon.png\",\"backgroundColor\":\"#ffffff\"},\"edgeToEdgeEnabled\":true,\"predictiveBackGestureEnabled\":false,\"permissions\":[\"android.permission.USE_BIOMETRIC\",\"android.permission.USE_FINGERPRINT\"]},\"web\":{\"favicon\":\".\\/assets\\/favicon.png\"},\"plugins\":[\"expo-secure-store\",\"expo-router\",[\"expo-local-authentication\",{\"faceIDPermission\":\"PocketPay uses Face ID to lock and protect your wallet.\"}]],\"_internal\":{\"isDebug\":false,\"projectRoot\":\"\\/home\\/runner\\/work\\/pocketpay-mobile\\/pocketpay-mobile\\/subject\",\"dynamicConfigPath\":{},\"staticConfigPath\":\"\\/home\\/runner\\/work\\/pocketpay-mobile\\/pocketpay-mobile\\/subject\\/app.json\",\"packageJsonPath\":\"\\/home\\/runner\\/work\\/pocketpay-mobile\\/pocketpay-mobile\\/subject\\/package.json\",\"pluginHistory\":{\"expo-secure-store\":{\"name\":\"expo-secure-store\",\"version\":\"15.0.8\"},\"expo-local-authentication\":{\"name\":\"expo-local-authentication\",\"version\":\"17.0.8\"}}},\"sdkVersion\":\"54.0.0\",\"platforms\":[\"ios\",\"android\",\"web\"],\"extra\":{\"router\":{}},\"hostUri\":\"127.0.0.1:8081\"},\"expoGo\":{\"debuggerHost\":\"127.0.0.1:8081\",\"developer\":{\"tool\":\"expo-cli\",\"projectRoot\":\"\\/home\\/runner\\/work\\/pocketpay-mobile\\/pocketpay-mobile\\/subject\"},\"packagerOpts\":{\"dev\":true},\"mainModuleName\":\"primary-validation-entry\"},\"scopeKey\":\"@anonymous\\/stellar-pocketpay-mobile-51d1ce97-fe73-4e6a-a958-9103670a4cff\"},\"isVerified\":true}"}},"fabric":true}
+10-05 23:22:20.591  7999  8125 D TrafficStats: tagSocket(144) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:20.671   335   363 I netd    : tetherGetStats() -> {[]} <0.25ms>
+10-05 23:22:20.673   335   363 I netd    : bandwidthSetGlobalAlert(2097152) <0.08ms>
+10-05 23:22:20.673   335   363 I netd    : bandwidthRemoveInterfaceQuota(eth0) <0.24ms>
+10-05 23:22:20.674   335   363 I netd    : bandwidthSetInterfaceQuota(eth0, 9223372036854775807) <0.16ms>
+10-05 23:22:20.763  1609  5254 W MediaProvider: isAppCloneUserPair for user 0: false
+10-05 23:22:20.773   520  1975 D OomAdjuster: Not killing cached processes
+10-05 23:22:20.778  7999  8039 D EGL_emulation: app_time_stats: avg=494.81ms min=64.65ms max=1011.57ms count=3
+10-05 23:22:20.778  5788  5879 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 215 [CONTEXT service_id=218 ]
+10-05 23:22:20.780  5788  7493 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 10 uptime_millis: 10 exec_start_elapsed_seconds: 215 [CONTEXT service_id=218 ]
+10-05 23:22:20.791  8075  8075 W AccessibilityNodeInfoDumper: Fetch time: 29ms
+10-05 23:22:20.792   520  1975 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:20.792  1605  2321 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:20.792  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:20.792  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:20.792  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:20.793  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:20.793  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:20.793  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:20.793  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:20.793  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:20.793  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:20.793   520  1975 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-05 23:22:20.794  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:20.795   520   520 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-05 23:22:20.795  1692  2330 I A       : NGA enabled in interactor.
+10-05 23:22:20.795  1692  2330 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+10-05 23:22:20.795   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:20.797  1647  5521 I A       : Initializing all components
+10-05 23:22:20.798  8075  8075 D AndroidRuntime: Shutting down VM
+10-05 23:22:20.807  1647  5521 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:20.807  1647  5521 I A       : [Memory] eligibility: StashEligibility{6}
+10-05 23:22:20.808  1647  2091 I A       : onIsEnabledChanged, isEnabled: false
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 I A       : onOpaVisibilityChanged: false
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.808  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 I A       : Setting session to type: NO_SESSION
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 I A       : setNavBarVisible: GestureNavBarVisible{navbarVisible=true}
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:20.809  1647  2091 I A       : onDisabled. Registered: false
+10-05 23:22:20.809  1647  2091 I A       : State changed: IDLE => IDLE by NGA_STATE_CHANGED and N/A with Optional.empty
+10-05 23:22:20.810  1647  2097 I A       : on opa visibility changed false
+10-05 23:22:20.810  1647  2097 I A       : on opa visibility changed false
+10-05 23:22:20.811  1647  2091 I A       : Recognizer choice: (recognizer_type: 1, recognizer_mode: 1, choice_reason: 4)
+10-05 23:22:20.811  1647  2091 I A       : onActiveStateChangeEvent: IDLE => IDLE
+10-05 23:22:20.812  1647  2091 I A       : #onActiveStateChangeEvent, newState: IDLE, previousState: IDLE.
+10-05 23:22:20.812  1647  2091 I NgaEntryPointEventSendr: setupConnection
+10-05 23:22:20.814  1692  1692 I A       : Creating pss binder().
+10-05 23:22:20.814  1647  2097 I A       : Initialize
+10-05 23:22:20.814  1647  2097 I A       : stopListening(NGA_PAUSED_UNKNOWN_REASON, NGA_CREATE), idleOverride=NOT_LISTENING
+10-05 23:22:20.815  1647  2097 I A       : Successfully initialized all components
+10-05 23:22:20.822  1647  2091 I NgaEntryPointEventSendr: State changed: Disconnected => Connecting
+10-05 23:22:20.823  1647  2091 I NgaEntryPointEventSendr: onServiceConnected
+10-05 23:22:20.823  1692  5528 I A       : Calling beginBinderSession().
+10-05 23:22:20.824  1692  5528 I A       : beginBinderSession(): calling binder
+10-05 23:22:20.824  1647  2091 I NgaEntryPointEventSendr: State changed: Connecting => Ready
+10-05 23:22:20.826   520   533 W ActivityManager: Unable to start service Intent { cmp=com.google.android.apps.tachyon/.clientapi.ClientApiService } U=0: not found
+10-05 23:22:20.833  1647  2097 I NgaEntryPointEventSendr: State changed: Ready => Disconnected (onOpaDisconnected)
+10-05 23:22:20.834  1692  2613 W A       : UiCallbackStub-onGenericEvent[ServiceEvent = 60] task was not run. Callback from Service received after client was disposed.
+10-05 23:22:20.838  1692  2613 W SearchServiceCore: Abort, client detached.
+10-05 23:22:20.838  1692  2618 I PBSessionCacheImpl: Deleted sessionId[7443285939146092] from persistence.
+10-05 23:22:20.933  5777  8127 I GmscoreIpa: Starting mediastore instant index [CONTEXT service_id=255 ]
+10-05 23:22:21.433  7999  7999 W unknown:ViewManagerPropertyUpdater: Could not find generated setter for class com.facebook.react.uimanager.RootViewManager
+10-05 23:22:21.519  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_GAP_NATIVE_OBSERVER', '{"event":"retry-gap-observer-ready","label":"DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"mismatch","startedAt":"2026-10-05T23:22:21.519Z","counters":{"readCalls":0,"readCompleted":0,"mismatchResponses":0,"readErrors":0,"secretCalls":0,"signingCalls":0,"submitCalls":0,"rpcWrites":0,"broadcastAttempts":0,"blockedFetch":0,"blockedXHR":0,"walletSaveAttempts":0,"unknownClears":0,"storeUpdates":0,"reachabilityReads":0},"unknownPresent":false,"unknownIdentity":null,"transactionHash":null,"requestId":null,"phase":"idle","lastLookup":null}'
+10-05 23:22:21.535   826   909 D EGL_emulation: app_time_stats: avg=488.83ms min=3.95ms max=2150.44ms count=5
+10-05 23:22:21.583  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER', '{"event":"real-signer-store-change","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"unknown","counters":{"submitObserved":0,"readObserved":0,"secretCalls":0,"signingCalls":0,"broadcastAttempts":0,"rpcWrites":0,"walletSaveAttempts":0},"submitCalls":0,"readCalls":0,"transactionHash":null,"phase":"idle","unknownPresent":false,"unknownIdentity":null,"unknownHash":null,"lastLookup":null}'
+10-05 23:22:21.584  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_GAP_NATIVE_OBSERVER', '{"event":"signer-store-observed","label":"DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"mismatch","startedAt":"2026-10-05T23:22:21.519Z","counters":{"readCalls":0,"readCompleted":0,"mismatchResponses":0,"readErrors":0,"secretCalls":0,"signingCalls":0,"submitCalls":0,"rpcWrites":0,"broadcastAttempts":0,"blockedFetch":0,"blockedXHR":0,"walletSaveAttempts":0,"unknownClears":0,"storeUpdates":1,"reachabilityReads":0},"unknownPresent":false,"unknownIdentity":null,"transactionHash":null,"requestId":null,"phase":"idle","lastLookup":null}'
+10-05 23:22:21.585  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER', '{"event":"real-signer-store-change","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"unknown","counters":{"submitObserved":0,"readObserved":0,"secretCalls":0,"signingCalls":0,"broadcastAttempts":0,"rpcWrites":0,"walletSaveAttempts":0},"submitCalls":0,"readCalls":0,"transactionHash":null,"phase":"idle","unknownPresent":false,"unknownIdentity":null,"unknownHash":null,"lastLookup":null}'
+10-05 23:22:21.585  7999  7999 D CompatibilityChangeReporter: Compat change id reported: 171228096; UID 10192; state: ENABLED
+10-05 23:22:21.585  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_GAP_NATIVE_OBSERVER', '{"event":"signer-store-observed","label":"DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"mismatch","startedAt":"2026-10-05T23:22:21.519Z","counters":{"readCalls":0,"readCompleted":0,"mismatchResponses":0,"readErrors":0,"secretCalls":0,"signingCalls":0,"submitCalls":0,"rpcWrites":0,"broadcastAttempts":0,"blockedFetch":0,"blockedXHR":0,"walletSaveAttempts":0,"unknownClears":0,"storeUpdates":2,"reachabilityReads":0},"unknownPresent":false,"unknownIdentity":null,"transactionHash":null,"requestId":null,"phase":"idle","lastLookup":null}'
+10-05 23:22:21.586  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_PRIMARY_NATIVE_OBSERVER', '{"event":"real-signer-store-change","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"unknown","counters":{"submitObserved":0,"readObserved":0,"secretCalls":0,"signingCalls":0,"broadcastAttempts":0,"rpcWrites":0,"walletSaveAttempts":0},"submitCalls":0,"readCalls":0,"transactionHash":null,"phase":"unknown","unknownPresent":true,"unknownIdentity":1,"unknownHash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","lastLookup":null}'
+10-05 23:22:21.587  7999  8099 I ReactNativeJS: 'POCKETPAY_RETRY_GAP_NATIVE_OBSERVER', '{"event":"signer-store-observed","label":"DUMMY TESTNET / RETRY GAPS / NO SECRET ACCESS, SIGNING OR BROADCAST","sourceSha":"ddd56649099d1fc5763ef29af3bfba0363897bd6","outcome":"mismatch","startedAt":"2026-10-05T23:22:21.519Z","counters":{"readCalls":0,"readCompleted":0,"mismatchResponses":0,"readErrors":0,"secretCalls":0,"signingCalls":0,"submitCalls":0,"rpcWrites":0,"broadcastAttempts":0,"blockedFetch":0,"blockedXHR":0,"walletSaveAttempts":0,"unknownClears":0,"storeUpdates":3,"reachabilityReads":0},"unknownPresent":true,"unknownIdentity":1,"transactionHash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","requestId":"native-dummy-mismatch","phase":"unknown","lastLookup":null}'
+10-05 23:22:21.647  1609  2086 I MediaProvider: Deleted 0 0 0 0 0 0 1 items on external_primary due to com.android.shell
+10-05 23:22:21.660  5788  6187 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 215 [CONTEXT service_id=218 ]
+10-05 23:22:21.663  5788  7493 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 7 uptime_millis: 7 exec_start_elapsed_seconds: 215 [CONTEXT service_id=218 ]
+10-05 23:22:21.997  8134  8134 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-05 23:22:21.999  8134  8134 I AndroidRuntime: Using default boot image
+10-05 23:22:21.999  8134  8134 I AndroidRuntime: Leaving lock profiling enabled
+10-05 23:22:22.001  8134  8134 I app_process: Core platform API reporting enabled, enforcing=false
+10-05 23:22:22.001  8134  8134 I app_process: Using CollectorTypeCC GC.
+10-05 23:22:22.035  8134  8134 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-05 23:22:22.041  8134  8134 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+10-05 23:22:22.041  8134  8134 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+10-05 23:22:22.044  8134  8134 W app_process: Unexpected CPU variant for x86: x86_64.
+10-05 23:22:22.044  8134  8134 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+10-05 23:22:22.045  8134  8134 W app_process: ClassLoaderContext shared library size mismatch. Expected=2, found=0 (PCL[]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]} | PCL[])
+10-05 23:22:22.045  8134  8134 W app_process: ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[]{PCL[/system/framework/android.test.runner.jar*4168958247]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]}#PCL[/system/framework/android.test.base.jar*836642756]} | PCL[/system/framework/android.test.runner.jar*4168958247])
+10-05 23:22:22.053  8134  8134 W libc    : Access denied finding property "ro.product.name_for_attestation"
+10-05 23:22:22.053  8134  8134 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+10-05 23:22:22.053  8134  8134 W libc    : Access denied finding property "ro.product.model_for_attestation"
+10-05 23:22:22.054  8134  8134 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-05 23:22:22.050  8134  8134 W main    : type=1400 audit(0.0:229): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:22.050  8134  8134 W main    : type=1400 audit(0.0:230): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:22.050  8134  8134 W main    : type=1400 audit(0.0:231): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:22.062  8134  8134 D UiAutomationConnection: Created on user UserHandle{0}
+10-05 23:22:22.062  8134  8134 I UiAutomation: Initialized for user 0 on display 0
+10-05 23:22:22.062  8134  8134 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+10-05 23:22:22.063   520   533 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-05 23:22:22.063   520   533 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+10-05 23:22:22.064   520   533 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:22.065   520   520 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-05 23:22:22.065  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:22.065  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:22.065  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:22.065  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:22.065  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:22.065  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:22.065  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:22.065  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:22.065  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:22.067  1692  2322 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+10-05 23:22:22.067  1692  2322 I A       : Nga state changed to NgaStateDetails{state=DISABLED, isSpecialExperience=false}
+10-05 23:22:22.068  1647  6635 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:22.068  1647  6635 I A       : [Memory] eligibility: StashEligibility{4}
+10-05 23:22:22.070  1647  2091 I A       : Unsubscribed to apa or classic variant change.
+10-05 23:22:22.073  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:22.073  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:22.073   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:22.073  8134  8148 V UiAutomation: Init UiAutomation@e98be8c[id=61, displayId=0, flags=0]
+10-05 23:22:22.079   520  1388 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:22.080  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:22.080  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:22.080  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:22.080  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:22.080  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:22.081  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:22.081  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:22.081  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:22.081  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:22.081  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:22.082  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:22.082   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:22.296  5777  8128 I ChimeraConfigurator: Starting update, reason: 4 urgentFeatures: vision.ocr:-1, mlkit.barcode.ui:-1
+10-05 23:22:22.303  5777  8128 I ChimeraConfigurator: Detected pending changes for urgent request: [vision.ocr, mlkit.barcode.ui]. Pending module sets: container:2318189190800+mlkit.barcode.ui+mlkit.ocr.common+vision.barcode,tflite_dynamite:2627305025100800+tflite_dynamite,vision_ocr:2316024025100000+vision.ocr
+10-05 23:22:22.306  5777  8128 I GmsDebugLogger: [73] 1801
+10-05 23:22:22.308  5777  8128 W ZappDownloader: No successful module downloads for requested features [vision.ocr, mlkit.barcode.ui].
+10-05 23:22:22.308  5777  8128 I GmsDebugLogger: [30] [VisionOcrDynamite.integ:231602402100000],[VisionBarcode.optional:231818100800],[TfliteDynamiteDynamite.integ:262730502100800],[MlkitOcrCommon.optional:231818100800],[MlkitBarcodeUi.optional:231818100000]
+10-05 23:22:22.310  5777  8128 W ChimeraConfigService: Retry attempt was throttled. [CONTEXT service_id=264 ]
+10-05 23:22:22.310  5777  8128 I GmsDebugLogger: [83] 1 [mlkit.barcode.ui, vision.ocr]
+10-05 23:22:22.311  5777  8127 W Vision  : Request for optional module download of barcode_ui failed. Request again.
+10-05 23:22:22.311  5777  8127 W Vision  : Would have logged:
+10-05 23:22:22.311  5777  8127 W Vision  : # dsae@1f51b146
+10-05 23:22:22.311  5777  8127 W Vision  : Request for optional module download of ocr failed. Request again.
+10-05 23:22:22.311  5777  8127 W Vision  : Would have logged:
+10-05 23:22:22.311  5777  8127 W Vision  : # dsae@37884fe7
+10-05 23:22:22.312  5777  8127 I Vision  : Schedule retrying download barcode_ui,ocr at 216574 with backoff 40 seconds
+10-05 23:22:22.431   826   826 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+10-05 23:22:22.798   826   826 D StatusBarIconController: ignoring old pipeline callbacks, because the new mobile icons are enabled
+10-05 23:22:22.830   520   606 D ActivityManager: freezing 3262 com.google.android.gms.unstable
+10-05 23:22:23.079  1609  2077 W MediaProvider: isAppCloneUserPair for user 0: false
+10-05 23:22:23.081  8134  8134 W AccessibilityNodeInfoDumper: Fetch time: 3ms
+10-05 23:22:23.081   520  1975 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:23.081   520  1975 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-05 23:22:23.082  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:23.082  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:23.083  8134  8134 D AndroidRuntime: Shutting down VM
+10-05 23:22:23.083  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:23.083  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:23.083  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:23.083  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:23.083  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:23.083  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:23.083  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:23.083  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:23.083  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:23.084   520   520 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-05 23:22:23.085  1692  2339 I A       : NGA enabled in interactor.
+10-05 23:22:23.085  1692  2339 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+10-05 23:22:23.085   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:23.087  1647  6786 I A       : Initializing all components
+10-05 23:22:23.087  1647  2091 I A       : onIsEnabledChanged, isEnabled: false
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 I A       : onOpaVisibilityChanged: false
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.088  1647  2091 I A       : Setting session to type: NO_SESSION
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 I A       : setNavBarVisible: GestureNavBarVisible{navbarVisible=true}
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:23.089  1647  2091 I A       : onDisabled. Registered: false
+10-05 23:22:23.089  1647  2091 I A       : stopListening(NGA_PAUSED_UNKNOWN_REASON, NGA_CREATE), idleOverride=NOT_LISTENING
+10-05 23:22:23.090  1647  2097 I A       : [Memory] eligibility: StashEligibility{6}
+10-05 23:22:23.090  1647  2097 I A       : Initialize
+10-05 23:22:23.090  1647  6786 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:23.090  1647  2097 I A       : State changed: IDLE => IDLE by NGA_STATE_CHANGED and N/A with Optional.empty
+10-05 23:22:23.090  1647  2097 I A       : Recognizer choice: (recognizer_type: 1, recognizer_mode: 1, choice_reason: 4)
+10-05 23:22:23.091  1647  2097 I A       : onActiveStateChangeEvent: IDLE => IDLE
+10-05 23:22:23.091  1647  2097 I A       : #onActiveStateChangeEvent, newState: IDLE, previousState: IDLE.
+10-05 23:22:23.091  1647  2091 I NgaEntryPointEventSendr: setupConnection
+10-05 23:22:23.092  1647  2097 I A       : on opa visibility changed false
+10-05 23:22:23.092  1647  2097 I A       : on opa visibility changed false
+10-05 23:22:23.092  1692  1692 I A       : Creating pss binder().
+10-05 23:22:23.098  1647  2091 I NgaEntryPointEventSendr: State changed: Disconnected => Connecting
+10-05 23:22:23.098  1647  2091 I NgaEntryPointEventSendr: onServiceConnected
+10-05 23:22:23.098  1692  5528 I A       : Calling beginBinderSession().
+10-05 23:22:23.098  1647  2097 I A       : Successfully initialized all components
+10-05 23:22:23.098  1692  5528 I A       : beginBinderSession(): calling binder
+10-05 23:22:23.100  5788  5879 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 217 [CONTEXT service_id=218 ]
+10-05 23:22:23.100  1647  2091 I NgaEntryPointEventSendr: State changed: Connecting => Ready
+10-05 23:22:23.110  5788  7427 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 15 uptime_millis: 15 exec_start_elapsed_seconds: 217 [CONTEXT service_id=218 ]
+10-05 23:22:23.113   520  1388 W ActivityManager: Unable to start service Intent { cmp=com.google.android.apps.tachyon/.clientapi.ClientApiService } U=0: not found
+10-05 23:22:23.125  1692  2613 W A       : UiCallbackStub-onGenericEvent[ServiceEvent = 60] task was not run. Callback from Service received after client was disposed.
+10-05 23:22:23.128  1692  2618 I PBSessionCacheImpl: Deleted sessionId[7443285939146095] from persistence.
+10-05 23:22:23.129  1692  2613 W SearchServiceCore: Abort, client detached.
+10-05 23:22:23.129  1647  2097 I NgaEntryPointEventSendr: State changed: Ready => Disconnected (onOpaDisconnected)
+10-05 23:22:23.202  7999  8039 D EGL_emulation: app_time_stats: avg=344.59ms min=3.97ms max=1480.45ms count=7
+10-05 23:22:23.427  7999  7999 W unknown:BridgelessReact: ReactHost{0}.startSurface(surfaceId = 0): Schedule
+10-05 23:22:23.427  7999  7999 W unknown:BridgelessReact: ReactHost{0}.attachSurface(surfaceId = 0)
+10-05 23:22:23.428  7999  7999 W unknown:BridgelessReact: ReactHost{0}.onHostResume(activity)
+10-05 23:22:23.429  7999  8152 W unknown:BridgelessReact: ReactHost{0}.getOrCreateReactInstanceTask()
+10-05 23:22:23.429  7999  8152 W unknown:BridgelessReact: ReactHost{0}.getOrCreateReactInstanceTask(): Start
+10-05 23:22:23.429  7999  8152 W unknown:BridgelessReact: ReactHost{0}.getJSBundleLoader()
+10-05 23:22:23.430  7999  8152 W unknown:BridgelessReact: ReactHost{0}.getOrCreateReactContext(): Creating BridgelessReactContext
+10-05 23:22:23.430  7999  8152 W unknown:BridgelessReact: ReactHost{0}.getOrCreateReactInstanceTask(): Creating ReactInstance
+10-05 23:22:23.442  7999  8152 I ExpoModulesCore: ✅ AppContext was initialized
+10-05 23:22:23.464   520  3025 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+10-05 23:22:23.485  7999  8152 W unknown:BridgelessReact: ReactHost{0}.getOrCreateReactInstanceTask(): Loading JS Bundle
+10-05 23:22:23.490  7999  8152 W unknown:BridgelessReact: ReactHost{0}.getOrCreateReactInstanceTask(): Calling DevSupportManagerBase.onNewReactContextCreated(reactContext)
+10-05 23:22:23.490  7999  8153 W [RNScreens]: InsetObserverProxy registers on new context while it has not been invalidated on the old one. Please report this as issue at https://github.com/software-mansion/react-native-screens/issues
+10-05 23:22:23.495  7999  7999 W unknown:BridgelessReact: ReactContext.onHostResume()
+10-05 23:22:23.495  7999  8152 W unknown:BridgelessReact: ReactHost{0}.startSurface(surfaceId = 0): Execute
+10-05 23:22:23.497  7999  7999 W unknown:BridgelessReact: ReactHost{0}.getOrCreateReactInstanceTask(): Executing ReactInstanceEventListeners
+10-05 23:22:23.553  7999  8153 D n       : WARNING: getPackageName called on ScopedContext
+10-05 23:22:23.553  7999  8153 W BridgelessReactContext: [WARNING] Bridgeless doesn't support CatalystInstance. Accessing an API that's not part of the new architecture is not encouraged usage.
+10-05 23:22:23.554  7999  8153 I ExpoModulesCore: ✅ JSI interop was installed
+10-05 23:22:23.555  7999  8153 I ExpoModulesCore: ✅ Constants were exported
+10-05 23:22:23.567   826   909 D EGL_emulation: app_time_stats: avg=2562.22ms min=650.94ms max=4473.51ms count=2
+10-05 23:22:23.616   520  1388 D ConnectivityService: requestNetwork for uid/pid:10192/7999 activeRequest: null callbackRequest: 186 [NetworkRequest [ REQUEST id=187, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
+10-05 23:22:23.618   520   758 D ConnectivityService: NetReassign [187 : null → 100] [c 0] [a 0] [i 1]
+10-05 23:22:23.618   520   751 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=187, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:23.618   520   751 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=187, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:23.618   520   751 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=187, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:23.618   520   751 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=187, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: host.exp.exponent UnderlyingNetworks: Null] ]
+10-05 23:22:23.631   335  8161 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+10-05 23:22:23.631   335  8162 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+10-05 23:22:23.632   335  8167 I resolv  : res_nmkquery: (QUERY, IN, A)
+10-05 23:22:23.632   335  8167 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70822d993b30
+10-05 23:22:23.632   335  8167 I resolv  : doQuery: rcode=0, ancount=2, return value=75
+10-05 23:22:23.632   335  8166 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+10-05 23:22:23.632   335  8166 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70829d991670
+10-05 23:22:23.632   335  8166 I resolv  : doQuery: rcode=0, ancount=2, return value=99
+10-05 23:22:23.632  7999  8024 D TrafficStats: tagSocket(191) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:23.634  7999  8153 I ReactNativeJS: Running "HomeMenu"
+10-05 23:22:23.635   335  8165 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+10-05 23:22:23.635   335  8168 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+10-05 23:22:23.635   335  8163 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+10-05 23:22:23.635   335  8163 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70829d991670
+10-05 23:22:23.635   335  8163 I resolv  : doQuery: rcode=0, ancount=2, return value=99
+10-05 23:22:23.635   335  8164 I resolv  : res_nmkquery: (QUERY, IN, A)
+10-05 23:22:23.635   335  8164 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70822d993b30
+10-05 23:22:23.635   335  8164 I resolv  : doQuery: rcode=0, ancount=2, return value=75
+10-05 23:22:23.635   335  8171 I resolv  : res_nmkquery: (QUERY, IN, A)
+10-05 23:22:23.635   335  8171 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70822d993b30
+10-05 23:22:23.635   335  8171 I resolv  : doQuery: rcode=0, ancount=2, return value=75
+10-05 23:22:23.635   335  8170 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+10-05 23:22:23.635   335  8170 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70829d991670
+10-05 23:22:23.635   335  8170 I resolv  : doQuery: rcode=0, ancount=2, return value=99
+10-05 23:22:23.636  7999  8054 D TrafficStats: tagSocket(193) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:23.638  7999  8055 D TrafficStats: tagSocket(192) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:23.639   335  8172 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+10-05 23:22:23.639   335  8173 I resolv  : res_nmkquery: (QUERY, IN, A)
+10-05 23:22:23.639   335  8172 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70829d991670
+10-05 23:22:23.639   335  8172 I resolv  : doQuery: rcode=0, ancount=2, return value=99
+10-05 23:22:23.639   335  8173 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x70822d993b30
+10-05 23:22:23.639   335  8173 I resolv  : doQuery: rcode=0, ancount=2, return value=75
+10-05 23:22:23.639  7999  8053 D TrafficStats: tagSocket(194) with statsTag=0xffffffff, statsUid=-1
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Entering merged library JNI_OnLoad.
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing 12 pre-merged libs (including stub)
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libfabricjni_so.  onload_func: 0x76929747b0a0
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libreact_devsupportjni_so.  onload_func: 0x7692975599b0
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libreact_featureflagsjni_so.  onload_func: 0x76929756c520
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libreact_newarchdefaults_so.  onload_func: 0x769297593420
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libreactnativeblob_so.  onload_func: 0x76929763ac80
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libreactnativejni_so.  onload_func: 0x769297655dd0
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libreactnativejni_common_so.  onload_func: 0x76929765c340
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register librninstance_so.  onload_func: 0x76929767a640
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libturbomodulejsijni_so.  onload_func: 0x769297725d70
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libuimanagerjni_so.  onload_func: 0x76929772dca0
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: Preparing to register libyoga_so.  onload_func: 0x769297735320
+10-05 23:22:23.641  7999  8153 D jni_lib_merge: About to register 11 actual methods.
+10-05 23:22:23.650  7999  7999 I ReactNative: [GESTURE HANDLER] Initialize gesture handler for root view com.facebook.react.runtime.ReactSurfaceView{7008615 V.E...... ......ID 0,0-720,1280 #b}
+10-05 23:22:23.686  7999  8157 D CompatibilityChangeReporter: Compat change id reported: 247079863; UID 10192; state: ENABLED
+10-05 23:22:23.740  7999  7999 E ThemeUtils: View class com.facebook.react.views.text.ReactTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+10-05 23:22:23.750  7999  7999 E ThemeUtils: View class com.facebook.react.views.text.ReactTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+10-05 23:22:23.750  7999  7999 E ThemeUtils: View class com.facebook.react.views.text.ReactTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+10-05 23:22:23.752  7999  7999 E ThemeUtils: View class com.facebook.react.views.text.ReactTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+10-05 23:22:23.752  7999  7999 E ThemeUtils: View class com.facebook.react.views.text.ReactTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+10-05 23:22:23.752  7999  7999 E ThemeUtils: View class com.facebook.react.views.text.ReactTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+10-05 23:22:23.940  1609  5254 I MediaProvider: Deleted 0 0 0 0 0 0 1 items on external_primary due to com.android.shell
+10-05 23:22:23.973  5788  7427 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 218 [CONTEXT service_id=218 ]
+10-05 23:22:23.975  5788  5879 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 13 uptime_millis: 13 exec_start_elapsed_seconds: 218 [CONTEXT service_id=218 ]
+10-05 23:22:24.025  8179  8179 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-05 23:22:24.029  8179  8179 I AndroidRuntime: Using default boot image
+10-05 23:22:24.029  8179  8179 I AndroidRuntime: Leaving lock profiling enabled
+10-05 23:22:24.030  8179  8179 I app_process: Core platform API reporting enabled, enforcing=false
+10-05 23:22:24.031  8179  8179 I app_process: Using CollectorTypeCC GC.
+10-05 23:22:24.070  8179  8179 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-05 23:22:24.076  8179  8179 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+10-05 23:22:24.076  8179  8179 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+10-05 23:22:24.079  8179  8179 W app_process: Unexpected CPU variant for x86: x86_64.
+10-05 23:22:24.079  8179  8179 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+10-05 23:22:24.080  8179  8179 W app_process: ClassLoaderContext shared library size mismatch. Expected=2, found=0 (PCL[]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]} | PCL[])
+10-05 23:22:24.081  8179  8179 W app_process: ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[]{PCL[/system/framework/android.test.runner.jar*4168958247]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]}#PCL[/system/framework/android.test.base.jar*836642756]} | PCL[/system/framework/android.test.runner.jar*4168958247])
+10-05 23:22:24.089  8179  8179 W libc    : Access denied finding property "ro.product.name_for_attestation"
+10-05 23:22:24.089  8179  8179 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+10-05 23:22:24.089  8179  8179 W libc    : Access denied finding property "ro.product.model_for_attestation"
+10-05 23:22:24.090  8179  8179 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-05 23:22:24.086  8179  8179 W main    : type=1400 audit(0.0:232): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:24.094  8179  8179 D UiAutomationConnection: Created on user UserHandle{0}
+10-05 23:22:24.094  8179  8179 I UiAutomation: Initialized for user 0 on display 0
+10-05 23:22:24.094  8179  8179 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+10-05 23:22:24.096   520  1709 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-05 23:22:24.096   520  1709 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+10-05 23:22:24.097   520  1709 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:24.086  8179  8179 W main    : type=1400 audit(0.0:233): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:24.098   520   520 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-05 23:22:24.099  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:24.103  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:24.103  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:24.103  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:24.103  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:24.103  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:24.103  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:24.103  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:24.103  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:24.104  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:24.104  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:24.104   520   534 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:24.105  8179  8193 V UiAutomation: Init UiAutomation@ed92ff4[id=62, displayId=0, flags=0]
+10-05 23:22:24.107  1692  2339 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+10-05 23:22:24.107  1692  2339 I A       : Nga state changed to NgaStateDetails{state=DISABLED, isSpecialExperience=false}
+10-05 23:22:24.086  8179  8179 W main    : type=1400 audit(0.0:234): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:24.111  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:24.111  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:24.111  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:24.111  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:24.111  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:24.111  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:24.111  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:24.111  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:24.111  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:24.111  7999  8194 D ProfileInstaller: Skipping profile installation for host.exp.exponent
+10-05 23:22:24.111  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:24.112  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:24.114   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:24.114   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:24.114  1647  2091 I A       : Unsubscribed to apa or classic variant change.
+10-05 23:22:24.115  1647  2091 I A       : [Memory] eligibility: StashEligibility{4}
+10-05 23:22:24.116  1647  1661 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:25.108  1609  4373 W MediaProvider: isAppCloneUserPair for user 0: false
+10-05 23:22:25.110  8179  8179 W AccessibilityNodeInfoDumper: Fetch time: 3ms
+10-05 23:22:25.110   520   534 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:25.110   520   534 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-05 23:22:25.111  8179  8179 D AndroidRuntime: Shutting down VM
+10-05 23:22:25.111  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:25.111  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:25.112  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:25.112  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:25.112  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:25.112  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:25.112   520   520 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-05 23:22:25.112  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:25.112  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:25.113  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:25.113  1692  2335 I A       : NGA enabled in interactor.
+10-05 23:22:25.113  1692  2335 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+10-05 23:22:25.114  1647  5521 I A       : Initializing all components
+10-05 23:22:25.114  1647  5521 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:25.114  1647  5521 I A       : [Memory] eligibility: StashEligibility{6}
+10-05 23:22:25.115  1647  2091 I A       : onIsEnabledChanged, isEnabled: false
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 I A       : onOpaVisibilityChanged: false
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 I A       : Setting session to type: NO_SESSION
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 I A       : setNavBarVisible: GestureNavBarVisible{navbarVisible=true}
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:25.115  1647  2091 I A       : onDisabled. Registered: false
+10-05 23:22:25.116  1647  2091 I A       : State changed: IDLE => IDLE by NGA_STATE_CHANGED and N/A with Optional.empty
+10-05 23:22:25.116  1647  2091 I A       : Recognizer choice: (recognizer_type: 1, recognizer_mode: 1, choice_reason: 4)
+10-05 23:22:25.117  1647  2091 I A       : onActiveStateChangeEvent: IDLE => IDLE
+10-05 23:22:25.117  1647  2091 I A       : #onActiveStateChangeEvent, newState: IDLE, previousState: IDLE.
+10-05 23:22:25.118  1647  2091 I A       : stopListening(NGA_PAUSED_UNKNOWN_REASON, NGA_CREATE), idleOverride=NOT_LISTENING
+10-05 23:22:25.123  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:25.123  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:25.127  1647  2091 I NgaEntryPointEventSendr: setupConnection
+10-05 23:22:25.130   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:25.131  1692  1692 I A       : Creating pss binder().
+10-05 23:22:25.131  1647  2091 I NgaEntryPointEventSendr: State changed: Disconnected => Connecting
+10-05 23:22:25.132  1647  2091 I NgaEntryPointEventSendr: onServiceConnected
+10-05 23:22:25.132  1647  2097 I A       : Initialize
+10-05 23:22:25.132  1647  2097 I A       : on opa visibility changed false
+10-05 23:22:25.136  1647  2097 I A       : on opa visibility changed false
+10-05 23:22:25.136  1692  5528 I A       : Calling beginBinderSession().
+10-05 23:22:25.136  1692  5528 I A       : beginBinderSession(): calling binder
+10-05 23:22:25.137  1647  2091 I NgaEntryPointEventSendr: State changed: Connecting => Ready
+10-05 23:22:25.139   520  1700 W ActivityManager: Unable to start service Intent { cmp=com.google.android.apps.tachyon/.clientapi.ClientApiService } U=0: not found
+10-05 23:22:25.141  1647  2091 I A       : Successfully initialized all components
+10-05 23:22:25.143  1692  2618 I PBSessionCacheImpl: Deleted sessionId[7443285939146098] from persistence.
+10-05 23:22:25.143  1647  2097 I NgaEntryPointEventSendr: State changed: Ready => Disconnected (onOpaDisconnected)
+10-05 23:22:25.144  1692  2613 W A       : UiCallbackStub-onGenericEvent[ServiceEvent = 60] task was not run. Callback from Service received after client was disposed.
+10-05 23:22:25.144  1692  2613 W SearchServiceCore: Abort, client detached.
+10-05 23:22:25.150  5788  7427 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 219 [CONTEXT service_id=218 ]
+10-05 23:22:25.154  5788  5879 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 8 uptime_millis: 8 exec_start_elapsed_seconds: 219 [CONTEXT service_id=218 ]
+10-05 23:22:25.432   826   826 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+10-05 23:22:25.896   417   417 W adbd    : timeout expired while flushing socket, closing
+10-05 23:22:25.947  1609  4373 I MediaProvider: Deleted 0 0 0 0 0 0 1 items on external_primary due to com.android.shell
+10-05 23:22:25.955   520  1709 D OomAdjuster: Not killing cached processes
+10-05 23:22:25.957  5788  7427 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 220 [CONTEXT service_id=218 ]
+10-05 23:22:25.958  5788  6187 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 5 uptime_millis: 5 exec_start_elapsed_seconds: 220 [CONTEXT service_id=218 ]
+10-05 23:22:25.997  8200  8200 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-05 23:22:25.999  8200  8200 I AndroidRuntime: Using default boot image
+10-05 23:22:25.999  8200  8200 I AndroidRuntime: Leaving lock profiling enabled
+10-05 23:22:26.000  8200  8200 I app_process: Core platform API reporting enabled, enforcing=false
+10-05 23:22:26.001  8200  8200 I app_process: Using CollectorTypeCC GC.
+10-05 23:22:26.032  8200  8200 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-05 23:22:26.038  8200  8200 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+10-05 23:22:26.038  8200  8200 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+10-05 23:22:26.041  8200  8200 W app_process: Unexpected CPU variant for x86: x86_64.
+10-05 23:22:26.041  8200  8200 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+10-05 23:22:26.042  8200  8200 W app_process: ClassLoaderContext shared library size mismatch. Expected=2, found=0 (PCL[]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]} | PCL[])
+10-05 23:22:26.042  8200  8200 W app_process: ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[]{PCL[/system/framework/android.test.runner.jar*4168958247]{PCL[/system/framework/android.test.base.jar*836642756]#PCL[/system/framework/android.test.mock.jar*3186112116]}#PCL[/system/framework/android.test.base.jar*836642756]} | PCL[/system/framework/android.test.runner.jar*4168958247])
+10-05 23:22:26.046  8200  8200 W main    : type=1400 audit(0.0:235): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:26.052  8200  8200 W libc    : Access denied finding property "ro.product.name_for_attestation"
+10-05 23:22:26.050  8200  8200 W main    : type=1400 audit(0.0:236): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:26.056  8200  8200 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+10-05 23:22:26.054  8200  8200 W main    : type=1400 audit(0.0:237): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+10-05 23:22:26.059  8200  8200 W libc    : Access denied finding property "ro.product.model_for_attestation"
+10-05 23:22:26.059  8200  8200 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-05 23:22:26.061  8200  8200 D UiAutomationConnection: Created on user UserHandle{0}
+10-05 23:22:26.061  8200  8200 I UiAutomation: Initialized for user 0 on display 0
+10-05 23:22:26.061  8200  8200 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+10-05 23:22:26.062   520   534 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-05 23:22:26.062   520   534 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+10-05 23:22:26.063   520   534 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:26.063  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:26.063   520   520 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-05 23:22:26.064  1692  2335 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+10-05 23:22:26.064  1692  2335 I A       : Nga state changed to NgaStateDetails{state=DISABLED, isSpecialExperience=false}
+10-05 23:22:26.064  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:26.064  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:26.064  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:26.064  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:26.065  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:26.065  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:26.065  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:26.065  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:26.065  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:26.065  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:26.065  1647  2091 I A       : Unsubscribed to apa or classic variant change.
+10-05 23:22:26.069  1647  6635 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:26.069  1647  6635 I A       : [Memory] eligibility: StashEligibility{4}
+10-05 23:22:26.075  8200  8214 V UiAutomation: Init UiAutomation@9232830[id=63, displayId=0, flags=0]
+10-05 23:22:26.076  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:26.076  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:26.076  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:26.076  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:26.076  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:26.076  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:26.076  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:26.076  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:26.076  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:26.077  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:26.077  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:26.077   520  1709 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:26.078   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:26.078   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:26.092   417   417 W adbd    : timeout expired while flushing socket, closing
+10-05 23:22:26.717   417   417 W adbd    : timeout expired while flushing socket, closing
+10-05 23:22:27.067  1609  2491 W MediaProvider: isAppCloneUserPair for user 0: false
+10-05 23:22:27.069  8200  8200 W AccessibilityNodeInfoDumper: Fetch time: 3ms
+10-05 23:22:27.069   520  1975 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-05 23:22:27.069   520  1975 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-05 23:22:27.069  1605  2880 I AiAiEcho: Settings changed for uri: content://settings/secure/accessibility_enabled
+10-05 23:22:27.070   520   520 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-05 23:22:27.070  1692  2339 I A       : NGA enabled in interactor.
+10-05 23:22:27.070  1692  2339 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+10-05 23:22:27.071  1647  6785 I A       : Initializing all components
+10-05 23:22:27.072  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:27.072  1647  2091 I A       : State changed: IDLE => IDLE by NGA_STATE_CHANGED and N/A with Optional.empty
+10-05 23:22:27.072  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:27.072  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:27.072  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:27.072  1647  2091 I A       : Recognizer choice: (recognizer_type: 1, recognizer_mode: 1, choice_reason: 4)
+10-05 23:22:27.072  1605  1966 I AiAiEcho: Predicting[0]: 
+10-05 23:22:27.072  1605  1966 I AiAiEcho: EchoTargets: 
+10-05 23:22:27.072  1605  1966 I AiAiEcho: Filtered by AiAi flag check: 
+10-05 23:22:27.072  1605  1966 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+10-05 23:22:27.072  1647  2091 I A       : onActiveStateChangeEvent: IDLE => IDLE
+10-05 23:22:27.072  1647  2091 I A       : #onActiveStateChangeEvent, newState: IDLE, previousState: IDLE.
+10-05 23:22:27.072  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+10-05 23:22:27.072  1647  2097 I A       : onIsEnabledChanged, isEnabled: false
+10-05 23:22:27.072  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.072  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.072  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.072  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.072  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.072  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.072  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 I A       : onOpaVisibilityChanged: false
+10-05 23:22:27.073  1647  6785 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+10-05 23:22:27.073  1647  6785 I A       : [Memory] eligibility: StashEligibility{6}
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 I A       : Setting session to type: NO_SESSION
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.073  1647  2097 I A       : setNavBarVisible: GestureNavBarVisible{navbarVisible=true}
+10-05 23:22:27.074  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.074  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.074  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.074  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.074  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.074  1647  2097 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+10-05 23:22:27.074  1647  2097 I A       : onDisabled. Registered: false
+10-05 23:22:27.075  1647  2091 I A       : on opa visibility changed false
+10-05 23:22:27.075  1647  2091 I A       : on opa visibility changed false
+10-05 23:22:27.075  1647  2091 I A       : stopListening(NGA_PAUSED_UNKNOWN_REASON, NGA_CREATE), idleOverride=NOT_LISTENING
+10-05 23:22:27.075  1647  2091 I NgaEntryPointEventSendr: setupConnection
+10-05 23:22:27.076  1647  2097 I A       : Initialize
+10-05 23:22:27.076  1692  1692 I A       : Creating pss binder().
+10-05 23:22:27.076  1647  2091 I NgaEntryPointEventSendr: State changed: Disconnected => Connecting
+10-05 23:22:27.079  1605  1966 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+10-05 23:22:27.079   826   826 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+10-05 23:22:27.080  8200  8200 D AndroidRuntime: Shutting down VM
+10-05 23:22:27.080  1647  2091 I NgaEntryPointEventSendr: onServiceConnected
+10-05 23:22:27.080  1692  5528 I A       : Calling beginBinderSession().
+10-05 23:22:27.080  1692  5528 I A       : beginBinderSession(): calling binder
+10-05 23:22:27.080  1647  2091 I NgaEntryPointEventSendr: State changed: Connecting => Ready
+10-05 23:22:27.081  1647  2091 I A       : Successfully initialized all components
+10-05 23:22:27.083   520  1709 W ActivityManager: Unable to start service Intent { cmp=com.google.android.apps.tachyon/.clientapi.ClientApiService } U=0: not found
+10-05 23:22:27.104  1647  2097 I NgaEntryPointEventSendr: State changed: Ready => Disconnected (onOpaDisconnected)
+10-05 23:22:27.105  1692  2613 W A       : UiCallbackStub-onGenericEvent[ServiceEvent = 60] task was not run. Callback from Service received after client was disposed.
+10-05 23:22:27.105  1692  2618 I PBSessionCacheImpl: Deleted sessionId[7443285939146101] from persistence.
+10-05 23:22:27.105  1692  2613 W SearchServiceCore: Abort, client detached.
+10-05 23:22:27.125  5788  6187 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 221 [CONTEXT service_id=218 ]
+10-05 23:22:27.126  5788  7493 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 11 uptime_millis: 11 exec_start_elapsed_seconds: 221 [CONTEXT service_id=218 ]
+10-05 23:22:27.914  1609  4403 I MediaProvider: Deleted 0 0 0 0 0 0 1 items on external_primary due to com.android.shell
+10-05 23:22:27.925  5788  6187 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 222 [CONTEXT service_id=218 ]
+10-05 23:22:27.926  5788  5879 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 5 uptime_millis: 5 exec_start_elapsed_seconds: 222 [CONTEXT service_id=218 ]
+10-05 23:22:28.152     0     0 I logd    : logdr: UID=2000 GID=2000 PID=8221 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns

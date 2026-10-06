@@ -1,0 +1,56 @@
+{
+  "purpose": "Local controller-only Retry late-host adapter proposal; no published mutation or native pass",
+  "baseControllerSha": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "baseControllerTree": "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67",
+  "productSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "productTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "originalRun": 37387043100,
+  "originalRetryArtifactId": 11380062702,
+  "originalZipSha256": "1f48f575dd952fcabf81f469e60714f852a7b744093ae631d5230ad8d7433744",
+  "original69FilePeerReceiptSha256": "7d0d96283501bd5294d70cfe64c5d05fef564d1696383b590c436516f03e0c23",
+  "runtimeChanged": [
+    "retry-primary-ui.py",
+    "retry-gap-runner.py"
+  ],
+  "runtimeAdded": [
+    "retry_host_adapter.py",
+    "expo_ordinary_menu.py"
+  ],
+  "framingIntroOverlayByteEqual": true,
+  "originalOutcomeValidatorsPreserved": "primary_snapshot and strict gap decoder exact AST; retry_outcome exact AST except controller-only first begin_case; immutable retry_gap_ui.py and all observer/fixture/transport files untouched",
+  "originalGapUiSha256": "512601a9ddddbecf325c8c80ea29e247be272a1a6f26c37002c54bde943933a1",
+  "checks": {
+    "ownerPurePassed": 21,
+    "independentPurePassed": 21,
+    "syntax": "Python AST parse of all8 packet .py files passed",
+    "nativeExecuted": false,
+    "adbExecuted": false,
+    "uriRedeliveryInRetry": false
+  },
+  "limits": [
+    "Any ambiguous transition while closing host fails; progress is never synthesized.",
+    "Host closure is not a product state pass; fresh target/action/media still required.",
+    "Initial successful absence may initialize with zero operations; stable state without records fails.",
+    "One launcher failure remains unproved; no Retry URI replay or product repair inferred."
+  ],
+  "sha256": {
+    "README.md": "c3c9edc61edce17f3850b75f4dded10a359a0469cba8ae9c86cbee468a07018b",
+    "expo_go_intro.py": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+    "expo_ordinary_menu.py": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+    "fixtures/final-logcat-original.txt": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e",
+    "fixtures/ordinary-menu-original.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "fixtures/primary-logcat-original.txt": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f",
+    "fixtures/retry-intro-original.xml": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+    "fixtures/review-original.xml": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+    "independent-peer-review.json": "68d71a1fccdb260ca6825d3d9f7d34c92efe4034d605342113a95a258aff2eec",
+    "native_overlay.py": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+    "observer_framing.py": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2",
+    "pure-checks.log": "bb85afee51de96801e069a7f0eae83b7e809418aafcf785aa4dda2f00eb54286",
+    "retry-gap-runner.py": "4c6a8cce90a0fc8b015abbeb631101c9daf525c804d745fea4d58aaa5570e4c3",
+    "retry-gap-runner.py.diff": "6d94a0f08e4d317e14b77448d9b51e28de8b8ca6ecf6490cab5a42a090ca7a5b",
+    "retry-primary-ui.py": "4dae5e9fa35f818d96f1c63b41be8a875a70da5cab35a84aec3e427fae66895e",
+    "retry-primary-ui.py.diff": "4f79f9178e4028157c85e7360bb416cf894f8f2180769c166af0176040b18d2f",
+    "retry_host_adapter.py": "c782a8b7b686917dcb08ac2b884efd9b3bfc3c890b4383947a9a259f33060de4",
+    "test_retry_host_adapter.py": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a"
+  }
+}

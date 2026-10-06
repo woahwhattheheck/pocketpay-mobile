@@ -1,0 +1,28 @@
+{
+  "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "productionPaymentRetryScreenUnchanged": true,
+  "fixtureReadTransportControlled": true,
+  "liveSigningOrBroadcast": false,
+  "cases": [
+    {
+      "name": "nohash-guidance-no-lookup",
+      "result": "failed",
+      "error": "Observed Expo developer sheet covers the product UI.",
+      "captureError": "Observed Expo developer sheet covers the product UI."
+    },
+    {
+      "name": "empty-session-no-lookup",
+      "result": "failed",
+      "error": "Observed Expo developer sheet covers the product UI.",
+      "captureError": "Observed Expo developer sheet covers the product UI."
+    },
+    {
+      "name": "mismatched-lookup-preserves-unknown",
+      "result": "failed",
+      "error": "Observed Expo developer sheet covers the product UI.",
+      "captureError": "Observed Expo developer sheet covers the product UI."
+    }
+  ],
+  "optionalObservations": []
+}

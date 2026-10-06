@@ -1,0 +1,77 @@
+{
+  "groups": [
+    {
+      "name": "camera-integration",
+      "exit": 0,
+      "pureTests": 71,
+      "logSha256": "5fb32d47ed04c8d409b51f0d69b95ff6a1149091790937bc3de301e14777b359"
+    },
+    {
+      "name": "retry-deadline",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_retry_host_adapter",
+        "test_retry_deadline"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-retry-deadline-local-candidate",
+      "exit": 0,
+      "seconds": 0.388,
+      "logSha256": "3f248c07c84597901fb7ba01a1c9fa06ca7a4ae3572b0e5fd6e6d641e0407240"
+    },
+    {
+      "name": "baseline-deadline",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_baseline_host_adapter"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-host-settle-successor/validation/pocketpay/receipts/run-37387043100/baseline-deadline",
+      "exit": 0,
+      "seconds": 0.144,
+      "logSha256": "a4e4cdd98ecfd3a94e9fbdf3fa118d75fede2b6952dcf07c097a21e30ace2c4c"
+    },
+    {
+      "name": "first-history",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_first_history_carrier"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-host-settle-successor/validation/pocketpay/receipts/run-37387043100/first-history-carrier",
+      "exit": 0,
+      "seconds": 0.146,
+      "logSha256": "a27503f9a7c93a42b903a2e90774e541af5677a34afc0acf830d9eb6e3339b41"
+    },
+    {
+      "name": "baseline-targets",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_baseline_targets"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-host-settle-successor/validation/pocketpay/receipts/run-37387043100/baseline-target-candidate",
+      "exit": 0,
+      "seconds": 0.101,
+      "logSha256": "78fbedae3fb385e87e3192d0440769edb8a091b402e57d80c5688f0783f1c9c2"
+    }
+  ],
+  "pythonSyntaxFiles": 101,
+  "shellSyntaxFiles": 4,
+  "pureTestsPassed": 166,
+  "globalClockResets": 0,
+  "actualADBCalls": 0,
+  "nativeAcceptance": false,
+  "sourcePinsUnchanged": true,
+  "workflowUnchanged": true,
+  "baselineUIEqualsHelpersPlusCases": true,
+  "retryTestingCustody": "Frozen component tests reference original e69 donor path; executed at original local packet. Three staged runtime files byte-equal. Archive-root import attempt failed before any tests and retained separately; no native failure."
+}

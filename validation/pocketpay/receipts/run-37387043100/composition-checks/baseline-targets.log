@@ -1,0 +1,13 @@
+test_ambiguous_fields_refuse_before_input_or_action (test_baseline_targets.Targets.test_ambiguous_fields_refuse_before_input_or_action) ... ok
+test_ambiguous_scroll_refuses_before_swipe (test_baseline_targets.Targets.test_ambiguous_scroll_refuses_before_swipe) ... ok
+test_bounded_scroll_requires_fresh_form_and_does_not_tap_or_input (test_baseline_targets.Targets.test_bounded_scroll_requires_fresh_form_and_does_not_tap_or_input) ... ok
+test_missing_form_fails_after_four_observed_swipes (test_baseline_targets.Targets.test_missing_form_fails_after_four_observed_swipes) ... ok
+test_only_two_case_functions_change (test_baseline_targets.Targets.test_only_two_case_functions_change) ... ok
+test_original_cleared_search_is_ambiguous_filtered_saved_contact_is_unique (test_baseline_targets.Targets.test_original_cleared_search_is_ambiguous_filtered_saved_contact_is_unique) ... ok
+test_original_vault_has_no_visible_lock_or_input (test_baseline_targets.Targets.test_original_vault_has_no_visible_lock_or_input) ... ok
+test_runtime_or_host_guard_failure_propagates_without_scroll (test_baseline_targets.Targets.test_runtime_or_host_guard_failure_propagates_without_scroll) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.048s
+
+OK

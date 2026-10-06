@@ -1,0 +1,66 @@
+{
+  "sourceCommit": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "files": [
+    {
+      "originalPath": "app/(tabs)/history.tsx",
+      "savedAs": "history.tsx",
+      "gitSource": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+      "sha256": "e974ea566d587355139682834ce4297c828da7a8afdb55a8e4f0aafa6ab39c3d",
+      "gitBlob": "68f6fc55e402814da662a3ac4b63ee0a8703de8b"
+    },
+    {
+      "originalPath": "src/hooks/useOnlineStatus.ts",
+      "savedAs": "useOnlineStatus.ts",
+      "gitSource": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+      "sha256": "f1fb8dfed2c9f8a5d6e166811384fae3813e44db9b2f0943f43c8e35511a7e14",
+      "gitBlob": "1bc4fa4c27db5d71eb615909092fcff5f332347d"
+    },
+    {
+      "originalPath": "src/hooks/useNetworkState.ts",
+      "savedAs": "useNetworkState.ts",
+      "gitSource": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+      "sha256": "9dfb47435445cbf66735b8804daac4b8897b8a17dc3c75ad3d3ed31d8d507713",
+      "gitBlob": "77d4f14325faa8f43f03e3cec060c64033bf25f6"
+    },
+    {
+      "originalPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-intro-composed-proposal/validation/pocketpay/baseline/baseline-fixture/native-baseline-observation-cases.tsx",
+      "savedAs": "native-baseline-observation-cases.tsx",
+      "sha256": "e44271dc1f25e7e6eb172391f363e90088ad9bb83f5c1c5c726b87141ab1ff13",
+      "scope": "exact e69 immutable fixture source; not new execution"
+    },
+    {
+      "originalPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-intro-composed-proposal/validation/pocketpay/baseline/baseline-fixture/native-baseline-bootstrap.js",
+      "savedAs": "native-baseline-bootstrap.js",
+      "sha256": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+      "scope": "exact e69 immutable fixture source; not new execution"
+    },
+    {
+      "originalPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-intro-composed-proposal/validation/pocketpay/baseline/baseline-fixture/native-vault-bootstrap.js",
+      "savedAs": "native-vault-bootstrap.js",
+      "sha256": "3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359",
+      "scope": "exact e69 immutable fixture source; not new execution"
+    },
+    {
+      "originalPath": "/workspace/scratch/ea8baa184658/pocketpay-camera297-denial-successor/node_modules/react-native/Libraries/Renderer/implementations/ReactNativeRenderer-dev.js",
+      "savedAs": "ReactNativeRenderer-dev.js.excerpt.txt",
+      "wholeSourceSha256": "60e725c6c2299ed3efcf3c75790d028dc0dcc339ee77061d339804de41f9aae7",
+      "excerptLines": [
+        11182,
+        11217
+      ],
+      "scope": "installed RN0.81.5 source control flow; not native guest evidence"
+    },
+    {
+      "originalPath": "/workspace/scratch/ea8baa184658/pocketpay-camera297-denial-successor/node_modules/react-native/Libraries/Renderer/implementations/ReactFabric-dev.js",
+      "savedAs": "ReactFabric-dev.js.excerpt.txt",
+      "wholeSourceSha256": "c809eaf5583b1bf13f864181added35687de420cee54997d4cfdea3cf6544af2",
+      "excerptLines": [
+        10891,
+        10926
+      ],
+      "scope": "installed RN0.81.5 source control flow; not native guest evidence"
+    }
+  ],
+  "naturalPostHotSequence": "optional memory-history-refresh(M0/R0/F1,wallettrue) -> history-missing(M1/R1/F1,walletfalse) -> history-instance-mounted(same); no second refresh/removal/unmount/hydration",
+  "naturalReadBound": "Within less than30s uninterruptedsameforeground: initial canned HEAD/root at most1each; no other transport operation. Source-derived prediction, not original first-History native observation."
+}

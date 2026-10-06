@@ -1,0 +1,161 @@
+{
+  "runId": 37387043100,
+  "runUrl": "https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37387043100",
+  "controllerCommit": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "controllerTree": "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67",
+  "controllerManifestSha256": "03c3983141b44878c2cc6bebd6bffd65a8c810cf37fcde85f7bb034a7a8d67eb",
+  "manualDispatchAttempts": 1,
+  "dispatchHttp204": true,
+  "terminalArtifacts": {
+    "camera": {
+      "artifactId": 11379327749,
+      "zipPath": "/workspace/scratch/ea8baa184658/attachments/170a11ba-1ad1-40fb-9bd3-d9345d68c3f4/pocketpay-native-camera-37387043100.zip",
+      "size": 1605638,
+      "sha256": "c3144c2cdfd4177303d69638d545ad39b54cd3744e78fbd7c2771f382e227053",
+      "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+      "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+      "jobId": 112022741908,
+      "completedAt": "2026-10-05T23:17:07Z",
+      "peerReceipt": "/workspace/scratch/ea8baa184658/pocketpay-camera-media-review/37387043100/camera-peer-review.json",
+      "peerSha256": "db373a46c43107d6adb5f8d96bb5464a2d9531d185f5cb109d92e87713afea3f",
+      "scope": "Bothfirsttargets failed; actual tutorial closed into ordinary menu over Welcome, observed Back backgrounds Expo task, finalLauncher; no permission/loading/manual/Sendpass or originalMP4.",
+      "localExtractedPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera",
+      "nativeConclusion": "failure",
+      "acceptance": false,
+      "executedSourceReadback": [
+        "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+        "d024fbbd8393b855508da14a0b2fba9441c7a5f4"
+      ],
+      "executedControllerReadback": [
+        "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+        "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67"
+      ],
+      "kvmPreflight": {
+        "preflightExit": 0,
+        "failedStep": "none",
+        "thisScriptBootsAndroid": false
+      }
+    },
+    "retry": {
+      "artifactId": 11380062702,
+      "zipPath": "/workspace/scratch/ea8baa184658/attachments/3156dd74-f0d6-4676-824d-819dbce119bb/pocketpay-native-retry-37387043100.zip",
+      "size": 1632746,
+      "sha256": "1f48f575dd952fcabf81f469e60714f852a7b744093ae631d5230ad8d7433744",
+      "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+      "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+      "jobId": 112022741508,
+      "completedAt": "2026-10-05T23:22:34Z",
+      "peerReceipt": "/workspace/scratch/ea8baa184658/pocketpay-retry37387043100-peer-review/retry-native-peer-review.json",
+      "peerSha256": "7d0d96283501bd5294d70cfe64c5d05fef564d1696383b590c436516f03e0c23",
+      "scope": "All4primary+3gapsgatesfailed; actual tutorial coversrequiredReview/guidance, oneLauncher. Framingworks but allsign/submit/read/safety0,lookupnull; seedonly, noflowpass or originalMP4.",
+      "localExtractedPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry",
+      "nativeConclusion": "failure",
+      "acceptance": false,
+      "executedSourceReadback": [
+        "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+        "4e363d77915ca16d3490e677f78c6487aeeb7060"
+      ],
+      "executedControllerReadback": [
+        "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+        "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67"
+      ],
+      "kvmPreflight": {
+        "preflightExit": 0,
+        "failedStep": "none",
+        "thisScriptBootsAndroid": false
+      }
+    },
+    "baseline": {
+      "artifactId": 11380531404,
+      "zipPath": "/workspace/scratch/ea8baa184658/attachments/18f51105-9372-4476-8332-2e60c2f55411/pocketpay-native-baseline-37387043100.zip",
+      "size": 3854419,
+      "sha256": "e51df825a656835317e5192425dd4e4ffb654f8e35e3d55b1ffa16a91237c710",
+      "sourceSha": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+      "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+      "jobId": 112022741697,
+      "completedAt": "2026-10-05T23:37:51Z",
+      "localExtractedPath": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline",
+      "nativeConclusion": "failure",
+      "acceptance": false,
+      "executedSourceReadback": [
+        "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+        "b7556026e93c5930915d12fdf51d421773c5f61e"
+      ],
+      "executedControllerReadback": [
+        "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+        "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67"
+      ],
+      "kvmPreflight": {
+        "preflightExit": 0,
+        "failedStep": "none",
+        "thisScriptBootsAndroid": false
+      },
+      "cases": [
+        {
+          "name": "history-same-instance-transition",
+          "result": "failed",
+          "error": "Expected actual UI state did not appear: ('No wallet available',)"
+        },
+        {
+          "name": "create-dummy-masked",
+          "result": "failed",
+          "error": "Expected actual UI state did not appear: ('Generate Keypair',)"
+        },
+        {
+          "name": "import-empty-invalid",
+          "result": "failed",
+          "error": "Expected actual UI state did not appear: ('56-character key',)"
+        },
+        {
+          "name": "sign-real-navigation-return",
+          "result": "failed",
+          "error": "Expected actual UI state did not appear: ('Cancel Signing',)"
+        },
+        {
+          "name": "sign-missing-params",
+          "result": "passed"
+        },
+        {
+          "name": "picker-search-optional-edit",
+          "result": "failed",
+          "error": "Ambiguous enabled native action: DUMMY Alice"
+        },
+        {
+          "name": "diagnostics-real-readiness",
+          "result": "passed"
+        },
+        {
+          "name": "diagnostics-native-share-cancel",
+          "result": "passed"
+        },
+        {
+          "name": "vault-native-confirmation-receipt",
+          "result": "failed",
+          "error": "Expected actual UI state did not appear: ('Set Aside for 30 Days',)"
+        }
+      ],
+      "scope": "Three narrowly observed passes: missing transaction guidance, Diagnostics loading/readiness/native storage, redacted native share cancelled. Six incomplete cases: tutorial/Launcher obstruction, duplicate visible picker row, Vault confirmation not observed. No overall prerequisite acceptance."
+    }
+  },
+  "additionalDispatchAttempts": 0,
+  "currentControllerOrProductMutation": false,
+  "nativeAcceptance": false,
+  "recordedAt": "2026-10-05T23:41:52.262557+00:00",
+  "allJobsTerminal": true,
+  "derivedDiagnosticsFrames": [
+    {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline-diagnostics-original-frame49.png",
+      "sha256": "f143e7955995d17c0d5d63640a1b280990335684ac777ef6417eebe05cf062f0",
+      "originalFrameIndex": 49,
+      "originalPTSSeconds": 6.013056,
+      "claim": "Actual Loading diagnostics... visibly uncovered"
+    },
+    {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline-diagnostics-original-frame50.png",
+      "sha256": "1f1cb4c5bebfbf8f7b2c129b60fab786a8a2d83b1f17795f2ab55bd59424a77e",
+      "originalFrameIndex": 50,
+      "originalPTSSeconds": 6.393744,
+      "claim": "Actual Diagnostics ready visibly uncovered"
+    }
+  ]
+}

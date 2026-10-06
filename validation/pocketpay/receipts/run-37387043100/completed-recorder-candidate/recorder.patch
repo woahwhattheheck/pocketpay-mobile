@@ -1,0 +1,40 @@
+--- a/validation/pocketpay/camera-recording-runner.py
++++ b/validation/pocketpay/camera-recording-runner.py
+@@ -99,12 +99,19 @@
+         result = {'name': name, 'visibleLoadingClaim': 'Independent original-frame review required'}
+         try:
+             remaining = min(self.deadline, getattr(self, 'recording_deadline', time.monotonic() + 25)) - time.monotonic()
+-            if remaining <= 0:
++            # An expired collection deadline is not an active-recorder timeout.
++            # Drain an already completed owned process without extending active waits.
++            if process.poll() is not None:
++                _, stderr = process.communicate(timeout=5)
++            elif remaining <= 0:
+                 raise subprocess.TimeoutExpired('owned original recorder', 0)
+-            _, stderr = process.communicate(timeout=remaining)
++            else:
++                _, stderr = process.communicate(timeout=remaining)
+             result.update({'exit': process.returncode, 'stderr': stderr.decode('utf-8', 'replace')})
+-            if process.returncode == 0:
++            if process.returncode == 0 and time.monotonic() < self.deadline:
+                 self.adb('pull', remote, str(self.output / (name + '-original.mp4')))
++            elif time.monotonic() >= self.deadline:
++                result.update({'excluded': True, 'reason': 'Global600-second suite expired; no guest transfer or loading claim'})
+         except subprocess.TimeoutExpired:
+             process.terminate()
+             process.communicate(timeout=5)
+@@ -112,10 +119,13 @@
+         except Exception as error:
+             result['error'] = str(error)
+         finally:
+-            if not self.unsafe_stop:
++            if not self.unsafe_stop and time.monotonic() < self.deadline:
+                 subprocess.run(['adb', '-s', self.serial, 'shell', 'rm', '-f', remote],
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                timeout=12, check=False)
++            elif not self.unsafe_stop:
++                (self.output / (name + '-original.mp4')).unlink(missing_ok=True)
++                result.update({'excluded': True, 'reason': 'Global600-second suite expired; no guest cleanup or loading claim'})
+             else:
+                 # An interrupted pull may have left partial local media. Exclude
+                 # it without any further guest command or raw stderr retention.

@@ -1,0 +1,64 @@
+{
+  "repository": "expo/expo",
+  "queriedRef": "sdk-54",
+  "resolvedCommit": "294f268682bf741e740c0cbb53c856a9a28d65f9",
+  "transport": "native GitHub read-only fixed-ref file reads",
+  "sourceAuditAgent": "/root/slack_backlog/atlas_policy_audit",
+  "independentlyReadByParent": [
+    "DevMenuCloseButton.tsx",
+    "DevMenuView.tsx",
+    "DevMenuManager.kt"
+  ],
+  "actualApk": "Expo Go54.0.8",
+  "actualApkCommitBinding": "unverified",
+  "installedProductExpoDevMenu": "absent; current expo-dev-menu7.0.19 Compose source was excluded",
+  "sourceContentSha256": {
+    "apps/expo-go/src/menu/DevMenuCloseButton.tsx": "e078dbac516fb87c40fe1e89b982d23d0f0ec5258a609367f424a34f6862d153",
+    "apps/expo-go/src/menu/DevMenuView.tsx": "b3dfe1d417368a57d7ca01425516a7e5aae2e9380ae595380ab460b8ccbc6dae",
+    "apps/expo-go/src/menu/DevMenuModule.ts": "62a17905603f5b845b35b508ef7347075504107e2451706f19372e515119eb24",
+    "apps/expo-go/src/menu/DevMenuBottomSheet.tsx": "d7da3c9e2a25561acb36932079f9e2f395bad2763f56a81c4f03c368f890a754",
+    "apps/expo-go/android/expoview/src/main/java/host/exp/exponent/modules/ExponentKernelModule.kt": "968150368e01337bc00b8fbe87923b2294fc5ea66523e80d21d93b9ff2f38e80",
+    "apps/expo-go/android/expoview/src/main/java/host/exp/exponent/kernel/DevMenuManager.kt": "be28e325acd45fc29b5c21c0f2ea59314a59d7341da28b00c1b0fdc3dbda06c8",
+    "apps/expo-go/src/menu/DevMenuTaskInfo.tsx": "8c590da02236d447dab732826e3838318911e5851749c5c0c6fa03f97684a429",
+    "apps/expo-go/src/menu/DevMenuServerInfo.tsx": "4ed005591f83c363ab97c94a5e4bcd0122ff0250d6a596ad43eac70245bdd2ef",
+    "apps/expo-go/src/menu/DevMenuOnboarding.tsx": "e2412c0494cc43765e8137cc939a0cee6d65f562774559a7f570cdb3b6897fb1"
+  },
+  "officialUrls": {
+    "apps/expo-go/src/menu/DevMenuCloseButton.tsx": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/src/menu/DevMenuCloseButton.tsx",
+    "apps/expo-go/src/menu/DevMenuView.tsx": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/src/menu/DevMenuView.tsx",
+    "apps/expo-go/src/menu/DevMenuModule.ts": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/src/menu/DevMenuModule.ts",
+    "apps/expo-go/src/menu/DevMenuBottomSheet.tsx": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/src/menu/DevMenuBottomSheet.tsx",
+    "apps/expo-go/android/expoview/src/main/java/host/exp/exponent/modules/ExponentKernelModule.kt": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/android/expoview/src/main/java/host/exp/exponent/modules/ExponentKernelModule.kt",
+    "apps/expo-go/android/expoview/src/main/java/host/exp/exponent/kernel/DevMenuManager.kt": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/android/expoview/src/main/java/host/exp/exponent/kernel/DevMenuManager.kt",
+    "apps/expo-go/src/menu/DevMenuTaskInfo.tsx": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/src/menu/DevMenuTaskInfo.tsx",
+    "apps/expo-go/src/menu/DevMenuServerInfo.tsx": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/src/menu/DevMenuServerInfo.tsx",
+    "apps/expo-go/src/menu/DevMenuOnboarding.tsx": "https://github.com/expo/expo/blob/294f268682bf741e740c0cbb53c856a9a28d65f9/apps/expo-go/src/menu/DevMenuOnboarding.tsx"
+  },
+  "semantics": {
+    "header": "AndroidGestureHandlerTouchableHighlight\u2192XIcon, no accessibilityLabel/testID; same header as task title/SDK/runtime",
+    "close": "DevMenuView.collapseAndCloseDevMenuAsync\u2192DevMenu.closeAsync\u2192ExponentKernel.closeDevMenuAsync\u2192DevMenuManager.hideInCurrentActivity",
+    "native": "Stops menu ReactSurface/restores orientation/removes menu View; no Activity finish/Home in this path",
+    "continue": "Onboarding Continue only marks onboarding finished; header Close is separate"
+  },
+  "observedBoundary": {
+    "run": "37387043100",
+    "ordinaryXmlSha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "nativeHeaderClose": {
+      "package": "host.exp.exponent",
+      "class": "android.view.ViewGroup",
+      "bounds": "[648,416][688,456]",
+      "enabled": true,
+      "clickable": true,
+      "labels": "empty",
+      "child": "one enabled nonclickable empty ViewGroup, identical bounds, zero grandchildren"
+    },
+    "limit": "Visual/structural source match only; actual header action/closure has not executed"
+  },
+  "retainedSourceCopiesSha256": {
+    "official-source/DevMenuCloseButton.tsx": "e078dbac516fb87c40fe1e89b982d23d0f0ec5258a609367f424a34f6862d153",
+    "official-source/DevMenuManager.kt": "be28e325acd45fc29b5c21c0f2ea59314a59d7341da28b00c1b0fdc3dbda06c8",
+    "official-source/DevMenuModule.ts": "62a17905603f5b845b35b508ef7347075504107e2451706f19372e515119eb24",
+    "official-source/DevMenuView.tsx": "b3dfe1d417368a57d7ca01425516a7e5aae2e9380ae595380ab460b8ccbc6dae",
+    "official-source/ExponentKernelModule.kt": "968150368e01337bc00b8fbe87923b2294fc5ea66523e80d21d93b9ff2f38e80"
+  }
+}

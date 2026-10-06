@@ -1,0 +1,10 @@
+--- a/validation/pocketpay/baseline-host-runner.py
++++ b/validation/pocketpay/baseline-host-runner.py
+@@ -10,6 +10,6 @@
+ anchor = '"""Controlled Android UI evidence; no source hooks/router/persistence are replaced here."""'
+ if text.count(anchor) != 1:
+     raise RuntimeError('Original baseline composition anchor changed')
+-insertion = 'from baseline_host_adapter import install as install_baseline_host\ninstall_baseline_host(globals())\n'
++insertion = 'from baseline_host_adapter import install as install_baseline_host\ninstall_baseline_host(globals())\nfrom baseline_history_carrier import install as install_first_history_carrier\ninstall_first_history_carrier(globals())\n'
+ namespace = {'__name__': '__main__', '__file__': str(path)}
+ exec(compile(text.replace(anchor, insertion + anchor, 1), str(path), 'exec'), namespace)

@@ -1,0 +1,98 @@
+--- a/validation/pocketpay/camera-recording-runner.py
++++ b/validation/pocketpay/camera-recording-runner.py
+@@ -33,6 +33,37 @@
+ def guarded_action(tree, *args, **kwargs):
+     assert_no_native_error_overlay(tree)
+     return original_action(tree, *args, **kwargs)
++
++
++class OrdinaryMenuProofController:
++    """Scope only host evidence; every native/safety operation stays on owner."""
++    def __init__(self, owner, relative_directory):
++        self.owner = owner
++        self.relative_directory = relative_directory
++        self.output = owner.output / relative_directory
++
++    @property
++    def deadline(self):
++        return self.owner.deadline
++
++    @property
++    def developer_sheet_dismissals(self):
++        return self.owner.developer_sheet_dismissals
++
++    @developer_sheet_dismissals.setter
++    def developer_sheet_dismissals(self, value):
++        self.owner.developer_sheet_dismissals = value
++
++    def dump(self):
++        return self.owner.dump()
++
++    def adb(self, *args, **kwargs):
++        return self.owner.adb(*args, **kwargs)
++
++    def capture(self, name, *args, **kwargs):
++        # The actual capture brackets remain owned by the original runner.
++        # Its output root stays unchanged, including unsafe recorder metadata.
++        return self.owner.capture(str(self.relative_directory / name), *args, **kwargs)
+ 
+ 
+ 
+@@ -111,6 +142,48 @@
+                 and not getattr(self, '_camera_product_media_retained', False)
+                 and not getattr(self, 'original_uri_redelivery_attempted', False))
+ 
++    def close_ordinary_menu_scoped(self):
++        if not getattr(self, '_host_settle_active', False):
++            raise RuntimeError('Ordinary host proof requires the existing guarded host scope')
++        product_output = self.output
++        sequence = getattr(self, '_ordinary_closure_sequence', 0) + 1
++        relative = Path('camera-host-proofs') / ('closure-' + str(sequence))
++        directory = product_output / relative
++        if directory.parent.is_symlink():
++            raise RuntimeError('Ordinary host proof parent cannot be a reused symlink')
++        # Reserve an exclusive directory before any helper ADB call. Never
++        # reuse prior native PNG/XML/activity/closure evidence, even on failure.
++        directory.mkdir(parents=True, exist_ok=False)
++        self._ordinary_closure_sequence = sequence
++        binding_path = directory / 'host-proof-namespace-binding.json'
++        binding = {'proofDirectory': str(relative), 'status': 'reserved',
++                   'ownerOutputRootUnchanged': True, 'productStatePassed': False}
++        binding_path.write_text(json.dumps(binding, indent=2) + '\n')
++        try:
++            proof = close_ordinary_menu(OrdinaryMenuProofController(self, relative))
++            original = directory / 'observed-expo-ordinary-menu-closure.json'
++            original_bytes = original.read_bytes()
++            if json.loads(original_bytes) != proof:
++                raise RuntimeError('Original ordinary closure JSON differs from returned proof')
++            bound = dict(proof)
++            for key in ('before', 'after'):
++                stem = proof.get(key)
++                if not isinstance(stem, str) or Path(stem).name != stem:
++                    raise RuntimeError('Ordinary host proof did not return a local evidence stem')
++                bound[key] = str(relative / stem)
++            bound['proofDirectory'] = str(relative)
++            bound['originalClosureJSON'] = str(relative / original.name)
++            binding.update(status='completed', originalProof=proof, boundProof=bound,
++                           originalClosureJSON=original.name,
++                           originalClosureJsonSha256=hashlib.sha256(original_bytes).hexdigest())
++            binding_path.write_text(json.dumps(binding, indent=2) + '\n')
++            self.expo_ordinary_closure = bound
++            return bound
++        finally:
++            # The proxy never changes owner.output. Keep that invariant even
++            # if a failed delegated callback changed it unexpectedly.
++            self.output = product_output
++
+     def ensure_host_clear(self, tree=None):
+         if self.unsafe_stop:
+             raise collector.UnsafeMedia('Unsafe camera condition blocks host settling')
+@@ -128,7 +201,7 @@
+                         raise RuntimeError('Observed Expo tutorial was not closed')
+                 else:
+                     # Exact source-bound native header control, never BACK.
+-                    proof = close_ordinary_menu(self)
++                    proof = self.close_ordinary_menu_scoped()
+                     self.report.setdefault('hostSettling', []).append({
+                         'kind': 'ordinary-menu-closure', 'proof': proof,
+                         'productStatePassed': False})

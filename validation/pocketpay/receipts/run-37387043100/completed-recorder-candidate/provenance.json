@@ -1,0 +1,20 @@
+{
+  "sourceController": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "sourceManifest": "03c3983141b44878c2cc6bebd6bffd65a8c810cf37fcde85f7bb034a7a8d67eb",
+  "sourceRunnerSha256": "1acc22497a5aac37422f9ff0da48f5d05479cc407b11aac77a586512e69fa1a1",
+  "changedMethodOnly": "finish_recording",
+  "clipSecondsUnchanged": 60,
+  "globalSuiteSecondsUnchanged": 600,
+  "pureChecks": 9,
+  "nativeExecution": false,
+  "actualAdbCalls": 0,
+  "currentRunUnchanged": 37387043100,
+  "originalRecordingCompletion": "not established; actual receipt shows optional collection expiry and no video",
+  "hashes": {
+    "README.md": "fcff16fe225aaeb151b4ba255092589c9ca41de3eae286b510100e53035dcf34",
+    "camera-recording-runner.py": "3628be5c9e5ec15fe217e7cf563c240a5fefa87f094879fd91b7d79f02aa41ea",
+    "original-recorder-result.json": "f32b86ca4e0e5ec30a44b6f2ee8ae71ae9926cdc5c86716413b7e6260c9c52da",
+    "recorder.patch": "521915f40eac2cd06cececd7d8393ae4a35ad1551c833b33f45730b1886ef5c2",
+    "test_completed_recorder.py": "76fccb3e08c6578036f182ec592c2a0c69c1104d762e484ec635e59426f9f699"
+  }
+}

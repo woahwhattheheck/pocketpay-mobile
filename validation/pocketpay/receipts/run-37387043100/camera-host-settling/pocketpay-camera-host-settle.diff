@@ -1,0 +1,186 @@
+--- approved3628/camera-recording-runner.py
++++ local-candidate/camera-recording-runner.py
+@@ -11,6 +11,7 @@
+ import camera_followup as collector
+ from native_overlay import assert_no_native_error_overlay
+ from expo_go_intro import intro_sheet, dismiss_observed_intro
++from expo_ordinary_menu import has_host_sheet, close_ordinary_menu, redeliver_original_uri_once
+ 
+ last_controller = None
+ 
+@@ -20,7 +21,8 @@
+ 
+ 
+ def known_developer_sheet(tree):
+-    return original_developer_sheet(tree) or intro_sheet(tree)
++    # An unrecognized host sheet cannot expose a usable product label/action.
++    return original_developer_sheet(tree) or intro_sheet(tree) or has_host_sheet(tree)
+ 
+ 
+ def guarded_contains(tree, label):
+@@ -50,6 +52,12 @@
+         self.video_records = []
+         self.send_exit = None
+         self.original_contacts_callback_completed = False
++        self._host_settle_active = False
++        self._settle_next_product_dump = False
++        self._camera_launch_count = 0
++        self._camera_actions_started = False
++        self._camera_target_seen = False
++        self._camera_product_media_retained = False
+         self.send_result = {'status': 'not_attempted', 'passed': False,
+                             'reason': 'Requires successful actual Contacts unavailable case while the primary OS grant is still current'}
+ 
+@@ -83,10 +91,76 @@
+         try:
+             tree, xml = super().dump()
+             assert_no_native_error_overlay(tree)
++            if (getattr(self, '_settle_next_product_dump', False)
++                    and not getattr(self, '_host_settle_active', False)):
++                # Only the first fresh capture/action dump may settle chrome.
++                # The post-PNG dump stays raw so a newly covering sheet fails
++                # the original screenshot bracket rather than being hidden.
++                self._settle_next_product_dump = False
++                tree = self.ensure_host_clear(tree)
++                tree, xml = self.dump()
+             return tree, xml
+         except (collector.UnsafeMedia, RuntimeError, subprocess.SubprocessError, OSError, ValueError, ET.ParseError):
+             self.stop_unsafe()
+             raise
++
++    def host_uri_allowed(self):
++        return (getattr(self, '_camera_launch_count', 0) == 1
++                and not getattr(self, '_camera_actions_started', False)
++                and not getattr(self, '_camera_target_seen', False)
++                and not getattr(self, '_camera_product_media_retained', False)
++                and not getattr(self, 'original_uri_redelivery_attempted', False))
++
++    def ensure_host_clear(self, tree=None):
++        if self.unsafe_stop:
++            raise collector.UnsafeMedia('Unsafe camera condition blocks host settling')
++        if getattr(self, '_host_settle_active', False):
++            raise RuntimeError('Host-proof paths must use raw guarded dump/capture')
++        if tree is None:
++            tree, _ = self.dump()
++        if not known_developer_sheet(tree):
++            return tree
++        self._host_settle_active = True
++        try:
++            while known_developer_sheet(tree):
++                if intro_sheet(tree):
++                    if not dismiss_observed_intro(self, tree, guarded_action, collector.bounds):
++                        raise RuntimeError('Observed Expo tutorial was not closed')
++                else:
++                    # Exact source-bound native header control, never BACK.
++                    proof = close_ordinary_menu(self)
++                    self.report.setdefault('hostSettling', []).append({
++                        'kind': 'ordinary-menu-closure', 'proof': proof,
++                        'productStatePassed': False})
++                    if proof.get('welcomeObserved') is True and self.host_uri_allowed():
++                        delivery = redeliver_original_uri_once(self, self.original_camera_uri)
++                        self.report['hostSettling'].append({
++                            'kind': 'exact-once-original-uri', 'proof': delivery,
++                            'productStatePassed': False})
++                tree, _ = self.dump()
++            return tree
++        except Exception:
++            # An unknown sheet/activity, missing closure or invalid replay is
++            # not permission to take more guest actions or reset into a pass.
++            self.stop_unsafe()
++            raise
++        finally:
++            self._host_settle_active = False
++
++    def capture(self, name, required=(), action=None, allow_developer_sheet=False,
++                allow_permission_prompt=False):
++        if getattr(self, '_host_settle_active', False):
++            return super().capture(name, required, action, allow_developer_sheet,
++                                   allow_permission_prompt)
++        self._settle_next_product_dump = True
++        try:
++            result = super().capture(name, required, action, allow_developer_sheet,
++                                     allow_permission_prompt)
++            if result:
++                self._camera_product_media_retained = True
++            return result
++        finally:
++            self._settle_next_product_dump = False
+ 
+     def finish_recording(self):
+         if self.unsafe_stop:
+@@ -158,27 +232,17 @@
+         # First Scan clip spans real Expo startup; later frames are warm app state.
+         if screen == 'scan':
+             self.begin_recording('scan-launch', 60)
++        self._camera_launch_count = getattr(self, '_camera_launch_count', 0) + 1
++        if self._camera_launch_count == 1:
++            self.original_camera_uri = 'exp://127.0.0.1:8081/--/send/__camera-native-fixture?screen=' + screen
+         return super().launch(screen)
+ 
+     def wait(self, text, seconds=35, scope=None):
+-        # Keep the original target/permission/loading rules and bounds. Only
+-        # the concretely observed Expo host tutorial is an added branch.
++        # Preserve original targets/permission/loading rules and time bounds.
+         until = min(self.deadline, time.monotonic() + seconds)
+         while time.monotonic() < until:
+             tree, _ = self.dump()
+-            if intro_sheet(tree):
+-                dismiss_observed_intro(self, tree, guarded_action, collector.bounds)
+-                continue
+-            if original_developer_sheet(tree):
+-                if self.developer_sheet_dismissals >= 2:
+-                    raise RuntimeError('Expo developer sheet exceeded bounded observed dismissals')
+-                name = 'observed-expo-dev-sheet-' + str(self.developer_sheet_dismissals + 1)
+-                if self.capture(name, ('SDK Version', 'Connected to expo-cli'), allow_developer_sheet=True):
+-                    current, _ = self.dump()
+-                    if original_developer_sheet(current):
+-                        self.developer_sheet_dismissals += 1
+-                        self.adb('shell', 'input', 'keyevent', 'KEYCODE_BACK')
+-                continue
++            tree = self.ensure_host_clear(tree)
+             if self.reject_post_denial_prompt and collector.permission_prompt(tree):
+                 self.unexpected_prompt()
+             if collector.permission_prompt(tree):
+@@ -188,16 +252,41 @@
+                 if self.capture(name, (collector.LOADING, collector.MANUAL)):
+                     self.loading[scope].append(name)
+             if guarded_contains(tree, text):
++                self._camera_target_seen = True
+                 return tree
+             time.sleep(0.2)
+         raise RuntimeError('Actual UI state not observed within bound: ' + text)
+ 
++    def wait_action(self, label, packages, resource_suffix, seconds=25):
++        until = min(self.deadline, time.monotonic() + seconds)
++        while time.monotonic() < until:
++            tree, _ = self.dump()
++            tree = self.ensure_host_clear(tree)
++            if self.reject_post_denial_prompt and collector.permission_prompt(tree):
++                self.unexpected_prompt()
++            try:
++                guarded_action(tree, label, packages, resource_suffix)
++                return tree
++            except RuntimeError:
++                time.sleep(0.2)
++        raise RuntimeError('Actual scoped native action not observed: ' + label)
++
+     def tap(self, tree, label, packages=None, resource_suffix=None):
++        if getattr(self, '_host_settle_active', False):
++            raise RuntimeError('Product tap during host-proof collection is forbidden')
++        tree, _ = self.dump()
++        tree = self.ensure_host_clear(tree)
+         if label == 'Scan QR code to add contact':
+             # The actual parent selector remains strict and verifies the observed
+             # visible action; no component, hook response or timing is replaced.
+             self.begin_recording('contacts-scan', 8)
+-        return super().tap(tree, label, packages, resource_suffix)
++        self._settle_next_product_dump = True
++        try:
++            result = super().tap(tree, label, packages, resource_suffix)
++            self._camera_actions_started = True
++            return result
++        finally:
++            self._settle_next_product_dump = False
+ 
+     def contacts_unavailable_manual(self):
+         # Preserve the original Contacts callback/result. The separate actual

@@ -1,0 +1,9 @@
+{
+  "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+  "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+  "trackedFilesUnchanged": true,
+  "fixturePath": "app/send/__camera-native-fixture.tsx",
+  "fixtureSha256": "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0",
+  "fixtureInstalled": true,
+  "legacyAuthFixturePresentAtReadOnlyPreparation": false
+}

@@ -71,3 +71,8 @@ context fails before hidden target/action acceptance and only named failure
 media may retain it. A fatal initializer marks remaining cases blocked/unattempted
 without launching their callbacks. No baseline tutorial handling or warm replay
 was added. Original failure artifacts remain intact.
+
+
+Run37387043100 on exact baseline52/controller e69 reached actual production components after the reviewed generator preload seam. Three narrow cases were directly observed: invalid/missing transaction guidance, Diagnostics loading/ready/native storage, and cancelled redacted Android sharing. Six cases remain failed/incomplete; no complete prerequisite acceptance follows. The full original provider ZIP and media/counter receipts are retained in the parent receipts directory.
+
+The prospective wrapper baseline-host-runner.py installs a raw-callback host adapter before the original case definitions execute. It settles the actual SDK54 introduction and source-confirmed ordinary header only, does not redeliver a URI or initialize/reset fixture state, and retains the existing strict baseline/vault parsers and case safety/counter assertions. One global600-second native-command bound covers the collector; remaining callbacks are blocked after expiry. Named dump(name) discovery retains fresh uncovered hierarchy. Root's picker change reapplies the observed DUMMY filter before selecting its unique row; Vault discovery uses at most four swipes within one actually observed native ScrollView before any existing form input/Lock action. It does not repair the preexisting loading flag or SDK timing. Actual amount10/Confirm-event/addLock1 and all original zero-live-action receipts still must be observed.

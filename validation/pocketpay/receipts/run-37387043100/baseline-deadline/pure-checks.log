@@ -1,0 +1,24 @@
+test_actual_intro_no_longer_qualifies_hidden_product_labels (__main__.Checks.test_actual_intro_no_longer_qualifies_hidden_product_labels) ... ok
+test_actual_runner_executes_original_nine_case_dispatch_through_bound (__main__.Checks.test_actual_runner_executes_original_nine_case_dispatch_through_bound) ... ok
+test_adapter_has_no_uri_or_reset_guest_commands (__main__.Checks.test_adapter_has_no_uri_or_reset_guest_commands) ... ok
+test_baseline_ready_event_rejects_later_rebootstrap (__main__.Checks.test_baseline_ready_event_rejects_later_rebootstrap) ... ok
+test_cleared_original_records_fail (__main__.Checks.test_cleared_original_records_fail) ... ok
+test_exact_action_is_refreshed_not_replayed (__main__.Checks.test_exact_action_is_refreshed_not_replayed) ... ok
+test_failure_capture_retains_actual_host_without_dismissal (__main__.Checks.test_failure_capture_retains_actual_host_without_dismissal) ... ok
+test_first_ready_may_complete_from_unready_initialization (__main__.Checks.test_first_ready_may_complete_from_unready_initialization) ... ok
+test_fresh_action_viewport_is_rechecked_before_tap (__main__.Checks.test_fresh_action_viewport_is_rechecked_before_tap) ... ok
+test_global_bound_blocks_remaining_callbacks_and_guest_commands (__main__.Checks.test_global_bound_blocks_remaining_callbacks_and_guest_commands) ... ok
+test_named_dump_interface_retains_fresh_uncovered_hierarchy (__main__.Checks.test_named_dump_interface_retains_fresh_uncovered_hierarchy) ... ok
+test_new_png_overlay_is_rejected_without_saved_image (__main__.Checks.test_new_png_overlay_is_rejected_without_saved_image) ... ok
+test_newly_disabled_fresh_parent_blocks_enabled_unchanged_child (__main__.Checks.test_newly_disabled_fresh_parent_blocks_enabled_unchanged_child) ... ok
+test_nonzero_write_counter_fails_before_host_action (__main__.Checks.test_nonzero_write_counter_fails_before_host_action) ... ok
+test_pid_change_fails (__main__.Checks.test_pid_change_fails) ... ok
+test_raw_host_capture_does_not_recursively_settle (__main__.Checks.test_raw_host_capture_does_not_recursively_settle) ... ok
+test_rebootstrap_rejects_reset (__main__.Checks.test_rebootstrap_rejects_reset) ... ok
+test_recognized_transport_failure_cannot_be_poll_swallowed (__main__.Checks.test_recognized_transport_failure_cannot_be_poll_swallowed) ... ok
+test_root_vault_discovery_calls_installed_named_dump_and_bounded_adb (__main__.Checks.test_root_vault_discovery_calls_installed_named_dump_and_bounded_adb) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.039s
+
+OK

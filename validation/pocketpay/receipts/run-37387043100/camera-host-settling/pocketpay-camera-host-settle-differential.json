@@ -1,0 +1,46 @@
+{
+  "scope": "same original retained host XML and synthetic transport; no native execution or media",
+  "originalRunnerSha256": "1acc22497a5aac37422f9ff0da48f5d05479cc407b11aac77a586512e69fa1a1",
+  "candidateRunnerSha256": "2cdaf1311392976a9a4a6f9d36cd63bd5b231152d63276cf0f760fa284338c1f",
+  "cases": {
+    "original_e69": {
+      "capture": {
+        "outcome": "rejected_covering_host_sheet",
+        "events": [],
+        "productStatePassed": false,
+        "actualAdbCalls": 0,
+        "nativeMediaClaim": false,
+        "exception": "Observed Expo developer sheet must be dismissed before capture"
+      },
+      "tap": {
+        "outcome": "rejected_covering_host_sheet",
+        "events": [],
+        "productStatePassed": false,
+        "actualAdbCalls": 0,
+        "nativeMediaClaim": false,
+        "exception": "Expo developer sheet appeared before tap"
+      }
+    },
+    "integrated_candidate": {
+      "capture": {
+        "outcome": "accepted_only_after_actual_protocol_header_closure",
+        "events": [
+          "actual-header-selector-protocol"
+        ],
+        "productStatePassed": false,
+        "actualAdbCalls": 0,
+        "nativeMediaClaim": false
+      },
+      "tap": {
+        "outcome": "accepted_only_after_actual_protocol_header_closure",
+        "events": [
+          "actual-header-selector-protocol",
+          "original-product-request-protocol"
+        ],
+        "productStatePassed": false,
+        "actualAdbCalls": 0,
+        "nativeMediaClaim": false
+      }
+    }
+  }
+}

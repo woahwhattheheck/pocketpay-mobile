@@ -1,0 +1,7 @@
+{
+  "checkout": "/home/runner/work/pocketpay-mobile/pocketpay-mobile/subject",
+  "fixtureEntry": "./native-baseline-entry.js",
+  "route": "/send/__baseline-native-fixture",
+  "productionFilesVerified": 30,
+  "warning": "Validation only. Dedicated manual validation controller branches may retain these files. Restore the package backup and remove fixture files before any product/prerequisite/feature branch or product distribution."
+}

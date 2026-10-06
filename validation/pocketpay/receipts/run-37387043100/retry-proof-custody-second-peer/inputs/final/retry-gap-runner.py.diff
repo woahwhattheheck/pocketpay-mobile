@@ -1,0 +1,10 @@
+--- 15ab/retry-gap-runner.py
++++ deadline/retry-gap-runner.py
+@@ -94,6 +94,7 @@
+     helpers.developer_sheet = known_sheet
+     helpers.wait = wait_with_observed_intro
+     helpers.native_records = decoded_native_records
++    helpers.adb = host.adb
+     helpers.capture = capture_after_host
+     helpers.tap = tap_after_host
+     helpers.launch = launch_independent_case

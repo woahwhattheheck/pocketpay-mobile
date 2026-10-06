@@ -1,0 +1,56 @@
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 2216
+WaitTime: 2229
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.LauncherActivity
+TotalTime: 873
+WaitTime: 1014
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1005
+WaitTime: 1007
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1153
+WaitTime: 1182
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 859
+WaitTime: 862
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 816
+WaitTime: 818
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 828
+WaitTime: 832
+Complete
+

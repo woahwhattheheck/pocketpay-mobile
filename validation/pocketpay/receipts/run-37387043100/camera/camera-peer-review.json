@@ -1,0 +1,138 @@
+{
+  "status": "independent-read-only-original-media-review-complete",
+  "run": "37387043100",
+  "runUrl": "https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37387043100",
+  "artifact": {
+    "id": "11379327749",
+    "zipBytes": 1605638,
+    "zipSha256": "c3144c2cdfd4177303d69638d545ad39b54cd3744e78fbd7c2771f382e227053",
+    "zipCrcVerified": true,
+    "fileCount": 79,
+    "videoFiles": []
+  },
+  "controller": {
+    "sha": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+    "tree": "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67",
+    "localManifestSha256": "03c3983141b44878c2cc6bebd6bffd65a8c810cf37fcde85f7bb034a7a8d67eb",
+    "inputHashesVerified": 199,
+    "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+    "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+    "fixtureSha256": "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0",
+    "trackedDiffsEmpty": true,
+    "workingTreeScope": "Only untracked app/send fixture directory in recorded beginning/end metadata"
+  },
+  "directOriginalMedia": {
+    "pngsViewed": 7,
+    "tutorialBefore": "Both suites show exact Expo SDK54 tutorial over real Welcome",
+    "tutorialAfter": "Both suites show tutorial instructions gone, ordinary Connected-to-expo-cli menu over Welcome remains",
+    "ordinaryMenu": "Both dev-sheet2 PNG/XML captures retain ordinary menu; after.xml is capture-after, before the subsequent Back action",
+    "final": "Original final PNG/XML is Nexus Android launcher, not PocketPay camera/Welcome",
+    "videoReview": "No original video in ZIP; recorder metadata reports timeout without pull, so no frames can be reviewed"
+  },
+  "logBoundaries": {
+    "contactsBack": {
+      "keyCodeLine": 13320,
+      "time": "23:16:00.596",
+      "expoTaskBackgroundLine": 13327,
+      "taskId": 11,
+      "reactPauseLines": [
+        13334,
+        13337
+      ],
+      "homeForwardLine": 13352,
+      "nexusHomeLine": 13365,
+      "nexusInputLine": 13385
+    },
+    "primaryBackground": {
+      "expoTaskBackgroundLine": 8915,
+      "taskId": 9,
+      "homeTransitionLines": [
+        8917,
+        8929,
+        8932
+      ],
+      "actualBackInputRetained": false
+    },
+    "activityLimit": "Logs establish task backgrounding, not activity destruction; no subsequent Expo resume marker found",
+    "correctInitialUri": {
+      "line": 9822,
+      "uri": "exp://127.0.0.1:8081/--/send/__camera-native-fixture?screen=contacts",
+      "limit": "Delivery to main initial props does not prove Router selected fixture"
+    },
+    "metro": {
+      "bundles": [
+        {
+          "line": 20,
+          "milliseconds": 28508
+        },
+        {
+          "line": 25,
+          "milliseconds": 208
+        }
+      ],
+      "limit": "No retained PocketPay import/router/render exception localizes initial Welcome cause"
+    }
+  },
+  "readiness": {
+    "scanFirstAskableDenial": "not_observed_first_target_timeout",
+    "scanGrantAndUnavailable": "not_attempted",
+    "contactsFirstAskableDenial": "not_observed_first_target_timeout",
+    "userFixedFallbacks": "not_attempted",
+    "sendRecipientPreservation": "not_attempted",
+    "permissionLoadingManualFrames": "no_retained_evidence",
+    "cameraCasePasses": 0,
+    "hostTutorialClosureObserved": true,
+    "hostClosureIsProductPass": false,
+    "productionRegressionEstablished": false
+  },
+  "conditionalFutureScope": "Once-only exact original URI redelivery must preserve existing ActivityRecord/task identity and verify actual all-host-sheet closure; fail closed on unknown overlay, native permission/secret/error UI or cold/new activity. Current run has no unobscured Welcome closure capture. No proposed or actual new navigation performed in this review.",
+  "reviewOperations": {
+    "deviceCommands": 0,
+    "sourceEdits": 0,
+    "controllerEdits": 0,
+    "refWrites": 0,
+    "dispatches": 0,
+    "publicMessages": 0,
+    "analysisReceiptOnly": true
+  },
+  "originalFilesSha256": {
+    "controller-source.txt": "d233a9829e6ea5197627c04ff2c447ae71458bc283c2470ad4d68627d24c8cfd",
+    "controller-integrity.txt": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+    "executed-source.txt": "efb8e0d8ea56286b4e42542eb87bff5a7d82749fe8685aed68ab1a090dfc0d3f",
+    "fixture-integrity.json": "ac55da99294d61d0217ae730f5c713ece4f1f2c52275ed6f8437b776a523ee99",
+    "fixture-working-tree.txt": "3cc9b81d2177cc6800f9071f71cec60fa8ab828e54646781edca51a85d19bcaf",
+    "final-working-tree.txt": "3cc9b81d2177cc6800f9071f71cec60fa8ab828e54646781edca51a85d19bcaf",
+    "fixture-only-tracked.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final-fixture-only.patch": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "metro.log": "dc830ca3feec80a7c1e7cb52761ab1a8ebdce161b850b2c69a9e691a7e724e2d",
+    "logcat.txt": "8283a2d1355559d123f1c4aa559c384fc160457739ee0c708d6364fdedf1eabb",
+    "observations.json": "116e60c90cbb30cc0f49c553b9a3709dfd077c07d01599df63b20aa0523d7354",
+    "final-ui.xml": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+    "final-screen.png": "9f44445fb8b4eae57a3e242ff5bd3c2b39b14318224385dd0d1932603c6d64e1",
+    "camera-primary/original-camera-recordings.json": "f32b86ca4e0e5ec30a44b6f2ee8ae71ae9926cdc5c86716413b7e6260c9c52da",
+    "camera-primary/observed-expo-sdk54-intro-1-before.xml": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+    "camera-primary/observed-expo-sdk54-intro-1-before-after.xml": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+    "camera-primary/observed-expo-sdk54-intro-1-before.png": "b573cd490b3b6ec5da281b91a8deb1bea07b702d8ff47eb8a376745e5219b412",
+    "camera-primary/observed-expo-sdk54-intro-1-after.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "camera-primary/observed-expo-sdk54-intro-1-after-after.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "camera-primary/observed-expo-sdk54-intro-1-after.png": "2e2a4d2f1a90fd745ba7d333dc467527572374158d960ebd2afe8cfa37770df0",
+    "camera-primary/observed-expo-dev-sheet-2.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "camera-primary/observed-expo-dev-sheet-2-after.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "camera-primary/observed-expo-dev-sheet-2.png": "cda0166eb7c1db59c54ff85e83decab3b7a17ac5296de0ae8aed846ee55fefcc",
+    "camera-primary/observed-expo-sdk54-intro-closures.json": "5ab5f5f02b963532a2af0e4ce7453bc861ac7098c9a1ddb744c3769f90b15547",
+    "camera-primary/launches.txt": "4acb771f22a798c2b32d2b771f81f4b03576e36b05cdd5923b672dbe8fcda652",
+    "camera-primary/observations.json": "159a82a45b2f0d7543a60e593dc937a733d058e621b10567a81915570d8c749a",
+    "contacts-first-denial/observed-expo-sdk54-intro-1-before.xml": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+    "contacts-first-denial/observed-expo-sdk54-intro-1-before-after.xml": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+    "contacts-first-denial/observed-expo-sdk54-intro-1-before.png": "16f017d2799c51e952215a811e3a02d0c6784133a807ffec61e9367652e3ec6f",
+    "contacts-first-denial/observed-expo-sdk54-intro-1-after.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "contacts-first-denial/observed-expo-sdk54-intro-1-after-after.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "contacts-first-denial/observed-expo-sdk54-intro-1-after.png": "da336f701f3e41935467a162709655a422c33dee3d1cb7070edb1b3c2028ec83",
+    "contacts-first-denial/observed-expo-dev-sheet-2.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "contacts-first-denial/observed-expo-dev-sheet-2-after.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "contacts-first-denial/observed-expo-dev-sheet-2.png": "da336f701f3e41935467a162709655a422c33dee3d1cb7070edb1b3c2028ec83",
+    "contacts-first-denial/observed-expo-sdk54-intro-closures.json": "5ab5f5f02b963532a2af0e4ce7453bc861ac7098c9a1ddb744c3769f90b15547",
+    "contacts-first-denial/launches.txt": "b15aaa07e107ac8cd678b795ae467b08d57bfdfd20b4bdab1a27073693b6fe01",
+    "contacts-first-denial/observations.json": "75468edf1f9d16457c826dfaf92e0b30ba00f01e58377ca3589065c1d6035899"
+  }
+}

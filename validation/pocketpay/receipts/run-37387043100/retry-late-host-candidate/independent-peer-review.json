@@ -1,0 +1,19 @@
+{
+  "reviewer": "/root/pocketpay_submission/rip302_sdk_audit",
+  "result": "CLEAR for local bounded late-host/state-preservation/media scope",
+  "pureChecksIndependentlyPassed": 21,
+  "negativeFindingsResolved": [
+    "Every appended observer state checked; signer-change appended events rejected even when public final fields equal.",
+    "Any observed host Bottom Sheet, including partial markers, blocks product PNG before/post screencap.",
+    "Mandatory expected gap capture None raises instead of being silently ignored."
+  ],
+  "reviewedSha256": {
+    "retry_host_adapter.py": "c782a8b7b686917dcb08ac2b884efd9b3bfc3c890b4383947a9a259f33060de4",
+    "retry-primary-ui.py": "4dae5e9fa35f818d96f1c63b41be8a875a70da5cab35a84aec3e427fae66895e",
+    "retry-gap-runner.py": "4c6a8cce90a0fc8b015abbeb631101c9daf525c804d745fea4d58aaa5570e4c3",
+    "test_retry_host_adapter.py": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a",
+    "expo_ordinary_menu.py": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+    "observer_framing.py": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2"
+  },
+  "limits": "Pure read-only review with mocked boundary; no ADB, guest/source/ref/controller writes or native-success claim."
+}

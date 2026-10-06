@@ -1,0 +1,128 @@
+--- e69/retry-primary-ui.py
++++ local/retry-primary-ui.py
+@@ -9,7 +9,7 @@
+ import time
+ import xml.etree.ElementTree as ET
+ from expo_go_intro import intro_sheet
+-from expo_go_module_intro import ModuleIntro
++from retry_host_adapter import RetryHostAdapter
+ from observer_framing import decode_observer_line
+ 
+ ROOT = Path(os.environ["ARTIFACT_DIR"])
+@@ -61,7 +61,7 @@
+ 
+ 
+ def expo_sheet(tree):
+-    return intro_sheet(tree) or (contains(tree, "Connected to expo-cli") and contains(tree, "SDK version:"))
++    return HOST.host.has_host_sheet(tree) or intro_sheet(tree) or (contains(tree, "Connected to expo-cli") and contains(tree, "SDK version:"))
+ 
+ 
+ def native_error_overlay(tree):
+@@ -70,6 +70,8 @@
+ 
+ 
+ def screenshot(name, allow_expo_sheet=False, allow_native_error=False):
++    if not allow_expo_sheet and not allow_native_error:
++        HOST.before_capture()
+     before = dump(name + "-media-guard")
+     if expo_sheet(before) and not allow_expo_sheet:
+         raise RuntimeError("Observed Expo sheet covers app; no app PNG retained")
+@@ -81,12 +83,18 @@
+         raise RuntimeError("Native render-error overlay appeared during capture; target PNG excluded")
+     if expo_sheet(after) and not allow_expo_sheet:
+         raise RuntimeError("Observed Expo sheet appeared during capture; app PNG excluded")
++    if HOST.expected and not allow_expo_sheet and not allow_native_error:
++        for state in (before, after):
++            if not any(contains(state, target) for target in HOST.expected):
++                raise RuntimeError("Fresh Retry capture lost the expected product target")
+     if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+         raise RuntimeError("ADB did not return a PNG")
+     (ROOT / (name + ".png")).write_bytes(data)
+ 
+ 
+ def capture(name, allow_expo_sheet=False, allow_native_error=False):
++    if not allow_expo_sheet and not allow_native_error:
++        HOST.before_capture()
+     tree = dump(name)
+     if expo_sheet(tree) and not allow_expo_sheet:
+         raise RuntimeError("Observed Expo sheet covers app; no target screenshot claim")
+@@ -154,11 +162,12 @@
+ 
+ def tap(*candidates, scroll=False):
+     for attempt in range(6 if scroll else 1):
+-        tree = dump()
++        tree = HOST.uncovered()
+         for candidate in candidates:
+             node = exact_action(tree, candidate)
+             if node is not None:
+                 tap_node(node)
++                HOST.action_completed()
+                 return
+         if scroll:
+             adb("shell", "input", "swipe", "360", "1080", "360", "330", "350")
+@@ -171,23 +180,13 @@
+     last = None
+     while time.monotonic() < deadline:
+         try:
+-            last = dump()
+-            if intro_sheet(last):
+-                INTRO.dismiss(last)
+-                continue
+-            # The real failed run captured these two labels on Expo's sheet.
+-            # Close only observed development chrome before evaluating app state.
+-            if contains(last, "Connected to expo-cli") and contains(last, "SDK version:"):
+-                EXPO_DISMISSALS += 1
+-                if EXPO_DISMISSALS > 8:
+-                    raise RuntimeError("Observed Expo sheet exceeded bounded dismissals")
+-                capture("observed-expo-developer-sheet-" + str(EXPO_DISMISSALS), allow_expo_sheet=True)
+-                adb("shell", "input", "keyevent", "KEYCODE_BACK")
+-                continue
++            last = HOST.uncovered()
+             if native_error_overlay(last):
+                 capture("actual-render-error", allow_native_error=True)
+                 raise RuntimeError("Actual native Render Error observed")
+             if any(contains(last, target) for target in candidates):
++                HOST.stable = True
++                HOST.expected = tuple(candidates)
+                 return last
+         except (subprocess.SubprocessError, ET.ParseError):
+             pass
+@@ -212,9 +211,11 @@
+ def wait_enabled_action(label, seconds=50):
+     deadline = time.monotonic() + seconds
+     while time.monotonic() < deadline:
+-        tree = dump()
++        tree = HOST.uncovered()
+         node = exact_action(tree, label)
+         if node is not None:
++            HOST.stable = True
++            HOST.expected = (label,)
+             return tree
+         time.sleep(0.4)
+     raise RuntimeError("Expected enabled action after lookup: " + label)
+@@ -239,7 +240,7 @@
+     # These cases render reviewed public-only dummy Review/Recovery screens.
+     # The original guest recording can establish transient frames only after
+     # independent review; no production/transport timing is changed.
+-    tree = dump()
++    tree = HOST.before_capture()
+     if expo_sheet(tree):
+         raise RuntimeError("Expo developer sheet covers the recording action")
+     remote = "/sdcard/" + name + ".mp4"
+@@ -296,6 +297,7 @@
+ 
+ 
+ def retry_outcome(outcome):
++    HOST.begin_case(outcome)
+     adb("logcat", "-c")
+     launch("__payment-retry-attempt-native-fixture?outcome=" + outcome)
+     wait("Sign & Send", seconds=300 if outcome == "unknown" else 60)
+@@ -367,7 +369,7 @@
+         raise RuntimeError("Definitive Done action retained resolved uncertainty")
+ 
+ 
+-INTRO = ModuleIntro(globals())
++HOST = RetryHostAdapter(globals(), "primary")
+ 
+ for outcome in ("unknown", "error", "confirmed", "failed"):
+     case("retry-" + outcome, lambda outcome=outcome: retry_outcome(outcome))

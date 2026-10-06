@@ -1,0 +1,256 @@
+{
+  "run": 37387043100,
+  "artifactId": 11380062702,
+  "zipPath": "/workspace/scratch/ea8baa184658/attachments/3156dd74-f0d6-4676-824d-819dbce119bb/pocketpay-native-retry-37387043100.zip",
+  "zipBytes": 1632746,
+  "zipSha256": "1f48f575dd952fcabf81f469e60714f852a7b744093ae631d5230ad8d7433744",
+  "all69ExtractedFilesZipByteEqual": true,
+  "productSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+  "productTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+  "controllerSha": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "controllerTree": "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67",
+  "controllerManifestSha256": "03c3983141b44878c2cc6bebd6bffd65a8c810cf37fcde85f7bb034a7a8d67eb",
+  "nativeResult": "all4 primary and all3 gaps failed; no native-flow pass",
+  "xml": [
+    {
+      "name": "current.xml",
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": false,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "empty-actual-guidance.xml",
+      "sha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-empty-session-no-lookup.xml",
+      "sha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-mismatched-lookup-preserves-unknown.xml",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-nohash-guidance-no-lookup.xml",
+      "sha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-retry-confirmed.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-retry-error-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "packages": [
+        "com.google.android.apps.nexuslauncher"
+      ],
+      "recognizedIntro": false,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-retry-error-post-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "packages": [
+        "com.google.android.apps.nexuslauncher"
+      ],
+      "recognizedIntro": false,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-retry-error.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "packages": [
+        "com.google.android.apps.nexuslauncher"
+      ],
+      "recognizedIntro": false,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-retry-failed.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "failure-retry-unknown.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "final-ui.xml",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "mismatch-actual-unknown.xml",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "nohash-actual-guidance.xml",
+      "sha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "retry-confirmed-review.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "retry-failed-review.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "retry-unknown-review.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "packages": [
+        "host.exp.exponent"
+      ],
+      "recognizedIntro": true,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "unmatched-state-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "packages": [
+        "com.google.android.apps.nexuslauncher"
+      ],
+      "recognizedIntro": false,
+      "runtimeOverlayObserved": false
+    },
+    {
+      "name": "unmatched-state-post-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "packages": [
+        "com.google.android.apps.nexuslauncher"
+      ],
+      "recognizedIntro": false,
+      "runtimeOverlayObserved": false
+    }
+  ],
+  "originalPngs": [
+    {
+      "name": "failure-retry-error.png",
+      "sha256": "c4ce1b896cc36593b38030ee58fb725832f648bebe17a699609721e349440bb6",
+      "actualContext": "Android Launcher, not production Review"
+    },
+    {
+      "name": "final-screen.png",
+      "sha256": "8b3f8026671c25ad37505a4443c9d7c03ed1cba94510ca788072b11969e7c178",
+      "actualContext": "SDK54 tutorial over seeded Payment Status Unknown"
+    },
+    {
+      "name": "unmatched-state.png",
+      "sha256": "c4ce1b896cc36593b38030ee58fb725832f648bebe17a699609721e349440bb6",
+      "actualContext": "Android Launcher, not production Review"
+    }
+  ],
+  "originalMp4Count": 0,
+  "introClosureReceiptsOrNamedMediaPresent": false,
+  "strictDecodedRecordCounts": {
+    "finalLogcat": {
+      "primaryUnknown": 4,
+      "gapMismatch": 4
+    },
+    "primaryLogcat": {
+      "primaryUnknown": 1,
+      "primaryFailed": 3
+    },
+    "historicalMetro": {
+      "primaryUnknown": 17,
+      "primaryError": 0,
+      "primaryConfirmed": 3,
+      "primaryFailed": 3,
+      "gapNohash": 4,
+      "gapEmpty": 3,
+      "gapMismatch": 4
+    }
+  },
+  "actualCounterLimits": [
+    "All decoded sourceSha payloads ddd56649; signed/secret/submit/read/broadcast/RPC/write/save counters zero.",
+    "All lastLookup null; primary transactionHash null.",
+    "Final primary-unknown identity/hash reflects later gap seeded store, not a real dummy submission.",
+    "Mismatch final state unknown identity1/hash a*64/request native-dummy-mismatch with zero reads/responses.",
+    "No-hash unknown identity1 without hash; empty idle without uncertainty.",
+    "Current native logs cleared per case; earlier Metro records are historical and cannot attest current case completion."
+  ],
+  "findings": [
+    "Unknown/confirmed/failed Review and all3 gap guidance/failure XMLs contain exact introductory host sheet; expanded predicate correctly recognizes it.",
+    "Product wait can see a target before asynchronous intro appears; subsequent strict capture correctly fails and excludes target PNG.",
+    "Error/unmatched PNG+XML show Launcher and no Review; this artifact does not prove a specific Back/close timeline or product failure.",
+    "Final original PNG shows intro over Unknown; full later XML labels corroborate the intro, so truncated labels do not qualify an uncovered state.",
+    "No new runtime overlay identified in inspected current original media/Metro.",
+    "No intro closure record or original submit/status video was produced; no visible loading/action/navigation proof."
+  ],
+  "concreteControllerIntegrationRequirements": [
+    "Before fresh target/capture/action acceptance, handle only actually recognized tutorial or separately proven ordinary Expo header menu using exact contextual controls and bounded before/after host evidence.",
+    "If a recognized sheet appears after target wait but before capture/action, re-observe through the reviewed host helper, then independently require fresh uncovered production target; do not accept hidden labels.",
+    "Preserve existing source/outcome/safety/counter/hash/object-identity validators and production submit/read timing.",
+    "Any conditional same-Activity/task hot exact-URI delivery needs its own reviewed native context/receipt; Retry originals alone do not prove it necessary or successful.",
+    "Retain all existing failures; no new source/product repair indicated by covered/Launcher captures."
+  ],
+  "requiredRetryGatesStillUnproved": [
+    "Real production Review\u2192dummy sign/hash/unknown capture",
+    "Lookup loading and unknown/error/confirmed/failed results",
+    "Details/help/Activity identity retention and definitive Done clear",
+    "Nohash/empty guidance actions with zero lookup",
+    "Mismatch read with original identity preserved"
+  ],
+  "mutations": "Read-only original artifact/helper review; no product, controller, ref, dispatch, guest or status polling. Peer receipt only outside immutable candidate."
+}

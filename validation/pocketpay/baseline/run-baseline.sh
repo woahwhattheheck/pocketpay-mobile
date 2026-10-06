@@ -45,4 +45,4 @@ for attempt in $(seq 1 90); do
   sleep 2
 done
 curl --silent --fail http://127.0.0.1:8081/status > "$evidence/metro-status.txt"
-python3 "$controller/ui_baseline.py" baseline
+python3 "$controller/../baseline-host-runner.py" baseline

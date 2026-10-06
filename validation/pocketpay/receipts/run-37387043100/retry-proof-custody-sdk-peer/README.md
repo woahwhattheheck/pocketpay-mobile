@@ -1,0 +1,1 @@
+Pure mocked transport review only. test-only-results.json references private temporary synthetic proof outputs which are intentionally excluded here; it is not native media or native-flow evidence. This folder retains the reproducing test code, execution log and JSON receipt. The real native media remain the provider ZIPs and exact selected source bytes in the run receipt.

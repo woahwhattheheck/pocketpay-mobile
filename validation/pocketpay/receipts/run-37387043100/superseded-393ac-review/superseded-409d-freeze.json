@@ -1,0 +1,2484 @@
+{
+  "parentCommit": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "parentTree": "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67",
+  "controllerRoot": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-host-settle-successor",
+  "manifestSha256": "393ac41151b1608fefd526a8be4326a57e9a5c4ff8311142a838c7805b5c9ee2",
+  "lockedInputCount": 525,
+  "changes": [
+    {
+      "path": "validation/pocketpay/README.md",
+      "change": "changed",
+      "gitBlobSha": "b8c3d47b9e0325c32669c3d50d274382abc97d90",
+      "sha256": "5618d156861bdc54f21fdf18da12887fd774fadb9265e01c8352377e12397b83",
+      "size": 18536
+    },
+    {
+      "path": "validation/pocketpay/baseline/README.md",
+      "change": "changed",
+      "gitBlobSha": "a37008746c5bb5242950c07c48bde2c32ec896a1",
+      "sha256": "2d40a33b71ff718c81c0e6149c1a113b946116d2730694fb18407d5dacdf0642",
+      "size": 6076
+    },
+    {
+      "path": "validation/pocketpay/baseline/baseline_cases.py",
+      "change": "changed",
+      "gitBlobSha": "f6cc298061b38c9b11b09cdf2621059f1afa6099",
+      "sha256": "7dc80c1fa036f73ae4766dfebb3179b77a75a710aac4c24448b86aaaf32c321a",
+      "size": 16405
+    },
+    {
+      "path": "validation/pocketpay/baseline/baseline_vault_form.py",
+      "change": "added",
+      "gitBlobSha": "74de408e1adcbaee547b9cafaa173e269ad21e99",
+      "sha256": "e9e7d2163295abddd9a6495dc73f7d94995d1a3795d5b89c2335b6b3e460230f",
+      "size": 2398
+    },
+    {
+      "path": "validation/pocketpay/baseline/controller-manifest.json",
+      "change": "changed",
+      "gitBlobSha": "618c5b7f0050b521b027ae3d1f8c3ea73e0b260f",
+      "sha256": "59ecaaa2e3df236db15160ec85fcc2dae20ebb88109b0cccc69f61df673ec365",
+      "size": 7341
+    },
+    {
+      "path": "validation/pocketpay/baseline/run-baseline.sh",
+      "change": "changed",
+      "gitBlobSha": "0327df5a67aef90941880e575158f668cd9687ec",
+      "sha256": "4599bcaa5b959e907476e15a7f8293695538f717aff63ca46e39c51dfd2ca579",
+      "size": 2047
+    },
+    {
+      "path": "validation/pocketpay/baseline/ui_baseline.py",
+      "change": "changed",
+      "gitBlobSha": "6f057e4831f7f0de551847b944919ab276a2908b",
+      "sha256": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236",
+      "size": 26230
+    },
+    {
+      "path": "validation/pocketpay/baseline-host-runner.py",
+      "change": "added",
+      "gitBlobSha": "4a8e13f9c3ca25bf68ad6a9c3301f4b2d0cd3099",
+      "sha256": "0628d1e2ed2f28286d363fcb7b2de1961a8d23f202c6b2d8b3e8bfacfe6cfe6b",
+      "size": 881
+    },
+    {
+      "path": "validation/pocketpay/baseline_history_carrier.py",
+      "change": "added",
+      "gitBlobSha": "3ff462213c3a37c3376744e47ec14e54a40b9d47",
+      "sha256": "cdd2d745b85bdd30cb3cc7ed412db990ff9ce36fd268195078b3319f77731fef",
+      "size": 16017
+    },
+    {
+      "path": "validation/pocketpay/baseline_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "aad56969c95e1d7d5fd6acfbf0b52280ac37428c",
+      "sha256": "4aa4a44530c0b6b386928b711b0276ce94eee6fe94edbf4afc043267eda21748",
+      "size": 13312
+    },
+    {
+      "path": "validation/pocketpay/camera-host-settling.md",
+      "change": "added",
+      "gitBlobSha": "ef956015f9cb73fb4df3121d9af9448daee7cc1a",
+      "sha256": "ccb0492411fccd69dde1646e4c3ac18e57b46fa86ccc1678d61052e2a51b16bb",
+      "size": 3605
+    },
+    {
+      "path": "validation/pocketpay/camera-recording-runner.py",
+      "change": "changed",
+      "gitBlobSha": "ddd0289e3266bf2ca761572a2aa411dc90239c2f",
+      "sha256": "2cdaf1311392976a9a4a6f9d36cd63bd5b231152d63276cf0f760fa284338c1f",
+      "size": 23622
+    },
+    {
+      "path": "validation/pocketpay/controller-manifest.json",
+      "change": "changed",
+      "gitBlobSha": "ba8920f1610149ebf33f5301c7c3dcab74d45eff",
+      "sha256": "393ac41151b1608fefd526a8be4326a57e9a5c4ff8311142a838c7805b5c9ee2",
+      "size": 91046
+    },
+    {
+      "path": "validation/pocketpay/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/observed/ordinary-menu.png",
+      "change": "added",
+      "gitBlobSha": "d2df4b05ce54d040339d3f26acc3581f2757477c",
+      "sha256": "cda0166eb7c1db59c54ff85e83decab3b7a17ac5296de0ae8aed846ee55fefcc",
+      "size": 92425
+    },
+    {
+      "path": "validation/pocketpay/observed/ordinary-menu.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/baseline-original.zip",
+      "change": "added",
+      "gitBlobSha": "3ddd39cdb47d938db8a22c7a8c97a2d01e6ecd35",
+      "sha256": "e51df825a656835317e5192425dd4e4ffb654f8e35e3d55b1ffa16a91237c710",
+      "size": 3854419
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/camera-original.zip",
+      "change": "added",
+      "gitBlobSha": "743b7c17b13da21c9b24f46307cfb44b0fa704c4",
+      "sha256": "c3144c2cdfd4177303d69638d545ad39b54cd3744e78fbd7c2771f382e227053",
+      "size": 1605638
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/retry-original.zip",
+      "change": "added",
+      "gitBlobSha": "fc9bb5e4099e8a44785082acbae954aeff2260da",
+      "sha256": "1f48f575dd952fcabf81f469e60714f852a7b744093ae631d5230ad8d7433744",
+      "size": 1632746
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/SCOPE.md",
+      "change": "added",
+      "gitBlobSha": "d138424164f88c3aecc56ae0509d99c26512f597",
+      "sha256": "c77172f924c4ae3b1ae728e3cb3b3c93f6871c2ee23b066f3c390985fa4b37c4",
+      "size": 4665
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-diagnostics-native-storage-status-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "f403e2c1d25a0ffa7807bb1261067cc1a443dae9",
+      "sha256": "7d53437a5b6e87b10c2bc8b3ee630109eeeadeb5535c5dfd8c227c65fe4b1577",
+      "size": 8062
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-diagnostics-native-storage-status.png",
+      "change": "added",
+      "gitBlobSha": "9d121caa53d3a9d087d29167d6d8e45e74d060bd",
+      "sha256": "20186a46950563d1ccb22d6759e4327c1fe69875d19837f17653922992022396",
+      "size": 99968
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-diagnostics-native-storage-status.xml",
+      "change": "added",
+      "gitBlobSha": "f403e2c1d25a0ffa7807bb1261067cc1a443dae9",
+      "sha256": "7d53437a5b6e87b10c2bc8b3ee630109eeeadeb5535c5dfd8c227c65fe4b1577",
+      "size": 8062
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-diagnostics-original.mp4",
+      "change": "added",
+      "gitBlobSha": "876eab2b1a0abc1e66322806c3db999384174832",
+      "sha256": "f1f55498aa7d613389cd0ca3a6ec88f83f2885a600f531105db29847c144928c",
+      "size": 267890
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-diagnostics-ready-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "98f176d29f3fb2678a5fa9cf378eea3eff1a0b14",
+      "sha256": "9eec1f061060f8203e587131cf04890b7af1dfb05e516a46526ed5908e98b76a",
+      "size": 6707
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-diagnostics-ready.png",
+      "change": "added",
+      "gitBlobSha": "0153317a971b6d270fc93c475b6f5a92f17a8581",
+      "sha256": "54f724ec16c4bd463e1408b9f587eeb162a36315ce35f456f51fe5c7fc006b61",
+      "size": 100631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-diagnostics-ready.xml",
+      "change": "added",
+      "gitBlobSha": "98f176d29f3fb2678a5fa9cf378eea3eff1a0b14",
+      "sha256": "9eec1f061060f8203e587131cf04890b7af1dfb05e516a46526ed5908e98b76a",
+      "size": 6707
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-name-search-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "a610d6a7a89a1c7a5124ebc659cd0fdf380057d1",
+      "sha256": "24540eebec0ccf89b79a4f706446ebd80f2b2cb02d7b79e08bc1b5fbda1fdaef",
+      "size": 4854
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-name-search.png",
+      "change": "added",
+      "gitBlobSha": "0d4dbde084e689d73e0d13ab07b5bb0b92566ab3",
+      "sha256": "10522572997b6a3d4b04c35fb17108c98229d216e614206dc6604189d580461d",
+      "size": 96126
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-name-search.xml",
+      "change": "added",
+      "gitBlobSha": "a610d6a7a89a1c7a5124ebc659cd0fdf380057d1",
+      "sha256": "24540eebec0ccf89b79a4f706446ebd80f2b2cb02d7b79e08bc1b5fbda1fdaef",
+      "size": 4854
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-no-match-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "be8d2e014088f90f4982ecd541c65a40e4c8ca4e",
+      "sha256": "627fce224889468a7c66fcf681ee8baac503b8fe696723473fce6a6de2071307",
+      "size": 3443
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-no-match.png",
+      "change": "added",
+      "gitBlobSha": "2f2890217d5c956669f4c90ae17acd8caeda40f2",
+      "sha256": "853585db57cd997cdf6e3b866a11056f8aebc88308dc94b408c770eb2e9ea8a1",
+      "size": 90547
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-no-match.xml",
+      "change": "added",
+      "gitBlobSha": "be8d2e014088f90f4982ecd541c65a40e4c8ca4e",
+      "sha256": "627fce224889468a7c66fcf681ee8baac503b8fe696723473fce6a6de2071307",
+      "size": 3443
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-with-edit-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "d8177b62ee9a88d02d2675bda21b59068fda3ed5",
+      "sha256": "17949349ef10e48dcbd112e9f575681cec6a636b38948046ca92eaf7a24fa526",
+      "size": 6309
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-with-edit.png",
+      "change": "added",
+      "gitBlobSha": "2ca7cf5f481a0a0ff8a1438fe4791403129d20b2",
+      "sha256": "ce2f82e161bbf3375112bb3bf9f72dd00659e78cfc0f8b1c7e9bec9f88f1adc5",
+      "size": 94419
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-picker-with-edit.xml",
+      "change": "added",
+      "gitBlobSha": "d8177b62ee9a88d02d2675bda21b59068fda3ed5",
+      "sha256": "17949349ef10e48dcbd112e9f575681cec6a636b38948046ca92eaf7a24fa526",
+      "size": 6309
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-real-error-fallback-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "076ce0271ae7a1bb7543a47b374df6224c2a196f",
+      "sha256": "1f0c592c6d7f8d846434e241190b1c56b9a6d0650332a3f7aca501eb0ca2df3c",
+      "size": 5091
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-real-error-fallback.png",
+      "change": "added",
+      "gitBlobSha": "3bd05ccfa22272c13df8041c30a07e4c57ae9443",
+      "sha256": "5771922d93a2545aae483095866877ccfe156410c948e16f5448bebeb7040cae",
+      "size": 85414
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-real-error-fallback.xml",
+      "change": "added",
+      "gitBlobSha": "076ce0271ae7a1bb7543a47b374df6224c2a196f",
+      "sha256": "1f0c592c6d7f8d846434e241190b1c56b9a6d0650332a3f7aca501eb0ca2df3c",
+      "size": 5091
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-real-native-share-sheet-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "9a7ae27a2cac78ccb1ce598fcf69d5c9c2e5c75e",
+      "sha256": "1c56b55ea9d16060ec2dd0c47021332b5bbbca9c9d113f354a4bac4241c1e426",
+      "size": 11303
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-real-native-share-sheet.png",
+      "change": "added",
+      "gitBlobSha": "4fe565bfc25a40944294fc4c0f4db534f8dc300e",
+      "sha256": "81f0865a12137203512366b0036662a8ce88a3810ef89b7edfe028c3059f3ecb",
+      "size": 95015
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-real-native-share-sheet.xml",
+      "change": "added",
+      "gitBlobSha": "9a7ae27a2cac78ccb1ce598fcf69d5c9c2e5c75e",
+      "sha256": "1c56b55ea9d16060ec2dd0c47021332b5bbbca9c9d113f354a4bac4241c1e426",
+      "size": 11303
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-share-cancel-return-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "996a2bdc40fae75a07704d87a79d5f53c09887b0",
+      "sha256": "cc4e7c1bd5c314c7f20ba9dbc35f93ffc948fa361eb84da8c91ce058209a801c",
+      "size": 6483
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-share-cancel-return.png",
+      "change": "added",
+      "gitBlobSha": "c6787c2a474b690f5bc73e7792e737961b3a4254",
+      "sha256": "3101907582ab662f336c6932656aed2b8656522250fa93a9a965e28732b0758c",
+      "size": 86403
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-share-cancel-return.xml",
+      "change": "added",
+      "gitBlobSha": "996a2bdc40fae75a07704d87a79d5f53c09887b0",
+      "sha256": "cc4e7c1bd5c314c7f20ba9dbc35f93ffc948fa361eb84da8c91ce058209a801c",
+      "size": 6483
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-sign-missing-params-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "66067522b89ef97e951bc855e61c19b02e6d1ad4",
+      "sha256": "167841408da2607658394f53c1d98375de1125d20e57c63889e24be1b5f2df05",
+      "size": 3985
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-sign-missing-params.png",
+      "change": "added",
+      "gitBlobSha": "838a98111858ec14cdc6704591d84e0f492c2b76",
+      "sha256": "a582903289380138b0e655d5ece575298d3d649d15ac59fe3b0225f82c3042b5",
+      "size": 63508
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-sign-missing-params.xml",
+      "change": "added",
+      "gitBlobSha": "66067522b89ef97e951bc855e61c19b02e6d1ad4",
+      "sha256": "167841408da2607658394f53c1d98375de1125d20e57c63889e24be1b5f2df05",
+      "size": 3985
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-sign-summary-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "ebe2ceb2cc3a133c36674868114f05c9f54328af",
+      "sha256": "4fb2acb3472e3ad33f3fc9fe2af6bbdf9646a16a0d55c155361a035ca870906f",
+      "size": 13176
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-sign-summary.png",
+      "change": "added",
+      "gitBlobSha": "69b17fcaec08f16eebc44b1b4e7ea94d3e36fc51",
+      "sha256": "dee66f89a9ecf43ade5295baa4fa3928b7e2c8c2d5a600d27eaaac6e4631a297",
+      "size": 123533
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/baseline-sign-summary.xml",
+      "change": "added",
+      "gitBlobSha": "ebe2ceb2cc3a133c36674868114f05c9f54328af",
+      "sha256": "4fb2acb3472e3ad33f3fc9fe2af6bbdf9646a16a0d55c155361a035ca870906f",
+      "size": 13176
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/controller-integrity.txt",
+      "change": "added",
+      "gitBlobSha": "17ff387c1467eef0884f4df4f7938d15dc1a461c",
+      "sha256": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+      "size": 42
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/controller-source.txt",
+      "change": "added",
+      "gitBlobSha": "efe1cb634e7eed867fa46900f326706b7cef207f",
+      "sha256": "d233a9829e6ea5197627c04ff2c447ae71458bc283c2470ad4d68627d24c8cfd",
+      "size": 82
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/current.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/derived-diagnostics-frame49.png",
+      "change": "added",
+      "gitBlobSha": "36acb06ea7a63866fcb41a61357b5bbd5ce17f87",
+      "sha256": "f143e7955995d17c0d5d63640a1b280990335684ac777ef6417eebe05cf062f0",
+      "size": 63207
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/derived-diagnostics-frame50.png",
+      "change": "added",
+      "gitBlobSha": "ba124d3897f6a057eb8099f5b22dac11dce0e619",
+      "sha256": "1f1cb4c5bebfbf8f7b2c129b60fab786a8a2d83b1f17795f2ab55bd59424a77e",
+      "size": 139118
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/diagnostics-ready-native-counters.json",
+      "change": "added",
+      "gitBlobSha": "02ba0d654c52ecd97383698b685b23139f5060f5",
+      "sha256": "dedd55ecfbb0a9ba41478940b0fb7b14c620cb21099da4c0e834172038c6aa19",
+      "size": 1523
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/diagnostics-screenrecord-status.json",
+      "change": "added",
+      "gitBlobSha": "f24c1eccb63640821630065de094d93be9ebc8c0",
+      "sha256": "ece1e2dfc0145afdc16de2da0ceed8cd876f80dbb40d038652204222bd96af81",
+      "size": 99
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/executed-source.txt",
+      "change": "added",
+      "gitBlobSha": "51351b50201b424d25dcb74c0a5f4ec4f345529b",
+      "sha256": "4e21aa60467e6a261b315ab91cdab13545d6368f2a39162d47ecd5a593ddb572",
+      "size": 82
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/expo-go-integrity.txt",
+      "change": "added",
+      "gitBlobSha": "ee2da6bc952682d9ccffb5f55eae5973ffceaf1e",
+      "sha256": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+      "size": 75
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-create-dummy-masked-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "fd9554668b4ddc6ac1722224dcd414c5778de686",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-create-dummy-masked.png",
+      "change": "added",
+      "gitBlobSha": "d5b901516d6fc53857fac79a0d38f76bdd4c99d5",
+      "sha256": "b722a572f794848d65d1026ca7a8c43059c6626ea300ddfb32356019bea0ac93",
+      "size": 694774
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-create-dummy-masked.xml",
+      "change": "added",
+      "gitBlobSha": "fd9554668b4ddc6ac1722224dcd414c5778de686",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-history-same-instance-transition-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "023b91fa8c5b87bd5963dc7fdb292621748d721f",
+      "sha256": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+      "size": 9326
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-history-same-instance-transition.png",
+      "change": "added",
+      "gitBlobSha": "aa36da92254ecdb0492782e9944534389838fade",
+      "sha256": "f1d0a892d04b12a245d4b49967b0fdef9b8f318055e409a55448dfb8e2d9e290",
+      "size": 119233
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-history-same-instance-transition.xml",
+      "change": "added",
+      "gitBlobSha": "023b91fa8c5b87bd5963dc7fdb292621748d721f",
+      "sha256": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+      "size": 9326
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-import-empty-invalid-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "fd9554668b4ddc6ac1722224dcd414c5778de686",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-import-empty-invalid.png",
+      "change": "added",
+      "gitBlobSha": "0b3bd31e5db7e9b0a33e105b51cd1cbba1f05d87",
+      "sha256": "3e651e4aa9626edd3ab709f26b053778bcc8d2657e88ac2f36ddb96f44922599",
+      "size": 694986
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-import-empty-invalid.xml",
+      "change": "added",
+      "gitBlobSha": "fd9554668b4ddc6ac1722224dcd414c5778de686",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-picker-search-optional-edit-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "b414687b769916d79cd7b897be80117b448faadc",
+      "sha256": "292c980df11e241d85b7043398d4c000bfdfee72bab42f0575d38465a5da92ad",
+      "size": 6308
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-picker-search-optional-edit.png",
+      "change": "added",
+      "gitBlobSha": "64372463fcc93411e4078ed49ab402885085c413",
+      "sha256": "ccd319f54eff4dfc762918a34aa6832cb65f27e3977fab033fa7b058caf89336",
+      "size": 94485
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-picker-search-optional-edit.xml",
+      "change": "added",
+      "gitBlobSha": "b414687b769916d79cd7b897be80117b448faadc",
+      "sha256": "292c980df11e241d85b7043398d4c000bfdfee72bab42f0575d38465a5da92ad",
+      "size": 6308
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-sign-real-navigation-return-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "fd9554668b4ddc6ac1722224dcd414c5778de686",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-sign-real-navigation-return.png",
+      "change": "added",
+      "gitBlobSha": "3baa6a1306d6ab960a0691779fa68b86a8a893a2",
+      "sha256": "d27e7a93bab8f80b823625da3eaa31ed357692dc526bce8c3133164aa04c6dbc",
+      "size": 695105
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-sign-real-navigation-return.xml",
+      "change": "added",
+      "gitBlobSha": "fd9554668b4ddc6ac1722224dcd414c5778de686",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-vault-native-confirmation-receipt-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-vault-native-confirmation-receipt.png",
+      "change": "added",
+      "gitBlobSha": "694195cf6818bb316c54adce2dbc24dd313a1abf",
+      "sha256": "7f575005201dcd778bb6b9f5baf58def49d6614f2b8392fe8949f94c923385c3",
+      "size": 82569
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/failure-vault-native-confirmation-receipt.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/final-screen.png",
+      "change": "added",
+      "gitBlobSha": "694195cf6818bb316c54adce2dbc24dd313a1abf",
+      "sha256": "7f575005201dcd778bb6b9f5baf58def49d6614f2b8392fe8949f94c923385c3",
+      "size": 82569
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/final-ui.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/fixture-integrity.txt",
+      "change": "added",
+      "gitBlobSha": "de77d6ab98e3636b34fcf3665fd7ecc58fafc429",
+      "sha256": "90ccfe3c377956ca128f9bb57b4b61f826af3a3663ca4d92fd86b00915570ea9",
+      "size": 93
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/fixture-setup.json",
+      "change": "added",
+      "gitBlobSha": "7e6396ab55115679e94bbd1a343d83abc6c3859d",
+      "sha256": "cd06b9f28a68595ee9cae35da8037130059bada4edfa0de31d217e72fb3e1721",
+      "size": 436
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/kvm-preflight-result.json",
+      "change": "added",
+      "gitBlobSha": "5003c1a9b1d72feb380b0b1b79f6a8c108bef688",
+      "sha256": "f4d8b063629517f8cc3b4ac53e2519439e2ef116744ebc16665cb5d3dbaca79d",
+      "size": 71
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/launches.txt",
+      "change": "added",
+      "gitBlobSha": "e46f565a7ff7b287573364683f10edf680b38e6a",
+      "sha256": "96c30747db8b20ff53c18cd835bdf79476de406f27f36388122d52c46a995ecc",
+      "size": 2073
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/ledger-original-media-review.json",
+      "change": "added",
+      "gitBlobSha": "fe8ce83c71a11cb1fba767338f9c1502cf37bc67",
+      "sha256": "ff9074bfea4f3d37f2df0563d21a01a13c197d398c5a11359d3097dbfd1f1260",
+      "size": 2423
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/observations.json",
+      "change": "added",
+      "gitBlobSha": "d7c70857921ea31960c04c7bb8da9a407e1fd316",
+      "sha256": "daff268aee8b24175a6a4bb09a17b472a77596f4a8d3910ced8edbd1e2472bfb",
+      "size": 1734
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/observed-expo-developer-sheet-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "bf75fa83333e604d0ebbe9fddb1272d320795fe6",
+      "sha256": "cb5479275f8a9f4a69fba6cbc40942c31132133156cdf82bceccd6bd3e098c3f",
+      "size": 17642
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/observed-expo-developer-sheet.png",
+      "change": "added",
+      "gitBlobSha": "cbed46909c61258b9048e23120ba6b65abc973b6",
+      "sha256": "169383ce0ae90961957c6681f25a2bb4c521e0b3bc573b48061b3e6e3964cb4b",
+      "size": 108479
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/observed-expo-developer-sheet.xml",
+      "change": "added",
+      "gitBlobSha": "bf75fa83333e604d0ebbe9fddb1272d320795fe6",
+      "sha256": "cb5479275f8a9f4a69fba6cbc40942c31132133156cdf82bceccd6bd3e098c3f",
+      "size": 17642
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/share-return-native-counters.json",
+      "change": "added",
+      "gitBlobSha": "9995dbbf7d66b349f3a6cdb14a7b0c1430e3fd85",
+      "sha256": "700b792e510a4f9c1e09604932bb54e98e4bb24fd14f101c75bbe9b347659086",
+      "size": 1559
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/share-sheet-native-counters.json",
+      "change": "added",
+      "gitBlobSha": "9995dbbf7d66b349f3a6cdb14a7b0c1430e3fd85",
+      "sha256": "700b792e510a4f9c1e09604932bb54e98e4bb24fd14f101c75bbe9b347659086",
+      "size": 1559
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/sign-invalid-native-counters.json",
+      "change": "added",
+      "gitBlobSha": "eb642ff78dce32273584e9fb3f7151507a664c9f",
+      "sha256": "fa3bf09abd5276f6e71c936086d65c5dc1a58f813c6e85a09a7e7b7a2b5372a8",
+      "size": 1538
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/unmatched-labels.json",
+      "change": "added",
+      "gitBlobSha": "6328eb66651212d6c91b65f396b32fc28d54bd7f",
+      "sha256": "ed5725b98431b3098a2288006bda661f9bded31c58faedaf2b77daf60471618a",
+      "size": 477
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/unmatched-state-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/unmatched-state.png",
+      "change": "added",
+      "gitBlobSha": "694195cf6818bb316c54adce2dbc24dd313a1abf",
+      "sha256": "7f575005201dcd778bb6b9f5baf58def49d6614f2b8392fe8949f94c923385c3",
+      "size": 82569
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/unmatched-state.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline/vault-route-setup.json",
+      "change": "added",
+      "gitBlobSha": "e67085c664bc36535ea32b40efa52b2d3841fce5",
+      "sha256": "27b775f4241824d358f50cc7ec0f7d5a30bd2200b4d25201ee273f4886bb6381",
+      "size": 187
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/README.md",
+      "change": "added",
+      "gitBlobSha": "8d015551d104d96d94109e9bd9fb11b9c2466f79",
+      "sha256": "5c7c313a87e4ff805ce90e25f92fcf94a1c0cd16bd3895f293fe4f7089120f17",
+      "size": 5435
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/baseline-host-runner.py",
+      "change": "added",
+      "gitBlobSha": "a2afe016f6478d6ed67d16e6597fbc142274d66d",
+      "sha256": "ea4ab48c8a8807ed736c8304a732675c6edcbff62fb80d06c080864ef364e14d",
+      "size": 760
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/baseline_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "aad56969c95e1d7d5fd6acfbf0b52280ac37428c",
+      "sha256": "4aa4a44530c0b6b386928b711b0276ce94eee6fe94edbf4afc043267eda21748",
+      "size": 13312
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/baseline_observer_framing.py",
+      "change": "added",
+      "gitBlobSha": "c37a5217b7a87c0a81336504e3d5c91200cd876c",
+      "sha256": "788d2fb8861b52ee6bb84101b05b7ff34cd2707918dfabe17fce3bb91e74c443",
+      "size": 2054
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/baseline_startup_overlay.py",
+      "change": "added",
+      "gitBlobSha": "1446ece72b82d3762fe2ba6677e932f7638caa69",
+      "sha256": "72e3c470a6c996593c5d38a282a4ba7cef7856fcfba356deadc9ef9403098e8b",
+      "size": 968
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/baseline_vault_form.py",
+      "change": "added",
+      "gitBlobSha": "74de408e1adcbaee547b9cafaa173e269ad21e99",
+      "sha256": "e9e7d2163295abddd9a6495dc73f7d94995d1a3795d5b89c2335b6b3e460230f",
+      "size": 2398
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/deadline-checks.log",
+      "change": "added",
+      "gitBlobSha": "a08de68cc8674c2ee9d4ad42bcc40b443995c28f",
+      "sha256": "b1221ba178e804752a6f43603e5729eb91ed3bce6acbc8bd269a3978c9d2b845",
+      "size": 4405
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/deadline-pid.patch",
+      "change": "added",
+      "gitBlobSha": "d05dd28599410ae939cdc5de6dcd81e238f9c21e",
+      "sha256": "00cec18631bf554b2af1a085047e50cd0cf63576d208748e0f3025e7b8f0b9e9",
+      "size": 6204
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/expo_go_intro.py",
+      "change": "added",
+      "gitBlobSha": "67f7a93304e44ae070828e408112b1debb32f7b4",
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+      "size": 4134
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/expo_go_module_intro.py",
+      "change": "added",
+      "gitBlobSha": "2deeb70334189a0eb6aa3c8973bcf419bb65d900",
+      "sha256": "b0791312386e66398f75dcac20688c8e01f0c090d59dd90d41f211008258ac8b",
+      "size": 3196
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/native_overlay.py",
+      "change": "added",
+      "gitBlobSha": "0de2f12cb41713832af8d6c484c00932048ee845",
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+      "size": 455
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/observed/baseline-history-intro.xml",
+      "change": "added",
+      "gitBlobSha": "023b91fa8c5b87bd5963dc7fdb292621748d721f",
+      "sha256": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+      "size": 9326
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/observed/frozen-host-adapter.py",
+      "change": "added",
+      "gitBlobSha": "748c52720d8c5c42f72e5e6bde4b425aabfee707",
+      "sha256": "7a6ac932e4c318f688a0ae9785a7dc367506de8add9970c9eefda6b11379938c",
+      "size": 11514
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/observed/frozen-host-provenance.json",
+      "change": "added",
+      "gitBlobSha": "71a91dc0b792afc81cd04cee52a916d04294fa19",
+      "sha256": "2d51a1377c6598ee4f5be4642c91b12f0d7f8f5618ca9e3a5c9232edf76c7483",
+      "size": 2488
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/observed/ordinary-menu.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/observed/root-target-ui.py",
+      "change": "added",
+      "gitBlobSha": "6f057e4831f7f0de551847b944919ab276a2908b",
+      "sha256": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236",
+      "size": 26230
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/observed/vault-initial.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/provenance.json",
+      "change": "added",
+      "gitBlobSha": "a0b739b7622a35076cde7decc84eb972d4c06522",
+      "sha256": "7c392f228e30f2615891e1703454e6c9a69488b6ab2ad20a175165529dd8ac7e",
+      "size": 3004
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/pure-checks.log",
+      "change": "added",
+      "gitBlobSha": "c05b2094399366f2d69adf8496ff02eb65e3de78",
+      "sha256": "9ed5303bd67487fcca803ac1a59eb55119b720ab86ff792fc0819b176d899191",
+      "size": 2576
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-deadline/test_baseline_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "af02bce17c10e66fd9b1d0f217aee61c670a310e",
+      "sha256": "c41053704407545b2b7cf720d50b30ffc826eff858de8ed58f778c2c54a4a820",
+      "size": 21007
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/README.md",
+      "change": "added",
+      "gitBlobSha": "6d9bd869b54b42bff0cc89b9323527d93c746a47",
+      "sha256": "96adc91630f53664b333e6d0a266ba31c68a5ee25a4e513d8a250299119e4aed",
+      "size": 3068
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/baseline-host-runner.py",
+      "change": "added",
+      "gitBlobSha": "a2afe016f6478d6ed67d16e6597fbc142274d66d",
+      "sha256": "ea4ab48c8a8807ed736c8304a732675c6edcbff62fb80d06c080864ef364e14d",
+      "size": 760
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/baseline_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "fb4125b9537c5073c74883904538fda43db484a2",
+      "sha256": "c603b8e86aef4b563100412a79f02a77f1c509d2df490815e34b7a6cb7eb443e",
+      "size": 11241
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/baseline_observer_framing.py",
+      "change": "added",
+      "gitBlobSha": "c37a5217b7a87c0a81336504e3d5c91200cd876c",
+      "sha256": "788d2fb8861b52ee6bb84101b05b7ff34cd2707918dfabe17fce3bb91e74c443",
+      "size": 2054
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/baseline_startup_overlay.py",
+      "change": "added",
+      "gitBlobSha": "1446ece72b82d3762fe2ba6677e932f7638caa69",
+      "sha256": "72e3c470a6c996593c5d38a282a4ba7cef7856fcfba356deadc9ef9403098e8b",
+      "size": 968
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/baseline_vault_form.py",
+      "change": "added",
+      "gitBlobSha": "74de408e1adcbaee547b9cafaa173e269ad21e99",
+      "sha256": "e9e7d2163295abddd9a6495dc73f7d94995d1a3795d5b89c2335b6b3e460230f",
+      "size": 2398
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/expo_go_intro.py",
+      "change": "added",
+      "gitBlobSha": "67f7a93304e44ae070828e408112b1debb32f7b4",
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+      "size": 4134
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/expo_go_module_intro.py",
+      "change": "added",
+      "gitBlobSha": "2deeb70334189a0eb6aa3c8973bcf419bb65d900",
+      "sha256": "b0791312386e66398f75dcac20688c8e01f0c090d59dd90d41f211008258ac8b",
+      "size": 3196
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/native_overlay.py",
+      "change": "added",
+      "gitBlobSha": "0de2f12cb41713832af8d6c484c00932048ee845",
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+      "size": 455
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/observed/baseline-history-intro.xml",
+      "change": "added",
+      "gitBlobSha": "023b91fa8c5b87bd5963dc7fdb292621748d721f",
+      "sha256": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+      "size": 9326
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/observed/ordinary-menu.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/observed/root-target-ui.py",
+      "change": "added",
+      "gitBlobSha": "6f057e4831f7f0de551847b944919ab276a2908b",
+      "sha256": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236",
+      "size": 26230
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/observed/vault-initial.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/provenance.json",
+      "change": "added",
+      "gitBlobSha": "0db887955fa3708b83eb8a991c25917fdbbeb308",
+      "sha256": "3cf9c4b0e2959fe4aec48fd999afc124a3777cf72acfcdb449cc07df05e5b237",
+      "size": 2433
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/pure-checks.log",
+      "change": "added",
+      "gitBlobSha": "4cc890eedd4f1098820c45425fd0baff6a8f8c13",
+      "sha256": "6a650bf854e568c24f79ef1e328ce272cb4e957f8cbd72d09b786430a87720ed",
+      "size": 2296
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-host-settle-candidate/test_baseline_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "fea10c1d5041874914d6c9d8120fffd7b22f5bf2",
+      "sha256": "5892825c59741d0224ff4cd163660908d5b4e2fac304555e7df450900c2faf87",
+      "size": 12854
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-job.log",
+      "change": "added",
+      "gitBlobSha": "f53c7551b5642b98659f44e310a597f7da10d250",
+      "sha256": "ebf5b4c9ed24678d036ab576cd473cb89aeb8db9e7a0c106a31b7ca14e97fb9b",
+      "size": 54151
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/README.md",
+      "change": "added",
+      "gitBlobSha": "388f89fc27972a40c4294c6bdb372598a3c1e1f1",
+      "sha256": "76f4a44f30a01015212a6a59753f1cb3a47181ffa061754288f8561e2cde9889",
+      "size": 837
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/baseline_vault_form.py",
+      "change": "added",
+      "gitBlobSha": "74de408e1adcbaee547b9cafaa173e269ad21e99",
+      "sha256": "e9e7d2163295abddd9a6495dc73f7d94995d1a3795d5b89c2335b6b3e460230f",
+      "size": 2398
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/observed/baseline-picker-name-search.xml",
+      "change": "added",
+      "gitBlobSha": "a610d6a7a89a1c7a5124ebc659cd0fdf380057d1",
+      "sha256": "24540eebec0ccf89b79a4f706446ebd80f2b2cb02d7b79e08bc1b5fbda1fdaef",
+      "size": 4854
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/observed/failure-picker-search-optional-edit.xml",
+      "change": "added",
+      "gitBlobSha": "b414687b769916d79cd7b897be80117b448faadc",
+      "sha256": "292c980df11e241d85b7043398d4c000bfdfee72bab42f0575d38465a5da92ad",
+      "size": 6308
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/observed/failure-vault-native-confirmation-receipt.xml",
+      "change": "added",
+      "gitBlobSha": "5ccb3727a67d7734be34d4980b73baf0e65a4dc9",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "size": 4730
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/original-ui_baseline.py",
+      "change": "added",
+      "gitBlobSha": "f3dbf66b13fb7c7e3b716736f7c20bcc972e3c06",
+      "sha256": "3744c149be96657245c9f7e0c8ef6072857c8db152bc05174b7c731e6b250e0e",
+      "size": 26140
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/provenance.json",
+      "change": "added",
+      "gitBlobSha": "fccfa2a847d657529b1d9341d504df3bd00e90ca",
+      "sha256": "938c9b0160005d185d6525fa929d797b9fd640ddcd79e02637dcc071b1c755ef",
+      "size": 1412
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/target.patch",
+      "change": "added",
+      "gitBlobSha": "11c95e89022d908a84a0b560e3451e3a726057f1",
+      "sha256": "a66ffee1b3db04289dc86db0c3b8b295758b40b8a528a59981794a71d9457154",
+      "size": 1123
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/test_baseline_targets.py",
+      "change": "added",
+      "gitBlobSha": "0a25ae7085e3028d1395a70788f13223f1416c06",
+      "sha256": "e8319c83aa39ef55c58d79d8d2cb4fdcf1d0341b481f759b45dfed09a0b9f48c",
+      "size": 4883
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/baseline-target-candidate/ui_baseline.py",
+      "change": "added",
+      "gitBlobSha": "6f057e4831f7f0de551847b944919ab276a2908b",
+      "sha256": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236",
+      "size": 26230
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/SCOPE.md",
+      "change": "added",
+      "gitBlobSha": "4d47bd58e75a0587735edec034a90cf95a2bae6d",
+      "sha256": "d17c5ee0e4c7d7ac6f99c3c869785aefb7cfaaeab08470eaa63c14939c48c702",
+      "size": 14044
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/camera-peer-review.json",
+      "change": "added",
+      "gitBlobSha": "4aa60c2d3f20101d9e78b2a592b59cabd6aebc7e",
+      "sha256": "db373a46c43107d6adb5f8d96bb5464a2d9531d185f5cb109d92e87713afea3f",
+      "size": 8368
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/controller-integrity.txt",
+      "change": "added",
+      "gitBlobSha": "17ff387c1467eef0884f4df4f7938d15dc1a461c",
+      "sha256": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+      "size": 42
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/controller-source.txt",
+      "change": "added",
+      "gitBlobSha": "efe1cb634e7eed867fa46900f326706b7cef207f",
+      "sha256": "d233a9829e6ea5197627c04ff2c447ae71458bc283c2470ad4d68627d24c8cfd",
+      "size": 82
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/executed-source.txt",
+      "change": "added",
+      "gitBlobSha": "0e56cc6cfe7338076818eb36dc2e8edb6d0e92b3",
+      "sha256": "efb8e0d8ea56286b4e42542eb87bff5a7d82749fe8685aed68ab1a090dfc0d3f",
+      "size": 82
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/expo-go-integrity.txt",
+      "change": "added",
+      "gitBlobSha": "ee2da6bc952682d9ccffb5f55eae5973ffceaf1e",
+      "sha256": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+      "size": 75
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/final-screen.png",
+      "change": "added",
+      "gitBlobSha": "5b71fb07bb2c760f525f5fcc1ad859512ae3c803",
+      "sha256": "9f44445fb8b4eae57a3e242ff5bd3c2b39b14318224385dd0d1932603c6d64e1",
+      "size": 694566
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/final-ui.xml",
+      "change": "added",
+      "gitBlobSha": "66afb37d44c996b33f98b2de4d661a8390f4c27a",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/fixture-integrity.json",
+      "change": "added",
+      "gitBlobSha": "8f142881ea0c9e396f1c46786041304ff3a1c30e",
+      "sha256": "ac55da99294d61d0217ae730f5c713ece4f1f2c52275ed6f8437b776a523ee99",
+      "size": 385
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/kvm-preflight-result.json",
+      "change": "added",
+      "gitBlobSha": "5003c1a9b1d72feb380b0b1b79f6a8c108bef688",
+      "sha256": "f4d8b063629517f8cc3b4ac53e2519439e2ef116744ebc16665cb5d3dbaca79d",
+      "size": 71
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/observations.json",
+      "change": "added",
+      "gitBlobSha": "97115ac3fe0484d87e1ad0e716f2674e947aac86",
+      "sha256": "116e60c90cbb30cc0f49c553b9a3709dfd077c07d01599df63b20aa0523d7354",
+      "size": 4022
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/original-camera-recording-runner.py",
+      "change": "added",
+      "gitBlobSha": "fe7785bb1ec74525ffc3318cf0985c7a3d27feb9",
+      "sha256": "1acc22497a5aac37422f9ff0da48f5d05479cc407b11aac77a586512e69fa1a1",
+      "size": 18382
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera/source-integrity.json",
+      "change": "added",
+      "gitBlobSha": "ee67cccf18308f92b43fc4606651a70260b057a5",
+      "sha256": "dfe87540a9149af9cad02c897b46aefd1cd68dcae3d01b925c462a31e8fc0bdf",
+      "size": 386
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera-host-settling/pocketpay-camera-host-settle-checks.log",
+      "change": "added",
+      "gitBlobSha": "8df973bf9d82078fe9fb21a4b4a94fb256b6e17b",
+      "sha256": "ee761cbe9efc28d916952788fb3503cce483199f34106b1957798afef8f22fec",
+      "size": 11454
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera-host-settling/pocketpay-camera-host-settle-differential.json",
+      "change": "added",
+      "gitBlobSha": "319ae8d5a6ec25102cb015b990a5a2952f4b661d",
+      "sha256": "2c8d54b4dd8b0024709d806785e19e37f79ce4182103ed42d119e5a009df71b0",
+      "size": 1518
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera-host-settling/pocketpay-camera-host-settle.diff",
+      "change": "added",
+      "gitBlobSha": "2092301d11e69835298c91480b39300485bcdd66",
+      "sha256": "f66daa473d1017d62de49a351af4877def4b1c32c662430e6c920b9f53cda485",
+      "size": 9308
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera-host-settling/provenance.json",
+      "change": "added",
+      "gitBlobSha": "6780a0faf305c2b7a04cf42592fb3fc593b5775b",
+      "sha256": "bf57b16a6b3c61885b0a0b53d45965fca527b688bd3b620b3989f38d3be8e4ea",
+      "size": 3616
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/camera-job.log",
+      "change": "added",
+      "gitBlobSha": "0c9777809d04470df7314c991ea1c14f2582a121",
+      "sha256": "fadc02b8096750dd659e06f9d896399d61fab4780eb45fd29f17e7b1f2018464",
+      "size": 50339
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/completed-recorder-candidate/README.md",
+      "change": "added",
+      "gitBlobSha": "57d66a37a10442c712af46ced53c529dc65a0c2b",
+      "sha256": "fcff16fe225aaeb151b4ba255092589c9ca41de3eae286b510100e53035dcf34",
+      "size": 1304
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/completed-recorder-candidate/camera-recording-runner.py",
+      "change": "added",
+      "gitBlobSha": "bbe886c50be18fe5cf1b742060b82fe307302ba9",
+      "sha256": "3628be5c9e5ec15fe217e7cf563c240a5fefa87f094879fd91b7d79f02aa41ea",
+      "size": 19180
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/completed-recorder-candidate/original-recorder-result.json",
+      "change": "added",
+      "gitBlobSha": "5ed26ced4f92ca63f5e4187a7156e3627d736401",
+      "sha256": "f32b86ca4e0e5ec30a44b6f2ee8ae71ae9926cdc5c86716413b7e6260c9c52da",
+      "size": 216
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/completed-recorder-candidate/provenance.json",
+      "change": "added",
+      "gitBlobSha": "f7d29f663ebedd880f331591b67f04da92290e15",
+      "sha256": "2a572934884e127752fd678132118c33b96c8cdfe1fb75d8fd4469bf2906476c",
+      "size": 1084
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/completed-recorder-candidate/recorder.patch",
+      "change": "added",
+      "gitBlobSha": "5987045c24540cdb4de2194c5c11e3c0a0391da5",
+      "sha256": "521915f40eac2cd06cececd7d8393ae4a35ad1551c833b33f45730b1886ef5c2",
+      "size": 2445
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/completed-recorder-candidate/test_completed_recorder.py",
+      "change": "added",
+      "gitBlobSha": "6097ea40ee4d85bc8021a102b1ae76d541f9b2d2",
+      "sha256": "76fccb3e08c6578036f182ec592c2a0c69c1104d762e484ec635e59426f9f699",
+      "size": 5486
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/composition-checks/baseline-deadline.log",
+      "change": "added",
+      "gitBlobSha": "ae8c5fd0cd0783b55b8c8b8a7e726832f59c5f95",
+      "sha256": "a4e4cdd98ecfd3a94e9fbdf3fa118d75fede2b6952dcf07c097a21e30ace2c4c",
+      "size": 4405
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/composition-checks/baseline-targets.log",
+      "change": "added",
+      "gitBlobSha": "aa31b8c53498fa1853cfb3df0180b4fcc70379b1",
+      "sha256": "78fbedae3fb385e87e3192d0440769edb8a091b402e57d80c5688f0783f1c9c2",
+      "size": 1276
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/composition-checks/camera-integration.log",
+      "change": "added",
+      "gitBlobSha": "b9d4668bdfb4f993444fcfddc59ebd2528900a73",
+      "sha256": "5fb32d47ed04c8d409b51f0d69b95ff6a1149091790937bc3de301e14777b359",
+      "size": 11454
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/composition-checks/first-history.log",
+      "change": "added",
+      "gitBlobSha": "e40d43c29052055734ce61cf2b9f4cfdc4fd077c",
+      "sha256": "a27503f9a7c93a42b903a2e90774e541af5677a34afc0acf830d9eb6e3339b41",
+      "size": 3776
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/composition-checks/results.json",
+      "change": "added",
+      "gitBlobSha": "db67b66401d81eac14c5decf1b95ed621861b346",
+      "sha256": "9d59e27a7725fcad952db9c9de90688a5955ffb938a9fe9614ff0a08c7cd106f",
+      "size": 2564
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/composition-checks/retry-deadline-archive-import-error.log",
+      "change": "added",
+      "gitBlobSha": "c330b0b8c9cc7f741207477407fd3c6befd64e82",
+      "sha256": "092c6f143a1b0f224e83f2944f61fc214e814af08c5200ae428f8494e5fd8d0f",
+      "size": 1988
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/composition-checks/retry-deadline.log",
+      "change": "added",
+      "gitBlobSha": "0e82503a0c2b204182ff6917dae5c8aeaa66f588",
+      "sha256": "3f248c07c84597901fb7ba01a1c9fa06ca7a4ae3572b0e5fd6e6d641e0407240",
+      "size": 5994
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/README.md",
+      "change": "added",
+      "gitBlobSha": "31f27f7ec2496014be9046015b49bda7f6c96fa8",
+      "sha256": "dd923e69c7e6010fafa8a3db0280be21b9c91d98c84d091cc7980cfa505a3146",
+      "size": 4015
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/baseline-host-runner.py",
+      "change": "added",
+      "gitBlobSha": "4a8e13f9c3ca25bf68ad6a9c3301f4b2d0cd3099",
+      "sha256": "0628d1e2ed2f28286d363fcb7b2de1961a8d23f202c6b2d8b3e8bfacfe6cfe6b",
+      "size": 881
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/baseline_history_carrier.py",
+      "change": "added",
+      "gitBlobSha": "3ff462213c3a37c3376744e47ec14e54a40b9d47",
+      "sha256": "cdd2d745b85bdd30cb3cc7ed412db990ff9ce36fd268195078b3319f77731fef",
+      "size": 16017
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/observed/actual-first-bootstrap-records.json",
+      "change": "added",
+      "gitBlobSha": "2821bfc2cd7f4876ba8f19e465435dba65c90ded",
+      "sha256": "287973304976941136126c2d353bd832051b5852a3e28ed0e6b0cd0a209b1a66",
+      "size": 1801
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/observed/executed-source.txt",
+      "change": "added",
+      "gitBlobSha": "51351b50201b424d25dcb74c0a5f4ec4f345529b",
+      "sha256": "4e21aa60467e6a261b315ab91cdab13545d6368f2a39162d47ecd5a593ddb572",
+      "size": 82
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/observed/original-baseline-host-runner.py",
+      "change": "added",
+      "gitBlobSha": "a2afe016f6478d6ed67d16e6597fbc142274d66d",
+      "sha256": "ea4ab48c8a8807ed736c8304a732675c6edcbff62fb80d06c080864ef364e14d",
+      "size": 760
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/observed/original-baseline-ui.py",
+      "change": "added",
+      "gitBlobSha": "f3dbf66b13fb7c7e3b716736f7c20bcc972e3c06",
+      "sha256": "3744c149be96657245c9f7e0c8ef6072857c8db152bc05174b7c731e6b250e0e",
+      "size": 26140
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/observed/original-first-bootstrap-line-provenance.json",
+      "change": "added",
+      "gitBlobSha": "1b9c1e1e9ab0f7764f64214fb8a32c15f7f3e652",
+      "sha256": "99e2aadef890400a93ab01d578dcb9eef603b3bc20a947e672ea60fb161d3de2",
+      "size": 1847
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/provenance.json",
+      "change": "added",
+      "gitBlobSha": "094370deb3c4272619c090d61a8e6851139868f0",
+      "sha256": "7db27ac2b77ef65512f66a8d5474ab93978e3fcba45f01c1d28c6a1cb64b9eaf",
+      "size": 3198
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/runner-install.patch",
+      "change": "added",
+      "gitBlobSha": "dddcf343cb4d1fafe6bee0ac1367ba1288d78283",
+      "sha256": "ad2165579b5f67f9a37ade2f8621447b922bb71bd7eb00e8d7e8e7672fcdefd1",
+      "size": 833
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/ReactFabric-dev.js.excerpt.txt",
+      "change": "added",
+      "gitBlobSha": "e400bdb47bed90184fd70b151f02f79fcf008f69",
+      "sha256": "5127aee5590f44752261841105b7b3619b782dcc728b8cdd4c3324b402a8f4ad",
+      "size": 1020
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/ReactNativeRenderer-dev.js.excerpt.txt",
+      "change": "added",
+      "gitBlobSha": "e400bdb47bed90184fd70b151f02f79fcf008f69",
+      "sha256": "5127aee5590f44752261841105b7b3619b782dcc728b8cdd4c3324b402a8f4ad",
+      "size": 1020
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/history.tsx",
+      "change": "added",
+      "gitBlobSha": "68f6fc55e402814da662a3ac4b63ee0a8703de8b",
+      "sha256": "e974ea566d587355139682834ce4297c828da7a8afdb55a8e4f0aafa6ab39c3d",
+      "size": 11578
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/native-baseline-bootstrap.js",
+      "change": "added",
+      "gitBlobSha": "8e54d4d1c5a73df70b3a70663c1ad07d2dba823d",
+      "sha256": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+      "size": 6735
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/native-baseline-observation-cases.tsx",
+      "change": "added",
+      "gitBlobSha": "884dbe5a848d9e4b391d3fc061efa8e7b917e3aa",
+      "sha256": "e44271dc1f25e7e6eb172391f363e90088ad9bb83f5c1c5c726b87141ab1ff13",
+      "size": 2633
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/native-vault-bootstrap.js",
+      "change": "added",
+      "gitBlobSha": "602a6b745d25ce33501f9702bd32151f22489bb3",
+      "sha256": "3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359",
+      "size": 9536
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/provenance.json",
+      "change": "added",
+      "gitBlobSha": "47878367a4f2cde354efbbcab4d4b8883d038352",
+      "sha256": "a6af8fd9120e037a13c6ede8b9b264d684c5884a4c244e207db76ba46d1447d0",
+      "size": 3640
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/useNetworkState.ts",
+      "change": "added",
+      "gitBlobSha": "77d4f14325faa8f43f03e3cec060c64033bf25f6",
+      "sha256": "9dfb47435445cbf66735b8804daac4b8897b8a17dc3c75ad3d3ed31d8d507713",
+      "size": 4251
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/source-proof/useOnlineStatus.ts",
+      "change": "added",
+      "gitBlobSha": "1bc4fa4c27db5d71eb615909092fcff5f332347d",
+      "sha256": "f1fb8dfed2c9f8a5d6e166811384fae3813e44db9b2f0943f43c8e35511a7e14",
+      "size": 3348
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/test_first_history_carrier.py",
+      "change": "added",
+      "gitBlobSha": "f67ef6775bde8a4324213737365304e5b65df12c",
+      "sha256": "f326a4b59c15e3c0d164d8b1d04dd52d750b32eab8078200dcf8052ed14ec6d7",
+      "size": 17761
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/first-history-carrier/validation-checks.txt",
+      "change": "added",
+      "gitBlobSha": "06ab47e6e0c384645392829b91465cdaeecd1ac8",
+      "sha256": "c44433651467ea53ca9a85c3fb9028fac664afd985f02656adbef8dfde225307",
+      "size": 3776
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/README.md",
+      "change": "added",
+      "gitBlobSha": "0c4151f4efdd5f3fc91a7338f0280389cd3ceb79",
+      "sha256": "1f2826ee4436addc5e05a85e4834d51d315a0e3a49aa6eeb16a7677c021a2666",
+      "size": 3871
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/observed/ordinary-menu.png",
+      "change": "added",
+      "gitBlobSha": "d2df4b05ce54d040339d3f26acc3581f2757477c",
+      "sha256": "cda0166eb7c1db59c54ff85e83decab3b7a17ac5296de0ae8aed846ee55fefcc",
+      "size": 92425
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/observed/ordinary-menu.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/official-source/DevMenuCloseButton.tsx",
+      "change": "added",
+      "gitBlobSha": "2771bbb95d6c9fe6d5ab8dca2a7faabfac61781e",
+      "sha256": "e078dbac516fb87c40fe1e89b982d23d0f0ec5258a609367f424a34f6862d153",
+      "size": 1081
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/official-source/DevMenuManager.kt",
+      "change": "added",
+      "gitBlobSha": "f1bcf7db67561430cd275a6cca0e6e3b797d9391",
+      "sha256": "be28e325acd45fc29b5c21c0f2ea59314a59d7341da28b00c1b0fdc3dbda06c8",
+      "size": 13091
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/official-source/DevMenuModule.ts",
+      "change": "added",
+      "gitBlobSha": "d8cce28dd316c60a64c23bc92abb1adff13bc028",
+      "sha256": "62a17905603f5b845b35b508ef7347075504107e2451706f19372e515119eb24",
+      "size": 2022
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/official-source/DevMenuView.tsx",
+      "change": "added",
+      "gitBlobSha": "5733ac20d77424363b6979c7ab2822ab9a872939",
+      "sha256": "b3dfe1d417368a57d7ca01425516a7e5aae2e9380ae595380ab460b8ccbc6dae",
+      "size": 11117
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/official-source/ExponentKernelModule.kt",
+      "change": "added",
+      "gitBlobSha": "6fd3ff9accf23c682f768bc937ca53f4cbc696e1",
+      "sha256": "968150368e01337bc00b8fbe87923b2294fc5ea66523e80d21d93b9ff2f38e80",
+      "size": 6540
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/pure-checks.log",
+      "change": "added",
+      "gitBlobSha": "b30fbac7caf33ee750764045ae0a9009fb601db3",
+      "sha256": "c2f6064716512e9bf31eeb8dd4630f9fab932911a7142cbb0ff87282d03f8e91",
+      "size": 3003
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/source-provenance.json",
+      "change": "added",
+      "gitBlobSha": "26d0c00ce50948901a1a2d04749c583e387f7b46",
+      "sha256": "3d166aafe7078190ef78945d05b6a5ca5f157d8309fcbb319cd83230e7fadae8",
+      "size": 5157
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/ordinary-menu-candidate/test_expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "fad9fe34a0cbbd70ebff70f021a7dcde2dc87a1e",
+      "sha256": "233a83d318fa2340d4887da201b3e2df7be087a41e6820fa928b11495bb9e713",
+      "size": 15140
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/SCOPE.md",
+      "change": "added",
+      "gitBlobSha": "4d47bd58e75a0587735edec034a90cf95a2bae6d",
+      "sha256": "d17c5ee0e4c7d7ac6f99c3c869785aefb7cfaaeab08470eaa63c14939c48c702",
+      "size": 14044
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/controller-integrity.txt",
+      "change": "added",
+      "gitBlobSha": "17ff387c1467eef0884f4df4f7938d15dc1a461c",
+      "sha256": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+      "size": 42
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/controller-source.txt",
+      "change": "added",
+      "gitBlobSha": "efe1cb634e7eed867fa46900f326706b7cef207f",
+      "sha256": "d233a9829e6ea5197627c04ff2c447ae71458bc283c2470ad4d68627d24c8cfd",
+      "size": 82
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/current.xml",
+      "change": "added",
+      "gitBlobSha": "366083c1fdef41f3e3b070f0e93a3905dc148a96",
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+      "size": 9146
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/empty-actual-guidance.xml",
+      "change": "added",
+      "gitBlobSha": "5e151df75c2cdd54ea8221b0367505ff3836b369",
+      "sha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+      "size": 8035
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/executed-source.txt",
+      "change": "added",
+      "gitBlobSha": "65ffe9922e19ebc29224cae3f9ed6009bee2fa34",
+      "sha256": "423d7dd3cb1ff8fc448724a68a166b9182e58bd4546cd66c16a9e45353e22b59",
+      "size": 82
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/expo-go-integrity.txt",
+      "change": "added",
+      "gitBlobSha": "ee2da6bc952682d9ccffb5f55eae5973ffceaf1e",
+      "sha256": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+      "size": 75
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-empty-session-no-lookup.xml",
+      "change": "added",
+      "gitBlobSha": "5e151df75c2cdd54ea8221b0367505ff3836b369",
+      "sha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+      "size": 8035
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-mismatched-lookup-preserves-unknown.xml",
+      "change": "added",
+      "gitBlobSha": "2c6841dae20bbf4badbd40669c42dfa43c459cf2",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "size": 10392
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-nohash-guidance-no-lookup.xml",
+      "change": "added",
+      "gitBlobSha": "0063650fa06e327aa15de50503175b9565b9f86e",
+      "sha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+      "size": 10154
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-retry-confirmed.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-retry-error-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "66afb37d44c996b33f98b2de4d661a8390f4c27a",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-retry-error-post-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "66afb37d44c996b33f98b2de4d661a8390f4c27a",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-retry-error.png",
+      "change": "added",
+      "gitBlobSha": "187edfea781353db83d743d57f3604402d2c9192",
+      "sha256": "c4ce1b896cc36593b38030ee58fb725832f648bebe17a699609721e349440bb6",
+      "size": 694684
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-retry-error.xml",
+      "change": "added",
+      "gitBlobSha": "66afb37d44c996b33f98b2de4d661a8390f4c27a",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-retry-failed.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/failure-retry-unknown.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/final-screen.png",
+      "change": "added",
+      "gitBlobSha": "418621df757b38bcb1e02c7c6da7d81f2418f310",
+      "sha256": "8b3f8026671c25ad37505a4443c9d7c03ed1cba94510ca788072b11969e7c178",
+      "size": 121323
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/final-ui.xml",
+      "change": "added",
+      "gitBlobSha": "2c6841dae20bbf4badbd40669c42dfa43c459cf2",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "size": 10392
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/gap-fixture-setup.json",
+      "change": "added",
+      "gitBlobSha": "f11cb2ae2d9d640c2164423f25de4ac6295fb635",
+      "sha256": "201ca44126629d9e68c0004580b2f89546484bace1dbecbe1d5c04aa6a62e954",
+      "size": 442
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/kvm-preflight-result.json",
+      "change": "added",
+      "gitBlobSha": "5003c1a9b1d72feb380b0b1b79f6a8c108bef688",
+      "sha256": "f4d8b063629517f8cc3b4ac53e2519439e2ef116744ebc16665cb5d3dbaca79d",
+      "size": 71
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/launches.txt",
+      "change": "added",
+      "gitBlobSha": "aff8aa6c8e319df0352ba52ae1c1e6f3af45a3cf",
+      "sha256": "db9f7ff316a2814d62782e1fc03528d2a5c888588baf6b08f3131438e70ff5cb",
+      "size": 1604
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/mismatch-actual-unknown.xml",
+      "change": "added",
+      "gitBlobSha": "2c6841dae20bbf4badbd40669c42dfa43c459cf2",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "size": 10392
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/nohash-actual-guidance.xml",
+      "change": "added",
+      "gitBlobSha": "0063650fa06e327aa15de50503175b9565b9f86e",
+      "sha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+      "size": 10154
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/observations.json",
+      "change": "added",
+      "gitBlobSha": "089d8194515ca5a21ff0d605e84ddeba4158164e",
+      "sha256": "40731bd70b60e447407ecfe854d7e2141b9a2dc701ed9f65f5865a7b2f0fc552",
+      "size": 2304
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/primary-fixture-integrity.json",
+      "change": "added",
+      "gitBlobSha": "f2f58171ad4b4cf5717b0860cb6819358c6e10ca",
+      "sha256": "fc28675f8c82f91670a180616892eb4ddd9ff90066a7975c1a273d9bcdbcb953",
+      "size": 258
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/retry-confirmed-review.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/retry-failed-review.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/retry-gap-observations.json",
+      "change": "added",
+      "gitBlobSha": "391d201196703e4bfd3043dbf9a4be7f12ee1778",
+      "sha256": "5840b8791402f164e7fbb9b564f1fc472ffe2a64930997eec536d5d8332c1e9d",
+      "size": 992
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/retry-native-peer-review.json",
+      "change": "added",
+      "gitBlobSha": "629eafdda77c0cf8413f9f7e42bbe7c36603e0e5",
+      "sha256": "7d0d96283501bd5294d70cfe64c5d05fef564d1696383b590c436516f03e0c23",
+      "size": 9962
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/retry-primary-observations.json",
+      "change": "added",
+      "gitBlobSha": "273e9d07393d4f86dea15097349680c72176491c",
+      "sha256": "f699e829bdc5de1574e5d00664e85643807b58ae0a793e65f34816581253a31d",
+      "size": 1083
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/retry-unknown-review.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/unmatched-labels.json",
+      "change": "added",
+      "gitBlobSha": "0d4a2782447efba1956bcf5f1454564cb6f34d63",
+      "sha256": "89daaa9c496bef5a7fe059d7382bfde72f8403d94971864dfc51da76c2690e10",
+      "size": 240
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/unmatched-state-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "66afb37d44c996b33f98b2de4d661a8390f4c27a",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/unmatched-state-post-media-guard.xml",
+      "change": "added",
+      "gitBlobSha": "66afb37d44c996b33f98b2de4d661a8390f4c27a",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "size": 5741
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry/unmatched-state.png",
+      "change": "added",
+      "gitBlobSha": "187edfea781353db83d743d57f3604402d2c9192",
+      "sha256": "c4ce1b896cc36593b38030ee58fb725832f648bebe17a699609721e349440bb6",
+      "size": 694684
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/README.md",
+      "change": "added",
+      "gitBlobSha": "96e65fa28e676c222b5b00c30bc1cc484066f835",
+      "sha256": "32dd24419575a78cf982568d5314f9a07d99417dc616f293b9575eef705595f7",
+      "size": 2777
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/expo_go_intro.py",
+      "change": "added",
+      "gitBlobSha": "67f7a93304e44ae070828e408112b1debb32f7b4",
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+      "size": 4134
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/fixtures/final-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "9c71f5a4e52e2dfe93b7c5eafcb4b046bc063f9d",
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e",
+      "size": 184969
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/fixtures/ordinary-menu-original.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/fixtures/primary-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "e8890b02e091941f013d5762b9e255785e076eed",
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f",
+      "size": 199612
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/fixtures/retry-intro-original.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/fixtures/review-original.xml",
+      "change": "added",
+      "gitBlobSha": "366083c1fdef41f3e3b070f0e93a3905dc148a96",
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+      "size": 9146
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/independent-peer-review.json",
+      "change": "added",
+      "gitBlobSha": "2fe80f47675360bd3d2d9b38fe94308acdd703dc",
+      "sha256": "7eb29ca8a2c9e726eda67128cc8aafddd344d45577353dbeda59acc03a685fd3",
+      "size": 1496
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/native_overlay.py",
+      "change": "added",
+      "gitBlobSha": "0de2f12cb41713832af8d6c484c00932048ee845",
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+      "size": 455
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/observer_framing.py",
+      "change": "added",
+      "gitBlobSha": "9bbd504fd50a8e747d7d5ef52e52f725a8dbc99d",
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2",
+      "size": 2059
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/provenance.json",
+      "change": "added",
+      "gitBlobSha": "c324c116e08cda9fb2d780a370591c09ef869bd2",
+      "sha256": "3dc14dca00d1d5f7575072a9b0f16ed426ac721a024c10a232e98eb607f2fb62",
+      "size": 3198
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/pure-checks.log",
+      "change": "added",
+      "gitBlobSha": "d4c5522e6486bee3db61d31cb76c49ee57449569",
+      "sha256": "9f066fa00e3514bd21cefe1e43004a3fefd6e56cb658994b7249dd112bd03157",
+      "size": 5994
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/retry-gap-runner.py",
+      "change": "added",
+      "gitBlobSha": "aeb6465d754f4f52c168725bba46b71e3bcc5eec",
+      "sha256": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd",
+      "size": 3427
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/retry-gap-runner.py.diff",
+      "change": "added",
+      "gitBlobSha": "7f31dcab43bccbc3b341e4e40a4fcaf9778fe0de",
+      "sha256": "e550c06a4bbd9e917ccaa03bc916ad683e68fcae6128a99f746f66987729f205",
+      "size": 371
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/retry-primary-ui.py",
+      "change": "added",
+      "gitBlobSha": "268cd1edf254d5f1ec966dfe0befb40ca94a5a21",
+      "sha256": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98",
+      "size": 17382
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/retry-primary-ui.py.diff",
+      "change": "added",
+      "gitBlobSha": "79319b2956bda4c63e4a5b1b25e39b8fd37d2a8c",
+      "sha256": "5bb06dae419759f49456c8e5cbbc33c7b79e39ffc0de596ea59409643e676672",
+      "size": 2599
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "c854165473d1764ea6cc36a22cde2cc5909dfd6d",
+      "sha256": "d3e7eea55cd074636ebc5a7d29184845f99d430e35b19fb2c6c7ab179bb92a4e",
+      "size": 12303
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/retry_host_adapter.py.diff",
+      "change": "added",
+      "gitBlobSha": "0f8baa26efd94d4ca67f07e4710536de610b364b",
+      "sha256": "4263fca6ee28e8bcf1ac1f5ba5bc2f5a1590794e5c4d36ff1675bdadc897e74d",
+      "size": 3610
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/test_retry_deadline.py",
+      "change": "added",
+      "gitBlobSha": "808b2d8fa12098359963ba523d3e9253f724cbe7",
+      "sha256": "da7413de05477b444115ee44fa58587655145bf3f8e958feab4a9fdfa83a4b5f",
+      "size": 12427
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline/test_retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "03facf4bb1904dc6cc0740848f4d6bdb99c3fc0c",
+      "sha256": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a",
+      "size": 16356
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/README.md",
+      "change": "added",
+      "gitBlobSha": "96e65fa28e676c222b5b00c30bc1cc484066f835",
+      "sha256": "32dd24419575a78cf982568d5314f9a07d99417dc616f293b9575eef705595f7",
+      "size": 2777
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/expo_go_intro.py",
+      "change": "added",
+      "gitBlobSha": "67f7a93304e44ae070828e408112b1debb32f7b4",
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+      "size": 4134
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/fixtures/final-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "9c71f5a4e52e2dfe93b7c5eafcb4b046bc063f9d",
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e",
+      "size": 184969
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/fixtures/ordinary-menu-original.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/fixtures/primary-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "e8890b02e091941f013d5762b9e255785e076eed",
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f",
+      "size": 199612
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/fixtures/retry-intro-original.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/fixtures/review-original.xml",
+      "change": "added",
+      "gitBlobSha": "366083c1fdef41f3e3b070f0e93a3905dc148a96",
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+      "size": 9146
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/independent-peer-review.json",
+      "change": "added",
+      "gitBlobSha": "2fe80f47675360bd3d2d9b38fe94308acdd703dc",
+      "sha256": "7eb29ca8a2c9e726eda67128cc8aafddd344d45577353dbeda59acc03a685fd3",
+      "size": 1496
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/native_overlay.py",
+      "change": "added",
+      "gitBlobSha": "0de2f12cb41713832af8d6c484c00932048ee845",
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+      "size": 455
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/observer_framing.py",
+      "change": "added",
+      "gitBlobSha": "9bbd504fd50a8e747d7d5ef52e52f725a8dbc99d",
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2",
+      "size": 2059
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/provenance.json",
+      "change": "added",
+      "gitBlobSha": "c324c116e08cda9fb2d780a370591c09ef869bd2",
+      "sha256": "3dc14dca00d1d5f7575072a9b0f16ed426ac721a024c10a232e98eb607f2fb62",
+      "size": 3198
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/pure-checks.log",
+      "change": "added",
+      "gitBlobSha": "d4c5522e6486bee3db61d31cb76c49ee57449569",
+      "sha256": "9f066fa00e3514bd21cefe1e43004a3fefd6e56cb658994b7249dd112bd03157",
+      "size": 5994
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/retry-gap-runner.py",
+      "change": "added",
+      "gitBlobSha": "aeb6465d754f4f52c168725bba46b71e3bcc5eec",
+      "sha256": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd",
+      "size": 3427
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/retry-gap-runner.py.diff",
+      "change": "added",
+      "gitBlobSha": "7f31dcab43bccbc3b341e4e40a4fcaf9778fe0de",
+      "sha256": "e550c06a4bbd9e917ccaa03bc916ad683e68fcae6128a99f746f66987729f205",
+      "size": 371
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/retry-primary-ui.py",
+      "change": "added",
+      "gitBlobSha": "268cd1edf254d5f1ec966dfe0befb40ca94a5a21",
+      "sha256": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98",
+      "size": 17382
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/retry-primary-ui.py.diff",
+      "change": "added",
+      "gitBlobSha": "79319b2956bda4c63e4a5b1b25e39b8fd37d2a8c",
+      "sha256": "5bb06dae419759f49456c8e5cbbc33c7b79e39ffc0de596ea59409643e676672",
+      "size": 2599
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "c854165473d1764ea6cc36a22cde2cc5909dfd6d",
+      "sha256": "d3e7eea55cd074636ebc5a7d29184845f99d430e35b19fb2c6c7ab179bb92a4e",
+      "size": 12303
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/retry_host_adapter.py.diff",
+      "change": "added",
+      "gitBlobSha": "0f8baa26efd94d4ca67f07e4710536de610b364b",
+      "sha256": "4263fca6ee28e8bcf1ac1f5ba5bc2f5a1590794e5c4d36ff1675bdadc897e74d",
+      "size": 3610
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/test_retry_deadline.py",
+      "change": "added",
+      "gitBlobSha": "808b2d8fa12098359963ba523d3e9253f724cbe7",
+      "sha256": "da7413de05477b444115ee44fa58587655145bf3f8e958feab4a9fdfa83a4b5f",
+      "size": 12427
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/final/test_retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "03facf4bb1904dc6cc0740848f4d6bdb99c3fc0c",
+      "sha256": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a",
+      "size": 16356
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/immutable-controller/retry/observation_helpers.py",
+      "change": "added",
+      "gitBlobSha": "58f47449fc5cd9666c476d0accef4869508cadd1",
+      "sha256": "7428a4abdfaaee868af823fb827b55b0feb505432889051a6addc7124cd06108",
+      "size": 6920
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/immutable-controller/retry/retry_gap_ui.py",
+      "change": "added",
+      "gitBlobSha": "71d2a9f24344751bce5651e36546ab57f63ba286",
+      "sha256": "512601a9ddddbecf325c8c80ea29e247be272a1a6f26c37002c54bde943933a1",
+      "size": 7926
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/expo_go_intro.py",
+      "change": "added",
+      "gitBlobSha": "67f7a93304e44ae070828e408112b1debb32f7b4",
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+      "size": 4134
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/fixtures/final-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "9c71f5a4e52e2dfe93b7c5eafcb4b046bc063f9d",
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e",
+      "size": 184969
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/fixtures/ordinary-menu-original.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/fixtures/primary-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "e8890b02e091941f013d5762b9e255785e076eed",
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f",
+      "size": 199612
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/fixtures/retry-intro-original.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/fixtures/review-original.xml",
+      "change": "added",
+      "gitBlobSha": "366083c1fdef41f3e3b070f0e93a3905dc148a96",
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+      "size": 9146
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/native_overlay.py",
+      "change": "added",
+      "gitBlobSha": "0de2f12cb41713832af8d6c484c00932048ee845",
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+      "size": 455
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/observer_framing.py",
+      "change": "added",
+      "gitBlobSha": "9bbd504fd50a8e747d7d5ef52e52f725a8dbc99d",
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2",
+      "size": 2059
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/provenance.json",
+      "change": "added",
+      "gitBlobSha": "5861676c383a17233e551cb0c588f947d5ca9733",
+      "sha256": "15abefc15d4a2cf07f054bac4e59a56f786af2e171e76ebc00f8457e239fe436",
+      "size": 3610
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/retry-gap-runner.py",
+      "change": "added",
+      "gitBlobSha": "63aaa1d0bfcbcf24454c21c36dcd2c78b0114f21",
+      "sha256": "4c6a8cce90a0fc8b015abbeb631101c9daf525c804d745fea4d58aaa5570e4c3",
+      "size": 3400
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/retry-primary-ui.py",
+      "change": "added",
+      "gitBlobSha": "233885901b76de2a407c43008da2b3589f8266e8",
+      "sha256": "4dae5e9fa35f818d96f1c63b41be8a875a70da5cab35a84aec3e427fae66895e",
+      "size": 16550
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/inputs/parent-15ab/retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "c381c509e681d2d3b86b5bda707d5142f9995030",
+      "sha256": "c782a8b7b686917dcb08ac2b884efd9b3bfc3c890b4383947a9a259f33060de4",
+      "size": 11229
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/peer-review.json",
+      "change": "added",
+      "gitBlobSha": "104fc020794caa18454130b65899ebe5fd98f630",
+      "sha256": "8d2dd091402b5ec4eaec399511b6b1917872eb763952924e4ce0afb6be3945ee",
+      "size": 11101
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/peer_checks.py",
+      "change": "added",
+      "gitBlobSha": "a249786aa947830f0da7bae5994d38a698e78b37",
+      "sha256": "d006474690660e54fe005151c83766f3681844a5fe32d414ca1c54c66e5e8d86",
+      "size": 9527
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/pure-peer.log",
+      "change": "added",
+      "gitBlobSha": "98e04fec44c26c72e2a0231f74c0b18a485dde2c",
+      "sha256": "24147134ed8cfa636e54c408e0a0fbcac6c8215d94859c53645ff7febcb427d5",
+      "size": 6994
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/run_pure.py",
+      "change": "added",
+      "gitBlobSha": "5ba5296aea706ab3b4c4b61937d2493753fb230e",
+      "sha256": "28ee51c5ab1faf5893de1d8c31c848a312b056b53f3d6252158e636667c2b1d3",
+      "size": 1470
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-deadline-second-peer/subprocess-guard.json",
+      "change": "added",
+      "gitBlobSha": "50e4639d64580fa851de51ee302ea46d0054ef1f",
+      "sha256": "0b0d01fc9c8da8544b9945b20b269da10c2e2bcc0e271df5ed78066522a0c676",
+      "size": 242
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-job.log",
+      "change": "added",
+      "gitBlobSha": "7401d39499e3d6461832c64299c4858a6e373387",
+      "sha256": "b04422bd75f653afa56c22ccd500b671cb4dfc81c2130bd8438936ecffb4c23f",
+      "size": 53451
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/README.md",
+      "change": "added",
+      "gitBlobSha": "913fb9402d5264d57c11a545f9c05808fd7cdcef",
+      "sha256": "c3c9edc61edce17f3850b75f4dded10a359a0469cba8ae9c86cbee468a07018b",
+      "size": 4403
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/expo_go_intro.py",
+      "change": "added",
+      "gitBlobSha": "67f7a93304e44ae070828e408112b1debb32f7b4",
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+      "size": 4134
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "456160297807e29571e5edc4e79d063e43e7993d",
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+      "size": 17364
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/fixtures/final-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "9c71f5a4e52e2dfe93b7c5eafcb4b046bc063f9d",
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e",
+      "size": 184969
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/fixtures/ordinary-menu-original.xml",
+      "change": "added",
+      "gitBlobSha": "60eb29a7fb840e66eba4165b6f770fbd159d05d3",
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+      "size": 13792
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/fixtures/primary-logcat-original.txt",
+      "change": "added",
+      "gitBlobSha": "e8890b02e091941f013d5762b9e255785e076eed",
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f",
+      "size": 199612
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/fixtures/retry-intro-original.xml",
+      "change": "added",
+      "gitBlobSha": "5fbb7490c99477a2a5ec1576d1c64896aea28223",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "size": 13631
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/fixtures/review-original.xml",
+      "change": "added",
+      "gitBlobSha": "366083c1fdef41f3e3b070f0e93a3905dc148a96",
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+      "size": 9146
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/independent-peer-review.json",
+      "change": "added",
+      "gitBlobSha": "f17deecd75df317d7b6790b228cd781dcbbb5442",
+      "sha256": "68d71a1fccdb260ca6825d3d9f7d34c92efe4034d605342113a95a258aff2eec",
+      "size": 1268
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/native_overlay.py",
+      "change": "added",
+      "gitBlobSha": "0de2f12cb41713832af8d6c484c00932048ee845",
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+      "size": 455
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/observer_framing.py",
+      "change": "added",
+      "gitBlobSha": "9bbd504fd50a8e747d7d5ef52e52f725a8dbc99d",
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2",
+      "size": 2059
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/provenance.json",
+      "change": "added",
+      "gitBlobSha": "5861676c383a17233e551cb0c588f947d5ca9733",
+      "sha256": "15abefc15d4a2cf07f054bac4e59a56f786af2e171e76ebc00f8457e239fe436",
+      "size": 3610
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/pure-checks.log",
+      "change": "added",
+      "gitBlobSha": "0ee8e759d0edbd6af8591071d01aa237f3bf3533",
+      "sha256": "bb85afee51de96801e069a7f0eae83b7e809418aafcf785aa4dda2f00eb54286",
+      "size": 3524
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/retry-gap-runner.py",
+      "change": "added",
+      "gitBlobSha": "63aaa1d0bfcbcf24454c21c36dcd2c78b0114f21",
+      "sha256": "4c6a8cce90a0fc8b015abbeb631101c9daf525c804d745fea4d58aaa5570e4c3",
+      "size": 3400
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/retry-gap-runner.py.diff",
+      "change": "added",
+      "gitBlobSha": "7fb08a18a4384e745bc7f0ad715fc06c4c363edb",
+      "sha256": "6d94a0f08e4d317e14b77448d9b51e28de8b8ca6ecf6490cab5a42a090ca7a5b",
+      "size": 3251
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/retry-primary-ui.py",
+      "change": "added",
+      "gitBlobSha": "233885901b76de2a407c43008da2b3589f8266e8",
+      "sha256": "4dae5e9fa35f818d96f1c63b41be8a875a70da5cab35a84aec3e427fae66895e",
+      "size": 16550
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/retry-primary-ui.py.diff",
+      "change": "added",
+      "gitBlobSha": "3c323ec0518e8820052f3347c0920a117471f07e",
+      "sha256": "4f79f9178e4028157c85e7360bb416cf894f8f2180769c166af0176040b18d2f",
+      "size": 5394
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "c381c509e681d2d3b86b5bda707d5142f9995030",
+      "sha256": "c782a8b7b686917dcb08ac2b884efd9b3bfc3c890b4383947a9a259f33060de4",
+      "size": 11229
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/retry-late-host-candidate/test_retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "03facf4bb1904dc6cc0740848f4d6bdb99c3fc0c",
+      "sha256": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a",
+      "size": 16356
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/run-receipt.json",
+      "change": "added",
+      "gitBlobSha": "1d86591cd7a364e56b3666561596b5176e17e835",
+      "sha256": "7867144f7af8284a05ac161f17c8dcce16a16b5881fa8b99523fd524e10b02d8",
+      "size": 7270
+    },
+    {
+      "path": "validation/pocketpay/receipts/run-37387043100/selected-evidence-byte-provenance.json",
+      "change": "added",
+      "gitBlobSha": "5cf23b6a3b30bbcf85c6838abf85ca53036e3f85",
+      "sha256": "ab190f9a5a952322ac2bb342b7994fbf12b3fa2d60530c8de799f25e602f5a0a",
+      "size": 38236
+    },
+    {
+      "path": "validation/pocketpay/retry-gap-runner.py",
+      "change": "changed",
+      "gitBlobSha": "aeb6465d754f4f52c168725bba46b71e3bcc5eec",
+      "sha256": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd",
+      "size": 3427
+    },
+    {
+      "path": "validation/pocketpay/retry-primary-ui.py",
+      "change": "changed",
+      "gitBlobSha": "268cd1edf254d5f1ec966dfe0befb40ca94a5a21",
+      "sha256": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98",
+      "size": 17382
+    },
+    {
+      "path": "validation/pocketpay/retry_host_adapter.py",
+      "change": "added",
+      "gitBlobSha": "c854165473d1764ea6cc36a22cde2cc5909dfd6d",
+      "sha256": "d3e7eea55cd074636ebc5a7d29184845f99d430e35b19fb2c6c7ab179bb92a4e",
+      "size": 12303
+    },
+    {
+      "path": "validation/pocketpay/test_camera_host_settling.py",
+      "change": "added",
+      "gitBlobSha": "d6c82cc4dbb37ebbc5948e896bc76aebe920e91e",
+      "sha256": "5df5360f38bf422cf05301ed9a9b27b6928ec0573e618f871ee8e4676fd57d54",
+      "size": 15317
+    },
+    {
+      "path": "validation/pocketpay/test_camera_integration.py",
+      "change": "changed",
+      "gitBlobSha": "e9c6499c2bf374e863c5cdb0dd7f3f638436cab6",
+      "sha256": "5d975a3be816c93522b84b2bedf361823528f003aa7daed9e74a35e0026cfa86",
+      "size": 18027
+    },
+    {
+      "path": "validation/pocketpay/test_expo_ordinary_menu.py",
+      "change": "added",
+      "gitBlobSha": "fad9fe34a0cbbd70ebff70f021a7dcde2dc87a1e",
+      "sha256": "233a83d318fa2340d4887da201b3e2df7be087a41e6820fa928b11495bb9e713",
+      "size": 15140
+    }
+  ],
+  "deleted": [],
+  "sourcePins": {
+    "baseline": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+    "camera": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+    "retry": "ddd56649099d1fc5763ef29af3bfba0363897bd6"
+  },
+  "sourceTrees": {
+    "baseline": "b7556026e93c5930915d12fdf51d421773c5f61e",
+    "camera": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+    "retry": "4e363d77915ca16d3490e677f78c6487aeeb7060"
+  },
+  "workflowUnchanged": true,
+  "immutableFixtureObserverSourceMediaBytesCount": 66,
+  "originalProviderArchivesVerified": [
+    {
+      "kind": "camera",
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/camera-original.zip",
+      "providerArtifactId": 11379327749,
+      "size": 1605638,
+      "sha256": "c3144c2cdfd4177303d69638d545ad39b54cd3744e78fbd7c2771f382e227053"
+    },
+    {
+      "kind": "retry",
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/retry-original.zip",
+      "providerArtifactId": 11380062702,
+      "size": 1632746,
+      "sha256": "1f48f575dd952fcabf81f469e60714f852a7b744093ae631d5230ad8d7433744"
+    },
+    {
+      "kind": "baseline",
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/baseline-original.zip",
+      "providerArtifactId": 11380531404,
+      "size": 3854419,
+      "sha256": "e51df825a656835317e5192425dd4e4ffb654f8e35e3d55b1ffa16a91237c710"
+    }
+  ],
+  "selectedCurrentEvidenceByteEqualityCount": 121,
+  "nativeExecution": false,
+  "nativeAcceptance": false,
+  "staticChecks": {
+    "groups": [
+      {
+        "name": "camera-integration",
+        "exit": 0,
+        "pureTests": 71,
+        "logSha256": "5fb32d47ed04c8d409b51f0d69b95ff6a1149091790937bc3de301e14777b359"
+      },
+      {
+        "name": "retry-deadline",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "-v",
+          "test_retry_host_adapter",
+          "test_retry_deadline"
+        ],
+        "cwd": "/workspace/scratch/ea8baa184658/pocketpay-retry-deadline-local-candidate",
+        "exit": 0,
+        "seconds": 0.388,
+        "logSha256": "3f248c07c84597901fb7ba01a1c9fa06ca7a4ae3572b0e5fd6e6d641e0407240"
+      },
+      {
+        "name": "baseline-deadline",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "-v",
+          "test_baseline_host_adapter"
+        ],
+        "cwd": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-host-settle-successor/validation/pocketpay/receipts/run-37387043100/baseline-deadline",
+        "exit": 0,
+        "seconds": 0.144,
+        "logSha256": "a4e4cdd98ecfd3a94e9fbdf3fa118d75fede2b6952dcf07c097a21e30ace2c4c"
+      },
+      {
+        "name": "first-history",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "-v",
+          "test_first_history_carrier"
+        ],
+        "cwd": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-host-settle-successor/validation/pocketpay/receipts/run-37387043100/first-history-carrier",
+        "exit": 0,
+        "seconds": 0.146,
+        "logSha256": "a27503f9a7c93a42b903a2e90774e541af5677a34afc0acf830d9eb6e3339b41"
+      },
+      {
+        "name": "baseline-targets",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "-v",
+          "test_baseline_targets"
+        ],
+        "cwd": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-controller-host-settle-successor/validation/pocketpay/receipts/run-37387043100/baseline-target-candidate",
+        "exit": 0,
+        "seconds": 0.101,
+        "logSha256": "78fbedae3fb385e87e3192d0440769edb8a091b402e57d80c5688f0783f1c9c2"
+      }
+    ],
+    "pythonSyntaxFiles": 101,
+    "shellSyntaxFiles": 4,
+    "pureTestsPassed": 166,
+    "globalClockResets": 0,
+    "actualADBCalls": 0,
+    "nativeAcceptance": false,
+    "sourcePinsUnchanged": true,
+    "workflowUnchanged": true,
+    "baselineUIEqualsHelpersPlusCases": true,
+    "retryTestingCustody": "Frozen component tests reference original e69 donor path; executed at original local packet. Three staged runtime files byte-equal. Archive-root import attempt failed before any tests and retained separately; no native failure."
+  }
+}

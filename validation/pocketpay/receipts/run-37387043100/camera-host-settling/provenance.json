@@ -1,0 +1,72 @@
+{
+  "status": "local-only-camera-integration-frozen-pending-root-peer-review",
+  "baseController": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "baseTree": "b01210e4cdde7fdf8b2c64fbf9aeefb49802db67",
+  "baseManifestSha256": "03c3983141b44878c2cc6bebd6bffd65a8c810cf37fcde85f7bb034a7a8d67eb",
+  "baseInputCount": 199,
+  "basePathsChanged": [
+    "validation/pocketpay/camera-recording-runner.py",
+    "validation/pocketpay/test_camera_integration.py"
+  ],
+  "baseInputsUnchanged": 197,
+  "approvedRecorderSha256": "3628be5c9e5ec15fe217e7cf563c240a5fefa87f094879fd91b7d79f02aa41ea",
+  "sharedHelperReceiptSha256": "9a61372d2553403e23614ffa17c499be3ee14e9527e2f2a889430e5c1bc2ed05",
+  "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+  "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+  "immutableCollectorSha256": "4d93f54dc1723a5bcef1e19d145e3d2fc1f66fa2693f81ac9c2ff62225e96345",
+  "approvedMethodsExactAst": [
+    "finish_recording",
+    "stop_unsafe",
+    "adb",
+    "begin_recording",
+    "contacts_unavailable_manual",
+    "user_fixed_manual",
+    "run"
+  ],
+  "changedOrAddedMethodsComparedWithApprovedRecorder": [
+    "__init__",
+    "dump",
+    "host_uri_allowed",
+    "ensure_host_clear",
+    "capture",
+    "launch",
+    "wait",
+    "wait_action",
+    "tap"
+  ],
+  "runtimeAndTestFileSha256": {
+    "validation/pocketpay/camera-recording-runner.py": "2cdaf1311392976a9a4a6f9d36cd63bd5b231152d63276cf0f760fa284338c1f",
+    "validation/pocketpay/expo_ordinary_menu.py": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+    "validation/pocketpay/test_expo_ordinary_menu.py": "233a83d318fa2340d4887da201b3e2df7be087a41e6820fa928b11495bb9e713",
+    "validation/pocketpay/test_camera_host_settling.py": "5df5360f38bf422cf05301ed9a9b27b6928ec0573e618f871ee8e4676fd57d54",
+    "validation/pocketpay/test_camera_integration.py": "5d975a3be816c93522b84b2bedf361823528f003aa7daed9e74a35e0026cfa86",
+    "validation/pocketpay/camera-host-settling.md": "ccb0492411fccd69dde1646e4c3ac18e57b46fa86ccc1678d61052e2a51b16bb",
+    "validation/pocketpay/observed/ordinary-menu.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "validation/pocketpay/observed/ordinary-menu.png": "cda0166eb7c1db59c54ff85e83decab3b7a17ac5296de0ae8aed846ee55fefcc",
+    "validation/pocketpay/receipts/run-37387043100/camera/original-camera-recording-runner.py": "1acc22497a5aac37422f9ff0da48f5d05479cc407b11aac77a586512e69fa1a1"
+  },
+  "checkArtifactsSha256": {
+    "pocketpay-camera-host-settle-checks.log": "ee761cbe9efc28d916952788fb3503cce483199f34106b1957798afef8f22fec",
+    "pocketpay-camera-host-settle-differential.json": "2c8d54b4dd8b0024709d806785e19e37f79ce4182103ed42d119e5a009df71b0",
+    "pocketpay-camera-host-settle.diff": "f66daa473d1017d62de49a351af4877def4b1c32c662430e6c920b9f53cda485"
+  },
+  "checks": {
+    "totalPassed": 71,
+    "adapterDifferential": 13,
+    "sharedHelper": 20,
+    "existingIntegration": 18,
+    "intro": 10,
+    "immutableParser": 10,
+    "actualAdbCalls": 0,
+    "nativeClaims": 0,
+    "localShellPolicyBranches": "Original bounded Bash branches with virtual command stubs; zero actualADB/guest"
+  },
+  "completedProcessTestStubAdaptation": "poll=lambda:0 on3completedSimpleNamespace fixtures; all safety assertionsunchanged",
+  "limits": [
+    "No nativeClose/HOT/featurepass",
+    "ActualAPKcommitbindingunverified",
+    "DirectoriginalLoading/manualframesrequired",
+    "Topmanifeststaleuntilownercompositionfreeze",
+    "Rootpeerreviewbeforeintegration; no source/workflow/guest/ref/dispatch mutationsoutsideisolatedcandidate"
+  ]
+}

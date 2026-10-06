@@ -1,0 +1,138 @@
+--- a/validation/pocketpay/baseline_host_adapter.py
++++ b/validation/pocketpay/baseline_host_adapter.py
+@@ -35,21 +35,40 @@
+         self.deadline = time.monotonic() + 600
+         self.developer_sheet_dismissals = 0
+         self.closures = 0
++        self._observer_samples = 0
+         self._settling = False
+ 
++    def _remaining(self):
++        remaining = self.deadline - time.monotonic()
++        if remaining <= 0:
++            raise RuntimeError('Baseline host adapter exceeded its global 600-second bound')
++        return remaining
++
+     def adb(self, *args, **kwargs):
+-        if time.monotonic() >= self.deadline:
+-            raise RuntimeError('Baseline host adapter exceeded its global 600-second bound')
+-        return self.raw_adb(*args, **kwargs)
++        remaining = self._remaining()
++        kwargs['timeout'] = min(kwargs.get('timeout', 30), remaining)
++        try:
++            result = self.raw_adb(*args, **kwargs)
++        except subprocess.SubprocessError as error:
++            if time.monotonic() >= self.deadline:
++                raise RuntimeError('Baseline ADB reached its original global 600-second bound') from error
++            raise
++        self._remaining()
++        return result
++
++    def bounded_raw_dump(self, name='current'):
++        self._remaining()
++        tree = self.raw_dump(name)
++        self._remaining()
++        return tree
+ 
+     def dump(self, name='current'):
+-        if time.monotonic() >= self.deadline:
+-            raise RuntimeError('Baseline host adapter exceeded its global 600-second bound')
+-        tree = self.raw_dump(name)
++        tree = self.bounded_raw_dump(name)
+         if fixture_startup_error(tree):
+             raise FatalFixtureStartup('Actual runtime-not-ready initializer error; no host or product action')
+         # Original raw dump already rejects secret material before retention.
+         self.host.overlay_guard(tree)
++        self._remaining()
+         return tree, ET.tostring(tree, encoding='unicode')
+ 
+     @staticmethod
+@@ -76,6 +95,7 @@
+             self.action(after, *action)
+         if not data.startswith(b'\x89PNG\r\n\x1a\n'):
+             raise RuntimeError('Host proof was not an actual PNG')
++        self._remaining()
+         (self.output / (name + '.xml')).write_text(xml)
+         (self.output / (name + '-after.xml')).write_text(after_xml)
+         (self.output / (name + '.png')).write_bytes(data)
+@@ -89,7 +109,24 @@
+ 
+     def _records(self):
+         rows = {prefix: [] for prefix in PREFIXES}
+-        for line in self.adb('logcat', '-d', '-s', 'ReactNativeJS:I', timeout=30).splitlines():
++        pid = self._pid()
++        command = ('logcat', '-d', '-s', 'ReactNativeJS:I', '--pid=' + pid)
++        self._observer_samples += 1
++        stem = 'baseline-native-observer-pid-' + str(self._observer_samples).zfill(4)
++        (self.output / (stem + '.json')).write_text(json.dumps({
++            'command': ['adb', *command], 'pidBefore': pid, 'pidAfter': None,
++            'samePidVerified': False, 'queryStatus': 'started',
++        }, indent=2) + '\n')
++        raw = self.adb(*command, timeout=30)
++        self.host.retain_native_text(self, stem + '.log', raw)
++        after_pid = self._pid()
++        (self.output / (stem + '.json')).write_text(json.dumps({
++            'command': ['adb', *command], 'pidBefore': pid, 'pidAfter': after_pid,
++            'samePidVerified': pid == after_pid, 'rawOutputFile': stem + '.log', 'queryStatus': 'completed',
++        }, indent=2) + '\n')
++        if after_pid != pid:
++            raise RuntimeError('Baseline native observer process changed during PID-scoped read')
++        for line in raw.splitlines():
+             for prefix in PREFIXES:
+                 if prefix not in line:
+                     continue
+@@ -159,20 +196,21 @@
+                 self._settling = False
+         if intro_sheet(tree) or self.host.has_host_sheet(tree):
+             raise RuntimeError('Expo host still covers baseline product UI')
++        self._remaining()
+         return tree
+ 
+     def product_capture(self, name, allow_expo_sheet=False):
+         failure = self.namespace['failure_capture'](name)
+         if failure:
+             # Preserve the actual failed hierarchy without a recovery action.
+-            tree = self.raw_dump()
++            tree = self.bounded_raw_dump()
+         else:
+             tree = self.uncovered()
+         xml = ET.tostring(tree, encoding='unicode')
+         if not failure and self.namespace['native_error'](tree):
+             raise RuntimeError('Actual native error covers baseline product capture')
+         data = self.adb('exec-out', 'screencap', '-p', binary=True)
+-        after = self.raw_dump()
++        after = self.bounded_raw_dump()
+         if not failure:
+             self.host.overlay_guard(after)
+             if intro_sheet(after) or self.host.has_host_sheet(after):
+@@ -181,6 +219,7 @@
+                 raise RuntimeError('Actual native error covers product PNG; no image retained')
+         if not data.startswith(b'\x89PNG\r\n\x1a\n'):
+             raise RuntimeError('ADB did not return a PNG')
++        self._remaining()
+         (self.output / (name + '.xml')).write_text(xml)
+         (self.output / (name + '-media-guard.xml')).write_text(ET.tostring(after, encoding='unicode'))
+         (self.output / (name + '.png')).write_bytes(data)
+@@ -200,7 +239,9 @@
+         if fresh.get('enabled') != 'true' or fresh.get('clickable') != 'true':
+             raise RuntimeError('Refreshed native action is not enabled and clickable')
+         self.host.visible_bounds(fresh)
++        self._remaining()
+         self.raw_tap_node(fresh)
++        self._remaining()
+ 
+     def bounded_case(self, name, callback):
+         if time.monotonic() >= self.deadline:
+@@ -210,7 +251,11 @@
+             })
+             (self.output / 'observations.json').write_text(json.dumps(self.namespace['REPORT'], indent=2))
+             return
+-        return self.raw_case(name, callback)
++        def bounded_callback():
++            self._remaining()
++            callback()
++            self._remaining()
++        return self.raw_case(name, bounded_callback)
+ 
+ 
+ def install(namespace, **options):

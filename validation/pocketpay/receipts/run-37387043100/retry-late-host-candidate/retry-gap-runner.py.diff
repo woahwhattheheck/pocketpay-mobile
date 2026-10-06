@@ -1,0 +1,87 @@
+--- e69/retry-gap-runner.py
++++ local/retry-gap-runner.py
+@@ -5,7 +5,7 @@
+ from pathlib import Path
+ from native_overlay import assert_no_native_error_overlay
+ from expo_go_intro import intro_sheet
+-from expo_go_module_intro import ModuleIntro
++from retry_host_adapter import RetryHostAdapter
+ from observer_framing import decode_observer_line
+ 
+ base = Path(__file__).resolve().parent / 'retry'
+@@ -15,7 +15,10 @@
+ original_contains = helpers.contains
+ original_action = helpers.exact_action
+ original_sheet = helpers.developer_sheet
+-intro = ModuleIntro(vars(helpers))
++original_capture = helpers.capture
++original_tap = helpers.tap
++original_launch = helpers.launch
++host = RetryHostAdapter(vars(helpers), "gap")
+ 
+ 
+ def guarded_contains(tree, label):
+@@ -29,29 +32,42 @@
+ 
+ 
+ def known_sheet(tree):
+-    return intro_sheet(tree) or original_sheet(tree)
++    return host.host.has_host_sheet(tree) or intro_sheet(tree) or original_sheet(tree)
+ 
+ 
+ def wait_with_observed_intro(label, seconds=45):
+     deadline = time.monotonic() + seconds
+     while time.monotonic() < deadline:
+-        tree = helpers.dump()
+-        assert_no_native_error_overlay(tree)
+-        if intro_sheet(tree):
+-            intro.dismiss(tree)
+-            continue
+-        if original_sheet(tree):
+-            name = 'observed-expo-developer-sheet-' + str(time.time_ns())
+-            (helpers.ROOT / (name + '.xml')).write_text(helpers.ET.tostring(tree, encoding='unicode'))
+-            (helpers.ROOT / (name + '.json')).write_text(helpers.json.dumps({'observedLabels': helpers.labels(tree),
+-                'action': 'native BACK after actual SDK and Connected-to-expo-cli labels'}, indent=2))
+-            helpers.adb('shell', 'input', 'keyevent', 'KEYCODE_BACK')
+-            continue
++        tree = host.uncovered()
+         if guarded_contains(tree, label):
++            host.stable = True
++            host.expected = (label,)
+             return tree
+         time.sleep(0.3)
+     helpers.capture('unmatched-state')
+     raise RuntimeError('Expected actual UI did not appear: ' + label)
++
++
++def capture_after_host(name, required_label=None):
++    # Failure media is an ordinary guarded capture too; no host guard is waived.
++    expected = (required_label,) if required_label else host.expected
++    host.before_capture(expected)
++    result = original_capture(name, required_label=expected[0] if expected else None)
++    if result is None and required_label is None and expected:
++        raise RuntimeError('Fresh Retry capture lost the expected product target')
++    return result
++
++
++def tap_after_host(label, scroll=False):
++    host.before_action(label)
++    result = original_tap(label, scroll=scroll)
++    host.action_completed()
++    return result
++
++
++def launch_independent_case(outcome):
++    host.begin_case(outcome)
++    return original_launch(outcome)
+ 
+ 
+ def decoded_native_records():
+@@ -78,4 +94,7 @@
+     helpers.developer_sheet = known_sheet
+     helpers.wait = wait_with_observed_intro
+     helpers.native_records = decoded_native_records
++    helpers.capture = capture_after_host
++    helpers.tap = tap_after_host
++    helpers.launch = launch_independent_case
+     runpy.run_path(str(base / 'retry_gap_ui.py'), run_name='__main__')

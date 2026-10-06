@@ -1,0 +1,72 @@
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 3401
+WaitTime: 3443
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.LauncherActivity
+TotalTime: 851
+WaitTime: 966
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1369
+WaitTime: 1372
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1317
+WaitTime: 1322
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1198
+WaitTime: 1201
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1447
+WaitTime: 1477
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 2128
+WaitTime: 2175
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1455
+WaitTime: 1462
+Complete
+
+Starting: Intent { act=android.intent.action.VIEW dat=exp://127.0.0.1:8081/... pkg=host.exp.exponent }
+Status: ok
+LaunchState: COLD
+Activity: host.exp.exponent/.experience.ExperienceActivity
+TotalTime: 1470
+WaitTime: 1473
+Complete
+

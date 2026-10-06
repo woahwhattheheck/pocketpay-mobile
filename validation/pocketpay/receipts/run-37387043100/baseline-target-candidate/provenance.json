@@ -1,0 +1,26 @@
+{
+  "state": "local-only-unpublished-controller-target-repair",
+  "parentController": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "source": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "changedCases": [
+    "picker_search_optional_edit",
+    "vault_real_confirmation"
+  ],
+  "unchangedProductionAndFixtures": true,
+  "unchangedCaseSemanticAssertions": true,
+  "maxObservedScrollSwipes": 4,
+  "pureChecks": 8,
+  "nativeCommands": 0,
+  "nativeAcceptance": false,
+  "locks": {
+    "README.md": "76f4a44f30a01015212a6a59753f1cb3a47181ffa061754288f8561e2cde9889",
+    "baseline_vault_form.py": "e9e7d2163295abddd9a6495dc73f7d94995d1a3795d5b89c2335b6b3e460230f",
+    "observed/baseline-picker-name-search.xml": "24540eebec0ccf89b79a4f706446ebd80f2b2cb02d7b79e08bc1b5fbda1fdaef",
+    "observed/failure-picker-search-optional-edit.xml": "292c980df11e241d85b7043398d4c000bfdfee72bab42f0575d38465a5da92ad",
+    "observed/failure-vault-native-confirmation-receipt.xml": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+    "original-ui_baseline.py": "3744c149be96657245c9f7e0c8ef6072857c8db152bc05174b7c731e6b250e0e",
+    "target.patch": "a66ffee1b3db04289dc86db0c3b8b295758b40b8a528a59981794a71d9457154",
+    "test_baseline_targets.py": "e8319c83aa39ef55c58d79d8d2cb4fdcf1d0341b481f759b45dfed09a0b9f48c",
+    "ui_baseline.py": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236"
+  }
+}

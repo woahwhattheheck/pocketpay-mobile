@@ -1,0 +1,11 @@
+{
+  "baseRuntimeSha256": "2cdaf1311392976a9a4a6f9d36cd63bd5b231152d63276cf0f760fa284338c1f",
+  "baseSharedHelperSha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+  "changedExistingPaths": [
+    "camera-recording-runner.py"
+  ],
+  "missingExistingPaths": [],
+  "unchangedExistingFiles": 205,
+  "onlyRuntimeDelta": "Host-only proxy and scoped ordinary helper method plus one callsite; protected methods unchanged",
+  "nativeExecution": false
+}

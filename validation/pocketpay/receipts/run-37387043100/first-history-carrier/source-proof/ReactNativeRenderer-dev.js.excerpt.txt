@@ -1,0 +1,36 @@
+    function recursivelyTraversePassiveMountEffects(
+      root,
+      parentFiber,
+      committedLanes,
+      committedTransitions
+    ) {
+      if (parentFiber.subtreeFlags & 10256)
+        for (parentFiber = parentFiber.child; null !== parentFiber; )
+          commitPassiveMountOnFiber(
+            root,
+            parentFiber,
+            committedLanes,
+            committedTransitions
+          ),
+            (parentFiber = parentFiber.sibling);
+    }
+    function commitPassiveMountOnFiber(
+      finishedRoot,
+      finishedWork,
+      committedLanes,
+      committedTransitions
+    ) {
+      var flags = finishedWork.flags;
+      switch (finishedWork.tag) {
+        case 0:
+        case 11:
+        case 15:
+          recursivelyTraversePassiveMountEffects(
+            finishedRoot,
+            finishedWork,
+            committedLanes,
+            committedTransitions
+          );
+          flags & 2048 &&
+            commitHookPassiveMountEffects(finishedWork, Passive | HasEffect);
+          break;

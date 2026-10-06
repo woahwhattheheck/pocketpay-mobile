@@ -1,0 +1,150 @@
+test_actual_original_first_bootstrap_has_21_and_12_zeros (test_first_history_carrier.Checks.test_actual_original_first_bootstrap_has_21_and_12_zeros) ... ok
+test_actual_original_launch_function_is_wrapped_without_replacing_its_initial_launch (test_first_history_carrier.Checks.test_actual_original_launch_function_is_wrapped_without_replacing_its_initial_launch) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp7v6pm7nq'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+test_any_original_baseline_counter_nonzero_blocks_before_uri (test_first_history_carrier.Checks.test_any_original_baseline_counter_nonzero_blocks_before_uri) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpxf3t4yhw'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpmkcz9pyd'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpqsuxp731'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp1fpvgo_x'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpo9fhzx8z'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpw51gn27_'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp7wpcqsui'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp95y6z1xu'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp046lgrp3'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpv0viis4p'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp50vqnjk7'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+test_any_original_transport_read_action_write_nonzero_blocks (test_first_history_carrier.Checks.test_any_original_transport_read_action_write_nonzero_blocks) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpmi9qvh28'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp67hfg8p8'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp5lbfcbpd'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpsab7aeb9'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpkx44w83l'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpxieesbh_'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp8xr_jcyb'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp_l02mcnw'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpkiwktedb'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp_x8pu_kv'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpzbg6f7d6'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpxh74m0me'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp1mvsvlci'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpuko2df6g'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpybbuan99'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpg180jca2'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+test_carrier_never_resets_deadline_or_imports_camera_redelivery (test_first_history_carrier.Checks.test_carrier_never_resets_deadline_or_imports_camera_redelivery) ... ok
+test_cold_delivery_cannot_poll_resume_or_second_uri (test_first_history_carrier.Checks.test_cold_delivery_cannot_poll_resume_or_second_uri) ... ok
+test_completed_mount_without_child_refresh_is_not_source_order (test_first_history_carrier.Checks.test_completed_mount_without_child_refresh_is_not_source_order) ... ok
+test_exact_natural_mount_sequence_and_single_dummy_reads_only (test_first_history_carrier.Checks.test_exact_natural_mount_sequence_and_single_dummy_reads_only) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpae4k6siu'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpdf_eeglf'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp6cyzafoz'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpowmluz8l'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+test_exact_once_hot_delivery_retains_host_only_proof_then_original_target (test_first_history_carrier.Checks.test_exact_once_hot_delivery_retains_host_only_proof_then_original_target) ... ok
+test_full_host_closure_and_uncovered_welcome_are_required (test_first_history_carrier.Checks.test_full_host_closure_and_uncovered_welcome_are_required) ... ok
+test_missing_or_nonready_actual_records_fail_without_uri (test_first_history_carrier.Checks.test_missing_or_nonready_actual_records_fail_without_uri) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp6j3kw2_t'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp1ysu2k_z'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpw81pn83q'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpum4n34_p'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+test_native_records_rebootstrap_or_action_after_uri_fails (test_first_history_carrier.Checks.test_native_records_rebootstrap_or_action_after_uri_fails) ... ok
+test_original_already_rendered_history_requires_no_uri (test_first_history_carrier.Checks.test_original_already_rendered_history_requires_no_uri) ... ok
+test_original_namespace_action_disarms_carrier_and_taps_once (test_first_history_carrier.Checks.test_original_namespace_action_disarms_carrier_and_taps_once) ... ok
+test_other_cases_do_not_receive_carrier (test_first_history_carrier.Checks.test_other_cases_do_not_receive_carrier) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpf8o7vu2r'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpeijf59vk'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpkv8ig3bq'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpu1o8k50_'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmprhc8z4he'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpkb5fbw4t'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpq0pcx1js'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+test_pid_or_activity_replacement_after_uri_fails (test_first_history_carrier.Checks.test_pid_or_activity_replacement_after_uri_fails) ... ok
+test_post_delivery_source_poll_window_expiry_stops_no_resume (test_first_history_carrier.Checks.test_post_delivery_source_poll_window_expiry_stops_no_resume) ... ok
+test_runner_composes_carrier_after_host_install_at_original_anchor_only (test_first_history_carrier.Checks.test_runner_composes_carrier_after_host_install_at_original_anchor_only) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpk6ihos4j'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpneopju_z'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmprokekccv'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpxbsywarf'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp1z6k6du3'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpwfhx1nwa'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp9mft7ri7'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmptzo_oem6'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpvq3wh9ox'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp0r1tan8m'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp0z5tlk64'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpjatzj9mb'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+test_target_media_or_action_started_blocks_no_replay (test_first_history_carrier.Checks.test_target_media_or_action_started_blocks_no_replay) ... ok
+test_transport_failure_is_not_swallowed_by_ordinary_polling (test_first_history_carrier.Checks.test_transport_failure_is_not_swallowed_by_ordinary_polling) ... ok
+test_whole_history_not_just_latest_must_be_zero (test_first_history_carrier.Checks.test_whole_history_not_just_latest_must_be_zero) ... ok
+test_wrong_environment_source_fails (test_first_history_carrier.Checks.test_wrong_environment_source_fails) ... ok
+test_wrong_first_case_source_and_exact_original_url_fail (test_first_history_carrier.Checks.test_wrong_first_case_source_and_exact_original_url_fail) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmp_2gqufww'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpwao1oe62'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpy89an9bh'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpi4fd78ip'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpky3c9jjy'>
+  _warnings.warn(warn_message, ResourceWarning)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tempfile.py:940: ResourceWarning: Implicitly cleaning up <TemporaryDirectory '/tmp/tmpp7grra77'>
+  _warnings.warn(warn_message, ResourceWarning)
+ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.067s
+
+OK

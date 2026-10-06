@@ -1,0 +1,586 @@
+﻿2026-10-05T23:11:30.5846379Z Current runner version: '2.337.0'
+2026-10-05T23:11:30.5866299Z ##[group]Runner Image Provisioner
+2026-10-05T23:11:30.5867218Z Hosted Compute Agent
+2026-10-05T23:11:30.5867753Z Version: 20260901.588
+2026-10-05T23:11:30.5868279Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-05T23:11:30.5868867Z Build Date: 2026-09-01T19:56:44Z
+2026-10-05T23:11:30.5869479Z Worker ID: {318338b5-af72-45a3-8c5d-3db9409a80cd}
+2026-10-05T23:11:30.5870092Z Azure Region: eastus
+2026-10-05T23:11:30.5870588Z ##[endgroup]
+2026-10-05T23:11:30.5871737Z ##[group]Operating System
+2026-10-05T23:11:30.5872252Z Ubuntu
+2026-10-05T23:11:30.5873075Z 24.04.5
+2026-10-05T23:11:30.5873503Z LTS
+2026-10-05T23:11:30.5873952Z ##[endgroup]
+2026-10-05T23:11:30.5874527Z ##[group]Runner Image
+2026-10-05T23:11:30.5874993Z Image: ubuntu-24.04
+2026-10-05T23:11:30.5875508Z Version: 20260927.320.1
+2026-10-05T23:11:30.5876544Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-05T23:11:30.5877840Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+2026-10-05T23:11:30.5878610Z ##[endgroup]
+2026-10-05T23:11:30.5879591Z ##[group]GITHUB_TOKEN Permissions
+2026-10-05T23:11:30.5881462Z Contents: read
+2026-10-05T23:11:30.5881974Z Metadata: read
+2026-10-05T23:11:30.5882463Z ##[endgroup]
+2026-10-05T23:11:30.5884772Z Secret source: Actions
+2026-10-05T23:11:30.5885589Z Cache mode: write
+2026-10-05T23:11:30.5886456Z Prepare workflow directory
+2026-10-05T23:11:30.6296113Z Prepare all required actions
+2026-10-05T23:11:30.6335542Z Getting action download info
+2026-10-05T23:11:30.9237561Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-05T23:11:31.1168754Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-05T23:11:31.2293292Z Download action repository 'ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d' (SHA:a421e43855164a8197daf9d8d40fe71c6996bb0d)
+2026-10-05T23:11:31.4010730Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-05T23:11:31.6292501Z Complete job name: native (camera)
+2026-10-05T23:11:31.6838827Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-05T23:11:31.6839610Z with:
+2026-10-05T23:11:31.6839943Z   path: controller
+2026-10-05T23:11:31.6840313Z   persist-credentials: false
+2026-10-05T23:11:31.6840754Z   repository: woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:31.6844250Z   token: ***
+2026-10-05T23:11:31.6844594Z   ssh-strict: true
+2026-10-05T23:11:31.6844948Z   ssh-user: git
+2026-10-05T23:11:31.6845275Z   clean: true
+2026-10-05T23:11:31.6845623Z   sparse-checkout-cone-mode: true
+2026-10-05T23:11:31.6846031Z   fetch-depth: 1
+2026-10-05T23:11:31.6846366Z   fetch-tags: false
+2026-10-05T23:11:31.6846736Z   show-progress: true
+2026-10-05T23:11:31.6847092Z   lfs: false
+2026-10-05T23:11:31.6847414Z   submodules: false
+2026-10-05T23:11:31.6847761Z   set-safe-directory: true
+2026-10-05T23:11:31.6848288Z env:
+2026-10-05T23:11:31.6848599Z   MODE: camera
+2026-10-05T23:11:31.6848993Z   SOURCE_SHA: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:31.6849519Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T23:11:31.6849959Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T23:11:31.6850362Z   EXPO_OFFLINE: 1
+2026-10-05T23:11:31.6850711Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T23:11:31.6851093Z   CI: 1
+2026-10-05T23:11:31.6851400Z ##[endgroup]
+2026-10-05T23:11:31.7646482Z Syncing repository: woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:31.7648528Z ##[group]Getting Git version info
+2026-10-05T23:11:31.7649590Z Working directory is '/home/runner/work/pocketpay-mobile/pocketpay-mobile/controller'
+2026-10-05T23:11:31.7651077Z [command]/usr/bin/git version
+2026-10-05T23:11:31.7685187Z git version 2.55.0
+2026-10-05T23:11:31.7708490Z ##[endgroup]
+2026-10-05T23:11:31.7714436Z Temporarily overriding HOME='/home/runner/work/_temp/d57fa12a-7516-4848-9497-3c6c480f7f63' before making global git config changes
+2026-10-05T23:11:31.7716466Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T23:11:31.7718556Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pocketpay-mobile/pocketpay-mobile/controller
+2026-10-05T23:11:31.7760206Z ##[group]Initializing the repository
+2026-10-05T23:11:31.7768884Z [command]/usr/bin/git init /home/runner/work/pocketpay-mobile/pocketpay-mobile/controller
+2026-10-05T23:11:31.7831992Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-05T23:11:31.7833154Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-05T23:11:31.7833906Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-05T23:11:31.7834674Z hint: call:
+2026-10-05T23:11:31.7835037Z hint:
+2026-10-05T23:11:31.7835446Z hint: 	git config --global init.defaultBranch <name>
+2026-10-05T23:11:31.7835932Z hint:
+2026-10-05T23:11:31.7836390Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-05T23:11:31.7837116Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-05T23:11:31.7837693Z hint:
+2026-10-05T23:11:31.7838030Z hint: 	git branch -m <name>
+2026-10-05T23:11:31.7838404Z hint:
+2026-10-05T23:11:31.7838890Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-05T23:11:31.7843673Z Initialized empty Git repository in /home/runner/work/pocketpay-mobile/pocketpay-mobile/controller/.git/
+2026-10-05T23:11:31.7851844Z [command]/usr/bin/git remote add origin https://github.com/woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:31.7890002Z ##[endgroup]
+2026-10-05T23:11:31.7890923Z ##[group]Disabling automatic garbage collection
+2026-10-05T23:11:31.7894576Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-05T23:11:31.7930972Z ##[endgroup]
+2026-10-05T23:11:31.7932180Z ##[group]Setting up auth
+2026-10-05T23:11:31.7933324Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T23:11:31.8023703Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T23:11:31.8251266Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T23:11:31.8285724Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T23:11:31.8487642Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-05T23:11:31.8523847Z ##[endgroup]
+2026-10-05T23:11:31.8524710Z ##[group]Fetching the repository
+2026-10-05T23:11:31.8531502Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e69c9150bda234607c008955ba2e5e5c853b8ae1:refs/remotes/origin/validation/pocketpay-native-evidence-20261005
+2026-10-05T23:11:32.8006617Z From https://github.com/woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:32.8007808Z  * [new ref]         e69c9150bda234607c008955ba2e5e5c853b8ae1 -> origin/validation/pocketpay-native-evidence-20261005
+2026-10-05T23:11:32.8010662Z ##[endgroup]
+2026-10-05T23:11:32.8011502Z ##[group]Determining the checkout info
+2026-10-05T23:11:32.8013480Z ##[endgroup]
+2026-10-05T23:11:32.8019762Z [command]/usr/bin/git sparse-checkout disable
+2026-10-05T23:11:32.8065783Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-05T23:11:32.8094439Z ##[group]Checking out the ref
+2026-10-05T23:11:32.8098424Z [command]/usr/bin/git checkout --progress --force -B validation/pocketpay-native-evidence-20261005 refs/remotes/origin/validation/pocketpay-native-evidence-20261005
+2026-10-05T23:11:32.8557626Z Switched to a new branch 'validation/pocketpay-native-evidence-20261005'
+2026-10-05T23:11:32.8562000Z branch 'validation/pocketpay-native-evidence-20261005' set up to track 'origin/validation/pocketpay-native-evidence-20261005'.
+2026-10-05T23:11:32.8569024Z ##[endgroup]
+2026-10-05T23:11:32.8615451Z [command]/usr/bin/git log -1 --format=%H
+2026-10-05T23:11:32.8639097Z e69c9150bda234607c008955ba2e5e5c853b8ae1
+2026-10-05T23:11:32.8650160Z ##[group]Removing auth
+2026-10-05T23:11:32.8650779Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T23:11:32.8680312Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T23:11:32.8870225Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T23:11:33.0208513Z http.https://github.com/.extraheader
+2026-10-05T23:11:33.0214745Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-05T23:11:33.0251121Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T23:11:33.0438225Z ##[endgroup]
+2026-10-05T23:11:33.0650296Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-05T23:11:33.0650655Z with:
+2026-10-05T23:11:33.0650894Z   repository: woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:33.0651205Z   ref: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:33.0651476Z   path: subject
+2026-10-05T23:11:33.0651694Z   persist-credentials: false
+2026-10-05T23:11:33.0654396Z   token: ***
+2026-10-05T23:11:33.0654629Z   ssh-strict: true
+2026-10-05T23:11:33.0654859Z   ssh-user: git
+2026-10-05T23:11:33.0655063Z   clean: true
+2026-10-05T23:11:33.0655302Z   sparse-checkout-cone-mode: true
+2026-10-05T23:11:33.0655556Z   fetch-depth: 1
+2026-10-05T23:11:33.0655765Z   fetch-tags: false
+2026-10-05T23:11:33.0655975Z   show-progress: true
+2026-10-05T23:11:33.0656186Z   lfs: false
+2026-10-05T23:11:33.0656384Z   submodules: false
+2026-10-05T23:11:33.0656600Z   set-safe-directory: true
+2026-10-05T23:11:33.0656823Z env:
+2026-10-05T23:11:33.0657017Z   MODE: camera
+2026-10-05T23:11:33.0657293Z   SOURCE_SHA: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:33.0657594Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T23:11:33.0657857Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T23:11:33.0658092Z   EXPO_OFFLINE: 1
+2026-10-05T23:11:33.0658305Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T23:11:33.0658531Z   CI: 1
+2026-10-05T23:11:33.0658727Z ##[endgroup]
+2026-10-05T23:11:33.1310814Z Syncing repository: woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:33.1320364Z ##[group]Getting Git version info
+2026-10-05T23:11:33.1321278Z Working directory is '/home/runner/work/pocketpay-mobile/pocketpay-mobile/subject'
+2026-10-05T23:11:33.1344298Z [command]/usr/bin/git version
+2026-10-05T23:11:33.1379132Z git version 2.55.0
+2026-10-05T23:11:33.1396188Z ##[endgroup]
+2026-10-05T23:11:33.1407445Z Temporarily overriding HOME='/home/runner/work/_temp/103c70f7-a8f6-4efa-a7d0-0a7a33836397' before making global git config changes
+2026-10-05T23:11:33.1408531Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T23:11:33.1411647Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pocketpay-mobile/pocketpay-mobile/subject
+2026-10-05T23:11:33.1440875Z ##[group]Initializing the repository
+2026-10-05T23:11:33.1445337Z [command]/usr/bin/git init /home/runner/work/pocketpay-mobile/pocketpay-mobile/subject
+2026-10-05T23:11:33.1483912Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-05T23:11:33.1485117Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-05T23:11:33.1487133Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-05T23:11:33.1487612Z hint: call:
+2026-10-05T23:11:33.1487938Z hint:
+2026-10-05T23:11:33.1488312Z hint: 	git config --global init.defaultBranch <name>
+2026-10-05T23:11:33.1488741Z hint:
+2026-10-05T23:11:33.1489129Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-05T23:11:33.1489772Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-05T23:11:33.1490503Z hint:
+2026-10-05T23:11:33.1490949Z hint: 	git branch -m <name>
+2026-10-05T23:11:33.1491300Z hint:
+2026-10-05T23:11:33.1491723Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-05T23:11:33.1492444Z Initialized empty Git repository in /home/runner/work/pocketpay-mobile/pocketpay-mobile/subject/.git/
+2026-10-05T23:11:33.1493745Z [command]/usr/bin/git remote add origin https://github.com/woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:33.2517856Z ##[endgroup]
+2026-10-05T23:11:33.2518326Z ##[group]Disabling automatic garbage collection
+2026-10-05T23:11:33.2521798Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-05T23:11:33.2554927Z ##[endgroup]
+2026-10-05T23:11:33.2555310Z ##[group]Setting up auth
+2026-10-05T23:11:33.2560186Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T23:11:33.2589000Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T23:11:33.2780338Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T23:11:33.2811061Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T23:11:33.3003864Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-05T23:11:33.3040236Z ##[endgroup]
+2026-10-05T23:11:33.3040865Z ##[group]Fetching the repository
+2026-10-05T23:11:33.3048201Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:33.7056051Z From https://github.com/woahwhattheheck/pocketpay-mobile
+2026-10-05T23:11:33.7056594Z  * branch            314b69b9a4ac4c4328540792fcc516e6ce5c6e16 -> FETCH_HEAD
+2026-10-05T23:11:33.7060427Z ##[endgroup]
+2026-10-05T23:11:33.7061063Z ##[group]Determining the checkout info
+2026-10-05T23:11:33.7062394Z ##[endgroup]
+2026-10-05T23:11:33.7067685Z [command]/usr/bin/git sparse-checkout disable
+2026-10-05T23:11:33.7108126Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-05T23:11:33.7136113Z ##[group]Checking out the ref
+2026-10-05T23:11:33.7140751Z [command]/usr/bin/git checkout --progress --force 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:33.7357010Z Note: switching to '314b69b9a4ac4c4328540792fcc516e6ce5c6e16'.
+2026-10-05T23:11:33.7357449Z 
+2026-10-05T23:11:33.7357734Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-05T23:11:33.7358424Z changes and commit them, and you can discard any commits you make in this
+2026-10-05T23:11:33.7359158Z state without impacting any branches by switching back to a branch.
+2026-10-05T23:11:33.7359598Z 
+2026-10-05T23:11:33.7359902Z If you want to create a new branch to retain commits you create, you may
+2026-10-05T23:11:33.7360510Z do so (now or later) by using -c with the switch command. Example:
+2026-10-05T23:11:33.7360842Z 
+2026-10-05T23:11:33.7360954Z   git switch -c <new-branch-name>
+2026-10-05T23:11:33.7361118Z 
+2026-10-05T23:11:33.7361230Z Or undo this operation with:
+2026-10-05T23:11:33.7361398Z 
+2026-10-05T23:11:33.7361494Z   git switch -
+2026-10-05T23:11:33.7361645Z 
+2026-10-05T23:11:33.7361861Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-05T23:11:33.7362449Z 
+2026-10-05T23:11:33.7362704Z HEAD is now at 314b69b fix(qr): require explicit retry after camera permission denial
+2026-10-05T23:11:33.7363745Z ##[endgroup]
+2026-10-05T23:11:33.7405527Z [command]/usr/bin/git log -1 --format=%H
+2026-10-05T23:11:33.7427489Z 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:33.7435516Z ##[group]Removing auth
+2026-10-05T23:11:33.7439162Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T23:11:33.7465818Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T23:11:33.7652225Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T23:11:33.7674939Z http.https://github.com/.extraheader
+2026-10-05T23:11:33.7680872Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-05T23:11:33.7710219Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T23:11:33.7890867Z ##[endgroup]
+2026-10-05T23:11:33.8037404Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+2026-10-05T23:11:33.8037779Z with:
+2026-10-05T23:11:33.8037987Z   node-version: 22.16.0
+2026-10-05T23:11:33.8038208Z   always-auth: false
+2026-10-05T23:11:33.8038422Z   check-latest: false
+2026-10-05T23:11:33.8040857Z   token: ***
+2026-10-05T23:11:33.8041060Z env:
+2026-10-05T23:11:33.8041252Z   MODE: camera
+2026-10-05T23:11:33.8041496Z   SOURCE_SHA: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:33.8041791Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T23:11:33.8042044Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T23:11:33.8042279Z   EXPO_OFFLINE: 1
+2026-10-05T23:11:33.8042504Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T23:11:33.8042731Z   CI: 1
+2026-10-05T23:11:33.8042923Z ##[endgroup]
+2026-10-05T23:11:33.9109190Z Attempting to download 22.16.0...
+2026-10-05T23:11:33.9191008Z (node:2272) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T23:11:33.9191956Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T23:11:34.4065147Z Acquiring 22.16.0 - x64 from https://github.com/actions/node-versions/releases/download/22.16.0-15177438473/node-22.16.0-linux-x64.tar.gz
+2026-10-05T23:11:34.8749721Z Extracting ...
+2026-10-05T23:11:34.8847348Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/4d331542-588e-4c12-b53f-1976e02e3eaa -f /home/runner/work/_temp/fa494dd0-d585-44d5-a0de-48fa400570f8
+2026-10-05T23:11:35.8746014Z Adding to the cache ...
+2026-10-05T23:11:38.4225138Z ##[group]Environment details
+2026-10-05T23:11:38.6036136Z node: v22.16.0
+2026-10-05T23:11:38.6036448Z npm: 10.9.2
+2026-10-05T23:11:38.6036691Z yarn: 1.22.22
+2026-10-05T23:11:38.6037110Z ##[endgroup]
+2026-10-05T23:11:38.6193751Z ##[group]Run bash controller/validation/pocketpay/prepare.sh
+2026-10-05T23:11:38.6194554Z [36;1mbash controller/validation/pocketpay/prepare.sh[0m
+2026-10-05T23:11:38.6401686Z shell: /usr/bin/bash -e {0}
+2026-10-05T23:11:38.6401916Z env:
+2026-10-05T23:11:38.6402086Z   MODE: camera
+2026-10-05T23:11:38.6402300Z   SOURCE_SHA: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:38.6402572Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T23:11:38.6402806Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T23:11:38.6403009Z   EXPO_OFFLINE: 1
+2026-10-05T23:11:38.6403178Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T23:11:38.6403368Z   CI: 1
+2026-10-05T23:11:38.6403518Z ##[endgroup]
+2026-10-05T23:11:54.9026432Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-10-05T23:11:54.9026982Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-10-05T23:11:54.9027478Z 
+2026-10-05T23:11:54.9802346Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-10-05T23:11:54.9802865Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-10-05T23:11:55.2122671Z 
+2026-10-05T23:11:56.2132490Z  19  177M   19 34.2M    0     0   110M      0  0:00:01 --:--:--  0:00:01  110M
+2026-10-05T23:11:56.4921737Z  76  177M   76  136M    0     0   103M      0  0:00:01  0:00:01 --:--:--  101M
+2026-10-05T23:11:56.6194507Z 100  177M  100  177M    0     0   111M      0  0:00:01  0:00:01 --:--:--  111M
+2026-10-05T23:11:56.7477942Z ##[group]Run bash controller/validation/pocketpay/kvm-preflight.sh
+2026-10-05T23:11:56.7478578Z [36;1mbash controller/validation/pocketpay/kvm-preflight.sh[0m
+2026-10-05T23:11:56.7536546Z shell: /usr/bin/bash -e {0}
+2026-10-05T23:11:56.7536773Z env:
+2026-10-05T23:11:56.7536952Z   MODE: camera
+2026-10-05T23:11:56.7537180Z   SOURCE_SHA: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:56.7537471Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T23:11:56.7537704Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T23:11:56.7537916Z   EXPO_OFFLINE: 1
+2026-10-05T23:11:56.7538106Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T23:11:56.7538306Z   CI: 1
+2026-10-05T23:11:56.7538468Z ##[endgroup]
+2026-10-05T23:11:56.9454994Z step=write-rule exit=0
+2026-10-05T23:11:56.9668112Z step=reload-rules exit=0
+2026-10-05T23:11:56.9768128Z step=trigger-and-settle exit=0
+2026-10-05T23:11:57.0094367Z step=mandatory-read-write exit=0
+2026-10-05T23:11:57.1667527Z ##[group]Run ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d
+2026-10-05T23:11:57.1668148Z with:
+2026-10-05T23:11:57.1668380Z   api-level: 34
+2026-10-05T23:11:57.1668599Z   target: google_apis
+2026-10-05T23:11:57.1668822Z   arch: x86_64
+2026-10-05T23:11:57.1669036Z   profile: pixel_2
+2026-10-05T23:11:57.1669293Z   ram-size: 2048M
+2026-10-05T23:11:57.1669540Z   heap-size: 512M
+2026-10-05T23:11:57.1669795Z   cores: 2
+2026-10-05T23:11:57.1670021Z   disk-size: 4096M
+2026-10-05T23:11:57.1670293Z   disable-linux-hw-accel: false
+2026-10-05T23:11:57.1670614Z   emulator-boot-timeout: 300
+2026-10-05T23:11:57.1671304Z   emulator-options: -no-window -gpu swiftshader -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none
+2026-10-05T23:11:57.1672067Z   script: bash controller/validation/pocketpay/run.sh
+2026-10-05T23:11:57.1672340Z   avd-name: test
+2026-10-05T23:11:57.1672530Z   force-avd-creation: true
+2026-10-05T23:11:57.1672767Z   emulator-port: 5554
+2026-10-05T23:11:57.1672947Z   disable-animations: true
+2026-10-05T23:11:57.1673150Z   disable-spellchecker: false
+2026-10-05T23:11:57.1673352Z   enable-hw-keyboard: false
+2026-10-05T23:11:57.1673538Z   channel: stable
+2026-10-05T23:11:57.1673700Z env:
+2026-10-05T23:11:57.1673852Z   MODE: camera
+2026-10-05T23:11:57.1674208Z   SOURCE_SHA: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:11:57.1674476Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T23:11:57.1674705Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T23:11:57.1674903Z   EXPO_OFFLINE: 1
+2026-10-05T23:11:57.1675075Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T23:11:57.1675264Z   CI: 1
+2026-10-05T23:11:57.1675417Z ##[endgroup]
+2026-10-05T23:11:57.2139513Z ##[group]Configure emulator
+2026-10-05T23:11:57.2141300Z API level: 34
+2026-10-05T23:11:57.2141589Z System image API level: 34
+2026-10-05T23:11:57.2141839Z target: google_apis
+2026-10-05T23:11:57.2142159Z CPU architecture: x86_64
+2026-10-05T23:11:57.2142503Z Hardware profile: pixel_2
+2026-10-05T23:11:57.2142841Z Cores: 2
+2026-10-05T23:11:57.2143113Z RAM size: 2048M
+2026-10-05T23:11:57.2143391Z Heap size: 512M
+2026-10-05T23:11:57.2143938Z SD card path or size: 
+2026-10-05T23:11:57.2145469Z Disk size: 4096M
+2026-10-05T23:11:57.2145792Z AVD name: test
+2026-10-05T23:11:57.2146125Z force avd creation: true
+2026-10-05T23:11:57.2146542Z Emulator boot timeout: 300
+2026-10-05T23:11:57.2146896Z emulator port: 5554
+2026-10-05T23:11:57.2148185Z emulator options: -no-window -gpu swiftshader -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none
+2026-10-05T23:11:57.2148948Z disable animations: true
+2026-10-05T23:11:57.2149298Z disable spellchecker: false
+2026-10-05T23:11:57.2149716Z disable Linux hardware acceleration: false
+2026-10-05T23:11:57.2150168Z enable hardware keyboard: false
+2026-10-05T23:11:57.2150505Z Channel: 0 (stable)
+2026-10-05T23:11:57.2150775Z Script:
+2026-10-05T23:11:57.2151135Z bash controller/validation/pocketpay/run.sh
+2026-10-05T23:11:57.2151641Z Pre emulator launch script:
+2026-10-05T23:11:57.2152128Z ##[endgroup]
+2026-10-05T23:11:57.2152571Z ##[group]Install Android SDK
+2026-10-05T23:11:57.2442657Z [command]/usr/bin/sh -c \yes | sdkmanager --licenses > /dev/null
+2026-10-05T23:12:04.3459994Z Installing latest build tools, platform tools, and platform.
+2026-10-05T23:12:04.3473675Z [command]/usr/bin/sh -c \sdkmanager --install 'build-tools;37.0.0' platform-tools 'platforms;android-34'> /dev/null
+2026-10-05T23:12:05.5451374Z Installing latest emulator.
+2026-10-05T23:12:05.5462836Z [command]/usr/bin/sh -c \sdkmanager --install emulator --channel=0 > /dev/null
+2026-10-05T23:12:15.9987328Z Installing system images.
+2026-10-05T23:12:16.0000266Z [command]/usr/bin/sh -c \sdkmanager --install 'system-images;android-34;google_apis;x86_64' --channel=0 > /dev/null
+2026-10-05T23:12:55.1551606Z ##[endgroup]
+2026-10-05T23:12:55.1554314Z ##[group]Create AVD
+2026-10-05T23:12:55.1554626Z Creating AVD.
+2026-10-05T23:12:55.1573093Z [command]/usr/bin/sh -c \echo no | avdmanager create avd --force -n test --package 'system-images;android-34;google_apis;x86_64' --device 'pixel_2'
+2026-10-05T23:12:55.8519395Z Loading local repository...                                                     
+2026-10-05T23:12:55.8536718Z [=========                              ] 25% Loading local repository...       
+2026-10-05T23:12:55.8537380Z [=========                              ] 25% Fetch remote repository...        
+2026-10-05T23:12:55.8537908Z [=======================================] 100% Fetch remote repository...       
+2026-10-05T23:12:56.3950495Z Auto-selecting single ABI x86_64
+2026-10-05T23:12:56.8506571Z [command]/usr/bin/sh -c \printf 'hw.cpu.ncore=2\nhw.ramSize=2048M\nhw.heapSize=512M\ndisk.dataPartition.size=4096M\n' >> /home/runner/.android/avd/test.avd/config.ini
+2026-10-05T23:12:56.8524314Z ##[endgroup]
+2026-10-05T23:12:56.8526194Z ##[group]Launch Emulator
+2026-10-05T23:12:56.8526511Z Starting emulator.
+2026-10-05T23:12:56.8538689Z [command]/usr/bin/sh -c \/usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd test -no-window -gpu swiftshader -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none &
+2026-10-05T23:12:56.8641301Z INFO         | Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)
+2026-10-05T23:12:56.8641890Z INFO         | Graphics backend: gfxstream
+2026-10-05T23:12:56.8642381Z INFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64/
+2026-10-05T23:12:56.9049951Z INFO         | Saving last run QEMU version for the AVD to 2
+2026-10-05T23:12:56.9050505Z INFO         | Increasing RAM size to 2560MB
+2026-10-05T23:12:56.9051021Z ##############################################################################
+2026-10-05T23:12:56.9051606Z ##                        WARNING - ACTION REQUIRED                         ##
+2026-10-05T23:12:56.9052267Z ##  Consider using the '-metrics-collection' flag to help improve the       ##
+2026-10-05T23:12:56.9053018Z ##  emulator by sending anonymized usage data. Or use the '-no-metrics'     ##
+2026-10-05T23:12:56.9053534Z ##  flag to bypass this warning and turn off the metrics collection.        ##
+2026-10-05T23:12:56.9054136Z ##  In a future release this warning will turn into a one-time blocking     ##
+2026-10-05T23:12:56.9054594Z ##  prompt to ask for explicit user input regarding metrics collection.     ##
+2026-10-05T23:12:56.9054964Z ##                                                                          ##
+2026-10-05T23:12:56.9055881Z ##  Please see '-help-metrics-collection' for more details. You can use     ##
+2026-10-05T23:12:56.9056519Z ##  '-metrics-to-file' or '-metrics-to-console' flags to see what type of   ##
+2026-10-05T23:12:56.9057154Z ##  data is being collected by emulator as part of usage statistics.        ##
+2026-10-05T23:12:56.9057701Z ##############################################################################
+2026-10-05T23:12:56.9058157Z INFO         | Guest GLES Driver: Auto (ext controls)
+2026-10-05T23:12:56.9058798Z INFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader
+2026-10-05T23:12:56.9059398Z INFO         | Checking system compatibility:
+2026-10-05T23:12:56.9059858Z INFO         |   Checking: hasSufficientDiskSpace
+2026-10-05T23:12:56.9060421Z INFO         |      Ok: Disk space requirements to run avd: `test` are met
+2026-10-05T23:12:56.9060967Z INFO         |   Checking: hasSufficientHwGpu
+2026-10-05T23:12:56.9061530Z INFO         |      Ok: Hardware GPU compatibility checks are not required
+2026-10-05T23:12:56.9062096Z INFO         |   Checking: hasSufficientSystem
+2026-10-05T23:12:56.9062668Z INFO         |      Ok: System requirements to run avd: `test` are met
+2026-10-05T23:12:56.9064165Z WARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1
+2026-10-05T23:12:58.6091980Z INFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.2.12.db, detection is enabled for process: 2734
+2026-10-05T23:12:58.6092609Z INFO         | Initializing gfxstream backend
+2026-10-05T23:12:58.6100793Z INFO         | startOpenglesRendererImpl: gpu info
+2026-10-05T23:12:58.6101230Z INFO         | 
+2026-10-05T23:12:58.6103793Z INFO         | initIcdPaths: ICD set to 'swiftshader', using Swiftshader ICD
+2026-10-05T23:12:58.6104652Z INFO         | Setting ICD filenames for the loader = /usr/local/lib/android/sdk/emulator/lib64/vulkan/vk_swiftshader_icd.json
+2026-10-05T23:12:58.6105427Z INFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so]
+2026-10-05T23:12:58.6106228Z INFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so.1]
+2026-10-05T23:12:58.6107169Z INFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so]
+2026-10-05T23:12:58.6107783Z INFO         | Added library: /usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so
+2026-10-05T23:12:58.6406010Z INFO         | Selecting Vulkan device: SwiftShader Device (Subzero), Version: 1.3.0
+2026-10-05T23:12:58.6406670Z INFO         | Using Vulkan externalMemoryMode: OpaqueFd for VkEmulation
+2026-10-05T23:12:58.6495421Z INFO         | Format VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16 does not support YCbCr sampler conversion
+2026-10-05T23:12:58.6521885Z INFO         | SharedLibrary::open for [libX11]
+2026-10-05T23:12:58.6524652Z WARNING      | Could not open libX11.so, try libX11.so.6
+2026-10-05T23:12:58.6525181Z INFO         | SharedLibrary::open for [libX11.so.6]
+2026-10-05T23:12:58.6525671Z INFO         | SharedLibrary::open for [libX11-xcb]
+2026-10-05T23:12:58.6526219Z WARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1
+2026-10-05T23:12:58.6526782Z INFO         | SharedLibrary::open for [libX11-xcb.so.1]
+2026-10-05T23:12:58.6612933Z INFO         | Initializing VkEmulation features:
+2026-10-05T23:12:58.6613472Z INFO         |     glInteropSupported: false
+2026-10-05T23:12:58.6613933Z INFO         |     useDeferredCommands: true
+2026-10-05T23:12:58.6614649Z INFO         |     createResourceWithRequirements: true
+2026-10-05T23:12:58.6615125Z INFO         |     useVulkanComposition: false
+2026-10-05T23:12:58.6615616Z INFO         |     useVulkanNativeSwapchain: false
+2026-10-05T23:12:58.6616120Z INFO         |     enable guestRenderDoc: false
+2026-10-05T23:12:58.6616575Z INFO         |     ASTC LDR emulation mode: Gpu
+2026-10-05T23:12:58.6617352Z INFO         |     enable ETC2 emulation: true
+2026-10-05T23:12:58.6617789Z INFO         |     enable Ycbcr emulation: false
+2026-10-05T23:12:58.6618193Z INFO         |     guestVulkanOnly: false
+2026-10-05T23:12:58.6618630Z INFO         |     useDedicatedAllocations: false
+2026-10-05T23:12:58.6619059Z INFO         |     guestVulkanMaxApiVersion: 1.3.0
+2026-10-05T23:12:58.6619494Z INFO         |     enableProtectedMemoryEmulation: false
+2026-10-05T23:12:58.6619989Z INFO         | Graphics Adapter Vendor Google (Google Inc.)
+2026-10-05T23:12:58.6620644Z INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)
+2026-10-05T23:12:58.6621435Z INFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)
+2026-10-05T23:12:58.6624654Z INFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 
+2026-10-05T23:12:58.6626240Z INFO         | Graphics Device Extensions N/A
+2026-10-05T23:12:58.6626763Z INFO         | Disabling sparse binding feature support
+2026-10-05T23:12:58.6696668Z INFO         | Sending adb public key [QAAAAKe9l93p5ZKdaD9XSlh8krnFpxuJWoaKBjF5NFYKUyv/m89jgulxWI5Ct/HEl3YmWzVyHpSta+cudXo/NJhD0qslshWZBVtzMap2MBz0boNzL4EMCLRHpEE5/WSFE+WnSsX/EhftucsctoRZBZE3JiJrpbcoY2qVXuWs82jeSa1pGLV2EmzzDzI1enNkW4UgeZ3ZKTagtF/eFhDRADb0qG9h8KPxTxLNdFjJ6kgaDHKT471dznphKt6BrxTAG/x0hRzVdjhb7n3r9I9swZI2jQnEZKEmvj4ycfm2yYeLxtIIZwFz+XUzXRVwrA2tZHsnQvYLWvA4+WlTfLInZFw2t9ugbmju3+bS3Q3Dy480h2aRfQU1ujRmMjs2NBb2oWY86WYmZsrwEBauMlIvYDDcXO9ds0wGmZ8bzIxYyNnzDUENU18vPBUTyUsINjiXuiq+AlVhCS/Ct7mj738qqcL1HSUxAJmEgzO7LU76s6O2mLZZpL7mLuxLGffHCeHFttG9fxATxejeDtR139wF22rduaV0ZFwMGKZjKYDa2PpXnrsr0BIsJtUeNbU4bDl9fhMdS/TleaDsSumibzokKqG/3j1AROWjY32MM210D2V8uKoUKBa0raV7Df98igqX30MjFQiXkOLYLZ2rQyR8xj7LPMv1Ptwftrh5NtF4f5Bg1fCpCut0kQEAAQA= runner@unknown]
+2026-10-05T23:12:58.6699554Z INFO         | Userspace boot properties:
+2026-10-05T23:12:58.6700002Z INFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0
+2026-10-05T23:12:58.6700414Z INFO         |   androidboot.dalvik.vm.heapsize=576m
+2026-10-05T23:12:58.6700742Z INFO         |   androidboot.debug.hwui.renderer=skiagl
+2026-10-05T23:12:58.6701067Z INFO         |   androidboot.debug.sf.nobootanimation=1
+2026-10-05T23:12:58.6701358Z INFO         |   androidboot.hardware=ranchu
+2026-10-05T23:12:58.6701668Z INFO         |   androidboot.hardware.gltransport=pipe
+2026-10-05T23:12:58.6701983Z INFO         |   androidboot.hardware.vulkan=ranchu
+2026-10-05T23:12:58.6702271Z INFO         |   androidboot.logcat=*:V
+2026-10-05T23:12:58.6702552Z INFO         |   androidboot.opengles.version=196608
+2026-10-05T23:12:58.6702817Z INFO         |   androidboot.qemu=1
+2026-10-05T23:12:58.6706342Z INFO         |   androidboot.qemu.adb.pubkey=QAAAAKe9l93p5ZKdaD9XSlh8krnFpxuJWoaKBjF5NFYKUyv/m89jgulxWI5Ct/HEl3YmWzVyHpSta+cudXo/NJhD0qslshWZBVtzMap2MBz0boNzL4EMCLRHpEE5/WSFE+WnSsX/EhftucsctoRZBZE3JiJrpbcoY2qVXuWs82jeSa1pGLV2EmzzDzI1enNkW4UgeZ3ZKTagtF/eFhDRADb0qG9h8KPxTxLNdFjJ6kgaDHKT471dznphKt6BrxTAG/x0hRzVdjhb7n3r9I9swZI2jQnEZKEmvj4ycfm2yYeLxtIIZwFz+XUzXRVwrA2tZHsnQvYLWvA4+WlTfLInZFw2t9ugbmju3+bS3Q3Dy480h2aRfQU1ujRmMjs2NBb2oWY86WYmZsrwEBauMlIvYDDcXO9ds0wGmZ8bzIxYyNnzDUENU18vPBUTyUsINjiXuiq+AlVhCS/Ct7mj738qqcL1HSUxAJmEgzO7LU76s6O2mLZZpL7mLuxLGffHCeHFttG9fxATxejeDtR139wF22rduaV0ZFwMGKZjKYDa2PpXnrsr0BIsJtUeNbU4bDl9fhMdS/TleaDsSumibzokKqG/3j1AROWjY32MM210D2V8uKoUKBa0raV7Df98igqX30MjFQiXkOLYLZ2rQyR8xj7LPMv1Ptwftrh5NtF4f5Bg1fCpCut0kQEAAQA= runner@unknown
+2026-10-05T23:12:58.6709374Z INFO         |   androidboot.qemu.avd_name=test
+2026-10-05T23:12:58.6709715Z INFO         |   androidboot.qemu.camera_hq_edge_processing=0
+2026-10-05T23:12:58.6710063Z INFO         |   androidboot.qemu.camera_protocol_ver=1
+2026-10-05T23:12:58.6710398Z INFO         |   androidboot.qemu.cpuvulkan.version=4206592
+2026-10-05T23:12:58.6710769Z INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
+2026-10-05T23:12:58.6711141Z INFO         |   androidboot.qemu.gltransport.name=pipe
+2026-10-05T23:12:58.6711478Z INFO         |   androidboot.qemu.hwcodec.avcdec=2
+2026-10-05T23:12:58.6711782Z INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+2026-10-05T23:12:58.6712087Z INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+2026-10-05T23:12:58.6712471Z INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+2026-10-05T23:12:58.6712848Z INFO         |   androidboot.qemu.skin=1080x1920
+2026-10-05T23:12:58.6713152Z INFO         |   androidboot.qemu.virtiowifi=1
+2026-10-05T23:12:58.6713437Z INFO         |   androidboot.qemu.vsync=60
+2026-10-05T23:12:58.6713747Z INFO         |   androidboot.serialno=EMULATOR37X2X12X0
+2026-10-05T23:12:58.6714406Z INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2bc5bb30a5c3ff23679ca15d3bcd3
+2026-10-05T23:12:58.6714861Z INFO         |   androidboot.vbmeta.hash_alg=sha256
+2026-10-05T23:12:58.6715154Z INFO         |   androidboot.vbmeta.size=6656
+2026-10-05T23:12:58.6715444Z INFO         |   androidboot.veritymode=enforcing
+2026-10-05T23:12:58.6872637Z WARNING: cannnot unmap ptr 0x7f7487a01000 as it is in the protected range from 0x7f73e7a00000 to 0x7f7487c00000
+2026-10-05T23:12:58.7024154Z INFO         | Monitoring duration of emulator setup.
+2026-10-05T23:12:59.7320298Z INFO         | Successfully initialized netsim WiFi
+2026-10-05T23:12:59.7320765Z INFO         | Activated packet streamer for bluetooth emulation
+2026-10-05T23:12:59.7368743Z INFO         | Setting display: 0 configuration to: 1080x1920, dpi: 420x420 
+2026-10-05T23:12:59.7369997Z INFO         | setDisplayActiveConfig: id:0, 1080x1920
+2026-10-05T23:12:59.7370585Z INFO         | emulatorSetupEnvironment: Environment scene is not required
+2026-10-05T23:12:59.7431121Z USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
+2026-10-05T23:12:59.7432249Z WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+2026-10-05T23:12:59.8264199Z WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+2026-10-05T23:13:06.8573172Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:06.8598698Z * daemon not running; starting now at tcp:5037
+2026-10-05T23:13:07.3963462Z * daemon started successfully
+2026-10-05T23:13:07.3964783Z adb: device offline
+2026-10-05T23:13:07.3972614Z The process '/usr/local/lib/android/sdk/platform-tools/adb' failed with exit code 1
+2026-10-05T23:13:09.4020222Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:09.4058966Z adb: device offline
+2026-10-05T23:13:09.4065378Z The process '/usr/local/lib/android/sdk/platform-tools/adb' failed with exit code 1
+2026-10-05T23:13:11.4135458Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:11.4539769Z 
+2026-10-05T23:13:13.4608167Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:13.4968023Z 
+2026-10-05T23:13:15.5022357Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:15.5230837Z 
+2026-10-05T23:13:17.5285853Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:17.5429843Z 
+2026-10-05T23:13:19.5472143Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:19.5764565Z 
+2026-10-05T23:13:21.5803550Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:21.6018918Z 
+2026-10-05T23:13:23.6084389Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:23.6404642Z 
+2026-10-05T23:13:25.6455986Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:25.6682673Z 
+2026-10-05T23:13:27.6735439Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:27.6921380Z 
+2026-10-05T23:13:29.7015737Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:29.7372442Z 
+2026-10-05T23:13:30.4961074Z INFO         | Boot completed in 33608 ms
+2026-10-05T23:13:30.4965441Z INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+2026-10-05T23:13:31.7438563Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-10-05T23:13:31.7963258Z 1
+2026-10-05T23:13:31.7966091Z Emulator booted.
+2026-10-05T23:13:31.7982438Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell input keyevent 82
+2026-10-05T23:13:35.6688419Z Disabling animations.
+2026-10-05T23:13:35.6743209Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global window_animation_scale 0.0
+2026-10-05T23:13:36.0161049Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
+2026-10-05T23:13:36.1625577Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global animator_duration_scale 0.0
+2026-10-05T23:13:36.8105566Z ##[endgroup]
+2026-10-05T23:13:36.8106271Z [command]/usr/bin/sh -c bash controller/validation/pocketpay/run.sh
+2026-10-05T23:13:51.9945964Z 8081
+2026-10-05T23:17:03.4550206Z ##[error]The process '/usr/bin/sh' failed with exit code 1
+2026-10-05T23:17:03.4558604Z ##[group]Terminate Emulator
+2026-10-05T23:17:03.4559297Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 emu kill
+2026-10-05T23:17:03.4587698Z OK: killing emulator, bye bye
+2026-10-05T23:17:03.4591014Z OK
+2026-10-05T23:17:03.4592542Z INFO         | Wait for emulator (pid 2734) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+2026-10-05T23:17:03.4593358Z 
+2026-10-05T23:17:03.4593773Z ##[endgroup]
+2026-10-05T23:17:03.4705592Z USER_INFO    | Snapshots have been disabled by the user, save request is ignored.
+2026-10-05T23:17:03.4706739Z INFO         | Saving snapshot 'default_boot' took 0 ms
+2026-10-05T23:17:03.7814326Z ERROR        | stop: Not implemented
+2026-10-05T23:17:03.7815120Z WARNING      | Emulator client has not yet been configured.. Call configure me first!
+2026-10-05T23:17:03.7928943Z INFO         | removeAll
+2026-10-05T23:17:03.8307167Z WARNING      | Netsim Wifi dns:///localhost:43213 is gone due to Stream removed (CANCELLED)
+2026-10-05T23:17:04.2053147Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-05T23:17:04.2053475Z with:
+2026-10-05T23:17:04.2053675Z   name: pocketpay-android34-camera-37387043100
+2026-10-05T23:17:04.2053923Z   path: evidence/camera/
+2026-10-05T23:17:04.2054413Z   retention-days: 14
+2026-10-05T23:17:04.2054597Z   if-no-files-found: error
+2026-10-05T23:17:04.2054783Z   compression-level: 6
+2026-10-05T23:17:04.2054952Z   overwrite: false
+2026-10-05T23:17:04.2055121Z   include-hidden-files: false
+2026-10-05T23:17:04.2055304Z env:
+2026-10-05T23:17:04.2055447Z   MODE: camera
+2026-10-05T23:17:04.2055635Z   SOURCE_SHA: 314b69b9a4ac4c4328540792fcc516e6ce5c6e16
+2026-10-05T23:17:04.2055885Z   EXPO_PUBLIC_STELLAR_NETWORK: TESTNET
+2026-10-05T23:17:04.2056276Z   EXPO_PUBLIC_VAULT_ENABLED: true
+2026-10-05T23:17:04.2056469Z   EXPO_OFFLINE: 1
+2026-10-05T23:17:04.2056637Z   EXPO_NO_TYPESCRIPT_SETUP: 1
+2026-10-05T23:17:04.2056817Z   CI: 1
+2026-10-05T23:17:04.2057010Z   ANDROID_AVD_HOME: /home/runner/.android/avd
+2026-10-05T23:17:04.2057232Z ##[endgroup]
+2026-10-05T23:17:04.3410938Z (node:4080) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T23:17:04.3411601Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T23:17:04.3565478Z With the provided path, there will be 79 files uploaded
+2026-10-05T23:17:04.3566151Z Artifact name is valid!
+2026-10-05T23:17:04.3566509Z Root directory input is valid!
+2026-10-05T23:17:04.5636363Z Beginning upload of artifact content to blob storage
+2026-10-05T23:17:04.6878616Z (node:4080) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-05T23:17:04.7735792Z Uploaded bytes 1605638
+2026-10-05T23:17:04.7874239Z Finished uploading artifact content to blob storage!
+2026-10-05T23:17:04.7875239Z SHA256 digest of uploaded artifact zip is c3144c2cdfd4177303d69638d545ad39b54cd3744e78fbd7c2771f382e227053
+2026-10-05T23:17:04.7876608Z Finalizing artifact upload
+2026-10-05T23:17:04.9981294Z Artifact pocketpay-android34-camera-37387043100.zip successfully finalized. Artifact ID 11379327749
+2026-10-05T23:17:04.9982282Z Artifact pocketpay-android34-camera-37387043100 has been successfully uploaded! Final size is 1605638 bytes. Artifact ID is 11379327749
+2026-10-05T23:17:04.9986439Z Artifact download URL: https://github.com/woahwhattheheck/pocketpay-mobile/actions/runs/37387043100/artifacts/11379327749
+2026-10-05T23:17:05.0152537Z Post job cleanup.
+2026-10-05T23:17:05.0826014Z [command]/usr/bin/git version
+2026-10-05T23:17:05.0859165Z git version 2.55.0
+2026-10-05T23:17:05.0887862Z Temporarily overriding HOME='/home/runner/work/_temp/15ccf498-e2fd-4574-b23e-aa879f1442f6' before making global git config changes
+2026-10-05T23:17:05.0889027Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T23:17:05.0892230Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pocketpay-mobile/pocketpay-mobile/subject
+2026-10-05T23:17:05.0923129Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T23:17:05.0952260Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T23:17:05.1165423Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T23:17:05.1196996Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T23:17:05.1580473Z Post job cleanup.
+2026-10-05T23:17:05.2288576Z [command]/usr/bin/git version
+2026-10-05T23:17:05.2334812Z git version 2.55.0
+2026-10-05T23:17:05.2380606Z Temporarily overriding HOME='/home/runner/work/_temp/756d27b9-1f28-4c0a-bdbb-e0a8efd23e46' before making global git config changes
+2026-10-05T23:17:05.2381930Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T23:17:05.2383236Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pocketpay-mobile/pocketpay-mobile/controller
+2026-10-05T23:17:05.2416276Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T23:17:05.2453114Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T23:17:05.2660133Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T23:17:05.2694343Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T23:17:05.3075452Z Cleaning up orphan processes
+2026-10-05T23:17:05.3422244Z Terminate orphan process: pid (2890) (adb)
+2026-10-05T23:17:05.3506140Z Terminate orphan process: pid (3179) (node)
+2026-10-05T23:17:05.3587664Z Terminate orphan process: pid (3229) (node)
+2026-10-05T23:17:05.3669979Z Terminate orphan process: pid (3230) (node)
+2026-10-05T23:17:05.3696088Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

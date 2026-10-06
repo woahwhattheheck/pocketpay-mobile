@@ -1,0 +1,39 @@
+--- parent-3dc/retry_host_adapter.py
++++ retry_host_adapter.py
+@@ -193,11 +193,21 @@
+         self.require_live()
+         if self._settling:
+             raise RuntimeError('Recursive Retry host settling is forbidden')
++        proof_output = self.output / 'retry-host-proofs' / self.kind / ('closure-' + str(self.closures + 1))
++        if proof_output.exists():
++            raise FileExistsError('Retry host-proof directory cannot be reused: ' + str(proof_output))
+         tree, _ = self.dump()
+         self.host.overlay_guard(tree)
+         if intro_sheet(tree) or self.host.has_host_sheet(tree):
+             self._settling = True
++            product_output = self.output
+             try:
++                # Keep the unchanged shared helpers' fixed proof filenames in
++                # an exclusive directory for this collector and closure.
++                # Refuse reuse before any host-proof action or capture.
++                self.require_live()
++                proof_output.mkdir(parents=True, exist_ok=False)
++                self.output = proof_output
+                 pid = self._pid()
+                 before = self._records()
+                 if intro_sheet(tree):
+@@ -215,11 +225,13 @@
+                 self.closures += 1
+                 record = {'kind': self.kind, 'outcome': self.outcome, 'pid': pid,
+                           'beforeRecords': before, 'afterRecords': after,
+-                          'productStatePassed': False, 'originalUriRedelivered': False}
++                          'productStatePassed': False, 'originalUriRedelivered': False,
++                          'proofDirectory': str(proof_output.relative_to(product_output))}
+                 (self.output / ('retry-host-preservation-' + str(self.closures) + '.json')).write_text(json.dumps(record, indent=2)+'\n')
+             except (subprocess.SubprocessError, ET.ParseError) as error:
+                 raise RuntimeError('Recognized Retry host handling failed; no target claim') from error
+             finally:
++                self.output = product_output
+                 self._settling = False
+         # The caller's target is checked against this fresh hierarchy; hidden
+         # labels from the original wait or host before-proof cannot qualify it.

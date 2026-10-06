@@ -3,7 +3,7 @@
   "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
   "officialExpoGoSha256": "d72ed2cec15bf029c942d1cb70c933976ec83048e00d130bbfa6bad8cf22331a",
   "controllerFilesSha256": {
-    "README.md": "c77172f924c4ae3b1ae728e3cb3b3c93f6871c2ee23b066f3c390985fa4b37c4",
+    "README.md": "2d40a33b71ff718c81c0e6149c1a113b946116d2730694fb18407d5dacdf0642",
     "baseline-fixture/README.md": "d62306b136feea1e7324633899f3a3c4c9b1e0d6ae0d46dbc6416b9495e09f3f",
     "baseline-fixture/fixture-manifest.json": "f18fbe3aa2b96e155a8cc7765b683b676821b5d81e527df79c8292ce1e7b78c8",
     "baseline-fixture/native-baseline-bootstrap.js": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
@@ -20,15 +20,15 @@
     "baseline-fixture/setup-validation-checkout.py": "d260160c7a633d8b6f3f788ce056f93c4899df88728589c5e6f7dfef8512876a",
     "baseline-fixture/source-manifest.json": "e8d2305259e7eed3137ea0f9c49b184a9e5b4dd86f77271239cc066eabb11ce2",
     "baseline-fixture/validate-fixture.js": "77aa535b88ae6baa1b4a836519a80b9fe6be046b7e595f3b8f7ea4d0cf4ef470",
-    "baseline_cases.py": "278b7fc8a43c5dbcbb0cabae006a04d5fd9cf1f45e97ec50e824dbbda9ad7542",
+    "baseline_cases.py": "7dc80c1fa036f73ae4766dfebb3179b77a75a710aac4c24448b86aaaf32c321a",
     "baseline_observer_framing.py": "788d2fb8861b52ee6bb84101b05b7ff34cd2707918dfabe17fce3bb91e74c443",
     "baseline_startup_overlay.py": "72e3c470a6c996593c5d38a282a4ba7cef7856fcfba356deadc9ef9403098e8b",
     "current-successor-setup-check.json": "2b8b435d8bb3d93a8fd6cf1114cc1f6a623bec14d3664b31ed3c6ed4b63608ce",
     "prepare-baseline.sh": "cd4c5c14299560953ea1c866873e5d0a3323a78e9fc6a83f661bd19e3535f9ae",
     "retain-final.py": "e16b664d782b012aec91de72b4e3ec367686686aa847bc6e028fa4d170e7f987",
-    "run-baseline.sh": "0c73a424e33eb5e9e489c13043042793ecf2404f5cbb60431c0ee92cd36198d7",
+    "run-baseline.sh": "4599bcaa5b959e907476e15a7f8293695538f717aff63ca46e39c51dfd2ca579",
     "test_baseline_observation.py": "05c020dfe7706c98ec8429a475a41ecc973ef560c602514f5349efad74164262",
-    "ui_baseline.py": "3744c149be96657245c9f7e0c8ef6072857c8db152bc05174b7c731e6b250e0e",
+    "ui_baseline.py": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236",
     "ui_helpers.py": "caafa402fdfbd5a74707f1d495edde97434ed136c070eacedbde16dd97bd464f",
     "vault-fixture/README.md": "eae624a19e94b530dbb48f46afb4b82293ae4d3cd8235d7e260b5ffe253d4f4f",
     "vault-fixture/fixture-manifest.json": "2733bed622719ef205c12c69fa23d8670ba5b47224387b7f0dab4c1829941624",
@@ -36,7 +36,8 @@
     "vault-fixture/native-vault-entry.js": "c99b5efe867ec325a54b0db0993de20fb01c1d64dc83108942a398ccd182da2f",
     "vault-fixture/native-vault-route.tsx": "42ac802da48edf55d2982438b58ed0a5b626b0425e482a3162fcc48910787614",
     "vault-fixture/setup-validation-checkout.py": "9aaef7e03e4221c4fd74cd8cbf6c70185c33a879543a99da04452d733e6dbf4d",
-    "vault-fixture/source-manifest.json": "7fe0631b6c7f00849c13c4be30a2163ffdb97e90e972b5359b2bf32e7ff8d750"
+    "vault-fixture/source-manifest.json": "7fe0631b6c7f00849c13c4be30a2163ffdb97e90e972b5359b2bf32e7ff8d750",
+    "baseline_vault_form.py": "e9e7d2163295abddd9a6495dc73f7d94995d1a3795d5b89c2335b6b3e460230f"
   },
   "preparationChecks": {
     "bashSyntax": true,
@@ -85,9 +86,10 @@
     "Real resolved redacted native Share sheet cancellation",
     "Real Vault Confirm Lock native event/receipt + one memory lock/zero wrong actions"
   ],
-  "supersedesControllerManifestSha256": "f64dbd53078a9e6603f68475384629a12dd38b4529707c7ecab361ead20333cf",
+  "supersedesControllerManifestSha256": "1570816b3f2a0f05bba871d48581c509c1ae4e7b995f5bbf3de59f3db61bef1b",
   "knownNativeErrorGuard": "Actual runtime-not-ready Expo catalyst_redbox_title plus both host redbox controls fails before target/action/app capture; failure-only media retained; fatal initializer blocks later callbacks. Existing Render Error/Uncaught Error guards preserved.",
   "guardCandidateReceiptSha256": "a13713b2d6c6acef8c2f492debfb68d888d14e4d547130622b63f4e1c69d78e7",
-  "nativeStatus": "Original run37379451997 initializer failed before all9 targets. Corrected local seam/framing/stop checks pass; new native run remains pending.",
-  "standaloneVault": "Inactive historical scaffold; active baseline preload entry plus mirrored route only."
+  "nativeStatus": "Run37387043100 had three narrowly observed baseline cases and six failed/incomplete. Original Diagnostics loading/ready frames and actual cancelled redacted Share retained; all nine cases must be observed on the next run for prerequisite acceptance.",
+  "standaloneVault": "Inactive historical scaffold; active baseline preload entry plus mirrored route only.",
+  "hostAndLaunchProposal": "Strict SDK54 exact host controls and currentPID observer records; source-bound conditional first independent History URI once/HOT only before product target/action/media. Global600 remaining budget checks, original semantic callbacks unchanged apart from separately tested Picker filtered selection and bounded observed Vault form discovery."
 }

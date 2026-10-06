@@ -136,7 +136,7 @@ identified; it is not wallet secret storage coverage.
 Only actual ADB PNGs, UI hierarchies, original videos, timestamped native logs and
 counter records support a native assertion. Selectors require observed exact
 enabled clickable actions with visible bounds and no disabled ancestor. Expo's
-actual SDK-version/Connected-to-expo-cli sheet is captured and closed by Back
+actual SDK-version/Connected-to-expo-cli sheet is captured and closed only by the source-bound native header Close, with same-activity host-only before/after proof
 before app targets can be accepted. Only the observed SDK54/runtime/instructional developer-menu tutorial permits its unique native Button Continue; all generic Continue/consent actions remain excluded.
 XML guards reject secret-shaped/revealed-secret UI before retaining media.
 Failure remains failure; cleanup captures/logs never change an exit status.
@@ -184,7 +184,7 @@ run37368574667 failure media and run37373478192 preparation/runner failures
 remain unchanged. Current logcat and historical Metro observations retain
 separate attribution; zero initialization counters are never successful flows.
 
-This local successor recognizes only the actual observed SDK54/runtime/tutorial
+The historical e69 controller added recognition of the actual observed SDK54/runtime/tutorial
 Bottom Sheet in the host package and its unique enabled native Button Continue.
 Before/action/after media must prove host tutorial closure, with productStatePassed
 false; ordinary product waits and safety/counter gates still must pass. Recognized
@@ -212,5 +212,24 @@ and is not repaired or validated.
 The exact actual runtime-not-ready host redbox blocks hidden target/actions and
 app-success captures; failure-only captures retain the original error. A fatal
 initializer failure records the current failure and marks later cases blocked/
-unattempted, avoiding repeated target timeouts. There is no baseline tutorial
-adaptation or baseline warm replay in this successor.
+unattempted, avoiding repeated target timeouts. The historical e69 controller had no baseline tutorial
+adaptation or baseline warm replay; the new scoped host/first-History proposal is described below.
+
+
+The terminal execution of controller e69c9150bda234607c008955ba2e5e5c853b8ae1 in run37387043100 failed all three mode jobs. Its immutable provider ZIPs, actual selected media, source/controller readbacks, failure logs and independent camera/Retry receipts are retained under receipts/run-37387043100. Camera and Retry did not complete their feature flows: Expo host chrome covered required targets, or the guest was on Launcher. Original camera/Retry MP4s are absent and that absence is preserved. The collector reported no producer completion proof; the collection repair alone proves no old or future loading frame.
+
+Baseline had three narrowly observed native cases: missing-transaction guidance; Diagnostics loading to actual ready/native storage; and a real Android redacted text share chooser cancelled without recipient choice. Original Diagnostics video frame49 (PTS6.013056) shows Loading diagnostics, frame50 (PTS6.393744) shows ready. Six other baseline cases failed or remained incomplete, so the prerequisite is still unaccepted. Sign summary was host-covered, picker selection was ambiguous across Recent/Saved rows, and Vault confirmation was not observed. All product source pins and the manual workflow remain unchanged.
+
+This successor's prospective host adapters bind raw callbacks, close only reviewed exact Expo controls, retain host-only before/after proof, and require fresh uncovered product hierarchy. Late host coverage excludes product PNGs. Retry preserves actual signing/recovery identity, counters and record history without any URI delivery; baseline preserves strict actual safety/history and original semantic case validators without initialization or seeding; only the separately reviewed first-History conditional original URI delivery is permitted. The baseline collector has one fixed global600-second bound: expired remaining callbacks are unattempted, and no case extends its deadline. The first baseline cold launch previously had Welcome beneath host chrome; menu closure does not prove the intended route was delivered. That target remains an actual runtime gate.
+
+The source-confirmed camera original-URI proposal must retain its own once-only same native activity/task/HOT proof and original safety/media requirements; it cannot qualify a product state by itself. Actual visible permission-loading/manual frames remain mandatory for camera readiness, and counter/timer records do not substitute for original media. Every future mode result still requires independent original-media review before external feature publication.
+
+### Final host and bounded launch proposal
+
+Run37387043100 remains a failed native run with three narrow baseline observations passed and six cases failed. Actual Back backgrounded Expo instead of closing its ordinary menu. This successor uses exact source-bound SDK54 native header Close, with actual host-only closure media and unchanged process/activity proof. No product state follows from host closure alone. Camera can deliver its original permitted URI once only at initial uncovered Welcome; Retry has no URI delivery. The separately reviewed first independent History case can deliver its exact captured original URI once only before any product target, media, or action, after same foreground ExperienceActivity/task/PID, full host closure and fresh PID-scoped current whole baseline/vault zero-counter records are established. That carrier accepts only HOT in the same activity/task/PID and strict source-derived child-refresh→missing→mounted append prefixes with one canned HEAD/root read below30seconds. Historical Metro zero rows are test evidence only, never runtime credentials for this gate. All original History transition/counter/media gates remain mandatory. No fixture reset, delay, source edit or extra live transport is introduced.
+
+Baseline and Retry each retain one original global600-second collector clock. Installed raw ADB timeouts are capped to remaining budget; before/after raw dumps, final targets/actions/captures and remaining callbacks reject expiry. Baseline observer reads explicitly use logcat --pid=currentGoPID, with unique PID rechecked and separate numbered guarded raw output/query receipts. No mobile feature publication or full baseline acceptance is implied by these unexecuted controller repairs.
+
+### Host-proof custody
+
+Every host closure has its own exclusive proof directory so later observations cannot overwrite earlier XML/PNG/activity/preservation proof. Camera uses a host-only proxy and keeps owner output/recorder/unsafe metadata at the original product root. Baseline temporarily scopes only host proof output, restores it on every exit, preserves shared helper's original local-stem closure JSON and separately binds latest root-relative stems for the unchanged first-History carrier. Retry uses separate primary/gap and closure namespaces. Product captures, report names, source/outcome/counter semantics and shared helper bytes remain fixed. Pre-existing proof directories fail before helper work; no reused directory is permission to continue. Test-only mock output bytes remain temporary; retained historical native media are bound to original provider ZIPs and provenance.

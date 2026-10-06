@@ -1,0 +1,56 @@
+{
+  "mode": "baseline",
+  "source_sha": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "camera_mocked": false,
+  "retry_store_and_horizon_transport_controlled": false,
+  "live_payment_transport": false,
+  "cases": [
+    {
+      "name": "history-same-instance-transition",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('No wallet available',)"
+    },
+    {
+      "name": "create-dummy-masked",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Generate Keypair',)"
+    },
+    {
+      "name": "import-empty-invalid",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('56-character key',)"
+    },
+    {
+      "name": "sign-real-navigation-return",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Cancel Signing',)"
+    },
+    {
+      "name": "sign-missing-params",
+      "result": "passed"
+    },
+    {
+      "name": "picker-search-optional-edit",
+      "result": "failed",
+      "error": "Ambiguous enabled native action: DUMMY Alice"
+    },
+    {
+      "name": "diagnostics-real-readiness",
+      "result": "passed"
+    },
+    {
+      "name": "diagnostics-native-share-cancel",
+      "result": "passed"
+    },
+    {
+      "name": "vault-native-confirmation-receipt",
+      "result": "failed",
+      "error": "Expected actual UI state did not appear: ('Set Aside for 30 Days',)"
+    }
+  ],
+  "optional_observations": [],
+  "scope": "Actual production components with dummy memory store/read transport",
+  "live_signing_or_broadcast": false,
+  "secret_ui_retained": false,
+  "native_execution_at_preparation": "Results above must come from the guest; proposal syntax checks are not execution"
+}

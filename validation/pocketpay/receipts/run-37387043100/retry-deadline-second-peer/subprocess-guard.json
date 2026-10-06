@@ -1,0 +1,14 @@
+{
+  "installedBeforeSubjectImport": true,
+  "unmockedAttemptCounts": {
+    "run": 0,
+    "Popen": 0,
+    "check_output": 0,
+    "check_call": 0,
+    "call": 0
+  },
+  "tests": 42,
+  "failures": 0,
+  "errors": 0,
+  "nativeAdbExecuted": false
+}

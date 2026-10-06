@@ -1,0 +1,30 @@
+{
+  "providerArchives": [
+    {
+      "kind": "camera",
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/camera-original.zip",
+      "providerArtifactId": 11379327749,
+      "size": 1605638,
+      "sha256": "c3144c2cdfd4177303d69638d545ad39b54cd3744e78fbd7c2771f382e227053"
+    },
+    {
+      "kind": "retry",
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/retry-original.zip",
+      "providerArtifactId": 11380062702,
+      "size": 1632746,
+      "sha256": "1f48f575dd952fcabf81f469e60714f852a7b744093ae631d5230ad8d7433744"
+    },
+    {
+      "kind": "baseline",
+      "path": "validation/pocketpay/receipts/run-37387043100/artifacts/baseline-original.zip",
+      "providerArtifactId": 11380531404,
+      "size": 3854419,
+      "sha256": "e51df825a656835317e5192425dd4e4ffb654f8e35e3d55b1ffa16a91237c710"
+    }
+  ],
+  "selectedOriginalMembersVerified": 121,
+  "originalProviderZipCrcVerified": true,
+  "priorSevenFailurePngsByteEqual": true,
+  "generatedMockMediaCopied": false,
+  "mockResults": "Test-only SDK JSON references excluded temporary mocked outputs; it is not native evidence."
+}

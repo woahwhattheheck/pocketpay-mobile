@@ -1,0 +1,23 @@
+{
+  "reviewer": "pocketpay_submission",
+  "status": "CLEAR for local integration only",
+  "subject": "/workspace/scratch/ea8baa184658/pocketpay-baseline-proof-custody-candidate/provenance.json",
+  "subjectSha256": "2c340fa6e4614e4af28c826f95d818909e173edd007499eadc675c452d126709",
+  "runtimeSha256": "76900959c203db23deea15caa48c9d7bd0ff51acc98f119ee6ff3b775d47920f",
+  "locksVerified": 24,
+  "pureTestsPassed": 32,
+  "preImportSubprocessDenial": true,
+  "actualUnmockedAttempts": 0,
+  "fullRuntimeDiffReviewed": true,
+  "checks": [
+    "Temporary host-only output restored in finally",
+    "Exclusive per-closure directories preserve previous original helper bytes",
+    "Latest helper stems become product-root-relative for unchanged carrier retained_pair lookup",
+    "Original helper JSON remains byte-unaltered in each retained directory",
+    "Production ROOT/reports/case/counter/parser/transport/source/global-clock semantics unchanged"
+  ],
+  "limitations": [
+    "No guest or native observations",
+    "Final combined manifest/runtime/custody review still required"
+  ]
+}

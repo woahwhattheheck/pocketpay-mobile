@@ -1,0 +1,360 @@
+{
+  "independentCases": [
+    {
+      "allOtherAdapterMethodsAndImportsAstEqual": true,
+      "case": "Frozen parent full original bytes and adapter AST outside uncovered unchanged",
+      "parentManifestAnd20LocksByteEqual": true,
+      "primaryGapRunnersByteEqual": true,
+      "sharedHelpersFixturesDeadlineTestsByteEqual": true
+    },
+    {
+      "case": "Actual primary capture helpers after real shared host closure",
+      "earlierHostProofBytesUnchanged": true,
+      "existingOriginalRootFilesPreserved": 4,
+      "originalProductRootCapturePathsRetained": true
+    },
+    {
+      "case": "Actual immutable gap capture helper plus actual wrapper after real shared host closure",
+      "earlierHostProofBytesUnchanged": true,
+      "originalProductRootCapturePathsRetained": true
+    },
+    {
+      "case": "Repeated primary ordinary closures plus gap Intro closure through actual helpers",
+      "firstAndSecondPrimaryCompleteSnapshotsUnchanged": true,
+      "gapIntroBeforeAfterAndClosureRecordRetained": true,
+      "globalDeadlineReset": false,
+      "originalSharedTwoDismissalMaximumPreserved": true
+    },
+    {
+      "case": "Atomic mkdir race after initial raw dump",
+      "initialModeledRawDumpCalls": 1,
+      "laterReuseBeforeRawDumpRefused": true,
+      "modeledADBCalls": 0,
+      "productOutputRestored": true,
+      "rivalProofBytesUnchanged": true
+    },
+    {
+      "case": "Actual capture PNG persistence failure",
+      "closureSuccessCount": 0,
+      "hostTapCalls": 0,
+      "laterReuseRawDumpOrADBCalls": 0,
+      "partialProofRetained": true,
+      "productOutputRestored": true,
+      "settlingFlagRestored": true
+    },
+    {
+      "case": "Actual original observer safety counter failure after closure",
+      "counterGuardStillRejects": true,
+      "laterReuseRawDumpOrADBCalls": 0,
+      "noFixtureCounterOrDeadlineReset": true,
+      "partialProofRetained": true,
+      "productOutputRestored": true,
+      "successPreservationRecordAbsent": true
+    },
+    {
+      "case": "Capture raw PNG callback returns at original global expiry",
+      "deadlineSeconds": 600,
+      "hostTapCalls": 0,
+      "latePNGNotPersisted": true,
+      "productOutputAndSettlingRestored": true,
+      "targetNotAccepted": true
+    }
+  ],
+  "inputFilesSha256": {
+    "inputs/final/README.md": {
+      "bytes": 1874,
+      "sha256": "04b4fef5bc4b322c851e1fc5c3c3755700b8d54387ea789043fa3d1cecca8d9d"
+    },
+    "inputs/final/expo_go_intro.py": {
+      "bytes": 4134,
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae"
+    },
+    "inputs/final/expo_ordinary_menu.py": {
+      "bytes": 17364,
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9"
+    },
+    "inputs/final/fixtures/final-logcat-original.txt": {
+      "bytes": 184969,
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e"
+    },
+    "inputs/final/fixtures/ordinary-menu-original.xml": {
+      "bytes": 13792,
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38"
+    },
+    "inputs/final/fixtures/primary-logcat-original.txt": {
+      "bytes": 199612,
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f"
+    },
+    "inputs/final/fixtures/retry-intro-original.xml": {
+      "bytes": 13631,
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04"
+    },
+    "inputs/final/fixtures/review-original.xml": {
+      "bytes": 9146,
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259"
+    },
+    "inputs/final/independent-peer-review.json": {
+      "bytes": 1496,
+      "sha256": "7eb29ca8a2c9e726eda67128cc8aafddd344d45577353dbeda59acc03a685fd3"
+    },
+    "inputs/final/native_overlay.py": {
+      "bytes": 455,
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09"
+    },
+    "inputs/final/observer_framing.py": {
+      "bytes": 2059,
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2"
+    },
+    "inputs/final/parent-3dc/README.md": {
+      "bytes": 2777,
+      "sha256": "32dd24419575a78cf982568d5314f9a07d99417dc616f293b9575eef705595f7"
+    },
+    "inputs/final/parent-3dc/expo_go_intro.py": {
+      "bytes": 4134,
+      "sha256": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae"
+    },
+    "inputs/final/parent-3dc/expo_ordinary_menu.py": {
+      "bytes": 17364,
+      "sha256": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9"
+    },
+    "inputs/final/parent-3dc/fixtures/final-logcat-original.txt": {
+      "bytes": 184969,
+      "sha256": "070f17da2067518e90866829fa3fdc48421a2c4ef36338ad6e86d8913bbd314e"
+    },
+    "inputs/final/parent-3dc/fixtures/ordinary-menu-original.xml": {
+      "bytes": 13792,
+      "sha256": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38"
+    },
+    "inputs/final/parent-3dc/fixtures/primary-logcat-original.txt": {
+      "bytes": 199612,
+      "sha256": "d42fb3a5965b8489102429a98237a639e275e2b2b9a0956d2249bf188cd86f5f"
+    },
+    "inputs/final/parent-3dc/fixtures/retry-intro-original.xml": {
+      "bytes": 13631,
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04"
+    },
+    "inputs/final/parent-3dc/fixtures/review-original.xml": {
+      "bytes": 9146,
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259"
+    },
+    "inputs/final/parent-3dc/independent-peer-review.json": {
+      "bytes": 1496,
+      "sha256": "7eb29ca8a2c9e726eda67128cc8aafddd344d45577353dbeda59acc03a685fd3"
+    },
+    "inputs/final/parent-3dc/native_overlay.py": {
+      "bytes": 455,
+      "sha256": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09"
+    },
+    "inputs/final/parent-3dc/observer_framing.py": {
+      "bytes": 2059,
+      "sha256": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2"
+    },
+    "inputs/final/parent-3dc/provenance.json": {
+      "bytes": 3198,
+      "sha256": "3dc14dca00d1d5f7575072a9b0f16ed426ac721a024c10a232e98eb607f2fb62"
+    },
+    "inputs/final/parent-3dc/pure-checks.log": {
+      "bytes": 5994,
+      "sha256": "9f066fa00e3514bd21cefe1e43004a3fefd6e56cb658994b7249dd112bd03157"
+    },
+    "inputs/final/parent-3dc/retry-gap-runner.py": {
+      "bytes": 3427,
+      "sha256": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd"
+    },
+    "inputs/final/parent-3dc/retry-gap-runner.py.diff": {
+      "bytes": 371,
+      "sha256": "e550c06a4bbd9e917ccaa03bc916ad683e68fcae6128a99f746f66987729f205"
+    },
+    "inputs/final/parent-3dc/retry-primary-ui.py": {
+      "bytes": 17382,
+      "sha256": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98"
+    },
+    "inputs/final/parent-3dc/retry-primary-ui.py.diff": {
+      "bytes": 2599,
+      "sha256": "5bb06dae419759f49456c8e5cbbc33c7b79e39ffc0de596ea59409643e676672"
+    },
+    "inputs/final/parent-3dc/retry_host_adapter.py": {
+      "bytes": 12303,
+      "sha256": "d3e7eea55cd074636ebc5a7d29184845f99d430e35b19fb2c6c7ab179bb92a4e"
+    },
+    "inputs/final/parent-3dc/retry_host_adapter.py.diff": {
+      "bytes": 3610,
+      "sha256": "4263fca6ee28e8bcf1ac1f5ba5bc2f5a1590794e5c4d36ff1675bdadc897e74d"
+    },
+    "inputs/final/parent-3dc/test_retry_deadline.py": {
+      "bytes": 12427,
+      "sha256": "da7413de05477b444115ee44fa58587655145bf3f8e958feab4a9fdfa83a4b5f"
+    },
+    "inputs/final/parent-3dc/test_retry_host_adapter.py": {
+      "bytes": 16356,
+      "sha256": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a"
+    },
+    "inputs/final/parent-provenance.json": {
+      "bytes": 3198,
+      "sha256": "3dc14dca00d1d5f7575072a9b0f16ed426ac721a024c10a232e98eb607f2fb62"
+    },
+    "inputs/final/provenance.json": {
+      "bytes": 6121,
+      "sha256": "08dfdf5b9f4d28a754e3d8b4156096bbc757a83cad59b8178407409b3be1e8da"
+    },
+    "inputs/final/pure-checks.log": {
+      "bytes": 5994,
+      "sha256": "9f066fa00e3514bd21cefe1e43004a3fefd6e56cb658994b7249dd112bd03157"
+    },
+    "inputs/final/pure-custody-checks.log": {
+      "bytes": 7572,
+      "sha256": "2fb529d0c2c7daa3f3e640470821306ebfc9c0edd196ed2e713f3f9cdb97687b"
+    },
+    "inputs/final/retry-gap-runner.py": {
+      "bytes": 3427,
+      "sha256": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd"
+    },
+    "inputs/final/retry-gap-runner.py.diff": {
+      "bytes": 371,
+      "sha256": "e550c06a4bbd9e917ccaa03bc916ad683e68fcae6128a99f746f66987729f205"
+    },
+    "inputs/final/retry-primary-ui.py": {
+      "bytes": 17382,
+      "sha256": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98"
+    },
+    "inputs/final/retry-primary-ui.py.diff": {
+      "bytes": 2599,
+      "sha256": "5bb06dae419759f49456c8e5cbbc33c7b79e39ffc0de596ea59409643e676672"
+    },
+    "inputs/final/retry_host_adapter.py": {
+      "bytes": 13093,
+      "sha256": "a20580ee8a7d5e4141914b611bbddb710b8084b442d7d51077eec33242f3d239"
+    },
+    "inputs/final/retry_host_adapter.py.custody.diff": {
+      "bytes": 2260,
+      "sha256": "39b085a331f0176b210a7df405a2a328fe5723b6f8d424dd6bd1178cf5e1bc35"
+    },
+    "inputs/final/retry_host_adapter.py.diff": {
+      "bytes": 3610,
+      "sha256": "4263fca6ee28e8bcf1ac1f5ba5bc2f5a1590794e5c4d36ff1675bdadc897e74d"
+    },
+    "inputs/final/test_retry_deadline.py": {
+      "bytes": 12427,
+      "sha256": "da7413de05477b444115ee44fa58587655145bf3f8e958feab4a9fdfa83a4b5f"
+    },
+    "inputs/final/test_retry_host_adapter.py": {
+      "bytes": 16436,
+      "sha256": "e9dbae3b0218dd5ea70fdaad112855e76e525c4b4226e5fd36b8ce5fe89a3b43"
+    },
+    "inputs/final/test_retry_host_adapter.py.custody.diff": {
+      "bytes": 1381,
+      "sha256": "aa1d39171ffd7b07a5e9a7f33b4e3a9a0c66a6e23aee4b4be8182769bd5c9440"
+    },
+    "inputs/final/test_retry_proof_custody.py": {
+      "bytes": 8854,
+      "sha256": "6ecd0e43bb682ebfa06e0a944259ea5f0c133c10bd5718b55dcfdc5359f3f276"
+    },
+    "inputs/immutable-controller/camera/camera_followup.py": {
+      "bytes": 24454,
+      "sha256": "4d93f54dc1723a5bcef1e19d145e3d2fc1f66fa2693f81ac9c2ff62225e96345"
+    },
+    "inputs/immutable-controller/camera/verify_checkout.py": {
+      "bytes": 2595,
+      "sha256": "fa3de24d6702788473162a74f5f6b7811d3739c7f2b0a81af7c636d906248405"
+    },
+    "inputs/immutable-controller/expo_go_module_intro.py": {
+      "bytes": 3196,
+      "sha256": "b0791312386e66398f75dcac20688c8e01f0c090d59dd90d41f211008258ac8b"
+    },
+    "inputs/immutable-controller/retry-primary-ui.py": {
+      "bytes": 16486,
+      "sha256": "ae4e80fbc616642675c1b4bdbdfd3a5027f70acd56aa5b8a182ec4f588dc08c1"
+    },
+    "inputs/immutable-controller/retry/observation_helpers.py": {
+      "bytes": 6920,
+      "sha256": "7428a4abdfaaee868af823fb827b55b0feb505432889051a6addc7124cd06108"
+    },
+    "inputs/immutable-controller/retry/retry_gap_ui.py": {
+      "bytes": 7926,
+      "sha256": "512601a9ddddbecf325c8c80ea29e247be272a1a6f26c37002c54bde943933a1"
+    }
+  },
+  "limitations": [
+    "All guest boundaries are modeled; temporary fake PNGs are not original native media or product evidence.",
+    "Atomic creation races may occur after the guarded initial raw dump, but refuse before host-proof ADB/capture and preserve existing bytes.",
+    "Root combined-source custody and native submission reviews remain separate."
+  ],
+  "peerFilesSha256": {
+    "peer_checks.py": {
+      "bytes": 11715,
+      "sha256": "fda777b325eba9faf85b8910840eedac05f160d2ba452cb96775efd2feefeb14"
+    },
+    "pure-peer.log": {
+      "bytes": 9026,
+      "sha256": "929d8197b90f5908f5289990dfb08327475990ed49a8c7c13b13e8000317e178"
+    },
+    "run_pure.py": {
+      "bytes": 1855,
+      "sha256": "356b7bb22a10b6f74576222c80adb589d44b8b2d24a236a19dc58baedf1b2d11"
+    },
+    "subprocess-guard.json": {
+      "bytes": 242,
+      "sha256": "e51caa7fbae6443f6920b014f3b56d2563b646e9477ee4e21fb564af42d5eede"
+    }
+  },
+  "reviewer": "/root/submitted_pr_checks",
+  "scope": "Read-only local source/pure review; no source/controller/ref/dispatch/actual ADB/body/comment/Slack writes.",
+  "sourceReview": {
+    "allSharedHelperFixedFilesRemainReachableWithinClosure": true,
+    "atomicMkdirExistOkFalse": true,
+    "exclusiveProofNamespace": "retry-host-proofs/{primary|gap}/closure-N",
+    "externalHostLookupAdded": false,
+    "globalBoundSeconds": 600,
+    "globalDeadlineResets": 0,
+    "noDirectoryRemovalOrReuse": true,
+    "originalProductOutputNamesAndValidatorsUnchanged": true,
+    "preDumpExistingDirectoryRefusal": true,
+    "primaryGapRuntimeBytesUnchanged": true,
+    "productOutputRestoredInFinally": true,
+    "proofDirectoryOnlyAssignedDuringRecognizedSettling": true,
+    "recordHasRelativeProofDirectory": true,
+    "sharedDismissalMaximum": 2,
+    "sharedF1BytesUnchanged": true,
+    "sourceObserverTransportTimingChanges": false,
+    "uriRedelivery": false
+  },
+  "status": "CLEAR for exact frozen Retry proof-custody v2; no native product execution claim",
+  "subject": {
+    "adapterSha256": "a20580ee8a7d5e4141914b611bbddb710b8084b442d7d51077eec33242f3d239",
+    "filesSha256LocksVerified": 46,
+    "lockMismatches": [],
+    "manifestSha256": "08dfdf5b9f4d28a754e3d8b4156096bbc757a83cad59b8178407409b3be1e8da",
+    "parentAll20FilesAndManifestByteEqual": true,
+    "parentManifestSha256": "3dc14dca00d1d5f7575072a9b0f16ed426ac721a024c10a232e98eb607f2fb62",
+    "path": "/workspace/scratch/ea8baa184658/pocketpay-retry-proof-custody-local-candidate-v2",
+    "runtimeChanged": [
+      "retry_host_adapter.py"
+    ],
+    "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+    "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060"
+  },
+  "validation": {
+    "additionalIndependentTests": 8,
+    "command": "python3 -B run_pure.py > pure-peer.log 2>&1",
+    "errors": 0,
+    "exitCode": 0,
+    "failures": 0,
+    "frozenOwnerTests": 45,
+    "subprocessGuard": {
+      "errors": 0,
+      "failures": 0,
+      "installedBeforeSubjectImport": true,
+      "nativeAdbExecuted": false,
+      "tests": 53,
+      "unmockedAttemptCounts": {
+        "Popen": 0,
+        "call": 0,
+        "check_call": 0,
+        "check_output": 0,
+        "run": 0
+      }
+    },
+    "totalPassed": 53,
+    "workdir": "/workspace/scratch/ea8baa184658/pocketpay-retry-custody-independent-review"
+  }
+}

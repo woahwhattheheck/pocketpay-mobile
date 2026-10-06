@@ -1,0 +1,2 @@
+baseline-fixture: all immutable hashes verified
+vault-fixture: all immutable hashes verified

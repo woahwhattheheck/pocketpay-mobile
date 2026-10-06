@@ -1,0 +1,23 @@
+{
+  "reviewer": "/root/pocketpay_submission/rip302_sdk_audit",
+  "result": "CLEAR for narrowed fixed-clock Retry controller revision",
+  "independentPureChecksPassed": 36,
+  "probes": [
+    "Exact old15ab expired Review accepted; new gate blocks before rawdump/target.",
+    "Live-started dump/ADB crossing deadline returns no target/result.",
+    "Actual primary4 loop blocked with callbacks/media/guest0.",
+    "Actual immutable gap firstcallback entered, originalUnsafeEnvironment used, launch/media/guest0, remaining2blocked.",
+    "Remainingbudget rawtimeout clipped; originalshorter/25gap default preserved.",
+    "Actual recorderpredicate crossing blocks Popen; sourceargs/timing unchanged."
+  ],
+  "sha256": {
+    "retry_host_adapter.py": "d3e7eea55cd074636ebc5a7d29184845f99d430e35b19fb2c6c7ab179bb92a4e",
+    "retry-primary-ui.py": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98",
+    "retry-gap-runner.py": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd",
+    "test_retry_deadline.py": "da7413de05477b444115ee44fa58587655145bf3f8e958feab4a9fdfa83a4b5f",
+    "test_retry_host_adapter.py": "61b58bdabe4d4cb741e3bbec1f537a8b51629b417ef15c42507b69f68000e31a",
+    "expo_ordinary_menu.py": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+    "observer_framing.py": "85ab8f6f7d3d96ac23219c8292ca71aaba16d83e95fd725df793d5102a9dafb2"
+  },
+  "limitations": "No actual ADB/subprocess/device/source/ref edits or native-success claim."
+}

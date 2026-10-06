@@ -1,0 +1,20 @@
+--- parent-3dc/test_retry_host_adapter.py
++++ test_retry_host_adapter.py
+@@ -90,7 +90,7 @@
+         self.assertEqual(self.adapter.closures, 1)
+         taps = [args for args in self.guest.calls if args[:3] == ('shell','input','tap')]
+         self.assertEqual(len(taps), 2)  # Continue + exact host header, no product tap.
+-        proof = json.loads((Path(self.tmp.name)/'retry-host-preservation-1.json').read_text())
++        proof = json.loads((Path(self.tmp.name)/'retry-host-proofs'/'primary'/'closure-1'/'retry-host-preservation-1.json').read_text())
+         self.assertEqual(proof['beforeRecords'], proof['afterRecords'])
+         self.assertFalse(proof['originalUriRedelivered'])
+         self.assertFalse(proof['productStatePassed'])
+@@ -193,7 +193,7 @@
+         guest = GuestBoundary(self.tmp.name, state='ordinary', kind='gap', outcome='mismatch')
+         adapter = guest.adapter()
+         adapter.uncovered()
+-        proof=json.loads((Path(self.tmp.name)/'retry-host-preservation-1.json').read_text())
++        proof=json.loads((Path(self.tmp.name)/'retry-host-proofs'/'gap'/'closure-1'/'retry-host-preservation-1.json').read_text())
+         self.assertEqual(proof['beforeRecords'],proof['afterRecords'])
+         self.assertEqual(proof['afterRecords'][-1]['transactionHash'],'a'*64)
+         self.assertEqual(proof['afterRecords'][-1]['counters']['readCalls'],0)

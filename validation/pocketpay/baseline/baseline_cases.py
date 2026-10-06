@@ -1,5 +1,6 @@
 """Controlled Android UI evidence; no source hooks/router/persistence are replaced here."""
 from baseline_observer_framing import decode_observer_line
+from baseline_vault_form import observe_vault_form
 
 BASELINE_SHA = "52ce8006a2d091a4c9f29852a1a530750ff9b3cc"
 if os.environ["SOURCE_SHA"] != BASELINE_SHA:
@@ -230,7 +231,7 @@ def picker_search_optional_edit():
     input_text("UNMATCHED_FIXTURE_TERM")
     wait("No contacts found")
     capture("baseline-picker-no-match")
-    input_text("")
+    input_text("DUMMY")
     wait("DUMMY Alice")
     tap("DUMMY Alice")
     wait("Select callback:")
@@ -320,7 +321,8 @@ def diagnostic_share_cancel():
 def vault_real_confirmation():
     adb("logcat", "-c")
     launch("__vault-native-fixture")
-    wait("Set Aside for 30 Days", seconds=70)
+    wait("Soroban Savings Vault", seconds=70)
+    observe_vault_form(globals())
     capture("baseline-vault-dummy-ready")
     input_text("10")
     tap("Set Aside for 30 Days", scroll=True)

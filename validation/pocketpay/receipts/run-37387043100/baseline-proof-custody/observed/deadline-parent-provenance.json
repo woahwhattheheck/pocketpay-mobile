@@ -1,0 +1,43 @@
+{
+  "scope": "Unexecuted baseline global600 and current-PID observer protocol successor only",
+  "sourceSha": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+  "nativeAcceptance": false,
+  "supersedesHostReceipt": "2d51a1377c6598ee4f5be4642c91b12f0d7f8f5618ca9e3a5c9232edf76c7483",
+  "runtimeCopy": [
+    "baseline_host_adapter.py"
+  ],
+  "fileSha256": {
+    "README.md": "5c7c313a87e4ff805ce90e25f92fcf94a1c0cd16bd3895f293fe4f7089120f17",
+    "baseline-host-runner.py": "ea4ab48c8a8807ed736c8304a732675c6edcbff62fb80d06c080864ef364e14d",
+    "baseline_host_adapter.py": "4aa4a44530c0b6b386928b711b0276ce94eee6fe94edbf4afc043267eda21748",
+    "baseline_observer_framing.py": "788d2fb8861b52ee6bb84101b05b7ff34cd2707918dfabe17fce3bb91e74c443",
+    "baseline_startup_overlay.py": "72e3c470a6c996593c5d38a282a4ba7cef7856fcfba356deadc9ef9403098e8b",
+    "baseline_vault_form.py": "e9e7d2163295abddd9a6495dc73f7d94995d1a3795d5b89c2335b6b3e460230f",
+    "deadline-checks.log": "b1221ba178e804752a6f43603e5729eb91ed3bce6acbc8bd269a3978c9d2b845",
+    "deadline-pid.patch": "00cec18631bf554b2af1a085047e50cd0cf63576d208748e0f3025e7b8f0b9e9",
+    "expo_go_intro.py": "1e21a9d442688dc303f2c598819527d2f8bb89f29737a706669c4b1a67fc17ae",
+    "expo_go_module_intro.py": "b0791312386e66398f75dcac20688c8e01f0c090d59dd90d41f211008258ac8b",
+    "expo_ordinary_menu.py": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+    "native_overlay.py": "175f440e7ad8c454a082732285ff4e75c588a826d87de277425005a0103c5e09",
+    "observed/baseline-history-intro.xml": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+    "observed/frozen-host-adapter.py": "7a6ac932e4c318f688a0ae9785a7dc367506de8add9970c9eefda6b11379938c",
+    "observed/frozen-host-provenance.json": "2d51a1377c6598ee4f5be4642c91b12f0d7f8f5618ca9e3a5c9232edf76c7483",
+    "observed/ordinary-menu.xml": "06d1e8f7de63a445649a912bda65558b0fa43c55d6498f9b795e2ee891198a38",
+    "observed/root-target-ui.py": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236",
+    "observed/vault-initial.xml": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+    "pure-checks.log": "9ed5303bd67487fcca803ac1a59eb55119b720ab86ff792fc0819b176d899191",
+    "test_baseline_host_adapter.py": "c41053704407545b2b7cf720d50b30ffc826eff858de8ed58f778c2c54a4a820"
+  },
+  "validation": {
+    "pureTests": 28,
+    "actualADBCalls": 0,
+    "originalNineCaseCrossingBoundary": "firstcommand1;next8callbacks blocked; no subsequent guest commands",
+    "timeoutCap": "Existing explicit/default30 versus remaining original global budget",
+    "pidBinding": "unique currentGoPID before+explicit --pid query+samePID after; separate guarded raw output/command receipts"
+  },
+  "globalDeadlineReset": false,
+  "fixtureOrProductChanged": false,
+  "uriAddedToAdapter": false,
+  "historyCarrierSha256Unchanged": "cdd2d745b85bdd30cb3cc7ed412db990ff9ce36fd268195078b3319f77731fef"
+}

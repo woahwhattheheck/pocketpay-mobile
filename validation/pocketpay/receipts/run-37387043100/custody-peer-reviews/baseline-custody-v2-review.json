@@ -1,0 +1,27 @@
+{
+  "reviewer": "pocketpay_submission",
+  "status": "CLEAR for local integration only",
+  "subject": "/workspace/scratch/ea8baa184658/pocketpay-baseline-proof-custody-candidate/provenance.json",
+  "subjectSha256": "838072f2770226908752ffc6a1c7340d884b86bff644fb919292c43fed7af812",
+  "runtimeSha256": "a8e42855a9753ed94d6029c15294bda115f46a201fd8fe3f9f770d599f4f733a",
+  "locksVerified": 26,
+  "pureTestsPassed": 33,
+  "preImportSubprocessDenial": true,
+  "actualUnmockedAttempts": 0,
+  "fullRuntimeDiffReviewed": true,
+  "checks": [
+    "Temporary host-only output restored in finally",
+    "Exclusive per-closure directories preserve previous original helper bytes",
+    "Latest helper stems become product-root-relative for unchanged carrier retained_pair lookup",
+    "Original helper JSON remains byte-unaltered in each retained directory",
+    "Production ROOT/reports/case/counter/parser/transport/source/global-clock semantics unchanged"
+  ],
+  "limitations": [
+    "No guest or native observations",
+    "Final combined manifest/runtime/custody review still required"
+  ],
+  "supersedesPeerReceiptSha256": "74a92e669bd703d1fff5c016370cd872644eee92a884c509964ac6cd77cb0bcb",
+  "narrowDelta": "Existing next-proof directory refuses polling before raw dump; original deadline/counter/PID/outcome unchanged",
+  "existingScopeRefusalRawDumpCalls": 0,
+  "existingScopeRefusalGuestCalls": 0
+}

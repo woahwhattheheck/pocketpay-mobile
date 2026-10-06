@@ -1,0 +1,59 @@
+--- 15ab/retry-primary-ui.py
++++ deadline/retry-primary-ui.py
+@@ -9,7 +9,7 @@
+ import time
+ import xml.etree.ElementTree as ET
+ from expo_go_intro import intro_sheet
+-from retry_host_adapter import RetryHostAdapter
++from retry_host_adapter import RetryHostAdapter, RetryBoundExpired
+ from observer_framing import decode_observer_line
+ 
+ ROOT = Path(os.environ["ARTIFACT_DIR"])
+@@ -223,15 +223,27 @@
+ 
+ def case(name, callback):
+     observation = {"name": name, "result": "failed"}
++    if REPORT.get("native_bound_expired") or time.monotonic() >= HOST.deadline:
++        observation.update({"result": "blocked_unattempted",
++                            "reason": "Original global 600-second Retry bound expired; no callback or guest action attempted"})
++        REPORT["cases"].append(observation)
++        (ROOT / "retry-primary-observations.json").write_text(json.dumps(REPORT, indent=2))
++        return
+     try:
+         callback()
+         observation["result"] = "passed"
+     except Exception as error:
+         observation["error"] = str(error)
+-        try:
+-            capture("failure-" + name, allow_native_error=True)
+-        except Exception as capture_error:
+-            observation["capture_error"] = str(capture_error)
++        if isinstance(error, RetryBoundExpired):
++            REPORT["native_bound_expired"] = True
++            observation["capture_excluded"] = "Expired global bound; no additional guest interaction"
++        else:
++            try:
++                capture("failure-" + name, allow_native_error=True)
++            except Exception as capture_error:
++                observation["capture_error"] = str(capture_error)
++                if isinstance(capture_error, RetryBoundExpired):
++                    REPORT["native_bound_expired"] = True
+     REPORT["cases"].append(observation)
+     (ROOT / "retry-primary-observations.json").write_text(json.dumps(REPORT, indent=2))
+ 
+@@ -244,6 +256,7 @@
+     if expo_sheet(tree):
+         raise RuntimeError("Expo developer sheet covers the recording action")
+     remote = "/sdcard/" + name + ".mp4"
++    HOST.require_live()
+     recorder = subprocess.Popen(["adb", "shell", "screenrecord", "--size", "720x1280",
+                                  "--bit-rate", "800000", "--time-limit", "8", remote],
+                                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+@@ -370,6 +383,7 @@
+ 
+ 
+ HOST = RetryHostAdapter(globals(), "primary")
++adb = HOST.adb
+ 
+ for outcome in ("unknown", "error", "confirmed", "failed"):
+     case("retry-" + outcome, lambda outcome=outcome: retry_outcome(outcome))

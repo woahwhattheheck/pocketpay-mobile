@@ -1,0 +1,15 @@
+[
+  "",
+  "",
+  "",
+  "DUMMY TESTNET / MEMORY ONLY / BROADCAST DISABLED",
+  "addLock=0 deposit=0 withdraw=0\nsecretAccess=0 broadcastAttempts=0\nmemoryLocks=0 blockedFetch=0 blockedXHR=0",
+  "",
+  "",
+  "Soroban Savings Vault",
+  "25.0000000 XLM",
+  "Mock balance",
+  "",
+  "Loading locks...",
+  "No vault contract configured. Set EXPO_PUBLIC_VAULT_CONTRACT_ID in your .env file to connect to a deployed Soroban contract. Running in mock mode \u2014 no real funds are moved."
+]

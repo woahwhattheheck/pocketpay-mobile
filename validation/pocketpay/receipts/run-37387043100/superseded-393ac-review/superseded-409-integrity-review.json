@@ -1,0 +1,27 @@
+{
+  "subjectFinalFreezeSha256": "409d4e8a9dd11e1da695ac827eb8fff7807bc9cf2662926e135447bb9971bc7c",
+  "manifestSha256": "393ac41151b1608fefd526a8be4326a57e9a5c4ff8311142a838c7805b5c9ee2",
+  "all525ManifestHashesVerified": true,
+  "exact337GitBlobAndSha256EntriesVerified": true,
+  "changedFiles": 11,
+  "addedFiles": 326,
+  "deletedFiles": 0,
+  "allChangesValidationOnly": true,
+  "workflowUnchangedSha256": "ead50b924fae098ec6a3174a0d2bcb237129798a93f866af1c082f9538ce736b",
+  "sourcePinsUnchanged": true,
+  "providerArchivesByteEqual": 3,
+  "selectedEvidenceExactOriginalZipMembers": 121,
+  "priorFailedPngsByteEqual": 7,
+  "immutableFixtureSourceObserverFramingProofFilesByteEqual": 74,
+  "baselineUIEqualsExactHelpersPlusCases": true,
+  "originalCaseFunctionsChangedOnly": [
+    "picker_search_optional_edit",
+    "vault_real_confirmation"
+  ],
+  "retainedValidatorsAndCallbacksUnchanged": true,
+  "actualGuestOrNativeExecution": false,
+  "nativeAcceptance": false,
+  "status": "BLOCKED pending custody-only successor. All integrity/media/source/semantic checks clear; actual installed primary/gap proof output collision proved.",
+  "collisionReceiptSha256": "428a517173692d3c1ff0d4ded19991ea3ae4e6fc4e4e8b77e6052a8828f3b3fa",
+  "baselineInstalledSemanticsReceiptSha256": "e6ed274d07ffcca96a7e3eb5dbf38579a72db054d0de324c58a8d4fedd2b917d"
+}

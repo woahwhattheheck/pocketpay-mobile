@@ -1,0 +1,42 @@
+{
+  "runId": 37387043100,
+  "reviewer": "ledger_audit; independent root review reported separately in session",
+  "overallNativeAcceptance": false,
+  "baselineConclusion": "failure",
+  "narrowlyObservedCases": [
+    "sign-missing-params",
+    "diagnostics-real-readiness",
+    "diagnostics-native-share-cancel"
+  ],
+  "unprovenCases": [
+    "history-same-instance-transition",
+    "create-dummy-masked",
+    "import-empty-invalid",
+    "sign-real-navigation-return",
+    "picker-search-optional-edit",
+    "vault-native-confirmation-receipt"
+  ],
+  "signScope": "Actual missing-transaction-parameters guidance only; summary/native Review navigation remains unproved due host tutorial",
+  "diagnosticsScope": "Actual native Loading diagnostics originalframe49 PTS6.013056 -> originalframe50 PTS6.393744 ready; AppInfo Android34, SecureStorageAvailable. Nonsecret native storage sentinel behavior disclosed in fixture scope.",
+  "shareScope": "Actual Android text chooser; real redacted string share and return counters1; recipient not chosen, native Back cancelled to unchanged ErrorFallback.",
+  "counterSafety": "Retained successful-case receipts have walletSaveAttempts/backupAttempts/clipboardAttempts0 and transport deposit/withdraw/secretAccess/broadcastAttempts0. No real wallet, live signing or network broadcast.",
+  "failures": "Actual tutorial over history and SignSummary; Launcher Create/Import/Signnavigation; two distinct DUMMYAlice pickeractions; actual Vault Loadinglocks and confirmation not observed.",
+  "originalVideoSha256": "f1f55498aa7d613389cd0ca3a6ec88f83f2885a600f531105db29847c144928c",
+  "derivedFrames": [
+    {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline-diagnostics-original-frame49.png",
+      "sha256": "f143e7955995d17c0d5d63640a1b280990335684ac777ef6417eebe05cf062f0",
+      "originalFrameIndex": 49,
+      "originalPTSSeconds": 6.013056,
+      "claim": "Actual Loading diagnostics... visibly uncovered"
+    },
+    {
+      "path": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline-diagnostics-original-frame50.png",
+      "sha256": "1f1cb4c5bebfbf8f7b2c129b60fab786a8a2d83b1f17795f2ab55bd59424a77e",
+      "originalFrameIndex": 50,
+      "originalPTSSeconds": 6.393744,
+      "claim": "Actual Diagnostics ready visibly uncovered"
+    }
+  ],
+  "recordedAt": "2026-10-05T23:43:54.257579+00:00"
+}

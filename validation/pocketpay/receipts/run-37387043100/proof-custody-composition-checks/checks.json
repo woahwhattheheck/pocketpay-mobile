@@ -1,0 +1,114 @@
+{
+  "groups": [
+    {
+      "name": "camera-custody",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_camera_output_scope",
+        "test_camera_host_settling",
+        "test_expo_ordinary_menu",
+        "test_camera_integration",
+        "test_expo_go_intro",
+        "test_intro_composition",
+        "camera/test_parser.py"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-camera-output-scope-candidate",
+      "exit": 0,
+      "pureTests": 87,
+      "seconds": 0.541,
+      "logSha256": "a07743c6c4d43d9d802e21598bbef4ce8fc6e4babb6673f096fef51d2feb7386"
+    },
+    {
+      "name": "retry-custody",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_retry_host_adapter",
+        "test_retry_deadline",
+        "test_retry_proof_custody"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-retry-proof-custody-local-candidate-v2",
+      "exit": 0,
+      "pureTests": 45,
+      "seconds": 0.548,
+      "logSha256": "1f44a2a706b813031d2ec9724786909fc38b0244731d7bfaed8139f0db6cfedd"
+    },
+    {
+      "name": "baseline-custody",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_baseline_host_adapter"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-baseline-proof-custody-candidate",
+      "exit": 0,
+      "pureTests": 33,
+      "seconds": 0.201,
+      "logSha256": "cde20c78658c94c4adbe2b571649418920b62a90e563ed2fd20d88cab7275c9d"
+    },
+    {
+      "name": "first-history",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_first_history_carrier"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-first-history-carrier-candidate",
+      "exit": 0,
+      "pureTests": 23,
+      "seconds": 0.143,
+      "logSha256": "8fb72ff2c925714c916db029300e2f810d5ab13abd60f2dd8f8960257bbb3726"
+    },
+    {
+      "name": "baseline-targets",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_baseline_targets"
+      ],
+      "cwd": "/workspace/scratch/ea8baa184658/pocketpay-baseline-controller-target-candidate",
+      "exit": 0,
+      "pureTests": 8,
+      "seconds": 0.101,
+      "logSha256": "3e90c8d87b9c0f2b74a29294b3adc88d77faf4762f0679b44ec578e219b37f95"
+    }
+  ],
+  "pureTestsPassed": 196,
+  "pythonSyntaxFiles": 196,
+  "shellSyntaxFiles": 4,
+  "actualADBCalls": 0,
+  "nativeAcceptance": false,
+  "globalClockResets": 0,
+  "sourcePinsUnchanged": true,
+  "workflowUnchanged": true,
+  "baselineUIEqualsHelpersPlusCases": true,
+  "stagedRuntimeSha256": {
+    "validation/pocketpay/camera-recording-runner.py": "48b8f37eaceebc1e3aefab119dbcc224165d4688a6ead36789cbf6ce5ecef38d",
+    "validation/pocketpay/baseline_host_adapter.py": "a8e42855a9753ed94d6029c15294bda115f46a201fd8fe3f9f770d599f4f733a",
+    "validation/pocketpay/retry_host_adapter.py": "a20580ee8a7d5e4141914b611bbddb710b8084b442d7d51077eec33242f3d239",
+    "validation/pocketpay/retry-primary-ui.py": "840a45eeb0d748ba8642f7f0682cf593c588703b1bec526d12d4cb27833bcc98",
+    "validation/pocketpay/retry-gap-runner.py": "b8be486f6fd7fcd55614c3f5dc6b246b6938aa57194d7a21b4316299c9b6fafd",
+    "validation/pocketpay/baseline_history_carrier.py": "cdd2d745b85bdd30cb3cc7ed412db990ff9ce36fd268195078b3319f77731fef",
+    "validation/pocketpay/baseline-host-runner.py": "0628d1e2ed2f28286d363fcb7b2de1961a8d23f202c6b2d8b3e8bfacfe6cfe6b",
+    "validation/pocketpay/expo_ordinary_menu.py": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+    "validation/pocketpay/baseline/ui_baseline.py": "622212152ccd772942cecf7f8fd6e34c572056a9a9ea1322d983bbbe4d01a236"
+  },
+  "componentTestCustody": "Pure component tests execute at original frozen packet roots; staged runtime hashes match exact independently reviewed derivatives.",
+  "generatedMockMediaCopied": false
+}

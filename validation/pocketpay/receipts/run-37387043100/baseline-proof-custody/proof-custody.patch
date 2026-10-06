@@ -1,0 +1,110 @@
+--- a/validation/pocketpay/baseline_host_adapter.py
++++ b/validation/pocketpay/baseline_host_adapter.py
+@@ -4,6 +4,7 @@
+ Raw callbacks are captured before wrapping; host proof never settles itself.
+ """
+ import json
++from contextlib import contextmanager
+ from pathlib import Path
+ import re
+ import subprocess
+@@ -36,6 +37,7 @@
+         self.developer_sheet_dismissals = 0
+         self.closures = 0
+         self._observer_samples = 0
++        self._host_proof_ordinal = 0
+         self._settling = False
+ 
+     def _remaining(self):
+@@ -161,33 +163,71 @@
+                                    for row in after[prefix][len(before[prefix]):]):
+                 raise RuntimeError('Baseline fixture reinitialized during host closure')
+ 
++    @contextmanager
++    def host_proof_scope(self):
++        product_output = self.output
++        self._host_proof_ordinal += 1
++        relative = Path('baseline-host-proofs') / ('closure-' + str(self._host_proof_ordinal).zfill(4))
++        scoped = product_output / relative
++        scoped.parent.mkdir(exist_ok=True)
++        scoped.mkdir()  # Never reuse or overwrite a previous proof directory.
++        previous = getattr(self, 'expo_ordinary_closure', None)
++        closures_before = self.closures
++        self.output = scoped
++        try:
++            yield
++        finally:
++            self.output = product_output
++            proof = getattr(self, 'expo_ordinary_closure', None)
++            if proof is not None and proof is not previous:
++                original = dict(proof)
++                paths = {}
++                for key in ('before', 'after'):
++                    value = Path(proof[key])
++                    if value.is_absolute() or '..' in value.parts:
++                        raise RuntimeError('Host helper proof path is outside its retained directory')
++                    paths[key] = str(relative / value)
++                proof.update(paths, proofDirectory=str(relative))
++                # Shared helper's original closure JSON remains byte-unaltered
++                # in its own folder; this binds latest paths to product ROOT.
++                (scoped / 'proof-directory-binding.json').write_text(json.dumps({
++                    'proofDirectory': str(relative), 'productRootUnchanged': True,
++                    'originalHelperProof': original, 'latestRootRelativeProof': dict(proof),
++                    'observerPreservationChecked': self.closures > closures_before,
++                    'productStatePassed': False,
++                }, indent=2) + '\n')
++
+     def uncovered(self, name='current'):
+         if self._settling:
+             raise RuntimeError('Recursive baseline host settling is forbidden')
++        next_scope = self.output / 'baseline-host-proofs' / ('closure-' + str(self._host_proof_ordinal + 1).zfill(4))
++        if next_scope.exists():
++            raise FileExistsError('Existing host proof directory refuses polling before raw dump')
+         tree, _ = self.dump(name)
+         if intro_sheet(tree) or self.host.has_host_sheet(tree):
+             self._settling = True
+             try:
+-                pid, before = self._pid(), self._records()
+-                if intro_sheet(tree):
+-                    dismiss_observed_intro(self, tree, self.action, self.bounds)
+-                tree, _ = self.dump(name)
+-                if self.host.has_host_sheet(tree):
+-                    self.host.close_ordinary_menu(self)
+-                tree, _ = self.dump(name)
+-                self.host.unobscured_host(tree)
+-                if self._pid() != pid:
+-                    raise RuntimeError('Baseline host action replaced the existing Expo process')
+-                after = self._records()
+-                self._preserved(before, after)
+-                self.closures += 1
+-                (self.output / 'baseline-host-state-preservation.json').write_text(json.dumps({
+-                    'closureCount': self.closures, 'pid': pid,
+-                    'globalDeadlineReset': False, 'originalNativeHistoryPreserved': True,
+-                    'fixtureStateSeeded': False, 'uriDelivered': False,
+-                    'productStatePassed': False,
+-                    'prefixRecordCounts': {p: [len(before[p]), len(after[p])] for p in PREFIXES},
+-                }, indent=2) + '\n')
++                with self.host_proof_scope():
++                    pid, before = self._pid(), self._records()
++                    if intro_sheet(tree):
++                        dismiss_observed_intro(self, tree, self.action, self.bounds)
++                    tree, _ = self.dump(name)
++                    if self.host.has_host_sheet(tree):
++                        self.host.close_ordinary_menu(self)
++                    tree, _ = self.dump(name)
++                    self.host.unobscured_host(tree)
++                    if self._pid() != pid:
++                        raise RuntimeError('Baseline host action replaced the existing Expo process')
++                    after = self._records()
++                    self._preserved(before, after)
++                    self.closures += 1
++                    (self.output / 'baseline-host-state-preservation.json').write_text(json.dumps({
++                        'closureCount': self.closures, 'pid': pid,
++                        'globalDeadlineReset': False, 'originalNativeHistoryPreserved': True,
++                        'fixtureStateSeeded': False, 'uriDelivered': False,
++                        'productStatePassed': False,
++                        'prefixRecordCounts': {p: [len(before[p]), len(after[p])] for p in PREFIXES},
++                    }, indent=2) + '\n')
+             except (subprocess.SubprocessError, ET.ParseError) as error:
+                 # Original ordinary wait retries these types. A recognized
+                 # host action/capture failure must instead fail the case.

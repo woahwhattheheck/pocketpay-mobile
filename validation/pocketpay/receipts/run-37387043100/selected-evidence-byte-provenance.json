@@ -1,0 +1,758 @@
+{
+  "runId": 37387043100,
+  "copiedEvidence": [
+    {
+      "path": "camera/final-ui.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/final-ui.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "camera/controller-source.txt",
+      "sha256": "d233a9829e6ea5197627c04ff2c447ae71458bc283c2470ad4d68627d24c8cfd",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/controller-source.txt",
+      "bytes": 82
+    },
+    {
+      "path": "camera/SCOPE.md",
+      "sha256": "d17c5ee0e4c7d7ac6f99c3c869785aefb7cfaaeab08470eaa63c14939c48c702",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/SCOPE.md",
+      "bytes": 14044
+    },
+    {
+      "path": "camera/source-integrity.json",
+      "sha256": "dfe87540a9149af9cad02c897b46aefd1cd68dcae3d01b925c462a31e8fc0bdf",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/source-integrity.json",
+      "bytes": 386
+    },
+    {
+      "path": "camera/final-screen.png",
+      "sha256": "9f44445fb8b4eae57a3e242ff5bd3c2b39b14318224385dd0d1932603c6d64e1",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/final-screen.png",
+      "bytes": 694566
+    },
+    {
+      "path": "camera/kvm-preflight-result.json",
+      "sha256": "f4d8b063629517f8cc3b4ac53e2519439e2ef116744ebc16665cb5d3dbaca79d",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/kvm-preflight-result.json",
+      "bytes": 71
+    },
+    {
+      "path": "camera/controller-integrity.txt",
+      "sha256": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/controller-integrity.txt",
+      "bytes": 42
+    },
+    {
+      "path": "camera/observations.json",
+      "sha256": "116e60c90cbb30cc0f49c553b9a3709dfd077c07d01599df63b20aa0523d7354",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/observations.json",
+      "bytes": 4022
+    },
+    {
+      "path": "camera/expo-go-integrity.txt",
+      "sha256": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/expo-go-integrity.txt",
+      "bytes": 75
+    },
+    {
+      "path": "camera/executed-source.txt",
+      "sha256": "efb8e0d8ea56286b4e42542eb87bff5a7d82749fe8685aed68ab1a090dfc0d3f",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/executed-source.txt",
+      "bytes": 82
+    },
+    {
+      "path": "camera/fixture-integrity.json",
+      "sha256": "ac55da99294d61d0217ae730f5c713ece4f1f2c52275ed6f8437b776a523ee99",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/camera/fixture-integrity.json",
+      "bytes": 385
+    },
+    {
+      "path": "retry/unmatched-state-post-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/unmatched-state-post-media-guard.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "retry/failure-retry-error.png",
+      "sha256": "c4ce1b896cc36593b38030ee58fb725832f648bebe17a699609721e349440bb6",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-retry-error.png",
+      "bytes": 694684
+    },
+    {
+      "path": "retry/final-ui.xml",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/final-ui.xml",
+      "bytes": 10392
+    },
+    {
+      "path": "retry/failure-nohash-guidance-no-lookup.xml",
+      "sha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-nohash-guidance-no-lookup.xml",
+      "bytes": 10154
+    },
+    {
+      "path": "retry/failure-retry-failed.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-retry-failed.xml",
+      "bytes": 13631
+    },
+    {
+      "path": "retry/retry-gap-observations.json",
+      "sha256": "5840b8791402f164e7fbb9b564f1fc472ffe2a64930997eec536d5d8332c1e9d",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/retry-gap-observations.json",
+      "bytes": 992
+    },
+    {
+      "path": "retry/controller-source.txt",
+      "sha256": "d233a9829e6ea5197627c04ff2c447ae71458bc283c2470ad4d68627d24c8cfd",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/controller-source.txt",
+      "bytes": 82
+    },
+    {
+      "path": "retry/current.xml",
+      "sha256": "a6be2ad91a779b104401fafda862f776e71a1881f5e73dcd65410e9d6dcff259",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/current.xml",
+      "bytes": 9146
+    },
+    {
+      "path": "retry/unmatched-state-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/unmatched-state-media-guard.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "retry/gap-fixture-setup.json",
+      "sha256": "201ca44126629d9e68c0004580b2f89546484bace1dbecbe1d5c04aa6a62e954",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/gap-fixture-setup.json",
+      "bytes": 442
+    },
+    {
+      "path": "retry/unmatched-state.png",
+      "sha256": "c4ce1b896cc36593b38030ee58fb725832f648bebe17a699609721e349440bb6",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/unmatched-state.png",
+      "bytes": 694684
+    },
+    {
+      "path": "retry/launches.txt",
+      "sha256": "db9f7ff316a2814d62782e1fc03528d2a5c888588baf6b08f3131438e70ff5cb",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/launches.txt",
+      "bytes": 1604
+    },
+    {
+      "path": "retry/failure-retry-error.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-retry-error.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "retry/failure-retry-error-post-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-retry-error-post-media-guard.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "retry/retry-confirmed-review.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/retry-confirmed-review.xml",
+      "bytes": 13631
+    },
+    {
+      "path": "retry/failure-mismatched-lookup-preserves-unknown.xml",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-mismatched-lookup-preserves-unknown.xml",
+      "bytes": 10392
+    },
+    {
+      "path": "retry/retry-failed-review.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/retry-failed-review.xml",
+      "bytes": 13631
+    },
+    {
+      "path": "retry/nohash-actual-guidance.xml",
+      "sha256": "0fb3af437749d9c63d701099fded5383599df74fe7333542013f0d464be4205e",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/nohash-actual-guidance.xml",
+      "bytes": 10154
+    },
+    {
+      "path": "retry/empty-actual-guidance.xml",
+      "sha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/empty-actual-guidance.xml",
+      "bytes": 8035
+    },
+    {
+      "path": "retry/unmatched-labels.json",
+      "sha256": "89daaa9c496bef5a7fe059d7382bfde72f8403d94971864dfc51da76c2690e10",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/unmatched-labels.json",
+      "bytes": 240
+    },
+    {
+      "path": "retry/failure-retry-error-media-guard.xml",
+      "sha256": "7501644496883ee110c8992fb11be57c28aeb77bf1e5b4b9b17d5fdbdc91bbe7",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-retry-error-media-guard.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "retry/SCOPE.md",
+      "sha256": "d17c5ee0e4c7d7ac6f99c3c869785aefb7cfaaeab08470eaa63c14939c48c702",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/SCOPE.md",
+      "bytes": 14044
+    },
+    {
+      "path": "retry/final-screen.png",
+      "sha256": "8b3f8026671c25ad37505a4443c9d7c03ed1cba94510ca788072b11969e7c178",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/final-screen.png",
+      "bytes": 121323
+    },
+    {
+      "path": "retry/failure-retry-unknown.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-retry-unknown.xml",
+      "bytes": 13631
+    },
+    {
+      "path": "retry/primary-fixture-integrity.json",
+      "sha256": "fc28675f8c82f91670a180616892eb4ddd9ff90066a7975c1a273d9bcdbcb953",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/primary-fixture-integrity.json",
+      "bytes": 258
+    },
+    {
+      "path": "retry/kvm-preflight-result.json",
+      "sha256": "f4d8b063629517f8cc3b4ac53e2519439e2ef116744ebc16665cb5d3dbaca79d",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/kvm-preflight-result.json",
+      "bytes": 71
+    },
+    {
+      "path": "retry/controller-integrity.txt",
+      "sha256": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/controller-integrity.txt",
+      "bytes": 42
+    },
+    {
+      "path": "retry/retry-primary-observations.json",
+      "sha256": "f699e829bdc5de1574e5d00664e85643807b58ae0a793e65f34816581253a31d",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/retry-primary-observations.json",
+      "bytes": 1083
+    },
+    {
+      "path": "retry/observations.json",
+      "sha256": "40731bd70b60e447407ecfe854d7e2141b9a2dc701ed9f65f5865a7b2f0fc552",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/observations.json",
+      "bytes": 2304
+    },
+    {
+      "path": "retry/expo-go-integrity.txt",
+      "sha256": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/expo-go-integrity.txt",
+      "bytes": 75
+    },
+    {
+      "path": "retry/failure-empty-session-no-lookup.xml",
+      "sha256": "125c20b36a2fdf0e5b05230153f483a94f40324bf1d36edd9b3fc335d4b76ceb",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-empty-session-no-lookup.xml",
+      "bytes": 8035
+    },
+    {
+      "path": "retry/executed-source.txt",
+      "sha256": "423d7dd3cb1ff8fc448724a68a166b9182e58bd4546cd66c16a9e45353e22b59",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/executed-source.txt",
+      "bytes": 82
+    },
+    {
+      "path": "retry/mismatch-actual-unknown.xml",
+      "sha256": "da55f6e70b62fc94ee15e8140012cda339ab6c093af447e64aa8cb4db13ddaca",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/mismatch-actual-unknown.xml",
+      "bytes": 10392
+    },
+    {
+      "path": "retry/retry-unknown-review.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/retry-unknown-review.xml",
+      "bytes": 13631
+    },
+    {
+      "path": "retry/failure-retry-confirmed.xml",
+      "sha256": "f5ad1bb832fc844c327fdb10a002fa0b00a69642eac09efcc79f753a63189b04",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/retry/failure-retry-confirmed.xml",
+      "bytes": 13631
+    },
+    {
+      "path": "baseline/failure-import-empty-invalid.png",
+      "sha256": "3e651e4aa9626edd3ab709f26b053778bcc8d2657e88ac2f36ddb96f44922599",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-import-empty-invalid.png",
+      "bytes": 694986
+    },
+    {
+      "path": "baseline/final-ui.xml",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/final-ui.xml",
+      "bytes": 4730
+    },
+    {
+      "path": "baseline/diagnostics-ready-native-counters.json",
+      "sha256": "dedd55ecfbb0a9ba41478940b0fb7b14c620cb21099da4c0e834172038c6aa19",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/diagnostics-ready-native-counters.json",
+      "bytes": 1523
+    },
+    {
+      "path": "baseline/failure-vault-native-confirmation-receipt.xml",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-vault-native-confirmation-receipt.xml",
+      "bytes": 4730
+    },
+    {
+      "path": "baseline/failure-history-same-instance-transition-media-guard.xml",
+      "sha256": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-history-same-instance-transition-media-guard.xml",
+      "bytes": 9326
+    },
+    {
+      "path": "baseline/failure-create-dummy-masked.xml",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-create-dummy-masked.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "baseline/baseline-picker-name-search.png",
+      "sha256": "10522572997b6a3d4b04c35fb17108c98229d216e614206dc6604189d580461d",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-name-search.png",
+      "bytes": 96126
+    },
+    {
+      "path": "baseline/baseline-diagnostics-original.mp4",
+      "sha256": "f1f55498aa7d613389cd0ca3a6ec88f83f2885a600f531105db29847c144928c",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-diagnostics-original.mp4",
+      "bytes": 267890
+    },
+    {
+      "path": "baseline/baseline-real-native-share-sheet-media-guard.xml",
+      "sha256": "1c56b55ea9d16060ec2dd0c47021332b5bbbca9c9d113f354a4bac4241c1e426",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-real-native-share-sheet-media-guard.xml",
+      "bytes": 11303
+    },
+    {
+      "path": "baseline/failure-history-same-instance-transition.xml",
+      "sha256": "609d735272ee0318cb34175472607f3b06f7232cb8ce5f90a59161a51d3d3479",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-history-same-instance-transition.xml",
+      "bytes": 9326
+    },
+    {
+      "path": "baseline/share-return-native-counters.json",
+      "sha256": "700b792e510a4f9c1e09604932bb54e98e4bb24fd14f101c75bbe9b347659086",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/share-return-native-counters.json",
+      "bytes": 1559
+    },
+    {
+      "path": "baseline/baseline-real-native-share-sheet.xml",
+      "sha256": "1c56b55ea9d16060ec2dd0c47021332b5bbbca9c9d113f354a4bac4241c1e426",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-real-native-share-sheet.xml",
+      "bytes": 11303
+    },
+    {
+      "path": "baseline/controller-source.txt",
+      "sha256": "d233a9829e6ea5197627c04ff2c447ae71458bc283c2470ad4d68627d24c8cfd",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/controller-source.txt",
+      "bytes": 82
+    },
+    {
+      "path": "baseline/current.xml",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/current.xml",
+      "bytes": 4730
+    },
+    {
+      "path": "baseline/baseline-diagnostics-ready.png",
+      "sha256": "54f724ec16c4bd463e1408b9f587eeb162a36315ce35f456f51fe5c7fc006b61",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-diagnostics-ready.png",
+      "bytes": 100631
+    },
+    {
+      "path": "baseline/baseline-sign-summary.png",
+      "sha256": "dee66f89a9ecf43ade5295baa4fa3928b7e2c8c2d5a600d27eaaac6e4631a297",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-sign-summary.png",
+      "bytes": 123533
+    },
+    {
+      "path": "baseline/baseline-diagnostics-ready-media-guard.xml",
+      "sha256": "9eec1f061060f8203e587131cf04890b7af1dfb05e516a46526ed5908e98b76a",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-diagnostics-ready-media-guard.xml",
+      "bytes": 6707
+    },
+    {
+      "path": "baseline/unmatched-state-media-guard.xml",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/unmatched-state-media-guard.xml",
+      "bytes": 4730
+    },
+    {
+      "path": "baseline/failure-sign-real-navigation-return.png",
+      "sha256": "d27e7a93bab8f80b823625da3eaa31ed357692dc526bce8c3133164aa04c6dbc",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-sign-real-navigation-return.png",
+      "bytes": 695105
+    },
+    {
+      "path": "baseline/unmatched-state.png",
+      "sha256": "7f575005201dcd778bb6b9f5baf58def49d6614f2b8392fe8949f94c923385c3",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/unmatched-state.png",
+      "bytes": 82569
+    },
+    {
+      "path": "baseline/baseline-diagnostics-native-storage-status.xml",
+      "sha256": "7d53437a5b6e87b10c2bc8b3ee630109eeeadeb5535c5dfd8c227c65fe4b1577",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-diagnostics-native-storage-status.xml",
+      "bytes": 8062
+    },
+    {
+      "path": "baseline/baseline-diagnostics-native-storage-status-media-guard.xml",
+      "sha256": "7d53437a5b6e87b10c2bc8b3ee630109eeeadeb5535c5dfd8c227c65fe4b1577",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-diagnostics-native-storage-status-media-guard.xml",
+      "bytes": 8062
+    },
+    {
+      "path": "baseline/launches.txt",
+      "sha256": "96c30747db8b20ff53c18cd835bdf79476de406f27f36388122d52c46a995ecc",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/launches.txt",
+      "bytes": 2073
+    },
+    {
+      "path": "baseline/baseline-picker-no-match-media-guard.xml",
+      "sha256": "627fce224889468a7c66fcf681ee8baac503b8fe696723473fce6a6de2071307",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-no-match-media-guard.xml",
+      "bytes": 3443
+    },
+    {
+      "path": "baseline/observed-expo-developer-sheet-media-guard.xml",
+      "sha256": "cb5479275f8a9f4a69fba6cbc40942c31132133156cdf82bceccd6bd3e098c3f",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/observed-expo-developer-sheet-media-guard.xml",
+      "bytes": 17642
+    },
+    {
+      "path": "baseline/baseline-sign-summary.xml",
+      "sha256": "4fb2acb3472e3ad33f3fc9fe2af6bbdf9646a16a0d55c155361a035ca870906f",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-sign-summary.xml",
+      "bytes": 13176
+    },
+    {
+      "path": "baseline/baseline-sign-missing-params.png",
+      "sha256": "a582903289380138b0e655d5ece575298d3d649d15ac59fe3b0225f82c3042b5",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-sign-missing-params.png",
+      "bytes": 63508
+    },
+    {
+      "path": "baseline/baseline-sign-missing-params-media-guard.xml",
+      "sha256": "167841408da2607658394f53c1d98375de1125d20e57c63889e24be1b5f2df05",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-sign-missing-params-media-guard.xml",
+      "bytes": 3985
+    },
+    {
+      "path": "baseline/fixture-integrity.txt",
+      "sha256": "90ccfe3c377956ca128f9bb57b4b61f826af3a3663ca4d92fd86b00915570ea9",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/fixture-integrity.txt",
+      "bytes": 93
+    },
+    {
+      "path": "baseline/baseline-real-error-fallback-media-guard.xml",
+      "sha256": "1f0c592c6d7f8d846434e241190b1c56b9a6d0650332a3f7aca501eb0ca2df3c",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-real-error-fallback-media-guard.xml",
+      "bytes": 5091
+    },
+    {
+      "path": "baseline/baseline-sign-missing-params.xml",
+      "sha256": "167841408da2607658394f53c1d98375de1125d20e57c63889e24be1b5f2df05",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-sign-missing-params.xml",
+      "bytes": 3985
+    },
+    {
+      "path": "baseline/baseline-real-error-fallback.png",
+      "sha256": "5771922d93a2545aae483095866877ccfe156410c948e16f5448bebeb7040cae",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-real-error-fallback.png",
+      "bytes": 85414
+    },
+    {
+      "path": "baseline/sign-invalid-native-counters.json",
+      "sha256": "fa3bf09abd5276f6e71c936086d65c5dc1a58f813c6e85a09a7e7b7a2b5372a8",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/sign-invalid-native-counters.json",
+      "bytes": 1538
+    },
+    {
+      "path": "baseline/unmatched-labels.json",
+      "sha256": "ed5725b98431b3098a2288006bda661f9bded31c58faedaf2b77daf60471618a",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/unmatched-labels.json",
+      "bytes": 477
+    },
+    {
+      "path": "baseline/share-sheet-native-counters.json",
+      "sha256": "700b792e510a4f9c1e09604932bb54e98e4bb24fd14f101c75bbe9b347659086",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/share-sheet-native-counters.json",
+      "bytes": 1559
+    },
+    {
+      "path": "baseline/vault-route-setup.json",
+      "sha256": "27b775f4241824d358f50cc7ec0f7d5a30bd2200b4d25201ee273f4886bb6381",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/vault-route-setup.json",
+      "bytes": 187
+    },
+    {
+      "path": "baseline/failure-vault-native-confirmation-receipt.png",
+      "sha256": "7f575005201dcd778bb6b9f5baf58def49d6614f2b8392fe8949f94c923385c3",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-vault-native-confirmation-receipt.png",
+      "bytes": 82569
+    },
+    {
+      "path": "baseline/SCOPE.md",
+      "sha256": "c77172f924c4ae3b1ae728e3cb3b3c93f6871c2ee23b066f3c390985fa4b37c4",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/SCOPE.md",
+      "bytes": 4665
+    },
+    {
+      "path": "baseline/baseline-picker-no-match.png",
+      "sha256": "853585db57cd997cdf6e3b866a11056f8aebc88308dc94b408c770eb2e9ea8a1",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-no-match.png",
+      "bytes": 90547
+    },
+    {
+      "path": "baseline/baseline-diagnostics-ready.xml",
+      "sha256": "9eec1f061060f8203e587131cf04890b7af1dfb05e516a46526ed5908e98b76a",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-diagnostics-ready.xml",
+      "bytes": 6707
+    },
+    {
+      "path": "baseline/failure-vault-native-confirmation-receipt-media-guard.xml",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-vault-native-confirmation-receipt-media-guard.xml",
+      "bytes": 4730
+    },
+    {
+      "path": "baseline/baseline-picker-with-edit.png",
+      "sha256": "ce2f82e161bbf3375112bb3bf9f72dd00659e78cfc0f8b1c7e9bec9f88f1adc5",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-with-edit.png",
+      "bytes": 94419
+    },
+    {
+      "path": "baseline/baseline-picker-name-search-media-guard.xml",
+      "sha256": "24540eebec0ccf89b79a4f706446ebd80f2b2cb02d7b79e08bc1b5fbda1fdaef",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-name-search-media-guard.xml",
+      "bytes": 4854
+    },
+    {
+      "path": "baseline/failure-sign-real-navigation-return-media-guard.xml",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-sign-real-navigation-return-media-guard.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "baseline/failure-picker-search-optional-edit-media-guard.xml",
+      "sha256": "292c980df11e241d85b7043398d4c000bfdfee72bab42f0575d38465a5da92ad",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-picker-search-optional-edit-media-guard.xml",
+      "bytes": 6308
+    },
+    {
+      "path": "baseline/failure-import-empty-invalid.xml",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-import-empty-invalid.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "baseline/observed-expo-developer-sheet.png",
+      "sha256": "169383ce0ae90961957c6681f25a2bb4c521e0b3bc573b48061b3e6e3964cb4b",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/observed-expo-developer-sheet.png",
+      "bytes": 108479
+    },
+    {
+      "path": "baseline/failure-import-empty-invalid-media-guard.xml",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-import-empty-invalid-media-guard.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "baseline/failure-sign-real-navigation-return.xml",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-sign-real-navigation-return.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "baseline/unmatched-state.xml",
+      "sha256": "84d348c68c2559df4ff9bf50e29bc697cc786761d1e85e093d20534447d9b4f8",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/unmatched-state.xml",
+      "bytes": 4730
+    },
+    {
+      "path": "baseline/final-screen.png",
+      "sha256": "7f575005201dcd778bb6b9f5baf58def49d6614f2b8392fe8949f94c923385c3",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/final-screen.png",
+      "bytes": 82569
+    },
+    {
+      "path": "baseline/kvm-preflight-result.json",
+      "sha256": "f4d8b063629517f8cc3b4ac53e2519439e2ef116744ebc16665cb5d3dbaca79d",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/kvm-preflight-result.json",
+      "bytes": 71
+    },
+    {
+      "path": "baseline/baseline-picker-name-search.xml",
+      "sha256": "24540eebec0ccf89b79a4f706446ebd80f2b2cb02d7b79e08bc1b5fbda1fdaef",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-name-search.xml",
+      "bytes": 4854
+    },
+    {
+      "path": "baseline/controller-integrity.txt",
+      "sha256": "eab50f08048965d5261a0568f101d7eca96efba568c14a9fbea133331605af07",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/controller-integrity.txt",
+      "bytes": 42
+    },
+    {
+      "path": "baseline/failure-create-dummy-masked-media-guard.xml",
+      "sha256": "22a3293411b0e704299c12c5b029d584821fe6733126c73b44571cbd8ecced31",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-create-dummy-masked-media-guard.xml",
+      "bytes": 5741
+    },
+    {
+      "path": "baseline/baseline-real-native-share-sheet.png",
+      "sha256": "81f0865a12137203512366b0036662a8ce88a3810ef89b7edfe028c3059f3ecb",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-real-native-share-sheet.png",
+      "bytes": 95015
+    },
+    {
+      "path": "baseline/baseline-share-cancel-return.xml",
+      "sha256": "cc4e7c1bd5c314c7f20ba9dbc35f93ffc948fa361eb84da8c91ce058209a801c",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-share-cancel-return.xml",
+      "bytes": 6483
+    },
+    {
+      "path": "baseline/observations.json",
+      "sha256": "daff268aee8b24175a6a4bb09a17b472a77596f4a8d3910ced8edbd1e2472bfb",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/observations.json",
+      "bytes": 1734
+    },
+    {
+      "path": "baseline/observed-expo-developer-sheet.xml",
+      "sha256": "cb5479275f8a9f4a69fba6cbc40942c31132133156cdf82bceccd6bd3e098c3f",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/observed-expo-developer-sheet.xml",
+      "bytes": 17642
+    },
+    {
+      "path": "baseline/baseline-diagnostics-native-storage-status.png",
+      "sha256": "20186a46950563d1ccb22d6759e4327c1fe69875d19837f17653922992022396",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-diagnostics-native-storage-status.png",
+      "bytes": 99968
+    },
+    {
+      "path": "baseline/expo-go-integrity.txt",
+      "sha256": "0c23b45879d137004f26e68c5a722e528fdefd71297df7c4608a966b8054708a",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/expo-go-integrity.txt",
+      "bytes": 75
+    },
+    {
+      "path": "baseline/failure-history-same-instance-transition.png",
+      "sha256": "f1d0a892d04b12a245d4b49967b0fdef9b8f318055e409a55448dfb8e2d9e290",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-history-same-instance-transition.png",
+      "bytes": 119233
+    },
+    {
+      "path": "baseline/baseline-picker-with-edit.xml",
+      "sha256": "17949349ef10e48dcbd112e9f575681cec6a636b38948046ca92eaf7a24fa526",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-with-edit.xml",
+      "bytes": 6309
+    },
+    {
+      "path": "baseline/baseline-share-cancel-return-media-guard.xml",
+      "sha256": "cc4e7c1bd5c314c7f20ba9dbc35f93ffc948fa361eb84da8c91ce058209a801c",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-share-cancel-return-media-guard.xml",
+      "bytes": 6483
+    },
+    {
+      "path": "baseline/executed-source.txt",
+      "sha256": "4e21aa60467e6a261b315ab91cdab13545d6368f2a39162d47ecd5a593ddb572",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/executed-source.txt",
+      "bytes": 82
+    },
+    {
+      "path": "baseline/baseline-picker-with-edit-media-guard.xml",
+      "sha256": "17949349ef10e48dcbd112e9f575681cec6a636b38948046ca92eaf7a24fa526",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-with-edit-media-guard.xml",
+      "bytes": 6309
+    },
+    {
+      "path": "baseline/fixture-setup.json",
+      "sha256": "cd06b9f28a68595ee9cae35da8037130059bada4edfa0de31d217e72fb3e1721",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/fixture-setup.json",
+      "bytes": 436
+    },
+    {
+      "path": "baseline/failure-picker-search-optional-edit.xml",
+      "sha256": "292c980df11e241d85b7043398d4c000bfdfee72bab42f0575d38465a5da92ad",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-picker-search-optional-edit.xml",
+      "bytes": 6308
+    },
+    {
+      "path": "baseline/failure-create-dummy-masked.png",
+      "sha256": "b722a572f794848d65d1026ca7a8c43059c6626ea300ddfb32356019bea0ac93",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-create-dummy-masked.png",
+      "bytes": 694774
+    },
+    {
+      "path": "baseline/baseline-real-error-fallback.xml",
+      "sha256": "1f0c592c6d7f8d846434e241190b1c56b9a6d0650332a3f7aca501eb0ca2df3c",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-real-error-fallback.xml",
+      "bytes": 5091
+    },
+    {
+      "path": "baseline/diagnostics-screenrecord-status.json",
+      "sha256": "ece1e2dfc0145afdc16de2da0ceed8cd876f80dbb40d038652204222bd96af81",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/diagnostics-screenrecord-status.json",
+      "bytes": 99
+    },
+    {
+      "path": "baseline/baseline-share-cancel-return.png",
+      "sha256": "3101907582ab662f336c6932656aed2b8656522250fa93a9a965e28732b0758c",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-share-cancel-return.png",
+      "bytes": 86403
+    },
+    {
+      "path": "baseline/baseline-picker-no-match.xml",
+      "sha256": "627fce224889468a7c66fcf681ee8baac503b8fe696723473fce6a6de2071307",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-picker-no-match.xml",
+      "bytes": 3443
+    },
+    {
+      "path": "baseline/failure-picker-search-optional-edit.png",
+      "sha256": "ccd319f54eff4dfc762918a34aa6832cb65f27e3977fab033fa7b058caf89336",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/failure-picker-search-optional-edit.png",
+      "bytes": 94485
+    },
+    {
+      "path": "baseline/baseline-sign-summary-media-guard.xml",
+      "sha256": "4fb2acb3472e3ad33f3fc9fe2af6bbdf9646a16a0d55c155361a035ca870906f",
+      "origin": "/workspace/scratch/ea8baa184658/pocketpay-remote-native-evidence/37387043100/baseline/baseline-sign-summary-media-guard.xml",
+      "bytes": 13176
+    }
+  ],
+  "allCopiedBytesMustMatchOriginalZipMembers": true,
+  "originalZipOnly": [
+    {
+      "path": "camera/logcat.txt",
+      "reason": "Full original bytes preserved in immutable provider ZIP instead of a duplicate raw log blob"
+    },
+    {
+      "path": "camera/metro.log",
+      "reason": "Full original bytes preserved in immutable provider ZIP instead of a duplicate raw log blob"
+    },
+    {
+      "path": "retry/logcat.txt",
+      "reason": "Full original bytes preserved in immutable provider ZIP instead of a duplicate raw log blob"
+    },
+    {
+      "path": "retry/metro.log",
+      "reason": "Full original bytes preserved in immutable provider ZIP instead of a duplicate raw log blob"
+    },
+    {
+      "path": "baseline/logcat.txt",
+      "reason": "Full original bytes preserved in immutable provider ZIP instead of a duplicate raw log blob"
+    },
+    {
+      "path": "baseline/metro.log",
+      "reason": "Full original bytes preserved in immutable provider ZIP instead of a duplicate raw log blob"
+    }
+  ]
+}

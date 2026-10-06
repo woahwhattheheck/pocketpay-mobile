@@ -1,0 +1,67 @@
+{
+  "mode": "retry",
+  "primaryExit": 1,
+  "gapExit": 1,
+  "liveBroadcast": false,
+  "primary": {
+    "mode": "retry",
+    "source_sha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+    "camera_mocked": false,
+    "retry_store_and_horizon_transport_controlled": true,
+    "live_payment_transport": false,
+    "cases": [
+      {
+        "name": "retry-unknown",
+        "result": "failed",
+        "error": "Observed Expo sheet covers app; no target screenshot claim",
+        "capture_error": "Observed Expo sheet covers app; no target screenshot claim"
+      },
+      {
+        "name": "retry-error",
+        "result": "failed",
+        "error": "Expected actual UI state did not appear: ('Sign & Send',)"
+      },
+      {
+        "name": "retry-confirmed",
+        "result": "failed",
+        "error": "Observed Expo sheet covers app; no target screenshot claim",
+        "capture_error": "Observed Expo sheet covers app; no target screenshot claim"
+      },
+      {
+        "name": "retry-failed",
+        "result": "failed",
+        "error": "Observed Expo sheet covers app; no target screenshot claim",
+        "capture_error": "Observed Expo sheet covers app; no target screenshot claim"
+      }
+    ],
+    "optional_observations": []
+  },
+  "gaps": {
+    "sourceSha": "ddd56649099d1fc5763ef29af3bfba0363897bd6",
+    "sourceTree": "4e363d77915ca16d3490e677f78c6487aeeb7060",
+    "productionPaymentRetryScreenUnchanged": true,
+    "fixtureReadTransportControlled": true,
+    "liveSigningOrBroadcast": false,
+    "cases": [
+      {
+        "name": "nohash-guidance-no-lookup",
+        "result": "failed",
+        "error": "Observed Expo developer sheet covers the product UI.",
+        "captureError": "Observed Expo developer sheet covers the product UI."
+      },
+      {
+        "name": "empty-session-no-lookup",
+        "result": "failed",
+        "error": "Observed Expo developer sheet covers the product UI.",
+        "captureError": "Observed Expo developer sheet covers the product UI."
+      },
+      {
+        "name": "mismatched-lookup-preserves-unknown",
+        "result": "failed",
+        "error": "Observed Expo developer sheet covers the product UI.",
+        "captureError": "Observed Expo developer sheet covers the product UI."
+      }
+    ],
+    "optionalObservations": []
+  }
+}

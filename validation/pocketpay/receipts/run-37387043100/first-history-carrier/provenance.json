@@ -1,0 +1,45 @@
+{
+  "scope": "Unexecuted first independent History conditional original URI carrier only",
+  "nativeAcceptance": false,
+  "sourceSha": "52ce8006a2d091a4c9f29852a1a530750ff9b3cc",
+  "sourceTree": "b7556026e93c5930915d12fdf51d421773c5f61e",
+  "expectedControllerParent": "e69c9150bda234607c008955ba2e5e5c853b8ae1",
+  "runtimeCopy": [
+    "baseline_history_carrier.py",
+    "baseline-host-runner.py"
+  ],
+  "fileSha256": {
+    "README.md": "dd923e69c7e6010fafa8a3db0280be21b9c91d98c84d091cc7980cfa505a3146",
+    "baseline-host-runner.py": "0628d1e2ed2f28286d363fcb7b2de1961a8d23f202c6b2d8b3e8bfacfe6cfe6b",
+    "baseline_history_carrier.py": "cdd2d745b85bdd30cb3cc7ed412db990ff9ce36fd268195078b3319f77731fef",
+    "expo_ordinary_menu.py": "f1af8f4f431f3627806f6cd3efb3fedb9a7ee2e6adce99dc9d852e3c3790f1a9",
+    "observed/actual-first-bootstrap-records.json": "287973304976941136126c2d353bd832051b5852a3e28ed0e6b0cd0a209b1a66",
+    "observed/executed-source.txt": "4e21aa60467e6a261b315ab91cdab13545d6368f2a39162d47ecd5a593ddb572",
+    "observed/original-baseline-host-runner.py": "ea4ab48c8a8807ed736c8304a732675c6edcbff62fb80d06c080864ef364e14d",
+    "observed/original-baseline-ui.py": "3744c149be96657245c9f7e0c8ef6072857c8db152bc05174b7c731e6b250e0e",
+    "observed/original-first-bootstrap-line-provenance.json": "99e2aadef890400a93ab01d578dcb9eef603b3bc20a947e672ea60fb161d3de2",
+    "runner-install.patch": "ad2165579b5f67f9a37ade2f8621447b922bb71bd7eb00e8d7e8e7672fcdefd1",
+    "source-proof/ReactFabric-dev.js.excerpt.txt": "5127aee5590f44752261841105b7b3619b782dcc728b8cdd4c3324b402a8f4ad",
+    "source-proof/ReactNativeRenderer-dev.js.excerpt.txt": "5127aee5590f44752261841105b7b3619b782dcc728b8cdd4c3324b402a8f4ad",
+    "source-proof/history.tsx": "e974ea566d587355139682834ce4297c828da7a8afdb55a8e4f0aafa6ab39c3d",
+    "source-proof/native-baseline-bootstrap.js": "a5a730b3583d8cca5df2b7cb2094bc584c28d18a6736727ed71536cf05bad7cc",
+    "source-proof/native-baseline-observation-cases.tsx": "e44271dc1f25e7e6eb172391f363e90088ad9bb83f5c1c5c726b87141ab1ff13",
+    "source-proof/native-vault-bootstrap.js": "3b903e656e698f3b849a958016c572c6cf50e3ed80646d3d23685a636b273359",
+    "source-proof/useNetworkState.ts": "9dfb47435445cbf66735b8804daac4b8897b8a17dc3c75ad3d3ed31d8d507713",
+    "source-proof/useOnlineStatus.ts": "f1fb8dfed2c9f8a5d6e166811384fae3813e44db9b2f0943f43c8e35511a7e14",
+    "test_first_history_carrier.py": "f326a4b59c15e3c0d164d8b1d04dd52d750b32eab8078200dcf8052ed14ec6d7",
+    "validation-checks.txt": "c44433651467ea53ca9a85c3fb9028fac664afd985f02656adbef8dfde225307",
+    "source-proof/provenance.json": "a6af8fd9120e037a13c6ede8b9b264d684c5884a4c244e207db76ba46d1447d0"
+  },
+  "validation": {
+    "pureTests": 23,
+    "syntaxFiles": 3,
+    "actualADBCalls": 0,
+    "actualSubprocessAllowed": false
+  },
+  "historicalProof": "Original first Metro bootstrap only; current runtime observer read mandatory",
+  "sourcePrediction": "Prefix of child dummy refresh then parent missing/mounted; exact one canned HEAD/root; post window below30s; no completed mount with refresh0",
+  "globalDeadlineReset": false,
+  "cameraAllowedlistChanged": false,
+  "retryURIAdded": false
+}

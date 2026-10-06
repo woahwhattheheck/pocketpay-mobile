@@ -1,0 +1,110 @@
+{
+  "mode": "camera",
+  "primaryExit": 1,
+  "contactsFirstDenialExit": 1,
+  "cameraMocked": false,
+  "primary": {
+    "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+    "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+    "cameraMocked": false,
+    "permissionHookMocked": false,
+    "productionFilesUnchanged": true,
+    "nativeExecution": true,
+    "suite": "primary-and-user-fixed",
+    "cameraPacketReadinessRequiresBothSuites": true,
+    "loadingClaimRequiresActualFrame": true,
+    "cases": [
+      {
+        "name": "scan-denied-manual",
+        "result": "failed",
+        "error": "Actual UI state not observed within bound: Camera Permission Required"
+      }
+    ],
+    "provenance": {
+      "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+      "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+      "trackedFilesUnchanged": true,
+      "fixturePath": "app/send/__camera-native-fixture.tsx",
+      "fixtureSha256": "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0",
+      "fixtureInstalled": true,
+      "legacyAuthFixturePresentAtReadOnlyPreparation": false
+    },
+    "loadingObservations": [
+      {
+        "screen": "scan",
+        "result": "not_observed",
+        "retainedFrameNames": [],
+        "loadingFallbackExercised": false,
+        "limit": "No SDK delay or mock; only matching before/after XML with a native PNG qualifies."
+      },
+      {
+        "screen": "contacts",
+        "result": "not_observed",
+        "retainedFrameNames": [],
+        "loadingFallbackExercised": false,
+        "limit": "No SDK delay or mock; only matching before/after XML with a native PNG qualifies."
+      }
+    ],
+    "developerSheetDismissals": 2,
+    "passed": false,
+    "originalCameraCasesPassed": false,
+    "originalContactsCallbackCompleted": false,
+    "sendPreservation": {
+      "status": "not_attempted",
+      "passed": false,
+      "reason": "Requires successful actual Contacts unavailable case while the primary OS grant is still current"
+    },
+    "sendExit": null,
+    "sendIntegrationOrder": "after original Contacts unavailable/manual callback, before user-fixed permission reset"
+  },
+  "contactsFirstDenial": {
+    "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+    "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+    "cameraMocked": false,
+    "permissionHookMocked": false,
+    "productionFilesUnchanged": true,
+    "nativeExecution": true,
+    "suite": "contacts-first-denial",
+    "cameraPacketReadinessRequiresBothSuites": true,
+    "loadingClaimRequiresActualFrame": true,
+    "cases": [
+      {
+        "name": "contacts-ordinary-first-denial-manual",
+        "result": "failed",
+        "error": "Actual UI state not observed within bound: Scan QR"
+      }
+    ],
+    "provenance": {
+      "sourceSha": "314b69b9a4ac4c4328540792fcc516e6ce5c6e16",
+      "sourceTree": "d024fbbd8393b855508da14a0b2fba9441c7a5f4",
+      "trackedFilesUnchanged": true,
+      "fixturePath": "app/send/__camera-native-fixture.tsx",
+      "fixtureSha256": "2a2e23c5a8c0e36c1b58b80e2931c183c7998d609bf7d134a44baf351189beb0",
+      "fixtureInstalled": true,
+      "legacyAuthFixturePresentAtReadOnlyPreparation": false
+    },
+    "loadingObservations": [
+      {
+        "screen": "scan",
+        "result": "not_observed",
+        "retainedFrameNames": [],
+        "loadingFallbackExercised": false,
+        "limit": "No SDK delay or mock; only matching before/after XML with a native PNG qualifies."
+      },
+      {
+        "screen": "contacts",
+        "result": "not_observed",
+        "retainedFrameNames": [],
+        "loadingFallbackExercised": false,
+        "limit": "No SDK delay or mock; only matching before/after XML with a native PNG qualifies."
+      }
+    ],
+    "developerSheetDismissals": 2,
+    "passed": false
+  },
+  "sendPreservation": {
+    "status": "not_attempted",
+    "passed": false,
+    "reason": "Requires successful actual Contacts unavailable case while the primary OS grant is still current"
+  }
+}
