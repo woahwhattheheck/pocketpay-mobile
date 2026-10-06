@@ -23,6 +23,7 @@ export default function PaymentSuccessScreen() {
     date?: string;
   }>();
   const contacts = useAppStore((state) => state.contacts);
+  const addRecentRecipient = useAppStore((state) => state.addRecentRecipient);
   const { copy, copiedField } = useCopyToClipboard();
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -31,6 +32,12 @@ export default function PaymentSuccessScreen() {
       if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (hash && destination) {
+      void addRecentRecipient(destination);
+    }
+  }, [hash, destination, addRecentRecipient]);
 
   const explorerUrl = getExplorerTxUrl(hash);
   const destinationLabel = destination ? resolveAddressLabel(destination, contacts) : null;
