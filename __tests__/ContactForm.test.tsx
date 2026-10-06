@@ -7,7 +7,8 @@ jest.mock('@/store/appStore', () => ({
   useAppStore: jest.fn(),
 }));
 
-const VALID_ADDRESS = `G${'A'.repeat(55)}`;
+const VALID_ADDRESS = 'GAAQEAYEAUDAOCAJBIFQYDIOB4IBCEQTCQKRMFYYDENBWHA5DYPSABOV';
+const INVALID_CHECKSUM_ADDRESS = `G${'A'.repeat(55)}`;
 
 describe('ContactForm', () => {
   const mockOnSave = jest.fn();
@@ -78,7 +79,7 @@ describe('ContactForm', () => {
     expect(mockOnSave).not.toHaveBeenCalled();
   });
 
-  it('validates Stellar address format', async () => {
+  it('rejects checksum-invalid Stellar addresses', async () => {
     render(
       <ContactForm
         visible={true}
@@ -89,13 +90,16 @@ describe('ContactForm', () => {
     );
 
     fireEvent.changeText(screen.getByPlaceholderText('Contact name'), 'Alice');
-    fireEvent.changeText(screen.getByPlaceholderText('G...'), 'invalid');
+    fireEvent.changeText(
+      screen.getByPlaceholderText('G...'),
+      INVALID_CHECKSUM_ADDRESS,
+    );
 
     fireEvent.press(screen.getByText('Save'));
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Invalid Stellar address/)
+        screen.getByText(/valid Stellar address/i)
       ).toBeTruthy();
     });
 
