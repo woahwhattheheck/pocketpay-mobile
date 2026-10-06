@@ -20,9 +20,15 @@ Pending map: { [hash]: TransactionRecord & { status: 'pending' | 'unknown' } }
 
 `pending` means Horizon acknowledged submission and the app is waiting for history reconciliation. `unknown` means the transaction was signed and handed to the submission call, but the app did not receive an authoritative Horizon response. An unknown state is **not** proof of failure and must not trigger a blind resend.
 
+### Restart persistence
+
+Pending and unknown recovery metadata is persisted in local storage under a key scoped to the wallet public key. After wallet initialization derives the active public key, the store restores only the records belonging to that wallet. Writes are serialized so rapid status changes cannot race older snapshots back into storage.
+
+The persisted recovery record contains public transaction metadata only. Secret-key material is never written to this storage path. Clearing the active wallet also clears that wallet's persisted pending/unknown records.
+
 ### Reconciliation
 
-During `refreshWalletData()`, each pending or unknown hash is checked against the Horizon response's `transaction_hash` field. If a match is found, the optimistic entry is dropped from the map to avoid duplicate display. Entries that don't reconcile remain visible — there is no forced expiry or automatic resend.
+During `refreshWalletData()`, each pending or unknown hash is checked against the Horizon response's `transaction_hash` field. If a match is found, the optimistic entry is dropped from the in-memory map and its persisted recovery record is removed to avoid duplicate display after a later restart. Entries that don't reconcile remain visible — there is no forced expiry or automatic resend.
 
 ### Components
 
@@ -72,6 +78,8 @@ The queue deliberately does not expose any retry or resend mechanism. This is an
 
 When an entry is marked `unknown`, the row displays **Status unknown** and the queue tells the user to refresh/check History before sending again. Pull-to-refresh uses the deterministic transaction hash to reconcile against Horizon. A definitive Horizon rejection remains a separate failure and is not added to this queue.
 
+Restart persistence exists to preserve this safety cue across app process death. Restoring an `unknown` record does not resubmit, poll in a new loop, or change signing behavior; it only restores the deterministic hash and user-visible reconciliation state for the matching wallet.
+
 ### Always-visible section
 
 The pending queue section is shown regardless of the active filter tab (All, Sent, Received, etc.). This ensures users never miss visibility into pending transactions, even when browsing a specific transaction type.
@@ -100,13 +108,16 @@ This ensures the "Pending" filter correctly shows both Horizon-confirmed pending
 
 ## Testing
 
-Tests are in `__tests__/PendingTransactionItem.test.tsx` and `__tests__/PendingTransactionQueue.test.tsx`.
+Tests are in `__tests__/PendingTransactionItem.test.tsx`, `__tests__/PendingTransactionQueue.test.tsx`, and `__tests__/walletStore.pendingTransactions.test.ts`.
 
-To run the tests:
+Focused restart coverage verifies that pending/unknown metadata is restored for the matching wallet after initialization and removed after authoritative reconciliation.
+
+To run the focused tests:
 
 ```bash
 npx jest PendingTransactionItem
 npx jest PendingTransactionQueue
+npx jest walletStore.pendingTransactions
 ```
 
 ---
@@ -118,6 +129,8 @@ npx jest PendingTransactionQueue
 | `src/components/PendingTransactionItem.tsx` | Single pending tx row component |
 | `src/components/PendingTransactionQueue.tsx` | Queue section container |
 | `app/(tabs)/history.tsx` | History screen (integration + filter fix) |
+| `src/store/walletStore.ts` | Pending/unknown state, wallet-scoped persistence, restore, and reconciliation cleanup |
 | `__tests__/PendingTransactionItem.test.tsx` | Item component tests (6 ACs) |
 | `__tests__/PendingTransactionQueue.test.tsx` | Queue component tests (7 ACs) |
+| `__tests__/walletStore.pendingTransactions.test.ts` | Persistence, restore, and reconciliation regressions |
 | `docs/pending-transaction-queue.md` | This document |
