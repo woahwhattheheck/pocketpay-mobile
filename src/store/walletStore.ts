@@ -6,7 +6,7 @@ import { fetchXlmBalance, fetchTransactionsPage, fetchAccountDetails, fundWithFr
 import type { BalanceState, FundingStatus } from '../types/balance';
 import {
   normalizeTransactionRecord,
-  normalizeTransactionRecords
+  normalizeTransactionRecords,
   type NormalizedTransactionStatus,
 } from '../features/transactions/normalization';
 import {
