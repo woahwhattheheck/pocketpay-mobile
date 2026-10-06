@@ -202,6 +202,11 @@ export default function ReviewTransactionScreen() {
   };
 
   const handleCancel = () => {
+    // The visible button can fire twice before React paints the cancelled phase.
+    // Fence cancellation against the live store synchronously so only the first
+    // tap schedules navigation; otherwise two timers could pop two screens.
+    if (useSignerStore.getState().phase !== 'review') return;
+
     store.cancelSigning();
     setTimeout(() => {
       store.reset();

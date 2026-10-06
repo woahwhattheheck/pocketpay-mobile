@@ -114,15 +114,17 @@ describe('ReviewTransactionScreen negative paths', () => {
     } as any);
   });
 
-  it('clears the review lock before returning to edit', () => {
+  it('clears the review lock and navigates back only once on a double-tap', () => {
     jest.useFakeTimers();
 
     const { getByText, unmount } = render(<ReviewTransactionScreen />);
+    const backToEdit = getByText('Back to Edit');
 
     expect(useSignerStore.getState().phase).toBe('review');
     expect(useSignerStore.getState().currentReview).not.toBeNull();
 
-    fireEvent.press(getByText('Back to Edit'));
+    fireEvent.press(backToEdit);
+    fireEvent.press(backToEdit);
 
     expect(useSignerStore.getState().phase).toBe('cancelled');
     expect(useSignerStore.getState().currentReview).toBeNull();
