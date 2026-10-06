@@ -21,6 +21,7 @@ const BACKUP_ACK_KEY = '@pocketpay_backup_acknowledged';
 const PENDING_TX_KEY_PREFIX = '@pocketpay_pending_transactions:';
 const DEFAULT_BALANCE = '0.0000000';
 const TX_PAGE_SIZE = 20;
+let refreshRequestGeneration = 0;
 
 // Transaction records from the Stellar Horizon API – use a flexible type
 // until a proper typed SDK wrapper is available.
@@ -292,6 +293,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   refreshWalletData: async () => {
     const { publicKey } = get();
     if (!publicKey) return;
+    const requestGeneration = ++refreshRequestGeneration;
 
     set({ isLoading: true, error: null, balanceState: 'loading', isLoadingMore: false, nextCursor: null, hasMoreTransactions: false });
     try {
@@ -299,7 +301,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         fetchXlmBalance(publicKey),
         fetchTransactionsPage(publicKey, TX_PAGE_SIZE),
       ]);
-      if (get().publicKey !== publicKey) return;
+      if (
+        get().publicKey !== publicKey ||
+        requestGeneration !== refreshRequestGeneration
+      ) return;
 
       // Reconcile: drop any optimistic pending entry whose hash now shows up in the
       // real Horizon response, so it isn't displayed twice. Operation records
@@ -315,7 +320,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       );
 
       await enqueuePendingTransactionsPersist(publicKey, remainingPending);
-      if (get().publicKey !== publicKey) return;
+      if (
+        get().publicKey !== publicKey ||
+        requestGeneration !== refreshRequestGeneration
+      ) return;
 
       const isZero = balance === '0.0000000';
       set({
@@ -331,7 +339,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         fundingStatus: 'funded',
       });
     } catch (err: any) {
-      if (get().publicKey !== publicKey) return;
+      if (
+        get().publicKey !== publicKey ||
+        requestGeneration !== refreshRequestGeneration
+      ) return;
       console.error('Failed to refresh wallet data');
       set({
         isLoading: false,
