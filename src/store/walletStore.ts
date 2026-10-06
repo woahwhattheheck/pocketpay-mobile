@@ -2,8 +2,14 @@ import { create } from 'zustand';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StellarSdk from '@stellar/stellar-sdk';
-import { fetchXlmBalance, fetchTransactionsPage, fetchAccountDetails, fundWithFriendbot, PaymentRecord } from '../services/stellar';
+import { fetchXlmBalance, fetchTransactionsPage, fetchAccountDetails, fundWithFriendbot } from '../services/stellar';
 import type { BalanceState, FundingStatus } from '../types/balance';
+import {
+  normalizeTransactionRecord,
+  normalizeTransactionRecords,
+  type NormalizedTransactionRecord,
+  type NormalizedTransactionStatus,
+} from '../features/transactions/normalization';
 import {
   CLEAR_WALLET_ERROR,
   PERSIST_WALLET_ERROR,
@@ -21,10 +27,10 @@ const BACKUP_ACK_KEY = '@pocketpay_backup_acknowledged';
 const DEFAULT_BALANCE = '0.0000000';
 const TX_PAGE_SIZE = 20;
 
-// Transaction records from the Stellar Horizon API – use a flexible type
-// until a proper typed SDK wrapper is available.
-export type TransactionStatus = 'pending' | 'confirmed' | 'failed';
-export type TransactionRecord = Record<string, any> & { id: string; status?: TransactionStatus };
+// Canonical records are normalized at the store boundary so UI consumers do
+// not need to understand Horizon, optimistic, or vault-specific field shapes.
+export type TransactionStatus = NormalizedTransactionStatus;
+export type TransactionRecord = NormalizedTransactionRecord;
 
 interface WalletState {
   publicKey: string | null;
@@ -230,6 +236,8 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         fetchTransactionsPage(publicKey, TX_PAGE_SIZE),
       ]);
 
+      const normalizedRecords = normalizeTransactionRecords(page.records, publicKey);
+
       // Reconcile: drop any optimistic pending entry whose hash now shows up in the
       // real Horizon response, so it isn't displayed twice. Operation records
       // expose the transaction hash as `transaction_hash`. Entries that don't
@@ -237,7 +245,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       // pendingTransactions fresh (not before the await above) so an entry added
       // while this refresh was in flight doesn't get silently dropped.
       const confirmedHashes = new Set(
-        page.records.map((tx: any) => tx.transaction_hash).filter(Boolean)
+        normalizedRecords.map((tx) => tx.hash).filter(Boolean)
       );
       const remainingPending = Object.fromEntries(
         Object.entries(get().pendingTransactions).filter(([hash]) => !confirmedHashes.has(hash))
@@ -246,7 +254,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       const isZero = balance === '0.0000000';
       set({
         balance,
-        transactions: [...Object.values(remainingPending), ...page.records],
+        transactions: [...Object.values(remainingPending), ...normalizedRecords],
         pendingTransactions: remainingPending,
         nextCursor: page.nextCursor,
         hasMoreTransactions: page.hasMore,
@@ -267,7 +275,16 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   },
 
   addPendingTransaction: (hash, tx) => {
-    const pendingRecord: TransactionRecord = { ...tx, status: 'pending' };
+    const pendingRecord = normalizeTransactionRecord(
+      {
+        ...tx,
+        hash: tx.hash ?? hash,
+        transaction_hash: tx.transaction_hash ?? hash,
+        status: 'pending',
+        is_pending: true,
+      },
+      get().publicKey,
+    );
     set((state) => ({
       pendingTransactions: { ...state.pendingTransactions, [hash]: pendingRecord },
       transactions: [pendingRecord, ...state.transactions],
@@ -283,10 +300,11 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     set({ isLoadingMore: true, error: null });
     try {
       const page = await fetchTransactionsPage(publicKey, TX_PAGE_SIZE, nextCursor);
+      const normalizedRecords = normalizeTransactionRecords(page.records, publicKey);
 
       // Deduplicate: build a set of existing IDs then filter the new records.
       const existingIds = new Set(transactions.map((tx) => tx.id));
-      const newRecords = (page.records as TransactionRecord[]).filter(
+      const newRecords = normalizedRecords.filter(
         (tx) => !existingIds.has(tx.id)
       );
 
