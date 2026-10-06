@@ -159,6 +159,18 @@ describe('createReceivePayload', () => {
     expect(result.errors.memo).toContain('too long');
   });
 
+  it('rejects non-text memo types in the validated mobile receive flow', () => {
+    const result = createReceivePayload({
+      destination: DESTINATION,
+      memo: '12345',
+      memoType: 'MEMO_ID',
+    }, 'Testnet');
+
+    expect(result.isValid).toBe(false);
+    expect(result.payload).toBe('');
+    expect(result.errors.memo).toContain('text memos only');
+  });
+
   it('rejects issued-asset fields in the current XLM-only mobile receive flow', () => {
     const result = createReceivePayload({
       destination: DESTINATION,
