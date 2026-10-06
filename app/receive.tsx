@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { View, Text, StyleSheet, Share, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, Share, TouchableOpacity, Alert, Platform } from "react-native";
 import { Button } from "../src/components/Button";
 import { FormField } from "../src/components/FormField";
 import { ScreenHeader } from "../src/components/ScreenHeader";
@@ -84,7 +84,9 @@ export default function ReceiveScreen() {
         title: "My Stellar Address",
       });
 
-      if (result.action === Share.sharedAction) {
+      // React Native always reports sharedAction on Android, even when the
+      // chooser is dismissed, so only iOS can truthfully confirm completion.
+      if (Platform.OS === "ios" && result.action === Share.sharedAction) {
         Alert.alert("Address shared", "Your Stellar address was shared successfully.");
       }
     } catch (error) {
