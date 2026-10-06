@@ -6,8 +6,7 @@ import { fetchXlmBalance, fetchTransactionsPage, fetchAccountDetails, fundWithFr
 import type { BalanceState, FundingStatus } from '../types/balance';
 import {
   normalizeTransactionRecord,
-  normalizeTransactionRecords,
-  type NormalizedTransactionRecord,
+  normalizeTransactionRecords
   type NormalizedTransactionStatus,
 } from '../features/transactions/normalization';
 import {
@@ -30,7 +29,10 @@ const TX_PAGE_SIZE = 20;
 // Canonical records are normalized at the store boundary so UI consumers do
 // not need to understand Horizon, optimistic, or vault-specific field shapes.
 export type TransactionStatus = NormalizedTransactionStatus;
-export type TransactionRecord = NormalizedTransactionRecord;
+export type TransactionRecord = Record<string, any> & {
+  id: string;
+  status?: TransactionStatus;
+};
 
 interface WalletState {
   publicKey: string | null;
