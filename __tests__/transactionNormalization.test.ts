@@ -82,6 +82,7 @@ describe('transaction history normalisation', () => {
     expect(vault.status).toBe('unknown');
     expect(matchesTransactionFilter(vault, 'vault')).toBe(true);
     expect(matchesTransactionFilter(vault, 'unknown')).toBe(true);
+    expect(matchesTransactionFilter(vault, 'sent')).toBe(false);
   });
 
   it('represents malformed or incomplete activity as unknown instead of confirmed', () => {
