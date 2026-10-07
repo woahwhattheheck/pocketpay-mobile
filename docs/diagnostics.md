@@ -6,7 +6,7 @@ The Development Diagnostics feature allows contributors to easily view, export, 
 
 ## How It Works
 
-A **Diagnostics** option is available in the **About** section of the Settings tab. Tapping **Diagnostics** opens a dedicated status view displaying real-time system diagnostic info and provides an **Export Diagnostics Log** button to copy or send the redacted log via the native system share sheet.
+A **Support Diagnostics** option is available in the **Support** section of the Settings tab. Tapping it opens a dedicated status view displaying safe diagnostic categories and provides an **Export Diagnostics Log** button to copy or send the redacted log via the native system share sheet.
 
 ## Redacted Information
 
@@ -29,8 +29,8 @@ The exported JSON string includes useful metadata for debugging:
 - **Feature Flags**: every flag defined in `src/config/featureFlags.ts`, by name, with its enabled/disabled state — no description text, just enough to tell support which build variant a user is on.
 - **Storage**: whether secure device storage (Keychain on iOS, Keystore on Android) is available via `SecureStore.isAvailableAsync()` — a capability check, not a read of anything actually stored.
 - **App State**: Initialization status, UI Theme, total count of saved contacts
-- **Wallet State**: Wallet initialization status (has public key), balance load status, transaction count, loading state, and the most recent wallet-store error message (if any, already redacted)
-- **Last Reported Failure**: Snapshot from the global `reportError` funnel (ErrorBoundary / JS handler / unhandled rejection) — source, name, redacted message, fatal flag, timestamp
+- **Wallet State**: Wallet initialization status (has public key), balance load status, transaction count, loading state, and the most recent wallet-store error in the exported JSON (redacted). The on-screen support view shows only the error category, never the raw message.
+- **Last Reported Failure**: Snapshot from the global `reportError` funnel (ErrorBoundary / JS handler / unhandled rejection) — source, name, redacted message, fatal flag, timestamp in the exported JSON. The screen omits the raw message and shows only non-sensitive type/category metadata.
 
 In **development builds**, the Diagnostics screen also exposes a **Trigger Test Error** control so contributors can exercise the root ErrorBoundary fallback (see [Error Handling](./error-handling.md) and the release testing checklist §5.3).
 
