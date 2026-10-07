@@ -1,383 +1,223 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
-import { useRouter, Redirect } from 'expo-router';
-import Constants from 'expo-constants';
-import * as SecureStore from 'expo-secure-store';
-import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
-import { useTheme } from '../src/hooks/useTheme';
-import { useWalletStore } from '../src/store/walletStore';
-import { useVaultStore } from '../src/store/vaultStore';
-import {
-  Info,
-  Smartphone,
-  Globe,
-  Server,
-  Wallet,
-  ShieldCheck,
-  AlertCircle,
-  ChevronLeft,
-} from 'lucide-react-native';
-
-interface DiagnosticItem {
-  label: string;
-  value: string;
-  isSensitive?: boolean;
-}
-
-interface DiagnosticSection {
-  title: string;
-  icon: React.ReactNode;
-  items: DiagnosticItem[];
-}
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Share } from 'react-native';
+import { Stack } from 'expo-router';
+import { getDiagnostics } from '../src/utils/diagnostics';
 
 /**
- * Truncates a public key for safe display.
- * Example: GABCD...WXYZ
+ * Dev-only child that throws on demand so release testers can exercise the
+ * root ErrorBoundary → ErrorBoundaryFallback path (see release-testing-checklist §5.3).
  */
-const truncatePublicKey = (key: string | null): string => {
-  if (!key) return 'Not available';
-  if (key.length <= 12) return key;
-  return `${key.slice(0, 6)}...${key.slice(-6)}`;
-};
+const SyntheticErrorTrigger: React.FC = () => {
+  const [shouldCrash, setShouldCrash] = useState(false);
 
-/**
- * Extracts the host from a URL for safe display.
- */
-const extractHost = (url: string | undefined): string => {
-  if (!url) return 'Not configured';
-  try {
-    const parsed = new URL(url);
-    return parsed.host;
-  } catch {
-    return 'Invalid URL';
-  }
-};
-
-/**
- * Checks if secure storage is available on this device.
- */
-const checkSecureStorageAvailability = async (): Promise<boolean> => {
-  try {
-    const testKey = '__diagnostics_test__';
-    await SecureStore.setItemAsync(testKey, 'test');
-    await SecureStore.deleteItemAsync(testKey);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-export default function DiagnosticsScreen() {
-  const router = useRouter();
-  const { colors } = useTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-
-  const { publicKey, error: walletError } = useWalletStore();
-  const { balanceError: vaultError, isConfigured: vaultConfigured } = useVaultStore();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [secureStorageAvailable, setSecureStorageAvailable] = useState<boolean | null>(null);
-
-  // Gate to development mode only
-  if (!__DEV__) {
-    return <Redirect href="/(tabs)" />;
-  }
-
-  useEffect(() => {
-    const checkStorage = async () => {
-      const available = await checkSecureStorageAvailability();
-      setSecureStorageAvailable(available);
-      setIsLoading(false);
-    };
-    checkStorage();
-  }, []);
-
-  // Gather diagnostic information
-  const appVersion = Constants.expoConfig?.version || '1.0.0';
-  const sdkVersion = Constants.expoConfig?.sdkVersion || 'Unknown';
-  const appName = Constants.expoConfig?.name || 'stellar-pocketpay-mobile';
-
-  const stellarNetwork = process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET';
-  const horizonUrl = process.env.EXPO_PUBLIC_STELLAR_HORIZON_URL;
-  const sorobanRpcUrl = process.env.EXPO_PUBLIC_SOROBAN_RPC_URL;
-  const networkPassphrase = process.env.EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE;
-
-  const sections: DiagnosticSection[] = [
-    {
-      title: 'App Information',
-      icon: <Smartphone color={colors.primary} size={20} />,
-      items: [
-        { label: 'App Name', value: appName },
-        { label: 'Version', value: appVersion },
-        { label: 'Expo SDK', value: sdkVersion },
-        { label: 'Platform', value: `${Platform.OS} ${Platform.Version}` },
-        { label: 'Build Mode', value: __DEV__ ? 'Development' : 'Production' },
-      ],
-    },
-    {
-      title: 'Network Configuration',
-      icon: <Globe color={colors.primary} size={20} />,
-      items: [
-        { label: 'Network', value: stellarNetwork },
-        { label: 'Network Passphrase', value: networkPassphrase ? 'Configured' : 'Using default' },
-      ],
-    },
-    {
-      title: 'Service Endpoints',
-      icon: <Server color={colors.primary} size={20} />,
-      items: [
-        { label: 'Horizon Host', value: extractHost(horizonUrl) || 'horizon-testnet.stellar.org' },
-        { label: 'Soroban RPC Host', value: extractHost(sorobanRpcUrl) || 'Not configured' },
-        { label: 'Vault Contract', value: vaultConfigured ? 'Configured' : 'Not configured (mock mode)' },
-      ],
-    },
-    {
-      title: 'Wallet State',
-      icon: <Wallet color={colors.primary} size={20} />,
-      items: [
-        { label: 'Wallet Status', value: publicKey ? 'Connected' : 'Not connected' },
-        { label: 'Public Key', value: truncatePublicKey(publicKey), isSensitive: true },
-      ],
-    },
-    {
-      title: 'Security & Storage',
-      icon: <ShieldCheck color={colors.primary} size={20} />,
-      items: [
-        {
-          label: 'Secure Storage',
-          value: secureStorageAvailable === null
-            ? 'Checking...'
-            : secureStorageAvailable
-            ? 'Available'
-            : 'Unavailable',
-        },
-        { label: 'Biometric Support', value: Platform.OS === 'web' ? 'Not available' : 'Supported' },
-      ],
-    },
-  ];
-
-  // Add error summary if there are recent errors
-  const errors: string[] = [];
-  if (walletError) errors.push(`Wallet: ${walletError}`);
-  if (vaultError) errors.push(`Vault: ${vaultError}`);
-
-  if (errors.length > 0) {
-    sections.push({
-      title: 'Recent Errors',
-      icon: <AlertCircle color={colors.error} size={20} />,
-      items: errors.map((error, index) => ({
-        label: `Error ${index + 1}`,
-        value: error,
-      })),
-    });
-  }
-
-  if (isLoading) {
-    return (
-      <View style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={styles.loadingText}>Loading diagnostics...</Text>
-      </View>
-    );
+  if (shouldCrash) {
+    throw new Error('Synthetic diagnostics error for ErrorBoundary testing');
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <ChevronLeft color={colors.textPrimary} size={24} />
-        </TouchableOpacity>
-        <View style={styles.headerTitleContainer}>
-          <Info color={colors.primary} size={24} />
-          <Text style={styles.headerTitle}>Diagnostics</Text>
-        </View>
-      </View>
+    <TouchableOpacity
+      style={styles.dangerButton}
+      onPress={() => setShouldCrash(true)}
+      accessibilityRole="button"
+      accessibilityLabel="Trigger a synthetic render error to test the error boundary"
+    >
+      <Text style={styles.dangerButtonText}>Trigger Test Error</Text>
+    </TouchableOpacity>
+  );
+};
 
-      <View style={styles.devBadge}>
-        <Text style={styles.devBadgeText}>DEVELOPMENT BUILD</Text>
-      </View>
+export default function DiagnosticsScreen() {
+  const [diagnosticsJson, setDiagnosticsJson] = useState<string>('');
+  const [parsedData, setParsedData] = useState<Record<string, any> | null>(null);
 
+  const loadDiagnostics = async () => {
+    const raw = await getDiagnostics();
+    setDiagnosticsJson(raw);
+    try {
+      setParsedData(JSON.parse(raw));
+    } catch {
+      setParsedData(null);
+    }
+  };
+
+  useEffect(() => {
+    loadDiagnostics();
+  }, []);
+
+  const handleShare = async () => {
+    if (!diagnosticsJson) return;
+    try {
+      await Share.share({
+        message: diagnosticsJson,
+        title: 'App Diagnostics Log',
+      });
+    } catch (error) {
+      console.error('Error sharing diagnostics:', error);
+    }
+  };
+
+  const lastReported = parsedData?.lastReportedError;
+  const rawCategory = parsedData?.networkHealth?.hasError
+    ? parsedData.networkHealth.classifiedError
+    : parsedData?.walletState?.lastError
+      ? 'wallet'
+      : lastReported
+        ? lastReported.name
+        : null;
+  const recentErrorCategory = rawCategory && rawCategory !== 'none'
+    ? String(rawCategory)
+        .split('-')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ')
+    : 'None';
+
+  return (
+    <ScrollView style={styles.container}>
+      <Stack.Screen options={{ title: 'Diagnostics' }} />
+
+      <Text style={styles.title}>System Diagnostics</Text>
       <Text style={styles.description}>
-        This screen shows non-sensitive app and network information for debugging purposes.
-        Secret keys are never displayed.
+        Safe, redacted app status for troubleshooting and support. On-screen failures are category-only; wallet secrets, addresses, balances, and raw error details are never displayed.
       </Text>
 
-      {sections.map((section, sectionIndex) => (
-        <View key={sectionIndex} style={styles.section}>
-          <View style={styles.sectionHeader}>
-            {section.icon}
-            <Text style={styles.sectionTitle}>{section.title}</Text>
+      {parsedData && (
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Environment</Text>
+          <View style={styles.row}>
+            <Text style={styles.label}>Platform</Text>
+            <Text style={styles.value}>{parsedData.environment.platform} ({parsedData.environment.osVersion})</Text>
           </View>
-          <View style={styles.card}>
-            {section.items.map((item, itemIndex) => (
-              <View
-                key={itemIndex}
-                style={[
-                  styles.row,
-                  itemIndex < section.items.length - 1 && styles.rowBorder,
-                ]}
-              >
-                <Text style={styles.label}>{item.label}</Text>
-                <Text
-                  style={[
-                    styles.value,
-                    item.isSensitive && styles.sensitiveValue,
-                    section.title === 'Recent Errors' && styles.errorValue,
-                  ]}
-                  numberOfLines={2}
-                  ellipsizeMode="tail"
-                >
-                  {item.value}
-                </Text>
-              </View>
-            ))}
+          <View style={styles.row}>
+            <Text style={styles.label}>App Version</Text>
+            <Text style={styles.value}>{parsedData.environment.appVersion}</Text>
           </View>
-        </View>
-      ))}
+          <View style={styles.row}>
+            <Text style={styles.label}>Mode</Text>
+            <Text style={styles.value}>{parsedData.environment.isDevelopment ? 'Development' : 'Production'}</Text>
+          </View>
 
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          This screen is only available in development builds.
-        </Text>
-      </View>
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Network</Text>
+          <View style={styles.row}>
+            <Text style={styles.label}>Network</Text>
+            <Text style={styles.value}>{parsedData.network.label}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Horizon</Text>
+            <Text style={styles.value}>{parsedData.network.horizonHost}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Soroban RPC</Text>
+            <Text style={styles.value}>{parsedData.network.sorobanHost}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Vault</Text>
+            <Text style={styles.value}>{parsedData.network.vaultMode === 'configured' ? parsedData.network.vaultContractLabel : 'Mock (no contract)'}</Text>
+          </View>
+
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Feature Flags</Text>
+          {Object.entries(parsedData.featureFlags ?? {}).map(([flag, enabled]) => (
+            <View style={styles.row} key={flag}>
+              <Text style={styles.label}>{flag}</Text>
+              <Text style={styles.value}>{enabled ? 'On' : 'Off'}</Text>
+            </View>
+          ))}
+
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Storage</Text>
+          <View style={styles.row}>
+            <Text style={styles.label}>Secure Storage</Text>
+            <Text style={styles.value}>{parsedData.storage?.secureStoreAvailable ? 'Available' : 'Unavailable'}</Text>
+          </View>
+
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Wallet Status</Text>
+          <View style={styles.row}>
+            <Text style={styles.label}>Wallet Configured</Text>
+            <Text style={styles.value}>{parsedData.walletState.hasPublicKey ? 'Yes' : 'No'}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Balance Loaded</Text>
+            <Text style={styles.value}>{parsedData.walletState.isBalanceLoaded ? 'Yes' : 'No'}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Recent Error Category</Text>
+            <Text style={styles.value}>{recentErrorCategory}</Text>
+          </View>
+
+          <Text style={[styles.sectionTitle, { marginTop: 16 }]}>Last Reported Failure</Text>
+          {lastReported ? (
+            <>
+              <View style={styles.row}>
+                <Text style={styles.label}>Source</Text>
+                <Text style={styles.value}>{lastReported.source}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Name</Text>
+                <Text style={styles.value}>{lastReported.name}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Fatal</Text>
+                <Text style={styles.value}>{lastReported.isFatal ? 'Yes' : 'No'}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Time</Text>
+                <Text style={styles.value}>{lastReported.timestamp}</Text>
+              </View>
+            </>
+          ) : (
+            <View style={styles.row}>
+              <Text style={styles.label}>Status</Text>
+              <Text style={styles.value}>None recorded this session</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleShare}
+        accessibilityRole="button"
+        accessibilityLabel="Export redacted diagnostics log"
+      >
+        <Text style={styles.buttonText}>Export Diagnostics Log</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.secondaryButton}
+        onPress={loadDiagnostics}
+        accessibilityRole="button"
+        accessibilityLabel="Refresh diagnostics data"
+      >
+        <Text style={styles.secondaryButtonText}>Refresh</Text>
+      </TouchableOpacity>
+
+      {__DEV__ && (
+        <View style={styles.devCard}>
+          <Text style={styles.sectionTitle}>Developer Tools</Text>
+          <Text style={styles.devHint}>
+            Throws a render-time error so you can verify the global ErrorBoundary fallback and recovery actions.
+          </Text>
+          <SyntheticErrorTrigger />
+        </View>
+      )}
     </ScrollView>
   );
 }
 
-const createStyles = (colors: ThemeColors) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.background,
-    },
-    centered: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    content: {
-      padding: SIZES.lg,
-      paddingBottom: SIZES.xxl * 2,
-    },
-    loadingText: {
-      color: colors.textSecondary,
-      marginTop: SIZES.md,
-      fontSize: 14,
-    },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: SIZES.lg,
-    },
-    backButton: {
-      width: 44,
-      height: 44,
-      paddingHorizontal: 0,
-      marginRight: SIZES.md,
-    },
-    headerTitleContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    },
-    headerTitle: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: colors.textPrimary,
-      marginLeft: SIZES.sm,
-    },
-    devBadge: {
-      backgroundColor: colors.warning,
-      paddingVertical: SIZES.xs,
-      paddingHorizontal: SIZES.md,
-      borderRadius: RADIUS.sm,
-      alignSelf: 'flex-start',
-      marginBottom: SIZES.md,
-    },
-    devBadgeText: {
-      color: '#000',
-      fontSize: 12,
-      fontWeight: '700',
-      letterSpacing: 0.5,
-    },
-    description: {
-      color: colors.textSecondary,
-      fontSize: 14,
-      lineHeight: 20,
-      marginBottom: SIZES.xl,
-    },
-    section: {
-      marginBottom: SIZES.lg,
-    },
-    sectionHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: SIZES.sm,
-    },
-    sectionTitle: {
-      color: colors.textSecondary,
-      fontSize: 14,
-      fontWeight: '600',
-      marginLeft: SIZES.sm,
-      textTransform: 'uppercase',
-      letterSpacing: 0.5,
-    },
-    card: {
-      backgroundColor: colors.surface,
-      borderRadius: RADIUS.lg,
-      borderWidth: 1,
-      borderColor: colors.border,
-      overflow: 'hidden',
-    },
-    row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: SIZES.md,
-      paddingHorizontal: SIZES.lg,
-    },
-    rowBorder: {
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    label: {
-      color: colors.textSecondary,
-      fontSize: 14,
-      flex: 1,
-    },
-    value: {
-      color: colors.textPrimary,
-      fontSize: 14,
-      fontWeight: '500',
-      textAlign: 'right',
-      flex: 1,
-      marginLeft: SIZES.md,
-    },
-    sensitiveValue: {
-      fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
-      fontSize: 12,
-    },
-    errorValue: {
-      color: colors.error,
-      fontSize: 12,
-    },
-    footer: {
-      alignItems: 'center',
-      marginTop: SIZES.xl,
-    },
-    footerText: {
-      color: colors.textMuted,
-      fontSize: 12,
-      textAlign: 'center',
-    },
-  });
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16, backgroundColor: '#f8f9fa' },
+  title: { fontSize: 22, fontWeight: 'bold', color: '#111', marginBottom: 6 },
+  description: { fontSize: 14, color: '#666', marginBottom: 16, lineHeight: 20 },
+  card: { backgroundColor: '#fff', borderRadius: 10, padding: 16, marginBottom: 20, borderWidth: 1, borderColor: '#e9ecef' },
+  sectionTitle: { fontSize: 16, fontWeight: '600', color: '#212529', marginBottom: 8 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f1f3f5', gap: 12 },
+  label: { fontSize: 14, color: '#495057', flexShrink: 0 },
+  value: { fontSize: 14, fontWeight: '500', color: '#212529', flexShrink: 1, textAlign: 'right' },
+  valueWrap: { flex: 1 },
+  button: { backgroundColor: '#0066cc', paddingVertical: 12, borderRadius: 8, alignItems: 'center', marginBottom: 12 },
+  buttonText: { color: '#ffffff', fontWeight: '600', fontSize: 16 },
+  secondaryButton: { backgroundColor: '#e9ecef', paddingVertical: 12, borderRadius: 8, alignItems: 'center', marginBottom: 24 },
+  secondaryButtonText: { color: '#212529', fontWeight: '600', fontSize: 16 },
+  devCard: { backgroundColor: '#fff8e6', borderRadius: 10, padding: 16, marginBottom: 32, borderWidth: 1, borderColor: '#ffe8a3' },
+  devHint: { fontSize: 13, color: '#666', marginBottom: 12, lineHeight: 18 },
+  dangerButton: { backgroundColor: '#d6320f', paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
+  dangerButtonText: { color: '#ffffff', fontWeight: '600', fontSize: 15 },
+});
