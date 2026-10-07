@@ -48,17 +48,17 @@ describe('DiagnosticsScreen', () => {
     await waitFor(() => getByText('Unavailable'));
   });
 
-  it('shows the last reported error and the wallet store error when the snapshot has both', async () => {
+  it('shows error categories without rendering raw failure details', async () => {
     mockGetDiagnostics.mockResolvedValue(
       JSON.stringify(diagnosticsFixtures.networkErrorWithReportedCrash)
     );
 
-    const { getByText } = render(<DiagnosticsScreen />);
+    const { getByText, queryByText } = render(<DiagnosticsScreen />);
 
     await waitFor(() => getByText('ErrorBoundary'));
     getByText('TypeError');
-    getByText('Cannot read property of undefined');
-    // Distinct from lastReportedError: this is walletState.lastError.
-    getByText('Network request failed');
+    getByText('Offline');
+    expect(queryByText('Cannot read property of undefined')).toBeNull();
+    expect(queryByText('Network request failed')).toBeNull();
   });
 });
