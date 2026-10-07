@@ -133,19 +133,17 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {__DEV__ && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Developer</Text>
-            <View style={styles.card}>
-              <Button
-                title="App Diagnostics"
-                variant="outline"
-                onPress={() => router.push('/diagnostics')}
-                style={styles.menuButton}
-              />
-            </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Support</Text>
+          <View style={styles.card}>
+            <Button
+              title="Support Diagnostics"
+              variant="outline"
+              onPress={() => router.push('/diagnostics')}
+              style={styles.menuButton}
+            />
           </View>
-        )}
+        </View>
 
         <View style={[styles.section, { marginTop: SIZES.xl }]}>
           <Button
