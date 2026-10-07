@@ -148,7 +148,7 @@ export const diagnosticsFixtures: Record<string, DiagnosticsSnapshot> = {
       lastRefreshed: Date.now() - 60_000,
       lastError: 'Network request failed',
     },
-    networkHealth: { classifiedError: 'connection', hasError: true },
+    networkHealth: { classifiedError: 'offline', hasError: true },
     lastReportedError: {
       source: 'ErrorBoundary',
       name: 'TypeError',
