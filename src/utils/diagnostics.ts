@@ -7,6 +7,7 @@ import { getLastErrorReport } from './errorReporting';
 import { redactSensitiveString } from './redactSensitive';
 import { computeNetworkEnvironment } from '../features/settings/useNetworkEnvironment';
 import { FEATURE_FLAGS } from '../config/featureFlags';
+import { classifyNetworkError } from '../hooks/useNetworkStatus';
 
 /**
  * Storage status is read via SecureStore.isAvailableAsync() (a real device
