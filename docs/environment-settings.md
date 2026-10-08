@@ -35,7 +35,26 @@ Settings never displays:
 - a full vault contract ID;
 - wallet balances or transaction payloads.
 
-Endpoint visibility is limited to hostnames, and the vault contract label is masked by the shared environment classifier. Diagnostics exports have their own redaction boundary documented in [Development Diagnostics Export](./diagnostics.md).
+The environment classifier deliberately fails closed when runtime configuration is malformed.
+It extracts hostnames **only** from parsable HTTP(S) URLs; invalid, unsupported, or
+opaque endpoint values display `—` rather than a regex fallback that could leak
+a username, password, path or token. Valid URLs containing credentials still
+display only the hostname. A full 56-character canonical Stellar contract ID
+is shortened to its first six and last six characters; short/noncanonical
+contract IDs are shown as `Unverified contract ID` with a configuration warning,
+not echoed verbatim. Unknown custom network names are classified and labeled
+`Custom Network` rather than exposing arbitrary build-time strings that may
+contain secret-shaped values. Normal Testnet and Mainnet labels remain clear.
+
+These boundaries apply to both on-screen Settings and structured diagnostics
+because both consume the same classifier. Five focused regression cases were
+added in `__tests__/settings.networkDisplaySafety.test.ts` to cover malformed
+URL secrets, valid URL credentials, contract masking, custom network masking
+and standard network behavior; cases were authored, not executed in this
+source delivery.
+
+Diagnostics exports have their own additional redaction boundary documented
+in [Development Diagnostics Export](./diagnostics.md).
 
 ## Why this shares the diagnostics classifier
 
