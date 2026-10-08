@@ -123,6 +123,18 @@ describe('getDiagnostics', () => {
     expect(mainnetParsed.network.label).toBe('Public Network (Mainnet)');
   });
 
+  it('does not export free-form custom network labels from build configuration', async () => {
+    const marker = 'private-custom-endpoint-token-12345';
+    process.env.EXPO_PUBLIC_STELLAR_NETWORK = `CUSTOM-${marker}`;
+
+    const raw = await getDiagnostics();
+    const parsed = JSON.parse(raw);
+
+    expect(parsed.network.tier).toBe('custom');
+    expect(parsed.network.label).toBe('Custom Network');
+    expect(raw).not.toContain(marker);
+  });
+
   it('exposes only hostnames for Horizon/Soroban, never a full URL', async () => {
     const parsed = JSON.parse(await getDiagnostics());
 
