@@ -1,0 +1,21 @@
+name: GF398 focused app-lock hydration regression
+on:
+  push:
+    branches:
+      - fix/gf398-app-lock-initialization-20261008-gpt6-6c2
+permissions:
+  contents: read
+jobs:
+  app-lock-focus:
+    if: github.event.head_commit.message == 'gf398-focused-lock-gate-6c2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked app dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run only app-lock initialization regression
+        run: npx jest __tests__/appLockInitialization.test.ts --runInBand --watchAll=false
