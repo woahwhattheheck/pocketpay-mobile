@@ -12,6 +12,7 @@ import QRCode from "react-native-qrcode-svg";
 import { useCopyToClipboard } from "../src/utils/clipboard";
 import { useNetworkState } from "../src/hooks/useNetworkState";
 import { NetworkStatusBanner } from "../src/components/NetworkStatusBanner";
+import { ReceiveQrBoundary } from "../src/components/ReceiveQrBoundary";
 
 export default function ReceiveScreen() {
   const { colors } = useTheme();
@@ -23,6 +24,9 @@ export default function ReceiveScreen() {
   const [showRequestFields, setShowRequestFields] = useState(false);
   const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");
+  // Track the failed *payload*, not just a generic QR error. Changing amount,
+  // memo or wallet address remounts the QR renderer for a fresh attempt.
+  const [unrenderablePayload, setUnrenderablePayload] = useState<string | null>(null);
 
   // Requesting a specific amount has no sender balance to validate against
   // (unlike send.tsx) - the requester isn't the one spending, so
@@ -40,6 +44,7 @@ export default function ReceiveScreen() {
   }, [publicKey, amount, amountError, memo, memoError]);
 
   const isRequestPayload = isPaymentRequestPayload(payload);
+  const qrUnavailable = Boolean(publicKey) && unrenderablePayload === payload;
 
   const handleCopyAddress = async () => {
     if (publicKey) {
@@ -47,16 +52,18 @@ export default function ReceiveScreen() {
     }
   };
 
-  // Share the receive payload (address or payment request) via OS share sheet
+  // If the QR renderer failed, fall back to the wallet address itself rather
+  // than advertising a payment request the user cannot inspect as a QR.
   const handleShare = async () => {
-    if (!payload) return;
+    const shareValue = qrUnavailable ? publicKey : payload;
+    if (!shareValue) return;
     try {
       await Share.share({
-        message: payload,
-        title: isRequestPayload ? "Payment Request" : "My Stellar Address",
+        message: shareValue,
+        title: isRequestPayload && !qrUnavailable ? "Payment Request" : "My Stellar Address",
       });
-    } catch (error) {
-      console.error("Error sharing receive payload:", error);
+    } catch {
+      // Native share cancellation and provider errors must not hide the address.
     }
   };
 
@@ -74,18 +81,36 @@ export default function ReceiveScreen() {
 
       <View style={styles.qrContainer}>
         {publicKey ? (
-          <QRCode
-            value={payload}
-            size={250}
-            color={colors.background}
-            backgroundColor={colors.textPrimary}
-          />
+          <ReceiveQrBoundary
+            key={payload}
+            onUnavailable={() => setUnrenderablePayload(payload)}
+            onReady={() => setUnrenderablePayload((failed) => failed === payload ? null : failed)}
+            fallback={
+              <View style={styles.qrFallback} accessibilityRole="alert" testID="receive-qr-fallback">
+                <Text style={styles.qrFallbackText}>
+                  QR code unavailable. You can still receive funds: copy or share your wallet address below.
+                </Text>
+                {isRequestPayload && (
+                  <Text style={styles.qrFallbackText}>
+                    Fallback sharing sends only the address, not a requested amount or memo.
+                  </Text>
+                )}
+              </View>
+            }
+          >
+            <QRCode
+              value={payload}
+              size={250}
+              color={colors.background}
+              backgroundColor={colors.textPrimary}
+            />
+          </ReceiveQrBoundary>
         ) : (
           <Text style={{ color: colors.textMuted }}>No public key found</Text>
         )}
       </View>
 
-      {isRequestPayload && (
+      {isRequestPayload && !qrUnavailable && (
         <Text style={styles.requestBadge}>Requesting a specific amount</Text>
       )}
 
@@ -158,6 +183,19 @@ const createStyles = (colors: ThemeColors) =>
       padding: SIZES.lg,
       borderRadius: RADIUS.lg,
       marginBottom: SIZES.md,
+    },
+    qrFallback: {
+      minHeight: 160,
+      maxWidth: 250,
+      justifyContent: "center",
+      gap: SIZES.sm,
+      padding: SIZES.sm,
+    },
+    qrFallbackText: {
+      color: colors.background,
+      fontSize: 14,
+      lineHeight: 20,
+      textAlign: "center",
     },
     requestBadge: {
       color: colors.primary,
