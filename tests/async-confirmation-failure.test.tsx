@@ -1,5 +1,13 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-native';
+
+// lucide-react-native ships untransformed ESM; stub the icons ConfirmModal uses,
+// as the other ConfirmModal/useConfirm suites do.
+jest.mock('lucide-react-native', () => ({
+  X: () => null,
+  AlertTriangle: () => null,
+}));
+
 import { ConfirmModal, ConfirmModalProps } from '../src/components/ConfirmModal';
 import { useConfirm } from '../src/hooks/useConfirm';
 
