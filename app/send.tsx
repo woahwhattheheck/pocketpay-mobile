@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ import { ContactPicker } from "../src/components/ContactPicker";
 import { ContactForm } from "../src/components/ContactForm";
 import { SIZES, RADIUS, ThemeColors } from "../src/constants/theme";
 import { useTheme } from "../src/hooks/useTheme";
-import { sendXlmTransaction } from "../src/services/stellar";
+import { sendXlmTransaction, server } from "../src/services/stellar";
 import { useWalletStore } from "../src/store/walletStore";
 import { useAppStore } from "../src/store/appStore";
 import { useContactStore } from "../src/features/contacts/contactStore";
@@ -27,7 +27,7 @@ import {
   validateMemo,
 } from "../src/utils/validation";
 import { resolveAddressLabel } from "../src/utils/contacts";
-import { formatAmount } from "../src/utils/amount";
+import { formatAmount, getMaxSendableAmount } from "../src/utils/amount";
 import { WALLET_SECRET_ACCESS_MESSAGE } from "../src/utils/walletStorageErrors";
 import {
   Send as SendIcon,
@@ -78,6 +78,8 @@ export default function SendScreen() {
   const [memo, setMemo] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isCalculatingMax, setIsCalculatingMax] = useState(false);
+  const maxCalculationId = useRef(0);
   const [isScanning, setIsScanning] = useState(false);
   const [showContactPicker, setShowContactPicker] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
@@ -99,6 +101,9 @@ export default function SendScreen() {
   };
 
   const handleAmountChange = (value: string) => {
+    // Ignore a pending network-fee estimate if the user starts editing.
+    maxCalculationId.current += 1;
+    setIsCalculatingMax(false);
     setAmount(value);
     setErrors((prev) => ({
       ...prev,
@@ -149,13 +154,48 @@ export default function SendScreen() {
     setIsScanning(false);
   };
 
-  const handleSetMaxAmount = () => {
-    const maxAmount = availableBalance;
-    setAmount(maxAmount);
-    setErrors((prev) => ({
-      ...prev,
-      amount: validateAmount(maxAmount, balance, reservedBalance) ?? undefined,
-    }));
+  const handleSetMaxAmount = async () => {
+    if (isCalculatingMax || sendDisabled) return;
+    const calculationId = ++maxCalculationId.current;
+    setIsCalculatingMax(true);
+    try {
+      // availableBalance already excludes Horizon minimum reserve and
+      // native selling liabilities. A send must also pay its network fee.
+      const feeStroops = await server.fetchBaseFee();
+      if (!Number.isSafeInteger(feeStroops) || feeStroops <= 0) {
+        throw new Error('Invalid network fee estimate');
+      }
+      if (calculationId !== maxCalculationId.current) return;
+      // One extra stroop prevents floating-point rounding up at the limit.
+      const maxAmount = getMaxSendableAmount(
+        availableBalance,
+        (feeStroops + 1) / 10_000_000,
+      );
+      if (Number(maxAmount) <= 0) {
+        setAmount('0');
+        setErrors((prev) => ({
+          ...prev,
+          amount: 'Available XLM does not cover the current network fee.',
+        }));
+        return;
+      }
+      setAmount(maxAmount);
+      setErrors((prev) => ({
+        ...prev,
+        amount: validateAmount(maxAmount, balance, reservedBalance) ?? undefined,
+      }));
+    } catch {
+      if (calculationId === maxCalculationId.current) {
+        setErrors((prev) => ({
+          ...prev,
+          amount: 'Unable to estimate the network fee. Try again when connected.',
+        }));
+      }
+    } finally {
+      if (calculationId === maxCalculationId.current) {
+        setIsCalculatingMax(false);
+      }
+    }
   };
 
   const handleSend = () => {
@@ -266,12 +306,13 @@ export default function SendScreen() {
             rightIcon={
               <TouchableOpacity
                 onPress={handleSetMaxAmount}
-                accessibilityLabel="Send maximum amount"
+                disabled={isCalculatingMax || sendDisabled}
+                accessibilityLabel="Send maximum amount after network fee"
                 accessibilityRole="button"
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
                 <Text style={{ color: colors.primary, fontWeight: "600", fontSize: 13 }}>
-                  Send Max
+                  {isCalculatingMax ? 'Estimating fee…' : 'Send Max'}
                 </Text>
               </TouchableOpacity>
             }
@@ -306,7 +347,7 @@ export default function SendScreen() {
           onPress={handleSend}
           isLoading={isLoading}
           loadingText="Sending…"
-          disabled={sendDisabled}
+          disabled={sendDisabled || isCalculatingMax}
           style={styles.sendButton}
         />
       </KeyboardAvoidingView>
