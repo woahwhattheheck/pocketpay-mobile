@@ -87,7 +87,7 @@ export const WalletEmptyState: React.FC<WalletEmptyStateProps> = ({
                     </View>
                 </View>
 
-                <Text style={styles.title}>{errorInfo.title}</Text>
+                <Text style={styles.title} accessibilityRole="alert" accessibilityLiveRegion="polite">{errorInfo.title}</Text>
                 <Text style={styles.message}>{errorInfo.message}</Text>
 
                 <View style={styles.guidanceCard}>
@@ -131,7 +131,7 @@ export const WalletEmptyState: React.FC<WalletEmptyStateProps> = ({
                     </View>
                 </View>
 
-                <Text style={styles.title}>{errorInfo.title}</Text>
+                <Text style={styles.title} accessibilityRole="alert" accessibilityLiveRegion="polite">{errorInfo.title}</Text>
                 <Text style={styles.message}>{errorInfo.message}</Text>
 
                 <View style={styles.guidanceCard}>
@@ -175,7 +175,7 @@ export const WalletEmptyState: React.FC<WalletEmptyStateProps> = ({
                     </View>
                 </View>
 
-                <Text style={styles.title}>{errorInfo.title}</Text>
+                <Text style={styles.title} accessibilityRole="alert" accessibilityLiveRegion="polite">{errorInfo.title}</Text>
                 <Text style={styles.message}>{errorInfo.message}</Text>
 
                 <View style={styles.guidanceCard}>
@@ -218,7 +218,7 @@ export const WalletEmptyState: React.FC<WalletEmptyStateProps> = ({
                     </View>
                 </View>
 
-                <Text style={styles.title}>Setup Cancelled</Text>
+                <Text style={styles.title} accessibilityRole="header">Setup Cancelled</Text>
                 <Text style={styles.message}>
                     {subtitle ?? 'Your wallet setup was cancelled. No changes were made to your device. You can start again whenever you\'re ready.'}
                 </Text>
@@ -274,7 +274,7 @@ export const WalletEmptyState: React.FC<WalletEmptyStateProps> = ({
                 </View>
             </View>
 
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title} accessibilityRole="header">{title}</Text>
             <Text style={styles.message}>{message}</Text>
 
             {showTestnetNotice && variant === 'empty' ? (
