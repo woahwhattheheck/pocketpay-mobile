@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { Keypair } from '@stellar/stellar-sdk';
 import { server } from '../src/services/stellar';
 import {
   View,
@@ -10,6 +11,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../src/hooks/useTheme';
 import { useSignerStore } from '../src/store/signerStore';
 import { useWalletStore } from '../src/store/walletStore';
+import { signerMatchesReviewedWallet } from '../src/utils/signingConfirmation';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
 import { formatAmount } from '../src/utils/amount';
 import { resolveAddressLabel } from '../src/utils/contacts';
@@ -137,6 +139,15 @@ export default function ReviewTransactionScreen() {
 
   const handleConfirmSign = async () => {
     const { sendXlmTransaction } = await import('../src/services/stellar');
+    const reviewedPublicKey = publicKey;
+    if (!reviewedPublicKey) {
+      store.failSigning({
+        type: 'signer_unavailable',
+        message: WALLET_SECRET_ACCESS_MESSAGE,
+      });
+      return;
+    }
+
     const secretKey = await getSecretKey();
     if (!secretKey) {
       store.failSigning({
@@ -145,10 +156,48 @@ export default function ReviewTransactionScreen() {
       });
       return;
     }
+
+    let secretPublicKey: string;
+    try {
+      secretPublicKey = Keypair.fromSecret(secretKey).publicKey();
+    } catch {
+      store.failSigning({
+        type: 'signer_unavailable',
+        message: WALLET_SECRET_ACCESS_MESSAGE,
+      });
+      return;
+    }
+
+    const signerStillMatchesReview = () =>
+      signerMatchesReviewedWallet(
+        reviewedPublicKey,
+        useWalletStore.getState().publicKey,
+        secretPublicKey,
+      );
+
+    if (!signerStillMatchesReview()) {
+      store.failSigning({
+        type: 'signer_unavailable',
+        message: 'The active wallet changed. Review the transaction again before signing.',
+      });
+      return;
+    }
+
     const fee = await server.fetchBaseFee();
+    // The fee lookup is asynchronous. Re-check the live wallet immediately
+    // before transitioning into signing so a wallet switch during that await
+    // cannot pair this review with another wallet's signer.
+    if (!signerStillMatchesReview()) {
+      store.failSigning({
+        type: 'signer_unavailable',
+        message: 'The active wallet changed. Review the transaction again before signing.',
+      });
+      return;
+    }
+
     store.startReview({
       requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-      sourcePublicKey: publicKey!,
+      sourcePublicKey: reviewedPublicKey,
       destinationPublicKey: destination.trim(),
       destinationLabel: destinationContact?.isContact ? destinationContact.label : null,
       amount: amount.trim(),
@@ -159,6 +208,15 @@ export default function ReviewTransactionScreen() {
       timeoutSeconds: 30,
       fee: fee.toString(),
     });
+
+    const signingReview = useSignerStore.getState().currentReview;
+    if (!signingReview) {
+      store.failSigning({
+        type: 'signer_unavailable',
+        message: 'The transaction review is no longer available. Review the transaction again before signing.',
+      });
+      return;
+    }
 
     store.enterHandoff();
     store.enterSigning();
@@ -173,15 +231,21 @@ export default function ReviewTransactionScreen() {
       store.enterSubmitting();
       store.enterConfirming();
 
-      addPendingTransaction(result.hash, {
-        id: result.hash,
-        type: 'payment',
-        from: publicKey!,
-        to: destination.trim(),
-        amount: amount.trim(),
-        asset: 'XLM',
-        created_at: new Date().toISOString(),
-      });
+      // Keep optimistic history scoped to the wallet that actually signed.
+      // If the user switched wallets while the network submission was in
+      // flight, the old wallet's transaction must not be inserted into the new
+      // wallet's in-memory history.
+      if (useWalletStore.getState().publicKey === reviewedPublicKey) {
+        addPendingTransaction(result.hash, {
+          id: result.hash,
+          type: 'payment',
+          from: reviewedPublicKey,
+          to: destination.trim(),
+          amount: amount.trim(),
+          asset: 'XLM',
+          created_at: new Date().toISOString(),
+        });
+      }
 
       // React batches these consecutive set() calls into a single render, so
       // without a real gap here 'confirming' never actually paints — this
@@ -191,7 +255,7 @@ export default function ReviewTransactionScreen() {
 
       const signingResult = {
         hash: result.hash,
-        review: store.currentReview!,
+        review: signingReview,
         signerType: 'local' as const,
         completedAt: new Date().toISOString(),
       };
