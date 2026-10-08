@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Keypair } from '@stellar/stellar-sdk';
 import { server } from '../src/services/stellar';
 import {
@@ -89,6 +89,7 @@ export default function ReviewTransactionScreen() {
   const contacts = useAppStore((state) => state.contacts);
   const store = useSignerStore();
   const { phase, error } = store;
+  const reviewInitializedRef = useRef(false);
 
   const destination = params.destination || '';
   const amount = params.amount || '';
@@ -97,12 +98,16 @@ export default function ReviewTransactionScreen() {
   const destinationContact =
     destination.trim() ? resolveAddressLabel(destination.trim(), contacts) : null;
 
-  // Start the review when the screen mounts
+  // Start exactly one review for this screen lifetime. The wallet public key is
+  // an input to the consent snapshot, not a dependency that may silently
+  // replace that snapshot if the user switches wallets mid-review or mid-send.
   useEffect(() => {
     if (!destination || !amount || !publicKey) {
       router.back();
       return;
     }
+    if (reviewInitializedRef.current) return;
+    reviewInitializedRef.current = true;
     store.startReview({
       requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
       sourcePublicKey: publicKey,
@@ -139,7 +144,9 @@ export default function ReviewTransactionScreen() {
 
   const handleConfirmSign = async () => {
     const { sendXlmTransaction } = await import('../src/services/stellar');
-    const reviewedPublicKey = publicKey;
+    // Signing authority comes from the immutable review snapshot, never from
+    // whichever wallet happens to be live when the button is tapped.
+    const reviewedPublicKey = useSignerStore.getState().currentReview?.sourcePublicKey;
     if (!reviewedPublicKey) {
       store.failSigning({
         type: 'signer_unavailable',
@@ -293,7 +300,7 @@ export default function ReviewTransactionScreen() {
 
   const reviewItems: ReviewItem[] = useMemo(() => {
     const items: ReviewItem[] = [
-      { label: 'From', value: publicKey ?? '', truncate: true },
+      { label: 'From', value: store.currentReview?.sourcePublicKey ?? '', truncate: true },
       {
         label: 'To',
         value: destinationContact?.isContact ? destinationContact.label : destination.trim(),
@@ -310,7 +317,7 @@ export default function ReviewTransactionScreen() {
     }
 
     return items;
-  }, [publicKey, destination, destinationContact, amount, memo, store.currentReview?.fee]);
+  }, [destination, destinationContact, amount, memo, store.currentReview?.sourcePublicKey, store.currentReview?.fee]);
 
   // Only the review phase offers actions; every later phase keeps the same
   // summary on screen so the user can still see what they committed to.
