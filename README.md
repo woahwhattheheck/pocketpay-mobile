@@ -32,6 +32,7 @@ React Native Expo wallet for Stellar Testnet. The app aims to feel polished and 
 - [Vault Integration Risks](./docs/vault-integration-risks.md) - Technical integration risk analysis, SDK/contract assumptions, error recovery models, and cross-repo coordination roadmap
 - [Vault Feature Module](./src/features/vault/README.md) - Architectural guide for components, hooks, stores, and dual-mode vault execution
 - [Mobile Wallet Security FAQ](./docs/WALLET_SECURITY_FAQ.md) - Local storage, secret handling, reset behaviors, and security guarantees
+- [Development Diagnostics & Support Export](./docs/diagnostics.md) - Developer-only Settings route, safe report fields, export and privacy review instructions
 - [Accessibility Checklist](./docs/accessibility.md) - Required mobile accessibility checks and reusable-component review guidance for major screens and every UI state
 - [UI State Catalogue](./docs/ui-states.md) - Canonical loading, empty, error, success, disabled, and pending behavior for wallet, send, receive, transactions, contacts, vault, settings, and diagnostics
 - [Scan-to-Pay Review](./docs/scan-to-pay.md) - QR scan → validate → review screen → cancel-before-payment flow (never signs on scan)
