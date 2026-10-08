@@ -57,6 +57,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   // Tracks an async `onConfirm` so every caller gets the same spinner/disabled
   // treatment without re-implementing the pending state at each call site.
   const [isConfirming, setIsConfirming] = useState(false);
+  const [confirmError, setConfirmError] = useState(false);
   const isConfirmingRef = useRef(false);
   const isMountedRef = useRef(true);
 
@@ -73,17 +74,22 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const handleConfirm = useCallback(async () => {
     // The ref guard closes the window between two taps landing before React
     // re-renders the button as disabled.
-    if (confirmDisabled || isLoading || isConfirmingRef.current) return;
+    if (!visible || confirmDisabled || isLoading || isConfirmingRef.current) return;
 
     isConfirmingRef.current = true;
     setIsConfirming(true);
+    setConfirmError(false);
     try {
       await onConfirm();
+    } catch {
+      // The hook leaves failed confirmations open for retry. Never surface
+      // thrown wallet/storage exception messages, which may contain secrets.
+      if (isMountedRef.current) setConfirmError(true);
     } finally {
       isConfirmingRef.current = false;
       if (isMountedRef.current) setIsConfirming(false);
     }
-  }, [confirmDisabled, isLoading, onConfirm]);
+  }, [visible, confirmDisabled, isLoading, onConfirm]);
 
   const handleCancel = useCallback(() => {
     if (busy) return;
@@ -132,6 +138,16 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           >
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.message}>{message}</Text>
+            {confirmError ? (
+              <Text
+                testID="confirm-action-error"
+                style={styles.confirmError}
+                accessibilityRole="alert"
+                accessibilityLiveRegion="polite"
+              >
+                Unable to complete this action. Please try again.
+              </Text>
+            ) : null}
 
             {children ? <View style={styles.customContent}>{children}</View> : null}
           </ScrollView>
@@ -255,6 +271,13 @@ const createStyles = (colors: ThemeColors) =>
       textAlign: 'center',
       lineHeight: 20,
       marginBottom: SIZES.lg,
+    },
+    confirmError: {
+      color: colors.error,
+      textAlign: 'center',
+      fontSize: 13,
+      lineHeight: 20,
+      marginBottom: SIZES.sm,
     },
     customContent: {
       marginBottom: SIZES.xs,
