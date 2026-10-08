@@ -198,13 +198,18 @@ export class PaymentSendError extends Error {
  * Send XLM to a destination address. The optional callback fires after local
  * signing and immediately before Horizon submission (never before signing).
  * It receives the signed transaction hash for later status reconciliation.
+ * A callback returning false explicitly ABORTS submission (e.g. the user
+ * switched wallets after starting review). No Horizon POST is made.
+ * Optional expectedSourcePublicKey binds the actual signer to the consented
+ * review account before fetching the account or signing.
  */
 export const sendXlmTransaction = async (
   secretKey: string,
   destinationPublicKey: string,
   amount: string,
   memoText?: string,
-  onSubmissionStart?: (transactionHash: string) => void,
+  onSubmissionStart?: (transactionHash: string) => void | boolean,
+  expectedSourcePublicKey?: string,
 ) => {
   let submissionAttempted = false;
   let transactionHash: string | null = null;
@@ -212,6 +217,14 @@ export const sendXlmTransaction = async (
   try {
     const sourceKeypair = StellarSdk.Keypair.fromSecret(secretKey);
     const sourcePublicKey = sourceKeypair.publicKey();
+    if (expectedSourcePublicKey && sourcePublicKey !== expectedSourcePublicKey) {
+      throw new PaymentSendError(
+        'The active signing wallet changed since review. Start the payment again.',
+        false,
+        false,
+        null,
+      );
+    }
 
     const account = await server.loadAccount(sourcePublicKey);
     const fee = await server.fetchBaseFee();
@@ -238,10 +251,22 @@ export const sendXlmTransaction = async (
     transaction.sign(sourceKeypair);
 
     transactionHash = transaction.hash().toString('hex');
-    onSubmissionStart?.(transactionHash);
+    // The callback runs after local signing but before Horizon submission.
+    // A cancelled/changed review may reject this last outbound boundary.
+    if (onSubmissionStart?.(transactionHash) === false) {
+      throw new PaymentSendError(
+        'Signing request is no longer active. No transaction was submitted.',
+        false,
+        false,
+        null,
+      );
+    }
     submissionAttempted = true;
     return await server.submitTransaction(transaction);
   } catch (error: any) {
+    // Preserve explicit pre-submission denial without accidentally treating
+    // its locally computed hash as network-unknown/submitted.
+    if (error instanceof PaymentSendError) throw error;
     const codes = error?.response?.data?.extras?.result_codes;
     const resultCode = typeof codes?.transaction === 'string'
       ? codes.transaction
