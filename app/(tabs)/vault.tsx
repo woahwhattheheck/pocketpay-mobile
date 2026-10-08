@@ -142,6 +142,7 @@ export default function VaultScreen() {
   };
 
   const handleDepositPress = () => {
+    if (!canDeposit || networkDisabled || isLoadingBalance) return;
     const isValid = depositForm.validate(walletBalance);
     if (!isValid) return;
 
@@ -150,15 +151,22 @@ export default function VaultScreen() {
   };
 
   const handleDepositConfirm = () => {
+    // Capabilities can change while the preview is open. Recheck before
+    // running and pass the chosen action directly: React state updates are
+    // asynchronous, so pendingAction still contains the previous render.
+    if (!canDeposit || networkDisabled || isLoadingBalance) {
+      setShowDepositPreview(false);
+      return;
+    }
     setShowDepositPreview(false);
-    // Set pending action and execute the deposit flow directly —
-    // the DepositPreview itself serves as the confirmation step.
     setPendingAction('deposit');
-    handleConfirmAction();
+    void handleConfirmAction('deposit');
   };
 
   const vaultAction = useVaultAction();
   const handleAction = async (action: 'deposit' | 'withdraw' | 'lock') => {
+    // UI disabling is not an execution guard if readiness changes after tap.
+    if (!isActionSupported(capabilities, action) || networkDisabled) return;
     // Validate amount
     let amountError: string | undefined;
     if (action === 'deposit') {
@@ -188,12 +196,15 @@ export default function VaultScreen() {
     setConfirmVisible(true);
   };
 
- const handleConfirmAction = async () => {
-    if (!publicKey || !pendingAction) return;
+ const handleConfirmAction = async (requestedAction?: 'deposit' | 'withdraw' | 'lock') => {
+    const action = requestedAction ?? pendingAction;
+    if (!publicKey || !action || !isActionSupported(capabilities, action) || networkDisabled || isLoadingBalance) {
+      return;
+    }
 
     await vaultAction.run({
       sign: async () => {
-        if (pendingAction === 'withdraw') {
+        if (action === 'withdraw') {
           const secret = await getSecretKey();
           if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
           return secret;
@@ -201,11 +212,11 @@ export default function VaultScreen() {
         return null;
       },
       submit: async () => {
-        if (pendingAction === 'lock') {
+        if (action === 'lock') {
           const unlockDate = new Date(Date.now() + LOCK_PERIOD_SECONDS * 1000);
           await addLock(depositForm.amount, unlockDate.toISOString());
           return { txHash: 'mock-lock' };
-        } else if (pendingAction === 'deposit') {
+        } else if (action === 'deposit') {
           const hash = await depositForm.submit(publicKey, getSecretKey, deposit, walletBalance);
           return { txHash: hash || 'mock-deposit' };
         } else {
@@ -219,7 +230,7 @@ export default function VaultScreen() {
         setConfirmVisible(false);
         const hash = vaultAction.status.txHash;
         setReceiptData({
-          actionType: pendingAction as 'deposit' | 'withdraw' | 'lock',
+          actionType: action,
           amount: depositForm.amount,
           status: vaultAction.status.state === 'confirmed' ? 'Success' : 'Failed',
           date: new Date().toLocaleString(),
@@ -235,7 +246,7 @@ export default function VaultScreen() {
     if (vaultAction.status.state === 'failed') {
       setConfirmVisible(false);
       setReceiptData({
-        actionType: pendingAction as 'deposit' | 'withdraw' | 'lock',
+        actionType: action,
         amount: depositForm.amount,
         status: 'Failed',
         date: new Date().toLocaleString(),
@@ -251,6 +262,7 @@ export default function VaultScreen() {
   };
 
   const handleUnlock = async (lockId: string) => {
+    if (!canUnlock || networkDisabled) return;
     try {
       await unlockLock(lockId);
       Alert.alert('Success', 'Funds unlocked! (mock)');
@@ -260,6 +272,7 @@ export default function VaultScreen() {
   };
 
   const handleWithdrawPress = () => {
+    if (!canWithdraw || networkDisabled || isLoadingBalance) return;
     setShowWithdrawalPreview(true);
   };
 
@@ -277,7 +290,7 @@ export default function VaultScreen() {
         isLoading={isSubmitting || depositForm.isSubmitting}
         contractId={isConfigured ? contractId : undefined}
         unlockTime={pendingAction === 'lock' ? pendingUnlockDate : undefined}
-        onConfirm={handleConfirmAction}
+        onConfirm={() => { void handleConfirmAction(); }}
         onCancel={cancelAction}
       />
 
