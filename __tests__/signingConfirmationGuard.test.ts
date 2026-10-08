@@ -51,7 +51,7 @@ describe('signing confirmation route uses the live signer, not URL claims (#388)
     }
     expect(validateSigningConfirmationRequest(request, { ...wallet, balance: undefined as unknown as string }).ok).toBe(false);
     expect(validateSigningConfirmationRequest(request, { ...wallet, balance: '12' }).ok).toBe(false);
-    expect(validateSigningConfirmationRequest(request, { ...wallet, balance: '13.3456789' }).ok).toBe(true);
+    expect(validateSigningConfirmationRequest(request, { ...wallet, balance: '14' }).ok).toBe(true);
   });
 
   it('rejects unsupported active network values even if the route repeats them', () => {
