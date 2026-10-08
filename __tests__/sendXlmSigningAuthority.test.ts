@@ -1,18 +1,16 @@
 /** A signer/consent mismatch must never reach Horizon POST (#387). */
-import { Buffer } from 'buffer';
-
-const live = {
-  loadAccount: jest.fn(async () => ({ sequence: '10', balances: [] })),
-  fetchBaseFee: jest.fn(async () => 100),
-  submitTransaction: jest.fn(async () => ({ hash: 'network-confirmed' })),
-};
-
-const mockTransaction = {
-  sign: jest.fn(),
-  hash: jest.fn(() => Buffer.from('aabbccdd', 'hex')),
-};
-
 jest.mock('@stellar/stellar-sdk', () => {
+  // The mock factory is fully self-contained so Babel Jest hoisting cannot
+  // reference a not-yet-initialized outer variable.
+  const live = {
+    loadAccount: jest.fn(async () => ({ sequence: '10', balances: [] })),
+    fetchBaseFee: jest.fn(async () => 100),
+    submitTransaction: jest.fn(async () => ({ hash: 'network-confirmed' })),
+  };
+  const mockTransaction = {
+    sign: jest.fn(),
+    hash: jest.fn(() => ({ toString: () => 'aabbccdd' })),
+  };
   const builder = {
     addOperation: jest.fn().mockReturnThis(),
     addMemo: jest.fn().mockReturnThis(),
@@ -34,6 +32,7 @@ jest.mock('@stellar/stellar-sdk', () => {
     Asset: { native: jest.fn(() => ({})) },
     Memo: { text: jest.fn((value: string) => ({ value })) },
     Networks: { TESTNET: 'Test SDF Network ; September 2015' },
+    __test: { live, mockTransaction },
   };
 });
 
@@ -41,7 +40,9 @@ jest.mock('expo-crypto', () => ({
   getRandomValues: jest.fn((bytes: Uint8Array) => bytes),
 }));
 
-import { PaymentSendError, sendXlmTransaction } from '../src/services/stellar';
+import * as StellarSdk from '@stellar/stellar-sdk';
+import { sendXlmTransaction } from '../src/services/stellar';
+const { live, mockTransaction } = (StellarSdk as any).__test;
 
 beforeEach(() => {
   jest.clearAllMocks();
