@@ -198,10 +198,11 @@ export default function ReviewTransactionScreen() {
       store.completeSigning(signingResult);
     } catch (err: any) {
       const rawMessage = err?.message || '';
-      const isCancelled = /cancel|abort/i.test(rawMessage);
+      // An aborted request can still have reached Horizon. Only the service's
+      // authoritative failure status proves rejection; message text cannot
+      // establish that submission was cancelled before reaching the network.
       const isDefinitiveFailure = err?.submissionStatus === 'failed';
-      const isUnknownSubmission =
-        err?.submissionStatus === 'unknown' || (!isCancelled && !isDefinitiveFailure);
+      const isUnknownSubmission = !isDefinitiveFailure;
 
       // A signed transaction hash is deterministic before Horizon replies. If
       // acknowledgement is lost, keep that hash in the existing reconciliation
@@ -224,14 +225,8 @@ export default function ReviewTransactionScreen() {
       }
 
       store.failSigning({
-        type: isCancelled
-          ? 'user_cancelled'
-          : isDefinitiveFailure
-          ? 'network_error'
-          : 'unknown',
-        message: isCancelled
-          ? rawMessage
-          : isDefinitiveFailure
+        type: isDefinitiveFailure ? 'network_error' : 'unknown',
+        message: isDefinitiveFailure
           ? rawMessage || 'Transaction failed'
           : UNCONFIRMED_SUBMISSION_MESSAGE,
         raw: err,

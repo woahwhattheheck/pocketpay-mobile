@@ -80,6 +80,21 @@ When an entry is marked `unknown`, the row displays **Status unknown** and the q
 
 Restart persistence exists to preserve this safety cue across app process death. Restoring an `unknown` record does not resubmit, poll in a new loop, or change signing behavior; it only restores the deterministic hash and user-visible reconciliation state for the matching wallet.
 
+### SDK retry assumptions
+
+The review screen consumes `sendXlmTransaction`'s typed `submissionStatus`.
+Only `failed` is treated as an authoritative failure. An explicit `unknown`
+status, or an unclassified exception during submission, keeps the recovery
+guidance and the deterministic hash when available. Words such as "abort" or
+"cancel" in an exception message do not prove that a request never reached
+Horizon and must not replace Check History with a cancellation result.
+
+The user's explicit pre-submission cancellation remains a separate signer-store
+action. Status checks and History refresh read existing network state; they do
+not sign or submit a replacement payment. Any future SDK integration must
+preserve this distinction and must not automatically retry a state-changing
+submission solely because its acknowledgement timed out.
+
 ### Always-visible section
 
 The pending queue section is shown regardless of the active filter tab (All, Sent, Received, etc.). This ensures users never miss visibility into pending transactions, even when browsing a specific transaction type.

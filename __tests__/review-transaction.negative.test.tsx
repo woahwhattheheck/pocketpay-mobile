@@ -115,11 +115,15 @@ describe('ReviewTransactionScreen negative paths', () => {
     } as any);
   });
 
-  it('shows an unknown-status recovery state and preserves the signed hash', async () => {
+  it.each([
+    ['request timeout', 'unknown'],
+    ['The operation was aborted', 'unknown'],
+    ['Request cancelled after dispatch', undefined],
+  ])('keeps %s in recovery instead of inferring cancellation', async (message, submissionStatus) => {
     mockSendXlmTransaction.mockRejectedValueOnce(
-      Object.assign(new Error('request timeout'), {
+      Object.assign(new Error(message), {
         name: 'TransactionSubmissionError',
-        submissionStatus: 'unknown',
+        submissionStatus,
         transactionHash: 'abc123',
       }),
     );
@@ -147,27 +151,30 @@ describe('ReviewTransactionScreen negative paths', () => {
     expect(mockReplace).toHaveBeenCalledWith('/(tabs)/history');
   });
 
-  it('keeps a definitive Horizon rejection separate from unknown status', async () => {
-    mockSendXlmTransaction.mockRejectedValueOnce(
-      Object.assign(new Error('op_underfunded'), {
-        name: 'TransactionSubmissionError',
-        submissionStatus: 'failed',
-        transactionHash: 'def456',
-      }),
-    );
+  it.each(['op_underfunded', 'Submission aborted by authoritative rejection'])(
+    'keeps a definitive rejection (%s) separate from unknown status',
+    async (message) => {
+      mockSendXlmTransaction.mockRejectedValueOnce(
+        Object.assign(new Error(message), {
+          name: 'TransactionSubmissionError',
+          submissionStatus: 'failed',
+          transactionHash: 'def456',
+        }),
+      );
 
-    const { getByText, queryByText } = render(<ReviewTransactionScreen />);
-    fireEvent.press(getByText('Sign & Send'));
+      const { getByText, queryByText } = render(<ReviewTransactionScreen />);
+      fireEvent.press(getByText('Sign & Send'));
 
-    await waitFor(() => {
-      expect(getByText('Transaction Failed')).toBeTruthy();
-      expect(getByText('op_underfunded')).toBeTruthy();
-      expect(queryByText('Check History')).toBeNull();
-      expect(queryByText('Transaction status unknown')).toBeNull();
-    });
+      await waitFor(() => {
+        expect(getByText('Transaction Failed')).toBeTruthy();
+        expect(getByText(message)).toBeTruthy();
+        expect(queryByText('Check History')).toBeNull();
+        expect(queryByText('Transaction status unknown')).toBeNull();
+      });
 
-    expect(mockAddPendingTransaction).not.toHaveBeenCalled();
-  });
+      expect(mockAddPendingTransaction).not.toHaveBeenCalled();
+    },
+  );
 
   it('shows the cancelled state clearly when signing is aborted before submission', () => {
     useSignerStore.getState().cancelSigning();
