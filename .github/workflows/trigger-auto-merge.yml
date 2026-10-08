@@ -21,6 +21,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.AXIONVERA_AUTOMATION_TOKEN }}
         run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "AXIONVERA_AUTOMATION_TOKEN is not configured on this repository; skipping central auto-merge dispatch."
+            exit 0
+          fi
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
