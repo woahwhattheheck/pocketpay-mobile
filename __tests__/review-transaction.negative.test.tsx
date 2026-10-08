@@ -182,6 +182,8 @@ describe('ReviewTransactionScreen negative paths', () => {
       expect(getByText('Not yet found on Horizon; this is not proof of failure.')).toBeTruthy();
     });
     expect(mockCheckSubmittedTransaction).toHaveBeenCalledWith(hash);
+    fireEvent.press(getByText('View Wallet History'));
+    expect(mockReplace).toHaveBeenCalledWith('/(tabs)/history');
   });
 
   it('treats an explicit Horizon result code as a rejection, not an unknown payment', async () => {
