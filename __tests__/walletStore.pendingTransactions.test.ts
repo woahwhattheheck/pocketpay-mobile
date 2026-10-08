@@ -62,6 +62,33 @@ describe('AC-P1 – addPendingTransaction', () => {
   });
 });
 
+describe('AC-P1b – scoped pending entries', () => {
+  it('skips a record when the current account differs from the expected account', () => {
+    useWalletStore.setState({ publicKey: 'GOTHER' });
+
+    useWalletStore.getState().addPendingTransaction(
+      'hash-old',
+      { id: 'hash-old', amount: '10', from: 'GPUBLIC123' },
+      'GPUBLIC123',
+    );
+
+    let state = useWalletStore.getState();
+    expect(state.pendingTransactions['hash-old']).toBeUndefined();
+    expect(state.transactions.some((t) => t.id === 'hash-old')).toBe(false);
+
+    useWalletStore.setState({ publicKey: 'GPUBLIC123' });
+    useWalletStore.getState().addPendingTransaction(
+      'hash-current',
+      { id: 'hash-current', amount: '20', from: 'GPUBLIC123' },
+      'GPUBLIC123',
+    );
+
+    state = useWalletStore.getState();
+    expect(state.pendingTransactions['hash-current']?.status).toBe('pending');
+    expect(state.transactions.some((t) => t.id === 'hash-current')).toBe(true);
+  });
+});
+
 describe('AC-P2 – concurrent pending entries', () => {
   it('does not clobber a concurrent pending entry with a different hash', () => {
     useWalletStore.getState().addPendingTransaction('hash1', { id: 'hash1', amount: '10' });
