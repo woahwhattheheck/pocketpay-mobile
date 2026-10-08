@@ -85,6 +85,27 @@ export function resolveSigningNetwork(
 }
 
 /**
+ * Bind the secret selected for signing to the wallet the user actually
+ * reviewed. All three identities must still agree immediately before signing:
+ * the reviewed source, the live wallet store and the public key derived from
+ * the SecureStore secret.
+ */
+export function signerMatchesReviewedWallet(
+  reviewedPublicKey: unknown,
+  currentPublicKey: unknown,
+  secretPublicKey: unknown,
+): boolean {
+  const reviewed = readText(reviewedPublicKey);
+  const current = readText(currentPublicKey);
+  const fromSecret = readText(secretPublicKey);
+
+  return !!reviewed &&
+    reviewed === current &&
+    reviewed === fromSecret &&
+    validateAddress(reviewed) === null;
+}
+
+/**
  * The signer uses the current local wallet, configured Stellar network, and
  * XLM. Validate the entire displayed request against those same authorities.
  * Reject stale/deep-linked values before showing approval or navigating.
