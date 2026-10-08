@@ -145,3 +145,99 @@ export function buildPaymentReceipt(input: PaymentReceiptInput): PaymentReceiptV
     hasExplorerLink: explorerUrl !== null,
   };
 }
+/** Issue #522: receipts are not necessarily successful or even terminal. */
+export type ReceiptOutcome = 'success' | 'pending' | 'failed' | 'rejected' | 'unknown';
+
+export interface ReceiptOutcomeCopy {
+  title: string;
+  description: string;
+  tone: 'success' | 'info' | 'warning' | 'error';
+}
+
+export const RECEIPT_OUTCOME_COPY: Record<ReceiptOutcome, ReceiptOutcomeCopy> = {
+  success: {
+    title: 'Transaction confirmed',
+    description: 'The network confirmed this transaction.',
+    tone: 'success',
+  },
+  pending: {
+    title: 'Transaction pending',
+    description: 'The outcome is not final. Check the network before sending again.',
+    tone: 'info',
+  },
+  failed: {
+    title: 'Transaction failed',
+    description: 'This attempt failed. Check your activity before retrying.',
+    tone: 'error',
+  },
+  rejected: {
+    title: 'Transaction rejected',
+    description: 'The transaction was rejected or cancelled before completion.',
+    tone: 'warning',
+  },
+  unknown: {
+    title: 'Transaction status unknown',
+    description: 'Confirmation is unavailable. Do not resubmit until you verify the outcome.',
+    tone: 'warning',
+  },
+};
+
+export function normalizeReceiptOutcome(raw: string | undefined | null): ReceiptOutcome {
+  switch ((raw ?? '').trim().toLowerCase()) {
+    case 'success':
+    case 'succeeded':
+    case 'successful':
+    case 'confirmed':
+      return 'success';
+    case 'submitted':
+    case 'pending':
+      return 'pending';
+    case 'failure':
+    case 'failed':
+      return 'failed';
+    case 'cancelled':
+    case 'canceled':
+    case 'rejected':
+      return 'rejected';
+    default:
+      return 'unknown';
+  }
+}
+
+export interface TypedReceiptInput extends PaymentReceiptInput {
+  outcome?: string | null;
+  asset?: string | null;
+}
+
+export interface TypedReceiptViewModel extends PaymentReceiptViewModel {
+  outcome: ReceiptOutcome;
+  outcomeCopy: ReceiptOutcomeCopy;
+  displayAsset: string;
+  displayValue: string;
+}
+
+/**
+ * Create an outcome-aware receipt from public data only. A missing status
+ * must NEVER imply success even if a transaction hash exists.
+ */
+export function buildTypedReceipt(input: TypedReceiptInput): TypedReceiptViewModel {
+  const outcome = normalizeReceiptOutcome(input.outcome);
+  const asset = (input.asset || 'XLM').trim().toUpperCase();
+  const displayAsset = /^[A-Z0-9]{1,12}$/.test(asset) ? asset : 'XLM';
+  const amount = formatAmount(input.amount ?? undefined);
+  const validHash = typeof input.hash === 'string' && /^[a-f0-9]{64}$/i.test(input.hash.trim());
+  const base = buildPaymentReceipt({
+    ...input,
+    hash: validHash ? input.hash : null,
+    explorerUrl: validHash ? input.explorerUrl : null,
+  });
+  return {
+    ...base,
+    outcome,
+    outcomeCopy: RECEIPT_OUTCOME_COPY[outcome],
+    displayAsset,
+    displayValue: amount && amount !== RECEIPT_PLACEHOLDER
+      ? amount + ' ' + displayAsset
+      : RECEIPT_PLACEHOLDER,
+  };
+}
