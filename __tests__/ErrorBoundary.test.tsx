@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Button as RNButton } from 'react-native';
-import { render, fireEvent } from '@testing-library/react-native';
+import { View, Text, Button as RNButton, Share } from 'react-native';
+import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
@@ -16,6 +16,7 @@ jest.mock('lucide-react-native', () => ({
 
 import { ErrorBoundary } from '../src/components/ErrorBoundary';
 import * as errorReporting from '../src/utils/errorReporting';
+import * as diagnostics from '../src/utils/diagnostics';
 
 // Suppress expected console.error logs during error boundary test executions
 const originalConsoleError = console.error;
@@ -192,5 +193,107 @@ describe('ErrorBoundary', () => {
     } finally {
       global.__DEV__ = originalDev;
     }
+  });
+});
+
+describe('ErrorBoundaryFallback — Share Diagnostics recovery action', () => {
+  const SHARE_LABEL = 'Share redacted diagnostics log';
+  const SHARE_FAILED_MESSAGE = 'Diagnostics could not be shared. Please try again.';
+  const REDACTED_DIAGNOSTICS = JSON.stringify({
+    walletState: { hasPublicKey: true, lastError: 'Signing failed for [REDACTED_SECRET]' },
+  });
+
+  let shareSpy: jest.SpyInstance;
+  let getDiagnosticsSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    shareSpy = jest.spyOn(Share, 'share').mockResolvedValue({ action: Share.sharedAction });
+    getDiagnosticsSpy = jest.spyOn(diagnostics, 'getDiagnostics');
+  });
+
+  afterEach(() => {
+    shareSpy.mockRestore();
+    getDiagnosticsSpy.mockRestore();
+  });
+
+  const renderFallback = () =>
+    render(
+      <ErrorBoundary>
+        <ProblemChild shouldThrow={true} />
+      </ErrorBoundary>
+    );
+
+  it('passes the resolved redacted diagnostics text to Share.share (#397)', async () => {
+    getDiagnosticsSpy.mockResolvedValue(REDACTED_DIAGNOSTICS);
+
+    const { getByLabelText, getByText, queryByText } = renderFallback();
+
+    fireEvent.press(getByLabelText(SHARE_LABEL));
+
+    await waitFor(() => expect(shareSpy).toHaveBeenCalledTimes(1));
+    const [content] = shareSpy.mock.calls[0];
+    // getDiagnostics() is async. Native Share needs the string itself; a
+    // pending Promise gives an empty or failed share sheet.
+    expect(typeof content.message).toBe('string');
+    expect(content).toEqual({
+      message: REDACTED_DIAGNOSTICS,
+      title: 'App Diagnostics Log',
+    });
+
+    await waitFor(() => expect(getByText('Share Diagnostics')).toBeTruthy());
+    expect(queryByText(SHARE_FAILED_MESSAGE)).toBeNull();
+  });
+
+  it('ignores repeat taps while diagnostics are being prepared', async () => {
+    let resolveDiagnostics: (value: string) => void = () => {};
+    getDiagnosticsSpy.mockImplementation(
+      () =>
+        new Promise<string>((resolve) => {
+          resolveDiagnostics = resolve;
+        })
+    );
+
+    const { getByLabelText, getByText } = renderFallback();
+
+    fireEvent.press(getByLabelText(SHARE_LABEL));
+
+    expect(getByText('Preparing diagnostics…')).toBeTruthy();
+    expect(getByLabelText(SHARE_LABEL)).toBeDisabled();
+    fireEvent.press(getByLabelText(SHARE_LABEL));
+    expect(getDiagnosticsSpy).toHaveBeenCalledTimes(1);
+    expect(shareSpy).not.toHaveBeenCalled();
+
+    await act(async () => {
+      resolveDiagnostics(REDACTED_DIAGNOSTICS);
+    });
+
+    await waitFor(() => expect(getByText('Share Diagnostics')).toBeTruthy());
+    expect(shareSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows a generic, retryable error when diagnostics cannot be prepared', async () => {
+    getDiagnosticsSpy
+      .mockRejectedValueOnce(new Error('SecureStore read failed for wallet-backup-entry'))
+      .mockResolvedValueOnce(REDACTED_DIAGNOSTICS);
+
+    const { getByLabelText, findByText, queryByText } = renderFallback();
+
+    fireEvent.press(getByLabelText(SHARE_LABEL));
+
+    expect(await findByText(SHARE_FAILED_MESSAGE)).toBeTruthy();
+    expect(shareSpy).not.toHaveBeenCalled();
+    expect(queryByText(/SecureStore read failed/)).toBeNull();
+    expect(getByLabelText(SHARE_LABEL)).not.toBeDisabled();
+
+    fireEvent.press(getByLabelText(SHARE_LABEL));
+
+    await waitFor(() => expect(queryByText(SHARE_FAILED_MESSAGE)).toBeNull());
+    await waitFor(() =>
+      expect(shareSpy).toHaveBeenCalledWith({
+        message: REDACTED_DIAGNOSTICS,
+        title: 'App Diagnostics Log',
+      })
+    );
+    expect(getDiagnosticsSpy).toHaveBeenCalledTimes(2);
   });
 });

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,9 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [showDetails, setShowDetails] = useState(false);
+  const [isSharingDiagnostics, setIsSharingDiagnostics] = useState(false);
+  const [shareFailed, setShareFailed] = useState(false);
+  const sharingRef = useRef(false);
   const router = useRouter();
 
   const sanitized = error ? sanitizeError(error) : null;
@@ -54,13 +57,25 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   };
 
   const handleShareDiagnostics = async () => {
+    // Single-flight protection also covers the period before React disables
+    // the button. Sharing must receive resolved *redacted* JSON, not a Promise.
+    if (sharingRef.current) return;
+    sharingRef.current = true;
+    setIsSharingDiagnostics(true);
+    setShareFailed(false);
     try {
+      const message = await getDiagnostics();
       await Share.share({
-        message: getDiagnostics(),
+        message,
         title: 'App Diagnostics Log',
       });
     } catch {
-      // Sharing can fail if the OS sheet is unavailable; ignore.
+      // Avoid exposing exception messages: storage and share providers may
+      // include private wallet details in their failures.
+      setShareFailed(true);
+    } finally {
+      sharingRef.current = false;
+      setIsSharingDiagnostics(false);
     }
   };
 
@@ -109,8 +124,20 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
               onPress={handleShareDiagnostics}
               variant="muted"
               accessibilityLabel="Share redacted diagnostics log"
+              accessibilityState={{ disabled: isSharingDiagnostics, busy: isSharingDiagnostics }}
+              isLoading={isSharingDiagnostics}
+              loadingText="Preparing diagnostics…"
               style={styles.secondaryButton}
             />
+            {shareFailed ? (
+              <Text
+                accessibilityRole="alert"
+                accessibilityLiveRegion="polite"
+                style={styles.shareError}
+              >
+                Diagnostics could not be shared. Please try again.
+              </Text>
+            ) : null}
           </View>
 
           {/* Technical details — redacted, and only in __DEV__ */}
@@ -210,6 +237,13 @@ const createStyles = (colors: ThemeColors) =>
     },
     secondaryButton: {
       width: '100%',
+      marginTop: SIZES.sm,
+    },
+    shareError: {
+      color: colors.error,
+      fontSize: 13,
+      lineHeight: 20,
+      textAlign: 'center',
       marginTop: SIZES.sm,
     },
     devSection: {

@@ -11,7 +11,7 @@
  * never appear in developer logs or diagnostics exports.
  */
 
-import { redactSensitiveValue, sanitizeError } from './redactSensitive';
+import { redactSensitiveValue, sanitizeError, SanitizedError } from './redactSensitive';
 
 export interface ErrorReportContext {
   /** Where the error was captured, e.g. "ErrorBoundary", "GlobalHandler". */
@@ -35,7 +35,7 @@ export interface LastErrorReport {
 let lastErrorReport: LastErrorReport | null = null;
 
 export function getLastErrorReport(): LastErrorReport | null {
-  return lastErrorReport;
+  return lastErrorReport ? { ...lastErrorReport } : null;
 }
 
 export function clearLastErrorReport(): void {
@@ -43,27 +43,36 @@ export function clearLastErrorReport(): void {
 }
 
 export function reportError(error: Error, context: ErrorReportContext): void {
-  const sanitized = sanitizeError(error);
-  const safeContext = redactSensitiveValue(context) as ErrorReportContext;
+  let sanitized: SanitizedError;
+  let safeContext: ErrorReportContext;
+  try {
+    sanitized = sanitizeError(error);
+    const redactedContext = redactSensitiveValue(context);
+    safeContext = redactedContext !== null && typeof redactedContext === 'object'
+      && !Array.isArray(redactedContext)
+      ? redactedContext as ErrorReportContext
+      : { source: 'Unknown' };
+  } catch {
+    sanitized = { name: 'Error', message: 'Error details unavailable' };
+    safeContext = { source: 'ErrorReporting' };
+  }
 
   lastErrorReport = {
-    source: context.source,
+    source: typeof safeContext.source === 'string' ? safeContext.source : 'Unknown',
     name: sanitized.name,
     message: sanitized.message,
-    isFatal: context.isFatal,
+    isFatal: typeof safeContext.isFatal === 'boolean' ? safeContext.isFatal : undefined,
     timestamp: new Date().toISOString(),
   };
 
-  // Always log — in production this still lands in native device logs
-  // (adb logcat / Xcode console) and CI/E2E log capture, so it's not a
-  // no-op even without a crash reporter attached yet.
-  // eslint-disable-next-line no-console
-  console.error(`[${safeContext.source}]`, sanitized, safeContext);
+  try {
+    // eslint-disable-next-line no-console
+    console.error(`[${lastErrorReport.source}]`, sanitized, safeContext);
+  } catch {
+  }
 
   if (!__DEV__) {
     // TODO: wire up a real crash reporter, e.g.:
-    // Sentry.captureException(error, { extra: safeContext, level: context.isFatal ? 'fatal' : 'error' });
-    // Keep this block side-effect only — it must never throw, or it can
-    // mask the original error / crash the crash handler itself.
+    // Sentry.captureException(sanitized, { extra: safeContext, level: safeContext.isFatal ? 'fatal' : 'error' });
   }
 }

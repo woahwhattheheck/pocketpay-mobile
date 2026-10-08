@@ -45,7 +45,7 @@ React error boundaries **do not** catch event-handler or async errors. That is w
 | **Try Again** | Clears boundary state and re-renders children |
 | **Go to Home** | Clears boundary state, then `router.replace('/(tabs)')` |
 | **Restart App** | Clears boundary state, then best-effort `DevSettings.reload()` |
-| **Share Diagnostics** | Opens the OS share sheet with `getDiagnostics()` JSON (already redacted) |
+| **Share Diagnostics** | Awaits the redacted `getDiagnostics()` JSON, then opens the OS share sheet with that text. The button is busy and ignores repeat taps while the export is prepared; if the export or share sheet fails, a generic "could not be shared" alert is shown (no error details) and the action can be retried |
 
 Custom fallbacks remain supported via the `fallback` prop on `ErrorBoundary` (node or render function).
 
