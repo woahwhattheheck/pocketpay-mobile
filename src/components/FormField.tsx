@@ -72,6 +72,9 @@ export const FormField: React.FC<FormFieldProps> = ({
           editable={!isDisabled}
           secureTextEntry={resolvedSecureTextEntry}
           {...props}
+          accessibilityLabel={props.accessibilityLabel || label}
+          accessibilityHint={error || props.accessibilityHint || helperText}
+          accessibilityState={{ ...props.accessibilityState, disabled: isDisabled }}
         />
 
         {/* Secure text toggle */}
@@ -80,6 +83,10 @@ export const FormField: React.FC<FormFieldProps> = ({
             style={styles.iconButton}
             onPress={() => setIsSecureVisible((prev) => !prev)}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            accessibilityRole="button"
+            accessibilityLabel={isSecureVisible ? `Hide ${label}` : `Show ${label}`}
+            accessibilityHint="Toggle whether the field's contents are visible"
+            accessibilityState={{ expanded: isSecureVisible }}
           >
             {isSecureVisible ? (
               <EyeOff size={20} color={colors.textSecondary} />
@@ -97,7 +104,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 
       {/* Error or Helper Text */}
       {error ? (
-        <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.errorText} accessibilityRole="alert" accessibilityLiveRegion="polite">{error}</Text>
       ) : helperText ? (
         <Text style={styles.helperText}>{helperText}</Text>
       ) : null}

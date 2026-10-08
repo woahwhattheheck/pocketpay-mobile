@@ -72,7 +72,18 @@ export default function ReceiveScreen() {
         onRetry={retry}
       />
 
-      <View style={styles.qrContainer}>
+      <View
+        style={styles.qrContainer}
+        accessible
+        accessibilityRole="image"
+        accessibilityLabel={
+          publicKey
+            ? isRequestPayload
+              ? 'QR code for your payment request. Use Share to send the request without scanning.'
+              : 'QR code for your Stellar receiving address. Use Copy Address if QR scanning is unavailable.'
+            : 'Wallet receiving address is not available.'
+        }
+      >
         {publicKey ? (
           <QRCode
             value={payload}
@@ -81,18 +92,18 @@ export default function ReceiveScreen() {
             backgroundColor={colors.textPrimary}
           />
         ) : (
-          <Text style={{ color: colors.textMuted }}>No public key found</Text>
+          <Text style={{ color: colors.textMuted }} accessibilityRole="alert">No public key found</Text>
         )}
       </View>
 
       {isRequestPayload && (
-        <Text style={styles.requestBadge}>Requesting a specific amount</Text>
+        <Text style={styles.requestBadge} accessibilityLiveRegion="polite">Requesting a specific amount</Text>
       )}
 
       <View style={styles.addressContainer}>
         <Text style={styles.addressLabel}>Your Public Key</Text>
         <View style={styles.addressBox}>
-          <Text style={styles.addressText} selectable>
+          <Text style={styles.addressText} selectable accessibilityLabel={`Your public wallet address: ${publicKey || "not available"}`}>
             {publicKey}
           </Text>
         </View>
@@ -101,6 +112,9 @@ export default function ReceiveScreen() {
       <TouchableOpacity
         onPress={() => setShowRequestFields((prev) => !prev)}
         accessibilityRole="button"
+        accessibilityLabel={showRequestFields ? "Hide payment request details" : "Request a specific amount"}
+        accessibilityState={{ expanded: showRequestFields }}
+        accessibilityHint="Shows or hides optional payment amount and memo fields"
         style={styles.toggle}
       >
         <Text style={styles.toggleText}>
