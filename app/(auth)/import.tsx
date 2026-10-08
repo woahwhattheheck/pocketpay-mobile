@@ -14,6 +14,7 @@ import { Info, Shield, CheckCircle } from 'lucide-react-native';
 import type { OnboardingError, StorageError } from '../../src/types/onboarding';
 import {
   classifyOnboardingError,
+  classifyWalletImportConflict,
   mapWalletErrorToStorageError,
 } from '../../src/types/onboarding';
 
@@ -96,6 +97,18 @@ export default function ImportWalletScreen() {
     try {
       const { publicKey } = await importWallet(trimmedKey);
 
+      // Never silently replace an already active wallet's stored secret.
+      // Read the current store after the asynchronous SDK import, not the
+      // stale account state captured when this screen first rendered.
+      const conflict = classifyWalletImportConflict(
+        useWalletStore.getState().publicKey,
+        publicKey,
+      );
+      if (conflict) {
+        setOnboardingError(conflict);
+        return;
+      }
+
       const saved = await setWallet(publicKey, trimmedKey);
       if (!saved) {
         // Classify the storage error
@@ -103,6 +116,8 @@ export default function ImportWalletScreen() {
         return;
       }
 
+      // Do not keep a successfully persisted secret in component form state.
+      setSecretKey('');
       setIsSuccess(true);
     } catch (err: any) {
       const errorMsg = err?.message || String(err);
