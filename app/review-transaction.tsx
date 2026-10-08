@@ -1,5 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
-import { server } from '../src/services/stellar';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  server,
+  sendXlmTransaction,
+  checkSubmittedTransaction,
+  TransactionSubmissionUnknownError,
+  TransactionSubmissionRejectedError,
+} from '../src/services/stellar';
 import {
   View,
   Text,
@@ -83,10 +89,13 @@ export default function ReviewTransactionScreen() {
   }>();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const { publicKey, getSecretKey, refreshWalletData, addPendingTransaction } = useWalletStore();
+  const { publicKey, getSecretKey, refreshWalletData, addPendingTransaction, removePendingTransaction } = useWalletStore();
   const contacts = useAppStore((state) => state.contacts);
   const store = useSignerStore();
   const { phase, error } = store;
+  const [unknownHash, setUnknownHash] = useState<string | null>(null);
+  const [lookupStatus, setLookupStatus] = useState<'idle' | 'checking' | 'not_found' | 'unavailable' | 'rejected'>('idle');
+  const [showUnknownDetails, setShowUnknownDetails] = useState(false);
 
   const destination = params.destination || '';
   const amount = params.amount || '';
@@ -136,43 +145,36 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
-    const { sendXlmTransaction } = await import('../src/services/stellar');
-    const secretKey = await getSecretKey();
-    if (!secretKey) {
-      store.failSigning({
-        type: 'signer_unavailable',
-        message: WALLET_SECRET_ACCESS_MESSAGE,
-      });
-      return;
-    }
-    const fee = await server.fetchBaseFee();
-    store.startReview({
-      requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-      sourcePublicKey: publicKey!,
-      destinationPublicKey: destination.trim(),
-      destinationLabel: destinationContact?.isContact ? destinationContact.label : null,
-      amount: amount.trim(),
-      assetCode: 'XLM',
-      memo: memo.trim() || undefined,
-      network: getNetworkLabel(),
-      createdAt: new Date().toISOString(),
-      timeoutSeconds: 30,
-      fee: fee.toString(),
-    });
-
-    store.enterHandoff();
-    store.enterSigning();
-
+    setUnknownHash(null);
+    setLookupStatus('idle');
+    setShowUnknownDetails(false);
+    let startedSubmission = false;
     try {
-      const result = await sendXlmTransaction(
-        secretKey,
-        destination.trim(),
-        amount.trim(),
-        memo.trim() || undefined,
-      );
+      const secretKey = await getSecretKey();
+      if (!secretKey) {
+        store.failSigning({ type: 'signer_unavailable', message: WALLET_SECRET_ACCESS_MESSAGE });
+        return;
+      }
+      const fee = await server.fetchBaseFee();
+      store.startReview({
+        requestId: 'tx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8),
+        sourcePublicKey: publicKey!,
+        destinationPublicKey: destination.trim(),
+        destinationLabel: destinationContact?.isContact ? destinationContact.label : null,
+        amount: amount.trim(),
+        assetCode: 'XLM',
+        memo: memo.trim() || undefined,
+        network: getNetworkLabel(),
+        createdAt: new Date().toISOString(),
+        timeoutSeconds: 30,
+        fee: fee.toString(),
+      });
+      store.enterHandoff();
+      store.enterSigning();
       store.enterSubmitting();
+      startedSubmission = true;
+      const result = await sendXlmTransaction(secretKey, destination.trim(), amount.trim(), memo.trim() || undefined);
       store.enterConfirming();
-
       addPendingTransaction(result.hash, {
         id: result.hash,
         type: 'payment',
@@ -182,32 +184,67 @@ export default function ReviewTransactionScreen() {
         asset: 'XLM',
         created_at: new Date().toISOString(),
       });
-
-      // React batches these consecutive set() calls into a single render, so
-      // without a real gap here 'confirming' never actually paints — this
-      // delay is what makes the phase visible instead of skipping straight
-      // from signing to completed.
       await new Promise((resolve) => setTimeout(resolve, 400));
-
-      const signingResult = {
+      store.completeSigning({
         hash: result.hash,
         review: store.currentReview!,
-        signerType: 'local' as const,
+        signerType: 'local',
         completedAt: new Date().toISOString(),
-      };
-      store.completeSigning(signingResult);
-    } catch (err: any) {
-      const rawMessage = err?.message || '';
-      // A throw here doesn't prove the transaction was rejected — a client-side
-      // timeout can happen after Horizon already accepted it — so use neutral
-      // copy instead of asserting failure, except for an explicit cancellation.
-      const isCancelled = /cancel|abort/i.test(rawMessage);
+      });
+    } catch (err: unknown) {
+      if (err instanceof TransactionSubmissionUnknownError) {
+        // The signed hash can be tracked without the signing key and MUST NOT be resent blindly.
+        setUnknownHash(err.hash);
+        setLookupStatus('idle');
+        addPendingTransaction(err.hash, {
+          id: err.hash,
+          type: 'payment',
+          from: publicKey!,
+          to: destination.trim(),
+          amount: amount.trim(),
+          asset: 'XLM',
+          created_at: new Date().toISOString(),
+        });
+        store.failSigning({ type: 'unknown', message: UNCONFIRMED_SUBMISSION_MESSAGE });
+        return;
+      }
+      if (err instanceof TransactionSubmissionRejectedError) {
+        store.failSigning({
+          type: 'unknown',
+          message: 'Network rejected this transaction (' + err.resultCode + ').',
+        });
+        return;
+      }
+      const rawMessage = err instanceof Error ? err.message : '';
+      const cancelled = /cancel/i.test(rawMessage) && !startedSubmission;
       store.failSigning({
-        type: isCancelled ? 'user_cancelled' : 'unknown',
-        message: isCancelled ? rawMessage : UNCONFIRMED_SUBMISSION_MESSAGE,
-        raw: err,
+        type: cancelled ? 'user_cancelled' : 'unknown',
+        message: cancelled
+          ? rawMessage
+          : startedSubmission
+            ? UNCONFIRMED_SUBMISSION_MESSAGE
+            : 'Could not prepare the transaction. No payment was submitted.',
       });
     }
+  };
+
+  const handleCheckStatus = async () => {
+    if (!unknownHash || lookupStatus === 'checking' || lookupStatus === 'rejected') return;
+    setLookupStatus('checking');
+    const status = await checkSubmittedTransaction(unknownHash);
+    if (status === 'confirmed') {
+      store.enterConfirming();
+      store.completeSigning({
+        hash: unknownHash,
+        review: store.currentReview!,
+        signerType: 'local',
+        completedAt: new Date().toISOString(),
+      });
+      return;
+    }
+    // Horizon 404 means "not yet found", not proof of failure.
+    if (status === 'rejected') removePendingTransaction(unknownHash);
+    setLookupStatus(status);
   };
 
   const handleCancel = () => {
@@ -225,6 +262,13 @@ export default function ReviewTransactionScreen() {
   const handleDismissError = () => {
     store.reset();
     router.back();
+  };
+
+  const handleLeaveUnknown = () => {
+    // A back navigation would reopen Sign Confirmation and invite a duplicate
+    // payment; instead take the user to wallet history with the hash retained.
+    store.reset();
+    router.replace('/(tabs)/history');
   };
 
   const reviewItems: ReviewItem[] = useMemo(() => {
@@ -323,23 +367,74 @@ export default function ReviewTransactionScreen() {
         </View>
       )}
 
-      {/* Failure State */}
+      {/* Signed but unconfirmed is NOT a failed payment: never offer blind retry. */}
       {phase === 'failed' && error && (
-        <View style={[styles.resultCard, { backgroundColor: colors.surface, borderColor: colors.error }]}>
-          <XCircle size={24} color={colors.error} />
+        <View style={[styles.resultCard, {
+          backgroundColor: colors.surface,
+          borderColor: unknownHash && lookupStatus !== 'rejected' ? colors.warning : colors.error,
+        }]}>
+          {unknownHash && lookupStatus !== 'rejected'
+            ? <AlertTriangle size={24} color={colors.warning} />
+            : <XCircle size={24} color={colors.error} />}
           <View style={styles.statusTextGroup}>
             <View style={styles.statusTitleRow}>
-              <Text style={[styles.statusTitle, { color: colors.error }]}>Transaction Failed</Text>
-              <StatusBadge text="Failed" tone="error" />
+              <Text style={[styles.statusTitle, {
+                color: unknownHash && lookupStatus !== 'rejected' ? colors.warning : colors.error,
+              }]}>
+                {unknownHash ? lookupStatus === 'rejected' ? 'Transaction Rejected' : 'Status Unknown' : 'Transaction Failed'}
+              </Text>
+              <StatusBadge
+                text={unknownHash && lookupStatus !== 'rejected' ? 'Unconfirmed' : 'Failed'}
+                tone={unknownHash && lookupStatus !== 'rejected' ? 'warning' : 'error'}
+              />
             </View>
-            <Text style={[styles.errorText, { color: colors.textSecondary }]}>{error.message}</Text>
+            <Text style={[styles.errorText, { color: colors.textSecondary }]}>
+              {unknownHash
+                ? lookupStatus === 'rejected' ? 'Horizon reported a rejected transaction for this hash.' : UNCONFIRMED_SUBMISSION_MESSAGE
+                : error.message}
+            </Text>
+            {unknownHash && (
+              <>
+                <Text style={[styles.errorText, { color: colors.textSecondary }]}>
+                  Do not resend while the outcome is uncertain. Check the signed hash on the network,
+                  review wallet history, or contact support with this PUBLIC hash.
+                </Text>
+                {lookupStatus === 'not_found' && (
+                  <Text style={[styles.errorText, { color: colors.warning }]}>
+                    Not yet found on Horizon; this is not proof of failure.
+                  </Text>
+                )}
+                {lookupStatus === 'unavailable' && (
+                  <Text style={[styles.errorText, { color: colors.warning }]}>
+                    Network lookup unavailable. Check again later.
+                  </Text>
+                )}
+                <Button
+                  title={lookupStatus === 'checking' ? 'Checking...' : 'Check Status'}
+                  disabled={lookupStatus === 'checking' || lookupStatus === 'rejected'}
+                  onPress={handleCheckStatus}
+                  style={styles.retryButton}
+                />
+                <Button
+                  title={showUnknownDetails ? 'Hide Details' : 'View Details'}
+                  variant="secondary"
+                  onPress={() => setShowUnknownDetails((value) => !value)}
+                  style={styles.retryButton}
+                />
+                {showUnknownDetails && (
+                  <View>
+                    <Text selectable style={[styles.hashText, { color: colors.textSecondary }]}>Hash: {unknownHash}</Text>
+                    <Text style={[styles.errorText, { color: colors.textSecondary }]}>Network: {getNetworkLabel()}</Text>
+                    <Text selectable style={[styles.errorText, { color: colors.textSecondary }]}>Recipient: {destination.trim()}</Text>
+                    <Text style={[styles.errorText, { color: colors.textSecondary }]}>Amount: {formatAmount(amount.trim())} XLM</Text>
+                  </View>
+                )}
+              </>
+            )}
+            {!unknownHash && (
+              <Button title="Dismiss" variant="secondary" onPress={handleDismissError} style={styles.retryButton} />
+            )}
           </View>
-          <Button
-            title="Dismiss"
-            variant="secondary"
-            onPress={handleDismissError}
-            style={styles.retryButton}
-          />
         </View>
       )}
 
@@ -362,9 +457,9 @@ export default function ReviewTransactionScreen() {
       {(phase === 'failed' || phase === 'cancelled') && (
         <View style={styles.actions}>
           <Button
-            title="Go Back"
+            title={unknownHash ? 'View Wallet History' : 'Go Back'}
             variant="secondary"
-            onPress={handleDismissError}
+            onPress={unknownHash ? handleLeaveUnknown : handleDismissError}
           />
         </View>
       )}

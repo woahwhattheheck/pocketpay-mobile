@@ -171,7 +171,67 @@ export const fetchOperationById = async (
 };
 
 /**
- * Send XLM to a destination address.
+ * A signed transaction was sent to Horizon but the response did not prove
+ * acceptance or rejection. Its public hash is safe to use for reconciliation;
+ * callers MUST NOT blindly create or submit a replacement transaction.
+ */
+export class TransactionSubmissionUnknownError extends Error {
+  readonly hash: string;
+
+  constructor(hash: string) {
+    super('Transaction submission status is unknown. Check the original hash before sending again.');
+    this.name = 'TransactionSubmissionUnknownError';
+    this.hash = hash;
+  }
+}
+
+/** Horizon explicitly rejected the signed transaction with a result code. */
+export class TransactionSubmissionRejectedError extends Error {
+  readonly resultCode: string;
+
+  constructor(resultCode: string) {
+    super('Transaction rejected by the network.');
+    this.name = 'TransactionSubmissionRejectedError';
+    this.resultCode = resultCode;
+  }
+}
+
+/** No transaction was submitted, so a network payment could not have occurred. */
+export class TransactionPreparationError extends Error {
+  constructor() {
+    super('Could not prepare the transaction. No payment was submitted.');
+    this.name = 'TransactionPreparationError';
+  }
+}
+
+export type SubmittedTransactionStatus = 'confirmed' | 'rejected' | 'not_found' | 'unavailable';
+
+/**
+ * Check the EXACT signed transaction hash on the configured Horizon network.
+ * A 404 is "not yet found", never proof of non-submission; other failed
+ * lookups are unavailable, not definitive transaction rejection.
+ */
+export const checkSubmittedTransaction = async (hash: string): Promise<SubmittedTransactionStatus> => {
+  if (!/^[0-9a-fA-F]{64}$/.test(hash)) {
+    throw new Error('Invalid public transaction hash.');
+  }
+
+  try {
+    const record = await server.transactions().transaction(hash).call();
+    if (record.successful === true) return 'confirmed';
+    if (record.successful === false) return 'rejected';
+    return 'unavailable';
+  } catch (error: any) {
+    if (error?.response?.status === 404) return 'not_found';
+    return 'unavailable';
+  }
+};
+
+/**
+ * Send XLM to a destination address. Preparation and submission are separate
+ * error boundaries: failure before signing/submission is definitively local,
+ * a Horizon result code is a definite network rejection, while a timeout or
+ * transport interruption AFTER submission requires same-hash reconciliation.
  */
 export const sendXlmTransaction = async (
   secretKey: string,
@@ -179,39 +239,45 @@ export const sendXlmTransaction = async (
   amount: string,
   memoText?: string
 ) => {
+  let transaction: StellarSdk.Transaction;
+
   try {
     const sourceKeypair = StellarSdk.Keypair.fromSecret(secretKey);
-    const sourcePublicKey = sourceKeypair.publicKey();
-
-    const account = await server.loadAccount(sourcePublicKey);
+    const account = await server.loadAccount(sourceKeypair.publicKey());
     const fee = await server.fetchBaseFee();
 
-    let transactionBuilder = new StellarSdk.TransactionBuilder(account, {
+    const builder = new StellarSdk.TransactionBuilder(account, {
       fee: fee.toString(),
       networkPassphrase: process.env.EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE || StellarSdk.Networks.TESTNET,
     });
-
-    transactionBuilder.addOperation(
+    builder.addOperation(
       StellarSdk.Operation.payment({
         destination: destinationPublicKey,
         asset: StellarSdk.Asset.native(),
-        amount: amount,
+        amount,
       })
     );
+    if (memoText) builder.addMemo(StellarSdk.Memo.text(memoText));
 
-    if (memoText) {
-      transactionBuilder.addMemo(StellarSdk.Memo.text(memoText));
-    }
-
-    transactionBuilder.setTimeout(30);
-    const transaction = transactionBuilder.build();
+    builder.setTimeout(30);
+    transaction = builder.build();
     transaction.sign(sourceKeypair);
+  } catch {
+    // Never print raw errors here: the signing key and transaction internals
+    // may be present in SDK/network error objects.
+    throw new TransactionPreparationError();
+  }
 
-    const response = await server.submitTransaction(transaction);
-    return response;
+  try {
+    return await server.submitTransaction(transaction);
   } catch (error: any) {
-    console.error('Error sending transaction:', error?.response?.data || error);
-    throw new Error(error?.response?.data?.extras?.result_codes?.transaction || 'Transaction failed');
+    const code = error?.response?.data?.extras?.result_codes?.transaction;
+    if (typeof code === 'string' && /^tx_[a-z_]+$/.test(code)) {
+      throw new TransactionSubmissionRejectedError(code);
+    }
+    // A transport exception tells us nothing about whether Horizon accepted
+    // this signed envelope. The hash is deterministic and contains no secret.
+    throw new TransactionSubmissionUnknownError(transaction.hash().toString('hex'));
   }
 };
 
