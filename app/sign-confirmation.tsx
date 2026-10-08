@@ -5,10 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../src/hooks/useTheme';
 import { useAppStore } from '../src/store/appStore';
+import { useWalletStore } from '../src/store/walletStore';
+import { validateSigningConsent } from '../src/features/payments/signingConsent';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
 import { formatAmount } from '../src/utils/amount';
 import { resolveAddressLabel } from '../src/utils/contacts';
@@ -22,13 +25,6 @@ import {
 } from 'lucide-react-native';
 import { AsyncActionButton, Button, ScreenHeader } from '@/components';
 import { useConfirm } from '../src/hooks/useConfirm';
-
-const getNetworkLabel = (): string => {
-  const network = (process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET').toUpperCase();
-  if (network === 'PUBLIC' || network === 'MAINNET') return 'Public Network';
-  if (network === 'TESTNET') return 'Testnet';
-  return network;
-};
 
 /**
  * Signing Confirmation Screen
@@ -55,16 +51,18 @@ export default function SignConfirmationScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const contacts = useAppStore((state) => state.contacts);
+  const { publicKey, balance } = useWalletStore();
   const { confirm, confirmationDialog } = useConfirm();
   const [isProcessing, setIsProcessing] = useState(false);
-
-  const source = params.source || '';
-  const destination = params.destination || '';
-  const amount = params.amount || '';
-  const assetCode = params.assetCode || 'XLM';
-  const memo = params.memo || '';
-  const fee = params.fee || 'Unknown';
-  const network = params.network || getNetworkLabel();
+  // Route parameters are untrusted and can become stale if the active wallet
+  // changes after the Send screen. The confirmation must match the signer.
+  const consent = validateSigningConsent(params, { publicKey, balance });
+  const source = consent.values.source;
+  const destination = consent.values.destination;
+  const amount = consent.values.amount;
+  const assetCode = consent.values.assetCode;
+  const memo = consent.values.memo;
+  const network = consent.values.network;
 
   const destinationContact = destination.trim()
     ? resolveAddressLabel(destination.trim(), contacts)
@@ -85,34 +83,39 @@ export default function SignConfirmationScreen() {
 
   const handleConfirmSigning = async () => {
     if (isProcessing) return;
+    // Recheck at the click boundary, since another wallet or network may have
+    // been selected while the consent screen was visible.
+    const currentWallet = useWalletStore.getState();
+    const liveConsent = validateSigningConsent(params, {
+      publicKey: currentWallet.publicKey,
+      balance: currentWallet.balance,
+    });
+    if (!liveConsent.ok) {
+      Alert.alert('Review Changed', liveConsent.message);
+      return;
+    }
 
     setIsProcessing(true);
-
     try {
-      // Navigate to the actual signing/submission screen
-      // This screen will perform the cryptographic signing
+      // Navigation only. The next screen obtains the current fee and requires
+      // another explicit press before signing and submission.
       router.push({
         pathname: '/review-transaction',
         params: {
-          destination: destination.trim(),
-          amount: amount.trim(),
-          memo: memo.trim(),
+          destination: liveConsent.values.destination,
+          amount: liveConsent.values.amount,
+          memo: liveConsent.values.memo,
         },
       });
-    } catch (error) {
-      console.error('Navigation error:', error);
-      Alert.alert(
-        'Error',
-        'Failed to proceed to signing. Please try again.',
-        [{ text: 'OK' }]
-      );
+    } catch {
+      Alert.alert('Error', 'Failed to open the final review. Please try again.');
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Validate params
-  if (!source || !destination || !amount) {
+  // Invalid or stale wallet/network/asset inputs never offer a signing action.
+  if (!consent.ok) {
     return (
       <View style={[styles.container, styles.centerContent]}>
         <ScreenHeader title="Error" showBack />
@@ -120,7 +123,7 @@ export default function SignConfirmationScreen() {
           <XCircle size={48} color={colors.error} style={styles.errorIcon} />
           <Text style={styles.errorTitle}>Invalid Transaction</Text>
           <Text style={styles.errorMessage}>
-            Missing required transaction parameters.
+            {consent.message}
           </Text>
           <Button
             title="Go Back"
@@ -206,7 +209,7 @@ export default function SignConfirmationScreen() {
 
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Network Fee</Text>
-            <Text style={styles.detailValue}>{fee} stroops</Text>
+            <Text style={styles.detailValue}>Calculated at final review</Text>
           </View>
 
           <View style={styles.divider} />
@@ -273,8 +276,8 @@ export default function SignConfirmationScreen() {
           disabled={isProcessing}
         />
         <AsyncActionButton
-          title="Sign Transaction"
-          loadingText="Processing..."
+          title="Continue to Final Review"
+          loadingText="Opening review..."
           onPress={handleConfirmSigning}
           style={styles.confirmButton}
           isLoading={isProcessing}
