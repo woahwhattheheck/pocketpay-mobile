@@ -121,3 +121,33 @@ Future iterations of PocketPay will continue to refine the App Lock model by:
 - Adding configurable auto-lock timers (Immediate, 1 min, 5 min, 15 min).
 - Exploring hardware-bound biometric key release for high-value transaction signing.
 - Enhancing background blur previews in the multi-tasker view.
+
+---
+
+## 8. Actual hydration and failure-state contract (#398)
+
+The current shipped app-lock wiring uses `src/store/appLockStore.ts` and
+`src/components/LockScreen.tsx`. This is **not** a guarantee of a hardware-bound
+cryptographic vault, custom app PIN, PIN lockout timer or reliable JavaScript
+string zeroization. Sections 3–5 above describe intended future controls and
+must not be construed as confirmation that they have shipped.
+
+* `isInitialized=false` means **lock policy unknown**. With an existing wallet,
+  the root lock boundary renders a neutral loading view and **never** renders
+  balances, wallet tabs or signing controls during this state.
+* A stored `true` lock value requires authentication on cold rehydration.
+  A biometric capability check failure must not flip it to `false`, even if
+  hardware availability is temporarily untestable.
+* If AsyncStorage cannot read the lock preference, or returns an invalid
+  value, the state stays unauthenticated and uninitialized; only a safe
+  "Retry Lock Settings" action is shown. The failure cannot bypass the
+  gate, and no storage exception details appear on screen.
+* A stored `false` or missing value permits normal unlocked experience
+  **only after** a successful read. This preserves first-run onboarding
+  and the explicit user preference to disable App Lock.
+* Platform authentication is still used; do not promise a custom PIN,
+  guaranteed OS fallback or resistance to a compromised operating system.
+
+Focused state regressions are in `__tests__/appLockInitialization.test.ts`.
+No wallet reset, cloud sync, key-export, custom PIN or new biometric vault
+mechanism is introduced by this change.

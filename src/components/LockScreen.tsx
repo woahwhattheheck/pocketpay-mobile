@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, AppState, AppStateStatus, Platform } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, AppState, AppStateStatus } from 'react-native';
 import { useAppLockStore } from '../store/appLockStore';
 import { useWalletStore } from '../store/walletStore';
 import { Button } from './Button';
@@ -11,7 +11,7 @@ interface LockScreenProps {
 }
 
 export const LockScreen: React.FC<LockScreenProps> = ({ children }) => {
-  const { isLockEnabled, isAuthenticated, isAuthenticating, hasBiometrics, authError, authenticate, lock, initializeLock } =
+  const { isInitialized, isLockEnabled, isAuthenticated, isAuthenticating, hasBiometrics, authError, authenticate, lock, initializeLock } =
     useAppLockStore();
   const { publicKey } = useWalletStore();
 
@@ -20,13 +20,13 @@ export const LockScreen: React.FC<LockScreenProps> = ({ children }) => {
     initializeLock();
   }, []);
 
-  // Handle app state changes (foreground/background)
+  // Lock as soon as the app truly backgrounds so task-switcher snapshots
+  // cannot retain an authenticated wallet. Ignore transient inactive/active
+  // cycles (for example native biometric UI), which are not real backgrounding
+  // and must not invalidate an in-flight authentication attempt.
   const handleAppStateChange = useCallback(
     (nextState: AppStateStatus) => {
-      // When coming back from background, lock the app if lock is enabled and user has a wallet
-      if (nextState === 'active' && isLockEnabled && publicKey) {
-        // Check if we recently authenticated (within last 30 seconds — don't re-lock on quick switches)
-        // We lock on every resume for security
+      if (nextState === 'background' && isLockEnabled && publicKey) {
         lock();
       }
     },
@@ -37,6 +37,33 @@ export const LockScreen: React.FC<LockScreenProps> = ({ children }) => {
     const subscription = AppState.addEventListener('change', handleAppStateChange);
     return () => subscription.remove();
   }, [handleAppStateChange]);
+
+  // Do not display the wallet before its persisted lock policy has been read.
+  // Storage errors show a neutral retry rather than wallet contents.
+  if (publicKey && !isInitialized) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.iconContainer}>
+            <Shield color={COLORS.primary} size={32} />
+          </View>
+          <Text style={styles.title}>Checking Wallet Security</Text>
+          <Text style={styles.subtitle}>
+            {authError || 'Restoring your wallet lock settings securely.'}
+          </Text>
+          {authError ? (
+            <Button
+              title="Retry Lock Settings"
+              onPress={() => { void initializeLock(); }}
+              style={styles.unlockButton}
+            />
+          ) : (
+            <ActivityIndicator color={COLORS.primary} size="large" />
+          )}
+        </View>
+      </View>
+    );
+  }
 
   // No wallet or lock not enabled — show children directly
   if (!publicKey || !isLockEnabled) {
