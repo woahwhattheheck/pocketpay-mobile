@@ -33,10 +33,13 @@ export const Input: React.FC<InputProps> = ({
           style={[styles.input, style]}
           placeholderTextColor={colors.textMuted}
           {...props}
+          accessibilityLabel={props.accessibilityLabel || label}
+          accessibilityHint={error || props.accessibilityHint}
+          accessibilityState={{ ...props.accessibilityState, disabled: props.editable === false }}
         />
         {rightIcon && <View style={styles.rightIcon}>{rightIcon}</View>}
       </View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text style={styles.errorText} accessibilityRole="alert" accessibilityLiveRegion="polite">{error}</Text>}
     </View>
   );
 };
