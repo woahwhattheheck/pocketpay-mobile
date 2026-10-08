@@ -48,6 +48,18 @@ describe('getDiagnostics', () => {
     expect(raw).not.toMatch(/\bG[A-Z0-9]{55}\b/);
   });
 
+  it('classifies network failures without exposing raw wallet errors in the category', async () => {
+    useWalletStore.setState({ error: 'Network request failed for a private endpoint' });
+
+    const parsed = JSON.parse(await getDiagnostics());
+
+    expect(parsed.networkHealth).toEqual({
+      classifiedError: 'connection',
+      hasError: true,
+    });
+    expect(parsed.networkHealth.classifiedError).not.toContain('endpoint');
+  });
+
   it('reports null for lastError when the wallet store has no error', async () => {
     useWalletStore.setState({ error: null });
 
