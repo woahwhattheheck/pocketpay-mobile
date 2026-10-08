@@ -227,20 +227,26 @@ const TEMPLATES: Record<SdkErrorCategory, GuidanceTemplate> = {
 };
 
 function extractRawMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
   if (typeof error === 'string') return error;
 
   if (error && typeof error === 'object') {
     const candidate = error as Record<string, any>;
-    const resultCode =
-      candidate.response?.data?.extras?.result_codes?.operation ||
-      candidate.response?.data?.extras?.result_codes?.transaction;
-    if (typeof resultCode === 'string') return resultCode;
+    const codes = candidate.response?.data?.extras?.result_codes;
+    // Horizon uses an array of operation codes; an explicit operation
+    // rejection must take precedence over a generic network wrapper.
+    const operations = Array.isArray(codes?.operations) ? codes.operations : [];
+    const firstFailure = operations.find(
+      (code: unknown) => typeof code === 'string' &&
+        /^op_[a-z_]+$/.test(code) && code !== 'op_success'
+    );
+    if (typeof firstFailure === 'string') return firstFailure;
+    if (typeof codes?.operation === 'string') return codes.operation;
+    if (typeof codes?.transaction === 'string') return codes.transaction;
     if (typeof candidate.code === 'string') return candidate.code;
     if (typeof candidate.message === 'string') return candidate.message;
   }
 
-  return '';
+  return error instanceof Error ? error.message : '';
 }
 
 /**

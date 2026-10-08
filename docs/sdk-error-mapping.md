@@ -54,3 +54,7 @@ This lets existing payment/vault callers adopt the shared taxonomy without a bro
 3. Add the narrowest matching rule needed for the provider code.
 4. Add one focused regression covering category, recovery action, and diagnostic code.
 5. If the provider payload may contain user data, keep that payload out of the returned mapping and diagnostics.
+
+## Submission-stage safety and payment failure reasons (#251)
+
+The shared mapper now prioritizes Horizon's actual operation result_codes.operations array over transport exception text. The payment service distinguishes preparation, definite network rejection and uncertain submission; it returns only safe categories/stages, never the raw provider error object or secret-bearing strings. A transport failure after submitTransaction begins cannot prove rejection, so callers must send the user to transaction history before offering another payment. Preparation-stage failure means the transaction was not broadcast. The end-user review UI can use these typed stages to render precise guidance without retrying an uncertain transaction.

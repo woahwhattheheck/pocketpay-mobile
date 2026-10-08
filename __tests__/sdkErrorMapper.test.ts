@@ -85,4 +85,29 @@ describe('shared SDK error mapper', () => {
     expect(mapped.recoveryAction).toBe('open-settings');
     expect(mapped.diagnosticCode).toBe('SDK-VAULT-UNSUPPORTED');
   });
+  it('uses the actual Horizon operation failure over a generic network wrapper', () => {
+    const err = {
+      message: 'network request failed',
+      response: { data: { extras: { result_codes: {
+        transaction: 'tx_failed', operations: ['op_underfunded'],
+      } } } },
+    };
+    const mapped = mapSdkError(err, 'payment');
+    expect(mapped.category).toBe('insufficient-balance');
+    expect(mapped.recoveryAction).toBe('fund-wallet');
+    expect(mapped.canRetry).toBe(false);
+    expect(mapped.diagnosticCode).toBe('SDK-PAYMENT-INSUFFICIENT_BALANCE');
+    expect(JSON.stringify(mapped)).not.toContain('network request failed');
+  });
+
+  it('recognizes a structured transaction rejection even with a timeout wrapper', () => {
+    const err = {
+      message: 'timeout after send',
+      response: { data: { extras: { result_codes: { transaction: 'tx_bad_seq', operations: [] } } } },
+    };
+    const mapped = mapSdkError(err, 'payment');
+    expect(mapped.category).toBe('sequence');
+    expect(mapped.recoveryAction).toBe('refresh');
+  });
+
 });
