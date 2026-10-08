@@ -49,11 +49,27 @@ export function validateSigningConfirmationRequest(
   const memo = route.memo === undefined ? '' : readText(route.memo);
   const network = readText(route.network);
 
-  if (!wallet.publicKey || !source || source !== wallet.publicKey.trim()) {
+  // A value copied out of a stale or malformed wallet store is not signer
+  // identity simply because it matches the route parameter.
+  if (typeof wallet.publicKey !== 'string' || !source ||
+      source !== wallet.publicKey.trim() || validateAddress(source)) {
     return { ok: false, message: 'The signing request does not match your active wallet. Start the payment again.' };
   }
-  if (!network || network !== wallet.network) {
+  // Only supported Stellar network labels may be consented to: otherwise an
+  // unsupported environment setting could echo a forged matching route value
+  // even while the underlying SDK silently selects a different passphrase.
+  if ((wallet.network !== 'Testnet' && wallet.network !== 'Public Network') ||
+      !network || network !== wallet.network) {
     return { ok: false, message: 'The requested network does not match the active network. Start the payment again.' };
+  }
+  // Amount validation historically does Number('NaN') and compares against
+  // NaN. Both "value > NaN" comparisons are false, a fail-open when the
+  // observed spendable balance is corrupt, missing or exceeds XLM precision.
+  const rawBalance = wallet.balance;
+  if (typeof rawBalance !== 'string' ||
+      !/^\d+(?:\.\d{1,7})?$/.test(rawBalance.trim()) ||
+      !Number.isFinite(Number(rawBalance)) || Number(rawBalance) < 0) {
+    return { ok: false, message: 'Your spendable balance is unavailable. Refresh your wallet before approving.' };
   }
   if (assetCode !== 'XLM') {
     return { ok: false, message: 'This signing flow currently supports only XLM. Start the payment again.' };
