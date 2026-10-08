@@ -22,35 +22,36 @@ are available for subsequent SDK/RPC outcome reconciliation. Only an
 authoritative network response should resolve an uncertain transaction.
 The `reset()` action refuses to silently clear pending/unknown state.
 
-## Current integration gap — must be completed before sponsor submission
+## Review-screen integration (authored; device proof outstanding)
 
-**This fork branch is a source bank and not an end-to-end #387 delivery.**
-Existing `app/review-transaction.tsx` is still the upstream baseline, which
-does not call `markUnknown` on ambiguous post-signing submission errors.
-That screen currently awaits secret loading and fee fetch *before* acquiring
-the store handoff, calls `startReview` again after the fee quote, and maps
-ambiguous errors to the `failed` panel. With the new guards, this second
-`startReview` no longer overwrites the original review, so the quoted fee
-will not be reflected until the screen calls `setReviewFee` instead.
+The original-author source carrier wires the production review screen to the
+typed state contract. Sign & Send acquires a synchronous request-ID-scoped
+handoff lease before awaiting secrets or the fee quote; a duplicate tap or
+stale review cannot invoke the payment service. Fee updates use setReviewFee,
+preserving the original request identity.
 
-Required integration: acquire `enterHandoff` synchronously before awaiting;
-retain the initial request identity; call `setReviewFee` rather than restarting
-review; transition through signing/submitting/confirming; map a promise rejection
-after invoking the signing+submission service to `markUnknown`; offer
-"check transaction history" rather than a blind retry; ensure any
-acknowledged/rejected network outcome is reconciled by request ID. Update
-signing and network error copy accordingly.
+The service signed-hash callback advances signing to submitting after local
+signing and immediately before Horizon submission. A successful Horizon
+response advances submitting to confirming to completed with the same request
+ID. A definitive Horizon result-code rejection becomes failed. A lost response
+after submission becomes unknown and cannot reset for retry; if a signed hash
+is available, its optimistic wallet-history record is retained for later
+reconciliation without claiming it was accepted.
 
-The existing `src/services/stellar.ts:sendXlmTransaction` combines signing and
-submission within one promise and discards rejection metadata. A rejected
-promise therefore cannot establish that submission did not occur. Do not
-convert an unknown outcome into "never sent" without authoritative evidence.
+Unknown and pending UI offer Check Transaction History, not Try Again. Back to
+Edit cancels only during review and resets the safe cancelled state. Missing
+secret and fee/preparation errors display pre-submission failure messages.
+Raw secret-bearing errors are not logged by this screen.
+
+Remaining acceptance: run focused transaction lifecycle/source and real-device
+UI checks where a suitable environment exists. Confirm real Stellar Horizon
+success, explicit rejection and lost-response outcomes; inspect wallet history
+with actual accounts. No device result, end-to-end run or payment is implied.
 
 ## Focused tests and remaining verification
 
 `transactionLifecycle.test.ts` asserts the lifecycle edges, late
 cancellation prohibition, pending vs completed, and uncertain-result fence.
-**Tests are authored, not run**. End-to-end SDK result mapping, native
-screen integration, device cancellation behavior, and CI have not been
-verified. This draft should not be represented as complete or payout-ready
-until the remaining integration and required acceptance tests are delivered.
+**Tests are authored, not run**. Source mapping and screen integration are
+implemented, but no physical-device signing, timeout simulation, release APK
+or CI pass is claimed. Sponsor acceptance and reward remain conditional.
