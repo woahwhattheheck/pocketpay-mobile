@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import DiagnosticsScreen from '../app/diagnostics';
 import { getDiagnostics } from '../src/utils/diagnostics';
 import { diagnosticsFixtures } from '../tests/fixtures';
@@ -60,5 +60,30 @@ describe('DiagnosticsScreen', () => {
     getByText('Cannot read property of undefined');
     // Distinct from lastReportedError: this is walletState.lastError.
     getByText('Network request failed');
+  });
+
+  it('hides builder failures and disables export rather than exposing a raw error', async () => {
+    mockGetDiagnostics.mockRejectedValueOnce(new Error('private wallet details'));
+
+    const { getByText, getByLabelText, queryByText } = render(<DiagnosticsScreen />);
+
+    await waitFor(() => getByText('Diagnostics unavailable. Please retry.'));
+    expect(queryByText('private wallet details')).toBeNull();
+    expect(getByLabelText('Export redacted diagnostics log')).toBeDisabled();
+  });
+
+  it('rejects incomplete diagnostics and permits an explicit retry', async () => {
+    mockGetDiagnostics
+      .mockResolvedValueOnce('{}')
+      .mockResolvedValueOnce(JSON.stringify(diagnosticsFixtures.healthy));
+
+    const { getByText, getByLabelText } = render(<DiagnosticsScreen />);
+    await waitFor(() => getByText('Diagnostics unavailable. Please retry.'));
+
+    fireEvent.press(getByLabelText('Refresh diagnostics data'));
+
+    await waitFor(() => getByText('horizon-testnet.stellar.org'));
+    expect(getByLabelText('Export redacted diagnostics log')).not.toBeDisabled();
+    expect(mockGetDiagnostics).toHaveBeenCalledTimes(2);
   });
 });
