@@ -10,6 +10,8 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../src/hooks/useTheme';
 import { useSignerStore } from '../src/store/signerStore';
 import { useWalletStore } from '../src/store/walletStore';
+import { useNetworkState } from '../src/hooks/useNetworkState';
+import { validatePaymentSend } from '../src/utils/validation';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
 import { formatAmount } from '../src/utils/amount';
 import { resolveAddressLabel } from '../src/utils/contacts';
@@ -83,7 +85,8 @@ export default function ReviewTransactionScreen() {
   }>();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const { publicKey, getSecretKey, refreshWalletData, addPendingTransaction } = useWalletStore();
+  const { publicKey, getSecretKey, refreshWalletData, addPendingTransaction, error: walletError } = useWalletStore();
+  const { state: networkState } = useNetworkState({ error: walletError });
   const contacts = useAppStore((state) => state.contacts);
   const store = useSignerStore();
   const { phase, error } = store;
@@ -136,6 +139,25 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
+    // Route params must not bypass send validation or a changed wallet balance.
+    const wallet = useWalletStore.getState();
+    const validation = validatePaymentSend(
+      { destination, amount, memo },
+      {
+        sourcePublicKey: wallet.publicKey,
+        balance: wallet.balance,
+        balanceState: wallet.balanceState,
+        fundingStatus: wallet.fundingStatus,
+        networkState,
+      },
+    );
+    const message = validation.readiness || validation.destination ||
+      validation.amount || validation.memo;
+    if (message) {
+      store.failSigning({ type: 'unknown', message });
+      return;
+    }
+
     const { sendXlmTransaction } = await import('../src/services/stellar');
     const secretKey = await getSecretKey();
     if (!secretKey) {
