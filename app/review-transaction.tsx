@@ -122,12 +122,14 @@ export default function ReviewTransactionScreen() {
       const timer = setTimeout(() => {
         store.reset();
         router.replace({
-          pathname: '/payment-success',
+          pathname: '/payment-receipt',
           params: {
+            status: 'success',
             hash: store.lastResult!.hash,
             amount: amount.trim(),
-            destination: destination.trim(),
-            date: new Date().toISOString(),
+            recipient: destination.trim(),
+            asset: 'XLM',
+            timestamp: new Date().toISOString(),
           },
         });
       }, 1500);
@@ -334,6 +336,22 @@ export default function ReviewTransactionScreen() {
             </View>
             <Text style={[styles.errorText, { color: colors.textSecondary }]}>{error.message}</Text>
           </View>
+          <Button
+            title="View receipt"
+            variant="secondary"
+            onPress={() => router.replace({
+              pathname: '/payment-receipt',
+              params: {
+                status: error.type === 'user_cancelled' ? 'rejected'
+                  : error.type === 'signer_unavailable' ? 'failed' : 'unknown',
+                amount: amount.trim(),
+                recipient: destination.trim(),
+                asset: 'XLM',
+                timestamp: new Date().toISOString(),
+              },
+            })}
+            style={styles.retryButton}
+          />
           <Button
             title="Dismiss"
             variant="secondary"
