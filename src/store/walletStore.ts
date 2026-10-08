@@ -69,6 +69,8 @@ interface WalletState {
   refreshWalletData: () => Promise<void>;
   /** Optimistically show a just-submitted transaction as pending, keyed by hash. */
   addPendingTransaction: (hash: string, tx: Record<string, any> & { id: string }) => void;
+  /** Remove only a locally pending entry after Horizon explicitly rejects its hash. */
+  removePendingTransaction: (hash: string) => void;
   loadMoreTransactions: () => Promise<void>;
   clearWallet: () => Promise<boolean>;
   getSecretKey: () => Promise<string | null>;
@@ -273,6 +275,15 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       transactions: [pendingRecord, ...state.transactions],
     }));
   },
+
+  removePendingTransaction: (hash) =>
+    set((state) => {
+      const { [hash]: _removed, ...pendingTransactions } = state.pendingTransactions;
+      return {
+        pendingTransactions,
+        transactions: state.transactions.filter((tx) => !(tx.id === hash && tx.status === 'pending')),
+      };
+    }),
 
   loadMoreTransactions: async () => {
     const { publicKey, isLoadingMore, hasMoreTransactions, nextCursor, transactions } = get();
