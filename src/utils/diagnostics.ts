@@ -102,7 +102,10 @@ export const getDiagnostics = async () => {
     },
     walletState: {
       hasPublicKey: !!walletState.publicKey,
-      isBalanceLoaded: walletState.balance !== '0.0000000',
+      // Balance readiness is a fetch lifecycle, not whether the amount is
+      // nonzero: zero-fund accounts can be fully loaded, while a previously
+      // nonzero amount can remain cached after a failed refresh.
+      isBalanceLoaded: walletState.balanceState === 'available',
       balanceState: walletState.balanceState,
       fundingStatus: walletState.fundingStatus,
       transactionsCount: walletState.transactions.length,
