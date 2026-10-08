@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 
 jest.mock('expo-router');
 jest.mock('../src/services/stellar', () => {
@@ -33,6 +33,7 @@ jest.mock('../src/store/appStore', () => ({
     const state = { contacts: [] };
     return selector ? selector(state) : state;
   }),
+  normalizePublicKey: (key: string) => key.trim().toUpperCase(),
 }));
 jest.mock('../src/hooks/useTheme', () => ({
   useTheme: () => ({
@@ -198,11 +199,15 @@ describe('ReviewTransactionScreen negative paths', () => {
   });
 
   it('shows the cancelled state clearly when signing is aborted before submission', () => {
-    useSignerStore.getState().cancelSigning();
+    const { getByText, getAllByText } = render(<ReviewTransactionScreen />);
 
-    const { getByText } = render(<ReviewTransactionScreen />);
+    // The screen starts a fresh review on mount, so cancel once it is showing.
+    act(() => {
+      useSignerStore.getState().cancelSigning();
+    });
 
-    expect(getByText('Cancelled')).toBeTruthy();
+    // Title and status badge both read "Cancelled".
+    expect(getAllByText('Cancelled')).toHaveLength(2);
     expect(getByText('Signing was cancelled. No transaction was submitted.')).toBeTruthy();
     expect(getByText('Go Back')).toBeTruthy();
   });
