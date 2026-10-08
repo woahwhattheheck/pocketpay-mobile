@@ -29,14 +29,31 @@ const SyntheticErrorTrigger: React.FC = () => {
 function DiagnosticsContent() {
   const [diagnosticsJson, setDiagnosticsJson] = useState<string>('');
   const [parsedData, setParsedData] = useState<Record<string, any> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   const loadDiagnostics = async () => {
-    const raw = await getDiagnostics();
-    setDiagnosticsJson(raw);
+    setIsLoading(true);
+    setLoadError(false);
+    setDiagnosticsJson('');
+    setParsedData(null);
     try {
-      setParsedData(JSON.parse(raw));
+      const raw = await getDiagnostics();
+      const snapshot = JSON.parse(raw);
+      if (
+        !snapshot || typeof snapshot !== 'object' ||
+        !snapshot.environment || !snapshot.network ||
+        !snapshot.storage || !snapshot.walletState
+      ) {
+        throw new Error('Invalid diagnostics report');
+      }
+      setDiagnosticsJson(raw);
+      setParsedData(snapshot);
     } catch {
-      setParsedData(null);
+      // Never surface raw exceptions: diagnostics errors can contain wallet data.
+      setLoadError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,7 +62,7 @@ function DiagnosticsContent() {
   }, []);
 
   const handleShare = async () => {
-    if (!diagnosticsJson) return;
+    if (!diagnosticsJson || isLoading || loadError) return;
     try {
       await Share.share({
         message: diagnosticsJson,
@@ -67,6 +84,11 @@ function DiagnosticsContent() {
       <Text style={styles.description}>
         Safe, redacted app status for troubleshooting and support. No private keys, seed phrases, or sensitive wallet balances are exposed.
       </Text>
+
+      {isLoading && <Text style={styles.statusText}>Loading diagnostics...</Text>}
+      {loadError && (
+        <Text style={styles.statusText}>Diagnostics unavailable. Please retry.</Text>
+      )}
 
       {parsedData && (
         <View style={styles.card}>
@@ -176,6 +198,7 @@ function DiagnosticsContent() {
       <TouchableOpacity
         style={styles.button}
         onPress={handleShare}
+        disabled={!diagnosticsJson || isLoading || loadError}
         accessibilityRole="button"
         accessibilityLabel="Export redacted diagnostics log"
       >
@@ -216,6 +239,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: '#f8f9fa' },
   title: { fontSize: 22, fontWeight: 'bold', color: '#111', marginBottom: 6 },
   description: { fontSize: 14, color: '#666', marginBottom: 16, lineHeight: 20 },
+  statusText: { fontSize: 14, color: '#495057', marginBottom: 16 },
   card: { backgroundColor: '#fff', borderRadius: 10, padding: 16, marginBottom: 20, borderWidth: 1, borderColor: '#e9ecef' },
   sectionTitle: { fontSize: 16, fontWeight: '600', color: '#212529', marginBottom: 8 },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f1f3f5', gap: 12 },
