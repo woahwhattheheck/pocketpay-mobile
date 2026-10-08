@@ -90,9 +90,19 @@ Two ways to use the result, depending on where the work belongs:
 - **Await the promise** — `const ok = await confirm({...})` resolves `true`/`false`
   after the dialog closes. Use this when the follow-up work belongs to the caller.
 
-`confirm()` always resolves, so the promise never dangles: cancelling resolves
-`false`, and raising a second confirmation supersedes the first (resolving the
-superseded one `false`).
+A successful `onConfirm` resolves `confirm()` to `true`. A rejected or
+throwing action does **not** count as confirmed: the dialog remains open, its
+spinner clears, and the user gets a generic, screen-reader-announced message
+with a retry or cancel path. Raw exception messages are deliberately never
+shown because wallet/storage failures can include sensitive values. The caller's
+`confirm()` promise remains pending until an eventual success or cancellation.
+
+Cancelling resolves `false`. A new request supersedes an *idle* dialog
+(resolving the earlier one `false`), while an in-flight confirmation rejects
+new requests as `false` without interrupting work that may already have side
+effects. Callbacks retained from superseded dialogs cannot confirm or dismiss
+the next request; the shared modal also blocks duplicate presses until the
+current action settles.
 
 > **Why not `Alert.alert`?** The native alert cannot stay open while async work
 > runs, cannot be themed, and cannot show progress — so a slow delete looked
