@@ -5,10 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../src/hooks/useTheme';
 import { useAppStore } from '../src/store/appStore';
+import { useWalletStore } from '../src/store/walletStore';
+import { validateSigningConfirmationRequest } from '../src/utils/signingConfirmation';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
 import { formatAmount } from '../src/utils/amount';
 import { resolveAddressLabel } from '../src/utils/contacts';
@@ -55,16 +58,27 @@ export default function SignConfirmationScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const contacts = useAppStore((state) => state.contacts);
+  const publicKey = useWalletStore((state) => state.publicKey);
+  const balance = useWalletStore((state) => state.balance);
   const { confirm, confirmationDialog } = useConfirm();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const source = params.source || '';
-  const destination = params.destination || '';
-  const amount = params.amount || '';
-  const assetCode = params.assetCode || 'XLM';
-  const memo = params.memo || '';
-  const fee = params.fee || 'Unknown';
-  const network = params.network || getNetworkLabel();
+  // Route parameters are display hints, not signer authority. A deep link, an
+  // old review, or a wallet switch must not approve a different payment.
+  const validation = validateSigningConfirmationRequest(params, {
+    publicKey,
+    balance,
+    network: getNetworkLabel(),
+  });
+  const source = validation.ok ? validation.values.source : '';
+  const destination = validation.ok ? validation.values.destination : '';
+  const amount = validation.ok ? validation.values.amount : '';
+  const assetCode = 'XLM';
+  const memo = validation.ok ? validation.values.memo : '';
+  const network = getNetworkLabel();
+  // Never display route-supplied fee as fact: review-transaction fetches
+  // the network base fee just before signing.
+  const fee = 'Calculated at signing';
 
   const destinationContact = destination.trim()
     ? resolveAddressLabel(destination.trim(), contacts)
@@ -86,17 +100,30 @@ export default function SignConfirmationScreen() {
   const handleConfirmSigning = async () => {
     if (isProcessing) return;
 
+    // Check the live store again at the moment of approval. A wallet switch
+    // between render and tap must never use the previously displayed consent.
+    const currentWallet = useWalletStore.getState();
+    const checked = validateSigningConfirmationRequest(params, {
+      publicKey: currentWallet.publicKey,
+      balance: currentWallet.balance,
+      network: getNetworkLabel(),
+    });
+    if (!checked.ok) {
+      Alert.alert('Review expired', checked.message);
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
-      // Navigate to the actual signing/submission screen
-      // This screen will perform the cryptographic signing
+      // The next screen independently reviews and explicitly signs the
+      // verified XLM payment. No signature is produced on this route.
       router.push({
         pathname: '/review-transaction',
         params: {
-          destination: destination.trim(),
-          amount: amount.trim(),
-          memo: memo.trim(),
+          destination: checked.values.destination,
+          amount: checked.values.amount,
+          memo: checked.values.memo,
         },
       });
     } catch (error) {
@@ -111,8 +138,8 @@ export default function SignConfirmationScreen() {
     }
   };
 
-  // Validate params
-  if (!source || !destination || !amount) {
+  // Never render unverified route-supplied signing details.
+  if (!validation.ok) {
     return (
       <View style={[styles.container, styles.centerContent]}>
         <ScreenHeader title="Error" showBack />
@@ -120,7 +147,7 @@ export default function SignConfirmationScreen() {
           <XCircle size={48} color={colors.error} style={styles.errorIcon} />
           <Text style={styles.errorTitle}>Invalid Transaction</Text>
           <Text style={styles.errorMessage}>
-            Missing required transaction parameters.
+            {validation.message}
           </Text>
           <Button
             title="Go Back"
@@ -206,7 +233,7 @@ export default function SignConfirmationScreen() {
 
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Network Fee</Text>
-            <Text style={styles.detailValue}>{fee} stroops</Text>
+            <Text style={styles.detailValue}>{fee}</Text>
           </View>
 
           <View style={styles.divider} />
