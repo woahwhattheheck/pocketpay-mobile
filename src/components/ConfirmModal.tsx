@@ -58,6 +58,10 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   // treatment without re-implementing the pending state at each call site.
   const [isConfirming, setIsConfirming] = useState(false);
   const [confirmError, setConfirmError] = useState(false);
+  useEffect(() => {
+    // Declarative users can hide/reopen the same modal instance.
+    if (!visible) setConfirmError(false);
+  }, [visible]);
   const isConfirmingRef = useRef(false);
   const isMountedRef = useRef(true);
 
