@@ -1,6 +1,8 @@
 import {
   classifyWalletImportConflict,
+  saveImportedWalletWithRecovery,
   ONBOARDING_ERROR_MESSAGES,
+  STORAGE_ERROR_MESSAGES,
 } from './onboarding';
 
 describe('wallet import safety', () => {
@@ -27,5 +29,21 @@ describe('wallet import safety', () => {
       expect(message.guidance).toContain('reset');
       expect([message.title, message.message, message.guidance].join(' ')).not.toContain(sensitiveSeed);
     }
+  });
+  it('activates the success path only after a confirmed secure save', async () => {
+    expect(await saveImportedWalletWithRecovery(async () => true)).toBeNull();
+  });
+
+  it('classifies the existing false-return storage failure as recoverable', async () => {
+    expect(await saveImportedWalletWithRecovery(async () => false)).toBe('persist_failed');
+  });
+
+  it('turns a rejected secure write into a fixed storage error without echoing secrets', async () => {
+    const seed = 'S' + 'A'.repeat(55);
+    const failure = await saveImportedWalletWithRecovery(async () => {
+      throw new Error('SecureStore failed with private seed ' + seed);
+    });
+    expect(failure).toBe('persist_failed');
+    expect(STORAGE_ERROR_MESSAGES[failure!].message).not.toContain(seed);
   });
 });

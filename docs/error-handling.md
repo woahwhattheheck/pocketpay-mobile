@@ -138,9 +138,9 @@ On a successful SDK import, the screen checks the **current** wallet store immed
 
 The two new errors use fixed safe messages from `ONBOARDING_ERROR_MESSAGES`, point the user to a backup and explicit reset before replacement, and never display the public account key or entered secret. The root app waits for initial SecureStore restoration before showing the import screen, and the import screen keeps only one import/save in flight. On a successful save, the secret is cleared from the form state.
 
-If `setWallet()` reports a failed secure save, the import screen uses the existing typed `storage_error` state (not success), with retry/start-over actions and safe guidance. The explicit Cancel Import action remains disabled while the persistence request is in flight because the secure-store write cannot be cancelled or rolled back by the screen.
+Both a normal `setWallet()` false-return **and an unexpected rejected secure save** now enter the existing typed `storage_error` / `persist_failed` recovery state, never the generic SDK import-error UI or success state. The `saveImportedWalletWithRecovery()` boundary in `src/types/onboarding.ts` discards raw provider exception details; the rendered message is fixed and never echoes a secret seed. Retry returns to the import form; Start Over clears the form. The explicit Cancel Import action remains disabled while the persistence request is in flight because the secure-store write cannot be cancelled or rolled back by the screen.
 
-The focused `src/types/onboarding.import.test.ts` cases cover the empty, same-account, and different-account decisions and confirm the new error strings remain fixed rather than reflecting secret input. They do **not** replace device-level keystore, biometric, accessibility, or full navigation verification.
+The focused `src/types/onboarding.import.test.ts` cases cover empty, same-account and different-account decisions, confirmed/false/rejected secure saves, and fixed recovery messages that do not echo secret input. They do **not** replace device-level keystore, biometric, accessibility, or full navigation verification.
 
 ---
 

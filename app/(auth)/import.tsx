@@ -8,14 +8,13 @@ import { WalletEmptyState } from '../../src/components/WalletEmptyState';
 import { SIZES, RADIUS, ThemeColors } from '../../src/constants/theme';
 import { useTheme } from '../../src/hooks/useTheme';
 import { useWalletStore } from '../../src/store/walletStore';
-import { WALLET_SAVE_FAILURE_MESSAGE } from '../../src/utils/walletStorageErrors';
 import { importWallet } from 'pocketpay-sdk';
 import { Info, Shield, CheckCircle } from 'lucide-react-native';
 import type { OnboardingError, StorageError } from '../../src/types/onboarding';
 import {
   classifyOnboardingError,
   classifyWalletImportConflict,
-  mapWalletErrorToStorageError,
+  saveImportedWalletWithRecovery,
 } from '../../src/types/onboarding';
 
 const SECRET_KEY_LENGTH = 56;
@@ -109,10 +108,14 @@ export default function ImportWalletScreen() {
         return;
       }
 
-      const saved = await setWallet(publicKey, trimmedKey);
-      if (!saved) {
-        // Classify the storage error
-        setStorageError(mapWalletErrorToStorageError(WALLET_SAVE_FAILURE_MESSAGE));
+      // A SecureStore write normally reports success/failure as a boolean,
+      // but unexpected rejected writes must still show storage recovery UI.
+      // Never surface a provider's raw exception (which may contain secrets).
+      const storageFailure = await saveImportedWalletWithRecovery(
+        () => setWallet(publicKey, trimmedKey),
+      );
+      if (storageFailure) {
+        setStorageError(storageFailure);
         return;
       }
 

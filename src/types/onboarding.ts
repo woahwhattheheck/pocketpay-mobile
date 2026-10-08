@@ -103,6 +103,25 @@ export const STORAGE_ERROR_MESSAGES: Record<StorageError, { title: string; messa
 };
 
 /**
+ * Normalize both a failed secure save and an unexpected rejected save to the
+ * import screen's existing storage recovery state. Never pass through raw
+ * provider exceptions; native keystores can include sensitive context.
+ *
+ * The store normally catches SecureStore failures and returns false. This
+ * boundary also covers unforeseen rejections without misclassifying them as
+ * SDK validation failures or displaying a success state.
+ */
+export async function saveImportedWalletWithRecovery(
+  save: () => Promise<boolean>,
+): Promise<StorageError | null> {
+  try {
+    return (await save()) === true ? null : 'persist_failed';
+  } catch {
+    return 'persist_failed';
+  }
+}
+
+/**
  * Fail closed when an import would overwrite an existing active wallet.
  * Only public account identifiers reach this helper; never pass a secret seed.
  */
