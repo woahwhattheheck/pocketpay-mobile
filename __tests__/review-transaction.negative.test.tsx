@@ -2,12 +2,31 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 jest.mock('expo-router');
-jest.mock('../src/services/stellar', () => ({
-  server: {
-    fetchBaseFee: jest.fn(async () => 100),
-  },
-  sendXlmTransaction: jest.fn(),
-}));
+jest.mock('../src/services/stellar', () => {
+  class TransactionSubmissionUnknownError extends Error {
+    hash: string;
+    constructor(hash: string) {
+      super('Network submission status is unknown.');
+      this.name = 'TransactionSubmissionUnknownError';
+      this.hash = hash;
+    }
+  }
+  class TransactionSubmissionRejectedError extends Error {
+    resultCode: string;
+    constructor(resultCode: string) {
+      super('Network rejected the transaction.');
+      this.name = 'TransactionSubmissionRejectedError';
+      this.resultCode = resultCode;
+    }
+  }
+  return {
+    server: { fetchBaseFee: jest.fn(async () => 100) },
+    sendXlmTransaction: jest.fn(),
+    checkSubmittedTransaction: jest.fn(),
+    TransactionSubmissionUnknownError,
+    TransactionSubmissionRejectedError,
+  };
+});
 jest.mock('../src/store/walletStore');
 jest.mock('../src/store/appStore', () => ({
   useAppStore: jest.fn((selector) => {
@@ -78,7 +97,7 @@ jest.mock('@/components', () => {
 });
 
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { sendXlmTransaction } from '../src/services/stellar';
+import { sendXlmTransaction, checkSubmittedTransaction, TransactionSubmissionUnknownError, TransactionSubmissionRejectedError } from '../src/services/stellar';
 import { useWalletStore } from '../src/store/walletStore';
 import { useSignerStore } from '../src/store/signerStore';
 import ReviewTransactionScreen from '../app/review-transaction';
@@ -88,6 +107,7 @@ const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const mockUseLocalSearchParams = useLocalSearchParams as jest.MockedFunction<typeof useLocalSearchParams>;
 const mockUseWalletStore = useWalletStore as jest.MockedFunction<typeof useWalletStore>;
 const mockSendXlmTransaction = sendXlmTransaction as jest.MockedFunction<typeof sendXlmTransaction>;
+const mockCheckSubmittedTransaction = checkSubmittedTransaction as jest.MockedFunction<typeof checkSubmittedTransaction>;
 
 const mockBack = jest.fn();
 const mockReplace = jest.fn();
@@ -137,6 +157,42 @@ describe('ReviewTransactionScreen negative paths', () => {
       expect(getByText('Transaction Failed')).toBeTruthy();
       expect(getByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeTruthy();
     });
+  });
+
+  it('holds a signed, unconfirmed payment by hash and offers safe status lookup', async () => {
+    const hash = 'ab'.repeat(32);
+    mockSendXlmTransaction.mockRejectedValueOnce(new TransactionSubmissionUnknownError(hash));
+    mockCheckSubmittedTransaction.mockResolvedValueOnce('not_found');
+
+    const { getByText, queryByText } = render(<ReviewTransactionScreen />);
+    fireEvent.press(getByText('Sign & Send'));
+
+    await waitFor(() => {
+      expect(getByText('Status Unknown')).toBeTruthy();
+      expect(getByText('Unconfirmed')).toBeTruthy();
+      expect(getByText('Check Status')).toBeTruthy();
+      expect(queryByText('Sign & Send')).toBeNull();
+    });
+    expect(mockUseWalletStore().addPendingTransaction).toHaveBeenCalledWith(hash, expect.objectContaining({ id: hash }));
+
+    fireEvent.press(getByText('View Details'));
+    expect(getByText('Hash: ' + hash)).toBeTruthy();
+    fireEvent.press(getByText('Check Status'));
+    await waitFor(() => {
+      expect(getByText('Not yet found on Horizon; this is not proof of failure.')).toBeTruthy();
+    });
+    expect(mockCheckSubmittedTransaction).toHaveBeenCalledWith(hash);
+  });
+
+  it('treats an explicit Horizon result code as a rejection, not an unknown payment', async () => {
+    mockSendXlmTransaction.mockRejectedValueOnce(new TransactionSubmissionRejectedError('tx_bad_seq'));
+    const { getByText, queryByText } = render(<ReviewTransactionScreen />);
+    fireEvent.press(getByText('Sign & Send'));
+    await waitFor(() => {
+      expect(getByText('Transaction Failed')).toBeTruthy();
+      expect(getByText('Network rejected this transaction (tx_bad_seq).')).toBeTruthy();
+    });
+    expect(queryByText('Check Status')).toBeNull();
   });
 
   it('shows the cancelled state clearly when signing is aborted before submission', () => {
