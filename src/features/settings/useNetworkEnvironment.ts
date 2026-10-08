@@ -47,12 +47,15 @@ function extractHost(url: string | undefined): string {
   if (!url) return '—';
   try {
     const parsed = new URL(url);
-    return parsed.hostname || url;
+    // Malformed endpoint strings can contain embedded userinfo, query tokens,
+    // or arbitrary error text. Only parsed HTTP(S) hostnames are safe to show.
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      return 'Invalid URL';
+    }
+    return parsed.hostname || 'Invalid URL';
   } catch {
-    // Fallback: strip protocol and path with simple string ops
-    const withoutProto = url.replace(/^[a-zA-Z]+:\/\//, '');
-    const withoutPath = withoutProto.split('/')[0];
-    return withoutPath || url;
+    // Do not echo any part of unparseable input into the support report.
+    return 'Invalid URL';
   }
 }
 
