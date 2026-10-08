@@ -20,13 +20,13 @@ export const LockScreen: React.FC<LockScreenProps> = ({ children }) => {
     initializeLock();
   }, []);
 
-  // Handle app state changes (foreground/background)
+  // Lock as soon as the app truly backgrounds so task-switcher snapshots
+  // cannot retain an authenticated wallet. Ignore transient inactive/active
+  // cycles (for example native biometric UI), which are not real backgrounding
+  // and must not invalidate an in-flight authentication attempt.
   const handleAppStateChange = useCallback(
     (nextState: AppStateStatus) => {
-      // When coming back from background, lock the app if lock is enabled and user has a wallet
-      if (nextState === 'active' && isLockEnabled && publicKey) {
-        // Check if we recently authenticated (within last 30 seconds — don't re-lock on quick switches)
-        // We lock on every resume for security
+      if (nextState === 'background' && isLockEnabled && publicKey) {
         lock();
       }
     },
