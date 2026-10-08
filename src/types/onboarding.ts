@@ -19,6 +19,8 @@ export type OnboardingRecoveryState =
 export type OnboardingError =
   | 'keypair_generation_failed'
   | 'invalid_secret_key'
+  | 'duplicate_wallet'
+  | 'existing_wallet'
   | 'secret_key_wrong_network'
   | 'import_validation_failed'
   | 'unknown_error';
@@ -42,6 +44,16 @@ export const ONBOARDING_ERROR_MESSAGES: Record<OnboardingError, { title: string;
     title: 'Invalid Secret Key',
     message: 'The secret key you entered is not valid. It may be corrupted or incorrectly formatted.',
     guidance: 'Double-check your secret key. It should be 56 characters starting with "S". Try copying it again from your backup.',
+  },
+  duplicate_wallet: {
+    title: 'Wallet Already Imported',
+    message: 'This wallet is already active on your device. It has not been imported again.',
+    guidance: 'Return to your wallet. To restore a different one, first back up your existing wallet and use the explicit wallet-reset flow.',
+  },
+  existing_wallet: {
+    title: 'A Wallet Is Already Active',
+    message: 'A wallet is already set up on this device. Importing here would replace its stored key.',
+    guidance: 'Back up your current wallet and use the explicit reset process before importing another secret key.',
   },
   // Legacy error key retained for compatibility; secret seeds do not encode a network.
   secret_key_wrong_network: {
@@ -89,6 +101,18 @@ export const STORAGE_ERROR_MESSAGES: Record<StorageError, { title: string; messa
     guidance: 'Free up some space on your device and try again.',
   },
 };
+
+/**
+ * Fail closed when an import would overwrite an existing active wallet.
+ * Only public account identifiers reach this helper; never pass a secret seed.
+ */
+export function classifyWalletImportConflict(
+  activePublicKey: string | null,
+  incomingPublicKey: string,
+): OnboardingError | null {
+  if (!activePublicKey) return null;
+  return activePublicKey === incomingPublicKey ? 'duplicate_wallet' : 'existing_wallet';
+}
 
 /**
  * Maps a raw error message to a typed OnboardingError.
