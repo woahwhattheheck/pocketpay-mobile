@@ -140,9 +140,13 @@ export default function ReviewTransactionScreen() {
     // cannot authorize a second submission after the live phase has moved.
     const initial = useSignerStore.getState();
     const review = initial.currentReview;
+    // The rendered publicKey can be stale after wallet switching. The current
+    // signing authority is the live wallet, not a captured render closure.
+    const liveWalletAtApproval = useWalletStore.getState();
     if (
       initial.phase !== 'review' ||
       !review ||
+      review.sourcePublicKey !== liveWalletAtApproval.publicKey ||
       review.sourcePublicKey !== publicKey ||
       review.destinationPublicKey !== destination.trim() ||
       review.amount !== amount.trim()
@@ -154,6 +158,21 @@ export default function ReviewTransactionScreen() {
     const sameRequest = () =>
       useSignerStore.getState().currentReview?.requestId === review.requestId;
     if (!sameRequest() || useSignerStore.getState().phase !== 'handoff') return;
+
+    // Checking the request ID alone is insufficient: the active wallet can
+    // switch without replacing the signer-store review. Recheck on every
+    // asynchronous boundary and immediately before network submission.
+    const stillAuthorized = () =>
+      sameRequest() &&
+      useWalletStore.getState().publicKey === review.sourcePublicKey &&
+      useSignerStore.getState().currentReview?.sourcePublicKey === review.sourcePublicKey;
+    if (!stillAuthorized()) {
+      useSignerStore.getState().failSigning({
+        type: 'invalid_transaction',
+        message: 'The active wallet changed. Review the payment again.',
+      });
+      return;
+    }
 
     let submittedHash: string | null = null;
     const rememberPendingHash = (hash: string) => {
@@ -171,6 +190,13 @@ export default function ReviewTransactionScreen() {
     try {
       const secretKey = await getSecretKey();
       if (!sameRequest() || useSignerStore.getState().phase !== 'handoff') return;
+      if (!stillAuthorized()) {
+        useSignerStore.getState().failSigning({
+          type: 'invalid_transaction',
+          message: 'The active wallet changed. Review the payment again.',
+        });
+        return;
+      }
       if (!secretKey) {
         useSignerStore.getState().failSigning({
           type: 'signer_unavailable',
@@ -181,6 +207,13 @@ export default function ReviewTransactionScreen() {
 
       const fee = await server.fetchBaseFee();
       if (!sameRequest() || useSignerStore.getState().phase !== 'handoff') return;
+      if (!stillAuthorized()) {
+        useSignerStore.getState().failSigning({
+          type: 'invalid_transaction',
+          message: 'The active wallet changed. Review the payment again.',
+        });
+        return;
+      }
       useSignerStore.getState().setReviewFee(fee.toString());
       useSignerStore.getState().enterSigning();
 
@@ -190,10 +223,16 @@ export default function ReviewTransactionScreen() {
         review.amount,
         review.memo,
         (hash) => {
+          // A wallet switch or cancelled/stale review after local signing is
+          // NOT permission to send the signed transaction. Abort before POST.
+          if (!stillAuthorized() || useSignerStore.getState().phase !== 'signing') {
+            return false;
+          }
           submittedHash = hash;
-          // This callback fires after signing, immediately before submission.
-          if (sameRequest()) useSignerStore.getState().enterSubmitting();
+          useSignerStore.getState().enterSubmitting();
+          return true;
         },
+        review.sourcePublicKey,
       );
       if (!sameRequest()) return;
 
