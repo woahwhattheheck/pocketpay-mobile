@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { server } from '../src/services/stellar';
+import { server, PaymentSendError, sendXlmTransaction } from '../src/services/stellar';
 import {
   View,
   Text,
@@ -30,7 +30,7 @@ import {
   ScreenHeader,
   StatusBadge,
 } from '@/components';
-import { UNCONFIRMED_SUBMISSION_MESSAGE } from '../src/utils/paymentErrors';
+import { UNCONFIRMED_SUBMISSION_MESSAGE, classifyPaymentError } from '../src/utils/paymentErrors';
 
 /** Copy for each in-flight signing phase, shared by the visible card and its screen-reader label. */
 const PHASE_COPY = {
@@ -136,90 +136,160 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
-    const { sendXlmTransaction } = await import('../src/services/stellar');
-    const secretKey = await getSecretKey();
-    if (!secretKey) {
-      store.failSigning({
-        type: 'signer_unavailable',
-        message: WALLET_SECRET_ACCESS_MESSAGE,
+    // Acquire a handoff lease before the first await. Stale onPress props
+    // cannot authorize a second submission after the live phase has moved.
+    const initial = useSignerStore.getState();
+    const review = initial.currentReview;
+    // The rendered publicKey can be stale after wallet switching. The current
+    // signing authority is the live wallet, not a captured render closure.
+    const liveWalletAtApproval = useWalletStore.getState();
+    if (
+      initial.phase !== 'review' ||
+      !review ||
+      review.sourcePublicKey !== liveWalletAtApproval.publicKey ||
+      review.sourcePublicKey !== publicKey ||
+      review.destinationPublicKey !== destination.trim() ||
+      review.amount !== amount.trim()
+    ) {
+      return;
+    }
+
+    initial.enterHandoff();
+    const sameRequest = () =>
+      useSignerStore.getState().currentReview?.requestId === review.requestId;
+    if (!sameRequest() || useSignerStore.getState().phase !== 'handoff') return;
+
+    // Checking the request ID alone is insufficient: the active wallet can
+    // switch without replacing the signer-store review. Recheck on every
+    // asynchronous boundary and immediately before network submission.
+    const stillAuthorized = () =>
+      sameRequest() &&
+      useWalletStore.getState().publicKey === review.sourcePublicKey &&
+      useSignerStore.getState().currentReview?.sourcePublicKey === review.sourcePublicKey;
+    if (!stillAuthorized()) {
+      useSignerStore.getState().failSigning({
+        type: 'invalid_transaction',
+        message: 'The active wallet changed. Review the payment again.',
       });
       return;
     }
-    const fee = await server.fetchBaseFee();
-    store.startReview({
-      requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-      sourcePublicKey: publicKey!,
-      destinationPublicKey: destination.trim(),
-      destinationLabel: destinationContact?.isContact ? destinationContact.label : null,
-      amount: amount.trim(),
-      assetCode: 'XLM',
-      memo: memo.trim() || undefined,
-      network: getNetworkLabel(),
-      createdAt: new Date().toISOString(),
-      timeoutSeconds: 30,
-      fee: fee.toString(),
-    });
 
-    store.enterHandoff();
-    store.enterSigning();
+    let submittedHash: string | null = null;
+    const rememberPendingHash = (hash: string) => {
+      addPendingTransaction(hash, {
+        id: hash,
+        type: 'payment',
+        from: review.sourcePublicKey,
+        to: review.destinationPublicKey,
+        amount: review.amount,
+        asset: review.assetCode,
+        created_at: new Date().toISOString(),
+      }, review.sourcePublicKey);
+    };
 
     try {
+      const secretKey = await getSecretKey();
+      if (!sameRequest() || useSignerStore.getState().phase !== 'handoff') return;
+      if (!stillAuthorized()) {
+        useSignerStore.getState().failSigning({
+          type: 'invalid_transaction',
+          message: 'The active wallet changed. Review the payment again.',
+        });
+        return;
+      }
+      if (!secretKey) {
+        useSignerStore.getState().failSigning({
+          type: 'signer_unavailable',
+          message: WALLET_SECRET_ACCESS_MESSAGE,
+        });
+        return;
+      }
+
+      const fee = await server.fetchBaseFee();
+      if (!sameRequest() || useSignerStore.getState().phase !== 'handoff') return;
+      if (!stillAuthorized()) {
+        useSignerStore.getState().failSigning({
+          type: 'invalid_transaction',
+          message: 'The active wallet changed. Review the payment again.',
+        });
+        return;
+      }
+      useSignerStore.getState().setReviewFee(fee.toString());
+      useSignerStore.getState().enterSigning();
+
       const result = await sendXlmTransaction(
         secretKey,
-        destination.trim(),
-        amount.trim(),
-        memo.trim() || undefined,
+        review.destinationPublicKey,
+        review.amount,
+        review.memo,
+        (hash) => {
+          // A wallet switch or cancelled/stale review after local signing is
+          // NOT permission to send the signed transaction. Abort before POST.
+          if (!stillAuthorized() || useSignerStore.getState().phase !== 'signing') {
+            return false;
+          }
+          submittedHash = hash;
+          useSignerStore.getState().enterSubmitting();
+          return true;
+        },
+        review.sourcePublicKey,
       );
-      store.enterSubmitting();
-      store.enterConfirming();
+      if (!sameRequest()) return;
 
-      addPendingTransaction(result.hash, {
-        id: result.hash,
-        type: 'payment',
-        from: publicKey!,
-        to: destination.trim(),
-        amount: amount.trim(),
-        asset: 'XLM',
-        created_at: new Date().toISOString(),
-      });
+      if (!result?.hash) {
+        // Missing network receipt cannot be represented as confirmed payment.
+        if (submittedHash) rememberPendingHash(submittedHash);
+        useSignerStore.getState().markUnknown();
+        return;
+      }
+      useSignerStore.getState().enterConfirming();
+      rememberPendingHash(result.hash);
 
-      // React batches these consecutive set() calls into a single render, so
-      // without a real gap here 'confirming' never actually paints — this
-      // delay is what makes the phase visible instead of skipping straight
-      // from signing to completed.
+      // Allow network confirmation state to paint before navigating to success.
       await new Promise((resolve) => setTimeout(resolve, 400));
-
-      const signingResult = {
+      const latest = useSignerStore.getState();
+      if (!sameRequest() || latest.phase !== 'confirming' || !latest.currentReview) return;
+      latest.completeSigning({
         hash: result.hash,
-        review: store.currentReview!,
-        signerType: 'local' as const,
+        review: latest.currentReview,
+        signerType: 'local',
         completedAt: new Date().toISOString(),
-      };
-      store.completeSigning(signingResult);
-    } catch (err: any) {
-      const rawMessage = err?.message || '';
-      // A throw here doesn't prove the transaction was rejected — a client-side
-      // timeout can happen after Horizon already accepted it — so use neutral
-      // copy instead of asserting failure, except for an explicit cancellation.
-      const isCancelled = /cancel|abort/i.test(rawMessage);
-      store.failSigning({
-        type: isCancelled ? 'user_cancelled' : 'unknown',
-        message: isCancelled ? rawMessage : UNCONFIRMED_SUBMISSION_MESSAGE,
-        raw: err,
       });
+    } catch (failure: unknown) {
+      if (!sameRequest()) return;
+      const latest = useSignerStore.getState();
+      if (failure instanceof PaymentSendError) {
+        if (failure.submissionAttempted && !failure.definitiveRejection) {
+          const hash = failure.transactionHash || submittedHash;
+          if (hash) rememberPendingHash(hash);
+          // Transport timeout is not a definitive Horizon rejection.
+          latest.markUnknown();
+        } else {
+          const guidance = classifyPaymentError(failure);
+          latest.failSigning({
+            type: failure.submissionAttempted ? 'network_error' : 'invalid_transaction',
+            message: guidance.message,
+          });
+        }
+      } else if (submittedHash || latest.phase === 'submitting' || latest.phase === 'confirming') {
+        // Unexpected exception after signed submission may hide acceptance.
+        if (submittedHash) rememberPendingHash(submittedHash);
+        latest.markUnknown();
+      } else {
+        latest.failSigning({
+          type: 'signer_unavailable',
+          message: 'Payment could not be prepared or signed. Review your wallet and try again.',
+        });
+      }
     }
   };
 
-  const handleCancel = () => {
-    store.cancelSigning();
-    setTimeout(() => {
-      store.reset();
-      router.back();
-    }, 300);
-  };
-
-  const handleRetry = () => {
-    store.reset();
+  const handleEdit = () => {
+    const signer = useSignerStore.getState();
+    if (signer.phase !== 'review') return;
+    signer.cancelSigning();
+    signer.reset();
+    router.back();
   };
 
   const handleDismissError = () => {
@@ -266,7 +336,7 @@ export default function ReviewTransactionScreen() {
         onConfirm={isReviewPhase ? handleConfirmSign : undefined}
         loadingText="Signing…"
         cancelLabel="Back to Edit"
-        onCancel={isReviewPhase ? () => router.back() : undefined}
+        onCancel={isReviewPhase ? handleEdit : undefined}
       />
 
       {/* Signer Info Card */}
@@ -320,6 +390,32 @@ export default function ReviewTransactionScreen() {
               Hash: {store.lastResult.hash}
             </Text>
           </View>
+        </View>
+      )}
+
+      {/* Unknown or pending outcomes cannot safely be cleared and retried. */}
+      {(phase === 'unknown' || phase === 'pending') && (
+        <View style={[styles.resultCard, { backgroundColor: colors.surface, borderColor: colors.warning }]}>
+          <AlertTriangle size={24} color={colors.warning} />
+          <View style={styles.statusTextGroup}>
+            <View style={styles.statusTitleRow}>
+              <Text style={[styles.statusTitle, { color: colors.warning }]}>
+                {phase === 'unknown' ? 'Transaction Status Unknown' : 'Transaction Pending'}
+              </Text>
+              <StatusBadge text={phase === 'unknown' ? 'Check Status' : 'Pending'} tone="warning" />
+            </View>
+            <Text style={[styles.errorText, { color: colors.textSecondary }]}>
+              {phase === 'unknown'
+                ? UNCONFIRMED_SUBMISSION_MESSAGE
+                : 'Final confirmation has not been verified. Check history before sending again.'}
+            </Text>
+          </View>
+          <Button
+            title="Check Transaction History"
+            variant="secondary"
+            onPress={() => router.replace('/(tabs)/history')}
+            style={styles.retryButton}
+          />
         </View>
       )}
 

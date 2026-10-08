@@ -68,7 +68,7 @@ interface WalletState {
   /** Pull-to-refresh: resets pagination and loads the first page fresh. */
   refreshWalletData: () => Promise<void>;
   /** Optimistically show a just-submitted transaction as pending, keyed by hash. */
-  addPendingTransaction: (hash: string, tx: Record<string, any> & { id: string }) => void;
+  addPendingTransaction: (hash: string, tx: Record<string, any> & { id: string }, expectedPublicKey?: string) => void;
   loadMoreTransactions: () => Promise<void>;
   clearWallet: () => Promise<boolean>;
   getSecretKey: () => Promise<string | null>;
@@ -266,12 +266,16 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     }
   },
 
-  addPendingTransaction: (hash, tx) => {
+  addPendingTransaction: (hash, tx, expectedPublicKey) => {
     const pendingRecord: TransactionRecord = { ...tx, status: 'pending' };
-    set((state) => ({
-      pendingTransactions: { ...state.pendingTransactions, [hash]: pendingRecord },
-      transactions: [pendingRecord, ...state.transactions],
-    }));
+    set((state) =>
+      expectedPublicKey && state.publicKey !== expectedPublicKey
+        ? state
+        : {
+            pendingTransactions: { ...state.pendingTransactions, [hash]: pendingRecord },
+            transactions: [pendingRecord, ...state.transactions],
+          },
+    );
   },
 
   loadMoreTransactions: async () => {
