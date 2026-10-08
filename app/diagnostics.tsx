@@ -84,6 +84,8 @@ export default function DiagnosticsScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
   const [shareFailed, setShareFailed] = useState(false);
+  const [sharePending, setSharePending] = useState(false);
+  const [loadGeneration, setLoadGeneration] = useState(0);
 
   useEffect(() => {
     // Never collect or expose diagnostics outside a development build.
@@ -111,21 +113,34 @@ export default function DiagnosticsScreen() {
     };
     void load();
     return () => { active = false; };
-  }, []);
+  }, [loadGeneration]);
+
+  const refreshDiagnostics = () => {
+    if (isLoading || sharePending) return;
+    // Keep the last safe snapshot available if a refresh cannot complete.
+    // The existing effect cancels obsolete work when the generation changes.
+    setLoadFailed(false);
+    setShareFailed(false);
+    setIsLoading(true);
+    setLoadGeneration((generation) => generation + 1);
+  };
 
   const shareDiagnostics = async () => {
-    if (!report) return;
+    if (!report || isLoading || sharePending) return;
+    setSharePending(true);
+    setShareFailed(false);
     try {
       await Share.share({ title: 'PocketPay Diagnostics', message: report });
-      setShareFailed(false);
     } catch {
       setShareFailed(true); // Sharing errors can contain sensitive provider data.
+    } finally {
+      setSharePending(false);
     }
   };
 
   if (!__DEV__) return <Redirect href="/(tabs)" />;
 
-  if (isLoading) {
+  if (isLoading && !snapshot) {
     return (
       <View style={[styles.container, styles.centered]}>
         <ActivityIndicator size="large" color={colors.primary} />
@@ -134,11 +149,22 @@ export default function DiagnosticsScreen() {
     );
   }
 
-  if (loadFailed || !snapshot) {
+  if (!snapshot) {
     return (
       <View style={[styles.container, styles.centered]}>
         <Text style={styles.errorValue}>Unable to load diagnostics.</Text>
-        <TouchableOpacity onPress={() => router.back()} accessibilityRole="button">
+        <TouchableOpacity
+          onPress={refreshDiagnostics}
+          accessibilityRole="button"
+          accessibilityLabel="Retry diagnostics"
+        >
+          <Text style={styles.loadingText}>Retry diagnostics</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+        >
           <Text style={styles.loadingText}>Go back</Text>
         </TouchableOpacity>
       </View>
@@ -259,13 +285,38 @@ export default function DiagnosticsScreen() {
         </View>
       ))}
 
+      {isLoading && (
+        <View style={styles.refreshStatus}>
+          <ActivityIndicator size="small" color={colors.primary} />
+          <Text style={styles.loadingText}>Refreshing diagnostics...</Text>
+        </View>
+      )}
+      {loadFailed && (
+        <Text style={styles.errorValue}>
+          Unable to refresh diagnostics. Showing the previous safe snapshot.
+        </Text>
+      )}
       <TouchableOpacity
-        style={styles.exportButton}
+        style={[styles.refreshButton, (isLoading || sharePending) && styles.disabledButton]}
+        onPress={refreshDiagnostics}
+        disabled={isLoading || sharePending}
+        accessibilityRole="button"
+        accessibilityLabel="Refresh Diagnostics"
+        accessibilityState={{ disabled: isLoading || sharePending }}
+      >
+        <Text style={styles.refreshButtonText}>Refresh Diagnostics</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.exportButton, (isLoading || sharePending) && styles.disabledButton]}
         onPress={() => { void shareDiagnostics(); }}
+        disabled={isLoading || sharePending}
         accessibilityRole="button"
         accessibilityLabel="Export Diagnostics Log"
+        accessibilityState={{ disabled: isLoading || sharePending }}
       >
-        <Text style={styles.exportButtonText}>Export Diagnostics Log</Text>
+        <Text style={styles.exportButtonText}>
+          {sharePending ? 'Sharing diagnostics...' : 'Export Diagnostics Log'}
+        </Text>
       </TouchableOpacity>
       {shareFailed && <Text style={styles.errorValue}>Unable to share diagnostics. Please try again.</Text>}
 
@@ -393,6 +444,28 @@ const createStyles = (colors: ThemeColors) =>
     errorValue: {
       color: colors.error,
       fontSize: 12,
+    },
+    refreshStatus: {
+      alignItems: 'center',
+      marginTop: SIZES.sm,
+    },
+    refreshButton: {
+      backgroundColor: colors.surface,
+      borderColor: colors.border,
+      borderWidth: 1,
+      paddingVertical: SIZES.md,
+      paddingHorizontal: SIZES.lg,
+      borderRadius: RADIUS.md,
+      alignItems: 'center',
+      marginTop: SIZES.sm,
+    },
+    refreshButtonText: {
+      color: colors.textPrimary,
+      fontSize: 15,
+      fontWeight: '600',
+    },
+    disabledButton: {
+      opacity: 0.5,
     },
     exportButton: {
       backgroundColor: colors.primary,
