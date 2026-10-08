@@ -8,7 +8,8 @@ import type { SdkErrorCategory } from '../utils/sdkErrorMapper';
 export class PaymentFlowFailure extends Error {
   constructor(
     public readonly stage: 'preparation' | 'rejected' | 'uncertain',
-    public readonly category: SdkErrorCategory
+    public readonly category: SdkErrorCategory,
+    public readonly transactionHash?: string
   ) {
     super('Payment ' + stage);
     this.name = 'PaymentFlowFailure';
@@ -193,6 +194,7 @@ export const sendXlmTransaction = async (
   memoText?: string
 ) => {
   let submissionAttempted = false;
+  let signedTransactionHash: string | undefined;
   try {
     const sourceKeypair = StellarSdk.Keypair.fromSecret(secretKey);
     const sourcePublicKey = sourceKeypair.publicKey();
@@ -220,6 +222,9 @@ export const sendXlmTransaction = async (
     transactionBuilder.setTimeout(30);
     const transaction = transactionBuilder.build();
     transaction.sign(sourceKeypair);
+    // The hash is deterministic after signing and is safe to retain when
+    // Horizon accepted the transaction but its HTTP response is lost.
+    signedTransactionHash = transaction.hash().toString('hex');
 
     submissionAttempted = true;
     const response = await server.submitTransaction(transaction);
@@ -243,7 +248,7 @@ export const sendXlmTransaction = async (
     }
     // Timeout/lost response may happen AFTER network acceptance: do not
     // expose raw exceptions or suggest a blind second submission.
-    throw new PaymentFlowFailure('uncertain', 'unknown');
+    throw new PaymentFlowFailure('uncertain', 'unknown', signedTransactionHash);
   }
 };
 

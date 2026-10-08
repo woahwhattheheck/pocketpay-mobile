@@ -216,6 +216,26 @@ export default function ReviewTransactionScreen() {
         ? describeSdkError('transaction', 'unknown')
         : describeSdkError('payment', err.category);
       const cancelled = !uncertain && guidance.category === 'signing-rejected';
+      if (uncertain && err instanceof PaymentFlowFailure && err.transactionHash && publicKey) {
+        // A lost submit response does not mean the payment failed. Preserve
+        // its deterministic signed hash for History and avoid a new payment.
+        const hash = err.transactionHash;
+        const wallet = useWalletStore.getState();
+        const alreadyRecorded =
+          Boolean(wallet.pendingTransactions[hash]) ||
+          wallet.transactions.some((transaction) => transaction.id === hash);
+        if (!alreadyRecorded) {
+          addPendingTransaction(hash, {
+            id: hash,
+            type: 'payment',
+            from: publicKey,
+            to: destination.trim(),
+            amount: amount.trim(),
+            asset: 'XLM',
+            created_at: new Date().toISOString(),
+          });
+        }
+      }
       store.failSigning({
         type: uncertain ? 'network_error' : cancelled ? 'user_cancelled' : 'invalid_transaction',
         message: uncertain
