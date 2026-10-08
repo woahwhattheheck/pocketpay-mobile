@@ -171,14 +171,44 @@ export const fetchOperationById = async (
 };
 
 /**
- * Send XLM to a destination address.
+ * A failed submission has a distinct outcome from a preparation failure.
+ * A Horizon transaction result code is proof of explicit network rejection;
+ * a timeout or lost response after submit began leaves the outcome unknown.
+ */
+export class PaymentSendError extends Error {
+  readonly submissionAttempted: boolean;
+  readonly definitiveRejection: boolean;
+  readonly transactionHash: string | null;
+
+  constructor(
+    message: string,
+    submissionAttempted: boolean,
+    definitiveRejection: boolean,
+    transactionHash: string | null,
+  ) {
+    super(message);
+    this.name = 'PaymentSendError';
+    this.submissionAttempted = submissionAttempted;
+    this.definitiveRejection = definitiveRejection;
+    this.transactionHash = transactionHash;
+  }
+}
+
+/**
+ * Send XLM to a destination address. The optional callback fires after local
+ * signing and immediately before Horizon submission (never before signing).
+ * It receives the signed transaction hash for later status reconciliation.
  */
 export const sendXlmTransaction = async (
   secretKey: string,
   destinationPublicKey: string,
   amount: string,
-  memoText?: string
+  memoText?: string,
+  onSubmissionStart?: (transactionHash: string) => void,
 ) => {
+  let submissionAttempted = false;
+  let transactionHash: string | null = null;
+
   try {
     const sourceKeypair = StellarSdk.Keypair.fromSecret(secretKey);
     const sourcePublicKey = sourceKeypair.publicKey();
@@ -207,11 +237,25 @@ export const sendXlmTransaction = async (
     const transaction = transactionBuilder.build();
     transaction.sign(sourceKeypair);
 
-    const response = await server.submitTransaction(transaction);
-    return response;
+    transactionHash = transaction.hash().toString('hex');
+    onSubmissionStart?.(transactionHash);
+    submissionAttempted = true;
+    return await server.submitTransaction(transaction);
   } catch (error: any) {
-    console.error('Error sending transaction:', error?.response?.data || error);
-    throw new Error(error?.response?.data?.extras?.result_codes?.transaction || 'Transaction failed');
+    const codes = error?.response?.data?.extras?.result_codes;
+    const resultCode = typeof codes?.transaction === 'string'
+      ? codes.transaction
+      : Array.isArray(codes?.operations) && typeof codes.operations[0] === 'string'
+        ? codes.operations[0]
+        : null;
+    const definitiveRejection = submissionAttempted && resultCode !== null;
+    // Never flatten an ambiguous network failure into "Transaction failed"
+    // or log the raw exception (which can carry secret-bearing metadata).
+    const message = resultCode
+      || (submissionAttempted
+        ? 'The payment outcome is not confirmed. Check history before retrying.'
+        : 'Payment could not be prepared. Review your details and try again.');
+    throw new PaymentSendError(message, submissionAttempted, definitiveRejection, transactionHash);
   }
 };
 
