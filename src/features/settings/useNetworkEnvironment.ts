@@ -39,7 +39,9 @@ function prettyNetworkLabel(tier: NetworkTier, rawName: string): string {
     case 'testnet':
       return 'Testnet';
     default:
-      return rawName || 'Custom Network';
+      // An unknown build-time string is not safe to echo verbatim: it may be
+      // malformed or contain a copied credential/token. Show only its class.
+      return 'Custom Network';
   }
 }
 
@@ -47,22 +49,28 @@ function extractHost(url: string | undefined): string {
   if (!url) return '—';
   try {
     const parsed = new URL(url);
-    return parsed.hostname || url;
+    // Only strict HTTP(S) endpoint hostnames are safe for display. Invalid,
+    // unsupported, or credential-bearing opaque inputs must never be copied
+    // into a settings label or shared diagnostics export.
+    if ((parsed.protocol !== 'http:' && parsed.protocol !== 'https:') || !parsed.hostname) {
+      return '—';
+    }
+    return parsed.hostname;
   } catch {
-    // Fallback: strip protocol and path with simple string ops
-    const withoutProto = url.replace(/^[a-zA-Z]+:\/\//, '');
-    const withoutPath = withoutProto.split('/')[0];
-    return withoutPath || url;
+    return '—';
   }
+}
+
+function hasCanonicalContractId(value: string): boolean {
+  return /^C[A-Z2-7]{55}$/.test(value.trim());
 }
 
 function maskContractId(contractId: string): string {
   const trimmed = contractId.trim();
-  if (!trimmed) return '—';
-  if (trimmed.length <= 12) return trimmed;
-  const first = trimmed.slice(0, 6);
-  const last = trimmed.slice(-6);
-  return `${first}…${last}`;
+  // Short/malformed values may be confidential environment fragments; do not
+  // show them in full merely because they are shorter than a valid contract.
+  if (!hasCanonicalContractId(trimmed)) return 'Unverified contract ID';
+  return `${trimmed.slice(0, 6)}…${trimmed.slice(-6)}`;
 }
 
 function buildWarnings(
@@ -106,12 +114,12 @@ function buildWarnings(
       message:
         'No Soroban vault contract is configured (EXPO_PUBLIC_VAULT_CONTRACT_ID is not set). Vault deposits and withdrawals simulate locally — no on-chain funds move.',
     });
-  } else if (!vaultContractId) {
+  } else if (!hasCanonicalContractId(vaultContractId)) {
     warnings.push({
       severity: 'warning',
-      title: 'Vault contract ID missing',
+      title: 'Vault contract ID unverified',
       message:
-        'The vault reported itself as configured but no contract ID could be read. Vault operations may not reach the intended contract.',
+        'The configured vault contract identifier is missing or invalid. Check the configured contract before using vault actions.',
     });
   }
 
@@ -147,7 +155,9 @@ export function computeNetworkEnvironment(): NetworkEnvironment {
   const warnings = buildWarnings(networkTier, vaultConfigured, vaultContractId);
 
   return {
-    networkName,
+    // The unrecognized raw environment string must not become a public
+    // settings or diagnostics field. Mainnet/Testnet labels remain stable.
+    networkName: networkTier === 'custom' ? 'CUSTOM' : networkName,
     networkTier,
     networkLabel: prettyNetworkLabel(networkTier, networkName),
     horizonHost: extractHost(horizonUrl),
