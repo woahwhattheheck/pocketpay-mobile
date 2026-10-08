@@ -89,7 +89,7 @@ export default function ReviewTransactionScreen() {
   }>();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const { publicKey, getSecretKey, refreshWalletData, addPendingTransaction } = useWalletStore();
+  const { publicKey, getSecretKey, refreshWalletData, addPendingTransaction, removePendingTransaction } = useWalletStore();
   const contacts = useAppStore((state) => state.contacts);
   const store = useSignerStore();
   const { phase, error } = store;
@@ -148,6 +148,7 @@ export default function ReviewTransactionScreen() {
     setUnknownHash(null);
     setLookupStatus('idle');
     setShowUnknownDetails(false);
+    let startedSubmission = false;
     try {
       const secretKey = await getSecretKey();
       if (!secretKey) {
@@ -171,6 +172,7 @@ export default function ReviewTransactionScreen() {
       store.enterHandoff();
       store.enterSigning();
       store.enterSubmitting();
+      startedSubmission = true;
       const result = await sendXlmTransaction(secretKey, destination.trim(), amount.trim(), memo.trim() || undefined);
       store.enterConfirming();
       addPendingTransaction(result.hash, {
@@ -213,8 +215,16 @@ export default function ReviewTransactionScreen() {
         });
         return;
       }
-      const message = err instanceof Error ? err.message : 'Could not prepare the transaction.';
-      store.failSigning({ type: /cancel/i.test(message) ? 'user_cancelled' : 'unknown', message });
+      const rawMessage = err instanceof Error ? err.message : '';
+      const cancelled = /cancel/i.test(rawMessage) && !startedSubmission;
+      store.failSigning({
+        type: cancelled ? 'user_cancelled' : 'unknown',
+        message: cancelled
+          ? rawMessage
+          : startedSubmission
+            ? UNCONFIRMED_SUBMISSION_MESSAGE
+            : 'Could not prepare the transaction. No payment was submitted.',
+      });
     }
   };
 
@@ -233,6 +243,7 @@ export default function ReviewTransactionScreen() {
       return;
     }
     // Horizon 404 means "not yet found", not proof of failure.
+    if (status === 'rejected') removePendingTransaction(unknownHash);
     setLookupStatus(status);
   };
 
@@ -436,7 +447,7 @@ export default function ReviewTransactionScreen() {
         </View>
       )}
 
-      {(phase === 'cancelled' || (phase === 'failed' && !!unknownHash)) && (
+      {(phase === 'failed' || phase === 'cancelled') && (
         <View style={styles.actions}>
           <Button
             title={unknownHash ? 'Back to Wallet / History' : 'Go Back'}
