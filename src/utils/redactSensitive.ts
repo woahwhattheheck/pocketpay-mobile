@@ -37,6 +37,10 @@ export function redactSensitiveString(input: string): string {
 }
 
 export function redactSensitiveValue(value: unknown): unknown {
+  return redactValue(value, new WeakSet<object>());
+}
+
+function redactValue(value: unknown, ancestors: WeakSet<object>): unknown {
   if (value == null) return value;
 
   if (typeof value === 'string') {
@@ -51,20 +55,27 @@ export function redactSensitiveValue(value: unknown): unknown {
     return sanitizeError(value);
   }
 
-  if (Array.isArray(value)) {
-    return value.map(redactSensitiveValue);
-  }
-
   if (typeof value === 'object') {
-    const result: Record<string, unknown> = {};
-    for (const [key, nested] of Object.entries(value as Record<string, unknown>)) {
-      if (SENSITIVE_KEY_NAME.test(key)) {
-        result[key] = REDACTED_VALUE;
-        continue;
+    // Track only the current path: repeated references are not necessarily cycles.
+    if (ancestors.has(value)) return '[Circular]';
+    ancestors.add(value);
+    try {
+      if (Array.isArray(value)) {
+        return value.map((nested) => redactValue(nested, ancestors));
       }
-      result[key] = redactSensitiveValue(nested);
+
+      const result: Record<string, unknown> = {};
+      for (const [key, nested] of Object.entries(value as Record<string, unknown>)) {
+        if (SENSITIVE_KEY_NAME.test(key)) {
+          result[key] = REDACTED_VALUE;
+          continue;
+        }
+        result[key] = redactValue(nested, ancestors);
+      }
+      return result;
+    } finally {
+      ancestors.delete(value);
     }
-    return result;
   }
 
   return String(value);
@@ -78,7 +89,7 @@ export interface SanitizedError {
 
 export function sanitizeError(error: Error): SanitizedError {
   return {
-    name: error.name || 'Error',
+    name: redactSensitiveString(error.name || 'Error'),
     message: redactSensitiveString(error.message || 'Unknown error'),
     stack: error.stack ? redactSensitiveString(error.stack) : undefined,
   };
