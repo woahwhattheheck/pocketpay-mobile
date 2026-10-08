@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { Share } from 'react-native';
+import { render, waitFor, fireEvent } from '@testing-library/react-native';
 import DiagnosticsScreen from '../app/diagnostics';
 import { getDiagnostics } from '../src/utils/diagnostics';
 import { diagnosticsFixtures } from '../tests/fixtures';
@@ -19,6 +20,7 @@ const mockGetDiagnostics = getDiagnostics as jest.MockedFunction<typeof getDiagn
 describe('DiagnosticsScreen', () => {
   afterEach(() => {
     jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('renders environment, network, and wallet status from a healthy diagnostics snapshot', async () => {
@@ -61,4 +63,48 @@ describe('DiagnosticsScreen', () => {
     // Distinct from lastReportedError: this is walletState.lastError.
     getByText('Network request failed');
   });
+  it('shows a coarse error category and redacts accidental secrets before display or sharing', async () => {
+    const secret = 'S' + 'A'.repeat(55);
+    const unsafeSnapshot = {
+      ...diagnosticsFixtures.networkErrorWithReportedCrash,
+      walletState: {
+        ...diagnosticsFixtures.networkErrorWithReportedCrash.walletState,
+        lastError: 'Request failed with ' + secret,
+      },
+      lastReportedError: {
+        ...diagnosticsFixtures.networkErrorWithReportedCrash.lastReportedError!,
+        message: 'Crash ' + secret,
+      },
+    };
+    mockGetDiagnostics.mockResolvedValue(JSON.stringify(unsafeSnapshot));
+    const share = jest.spyOn(Share, 'share').mockResolvedValue({ action: Share.sharedAction });
+
+    const { getByText, queryByText } = render(<DiagnosticsScreen />);
+    await waitFor(() => getByText('connection'));
+    getByText('Request failed with [REDACTED_SECRET]');
+    getByText('Crash [REDACTED_SECRET]');
+    expect(queryByText(secret)).toBeNull();
+    expect(share).not.toHaveBeenCalled();
+
+    fireEvent.press(getByText('Export Diagnostics Log'));
+    await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
+    const payload = (share.mock.calls[0][0] as { message: string }).message;
+    expect(payload).toContain('[REDACTED_SECRET]');
+    expect(payload).not.toContain(secret);
+  });
+
+  it('shows a loading state until the snapshot resolves', () => {
+    mockGetDiagnostics.mockImplementation(() => new Promise<string>(() => {}));
+    const { getByText } = render(<DiagnosticsScreen />);
+    getByText('Loading diagnostics...');
+  });
+
+  it('does not display raw exception text when diagnostics loading fails', async () => {
+    const secret = 'S' + 'B'.repeat(55);
+    mockGetDiagnostics.mockRejectedValue(new Error('provider error: ' + secret));
+    const { getByText, queryByText } = render(<DiagnosticsScreen />);
+    await waitFor(() => getByText('Unable to load diagnostics.'));
+    expect(queryByText(secret)).toBeNull();
+  });
+
 });
