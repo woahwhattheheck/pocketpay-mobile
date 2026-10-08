@@ -184,6 +184,22 @@ describe('getDiagnostics', () => {
     expect(parsed.lastReportedError.message).toBe('Details omitted for privacy');
   });
 
+  it('uses balance fetch readiness, not the balance amount, in the support report', async () => {
+    const previous = useWalletStore.getState();
+    try {
+      useWalletStore.setState({ balance: '0.0000000', balanceState: 'available' });
+      const loaded = JSON.parse(await getDiagnostics());
+      expect(loaded.walletState.isBalanceLoaded).toBe(true);
+
+      useWalletStore.setState({ balance: '25.0000000', balanceState: 'unavailable' });
+      const failedRefresh = JSON.parse(await getDiagnostics());
+      expect(failedRefresh.walletState.isBalanceLoaded).toBe(false);
+      expect(JSON.stringify(failedRefresh)).not.toContain('25.0000000');
+    } finally {
+      useWalletStore.setState({ balance: previous.balance, balanceState: previous.balanceState });
+    }
+  });
+
   it('never exposes the wallet balance or full transaction list, only counts/booleans', async () => {
     useWalletStore.setState({
       balance: '1234.5670000',
