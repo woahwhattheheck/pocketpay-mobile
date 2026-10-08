@@ -83,7 +83,11 @@ export const getDiagnostics = async () => {
      */
     network: {
       tier: network.networkTier,
-      label: network.networkLabel,
+      // A custom network name comes verbatim from build configuration for
+      // display in Settings. It is untrusted free text, so export only its
+      // category rather than copying arbitrary credentials or user data into
+      // a report that someone may share with support.
+      label: network.networkTier === 'custom' ? 'Custom Network' : network.networkLabel,
       horizonHost: network.horizonHost,
       sorobanHost: network.sorobanHost,
       vaultMode: network.vaultMode,
