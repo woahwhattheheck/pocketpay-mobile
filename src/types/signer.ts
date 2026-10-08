@@ -28,6 +28,7 @@ export interface SignerInfo {
  */
 export type HandoffPhase =
   | 'idle'          // No signing in progress
+  | 'validating'    // Input and prerequisites are being verified
   | 'review'        // User is reviewing the transaction details
   | 'handoff'       // Transaction has been sent to the signer
   | 'signing'       // Signer is actively signing
@@ -36,6 +37,8 @@ export type HandoffPhase =
   // this isn't a real waiting window — it exists to separate "network responded" from
   // "UI flow fully done", so downstream UI never has to treat submit-resolved as final.
   | 'confirming'    // Network call resolved; wrapping up before the flow is done
+  | 'pending'       // Network has accepted a transaction but finality is not verified
+  | 'unknown'       // Outcome may have been submitted; never assume rejection
   | 'completed'     // Flow finished successfully
   | 'failed'        // Signing or submission failed
   | 'cancelled';    // User or signer cancelled the flow
