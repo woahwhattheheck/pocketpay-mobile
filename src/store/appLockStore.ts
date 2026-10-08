@@ -35,6 +35,11 @@ interface AppLockState {
   lock: () => void;
 }
 
+// Invalidates stale policy loads and biometric prompts when a newer lock
+// decision or foreground lock supersedes their asynchronous completion.
+let lockGeneration = 0;
+let policyWritePending = false;
+
 export const useAppLockStore = create<AppLockState>((set, get) => ({
   isInitialized: false,
   isLockEnabled: false,
@@ -45,8 +50,10 @@ export const useAppLockStore = create<AppLockState>((set, get) => ({
   authError: null,
 
   initializeLock: async () => {
+    if (policyWritePending) return;
+    const generation = ++lockGeneration;
     // Keep wallet content gated during every (re)hydration.
-    set({ isInitialized: false, isAuthenticated: false, authError: null });
+    set({ isInitialized: false, isAuthenticated: false, isAuthenticating: false, authError: null });
 
     try {
       const storedLock = await AsyncStorage.getItem(LOCK_ENABLED_KEY);
@@ -63,6 +70,7 @@ export const useAppLockStore = create<AppLockState>((set, get) => ({
         hardware.status === 'fulfilled' && hardware.value &&
         enrollment.status === 'fulfilled' && enrollment.value;
 
+      if (generation !== lockGeneration) return;
       set({
         isInitialized: true,
         isLockEnabled: storedLock === 'true',
@@ -74,6 +82,7 @@ export const useAppLockStore = create<AppLockState>((set, get) => ({
         authError: null,
       });
     } catch {
+      if (generation !== lockGeneration) return;
       // Unknown or unreadable lock settings are never treated as disabled.
       console.error('App lock initialization unavailable');
       set({
@@ -88,48 +97,80 @@ export const useAppLockStore = create<AppLockState>((set, get) => ({
   },
 
   enableLock: async () => {
+    if (policyWritePending) return;
+    policyWritePending = true;
+    ++lockGeneration;
+    // A failed or ambiguous policy write cannot leave the wallet exposed.
+    set({ isInitialized: false, isAuthenticated: false, isAuthenticating: false, authError: null });
     try {
-      // Verify biometrics are available before enabling
-      const [hasHW, enrolled] = await Promise.all([
+      const [hardware, enrollment] = await Promise.allSettled([
         hasHardwareAsync(),
         isEnrolledAsync(),
       ]);
-
-      if (!hasHW || !enrolled) {
-        // Allow enabling even without biometrics — will fall back to device PIN/pattern
-        set({
-          isLockEnabled: true,
-          hasBiometrics: false,
-          availableTypes: [],
-        });
-        await AsyncStorage.setItem(LOCK_ENABLED_KEY, 'true');
-        return;
-      }
-
-      set({
-        isLockEnabled: true,
-        hasBiometrics: true,
-        availableTypes: [AuthenticationType.FINGERPRINT, AuthenticationType.FACIAL_RECOGNITION],
-      });
+      const hasBio =
+        hardware.status === 'fulfilled' && hardware.value &&
+        enrollment.status === 'fulfilled' && enrollment.value;
       await AsyncStorage.setItem(LOCK_ENABLED_KEY, 'true');
-    } catch (err) {
-      console.error('Failed to enable app lock:', err);
+      set({
+        isInitialized: true,
+        isLockEnabled: true,
+        isAuthenticated: false,
+        hasBiometrics: hasBio,
+        availableTypes: hasBio
+          ? [AuthenticationType.FINGERPRINT, AuthenticationType.FACIAL_RECOGNITION]
+          : [],
+        authError: null,
+      });
+    } catch {
+      console.error('App lock policy update unavailable');
+      set({
+        isInitialized: false,
+        isLockEnabled: true,
+        isAuthenticated: false,
+        authError: 'Cannot verify your lock settings. Retry to access the wallet.',
+      });
+    } finally {
+      policyWritePending = false;
     }
   },
 
   disableLock: async () => {
-    set({ isLockEnabled: false, isAuthenticated: true, authError: null });
-    await AsyncStorage.setItem(LOCK_ENABLED_KEY, 'false');
+    if (policyWritePending || !get().isInitialized) return;
+    policyWritePending = true;
+    ++lockGeneration;
+    set({ isInitialized: false, isAuthenticated: false, isAuthenticating: false });
     try {
-      await AsyncStorage.removeItem(LAST_AUTH_KEY);
+      // Only unlock AFTER disabling is durably stored. A rejected write can
+      // mean an unknown persisted state, so require a fresh policy read.
+      await AsyncStorage.setItem(LOCK_ENABLED_KEY, 'false');
+      set({
+        isInitialized: true,
+        isLockEnabled: false,
+        isAuthenticated: true,
+        authError: null,
+      });
+      try {
+        await AsyncStorage.removeItem(LAST_AUTH_KEY);
+      } catch {
+        // Removing the historical timestamp is non-critical.
+      }
     } catch {
-      // Non-critical
+      console.error('App lock policy update unavailable');
+      set({
+        isInitialized: false,
+        isLockEnabled: true,
+        isAuthenticated: false,
+        authError: 'Cannot verify your lock settings. Retry to access the wallet.',
+      });
+    } finally {
+      policyWritePending = false;
     }
   },
 
   authenticate: async () => {
-    const { isAuthenticating } = get();
-    if (isAuthenticating) return false;
+    const { isAuthenticating, isInitialized, isLockEnabled } = get();
+    if (isAuthenticating || !isInitialized || !isLockEnabled || policyWritePending) return false;
+    const generation = ++lockGeneration;
 
     set({ isAuthenticating: true, authError: null });
 
@@ -139,13 +180,14 @@ export const useAppLockStore = create<AppLockState>((set, get) => ({
         fallbackLabel: 'Use device passcode',
         cancelLabel: 'Cancel',
       });
+      if (generation !== lockGeneration) return false;
 
       if (result.success) {
         set({ isAuthenticated: true, isAuthenticating: false, authError: null });
         try {
           await AsyncStorage.setItem(LAST_AUTH_KEY, Date.now().toString());
         } catch { /* non-critical */ }
-        return true;
+        return generation === lockGeneration;
       }
 
       // User cancelled or failed
@@ -158,16 +200,18 @@ export const useAppLockStore = create<AppLockState>((set, get) => ({
         });
       }
       return false;
-    } catch (err: any) {
+    } catch {
+      if (generation !== lockGeneration) return false;
       set({
         isAuthenticating: false,
-        authError: err?.message || 'Authentication error',
+        authError: 'Authentication error',
       });
       return false;
     }
   },
 
   lock: () => {
-    set({ isAuthenticated: false, authError: null });
+    ++lockGeneration;
+    set({ isAuthenticated: false, isAuthenticating: false, authError: null });
   },
 }));
