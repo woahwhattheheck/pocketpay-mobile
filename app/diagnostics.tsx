@@ -7,14 +7,13 @@ import {
   ActivityIndicator,
   Platform,
   TouchableOpacity,
+  Share,
 } from 'react-native';
 import { useRouter, Redirect } from 'expo-router';
-import Constants from 'expo-constants';
-import * as SecureStore from 'expo-secure-store';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
 import { useTheme } from '../src/hooks/useTheme';
-import { useWalletStore } from '../src/store/walletStore';
-import { useVaultStore } from '../src/store/vaultStore';
+import { getDiagnostics } from '../src/utils/diagnostics';
+import { redactSensitiveValue } from '../src/utils/redactSensitive';
 import {
   Info,
   Smartphone,
@@ -38,147 +37,93 @@ interface DiagnosticSection {
   items: DiagnosticItem[];
 }
 
-/**
- * Truncates a public key for safe display.
- * Example: GABCD...WXYZ
- */
-const truncatePublicKey = (key: string | null): string => {
-  if (!key) return 'Not available';
-  if (key.length <= 12) return key;
-  return `${key.slice(0, 6)}...${key.slice(-6)}`;
-};
 
-/**
- * Extracts the host from a URL for safe display.
- */
-const extractHost = (url: string | undefined): string => {
-  if (!url) return 'Not configured';
-  try {
-    const parsed = new URL(url);
-    return parsed.host;
-  } catch {
-    return 'Invalid URL';
-  }
-};
-
-/**
- * Checks if secure storage is available on this device.
- */
-const checkSecureStorageAvailability = async (): Promise<boolean> => {
-  try {
-    const testKey = '__diagnostics_test__';
-    await SecureStore.setItemAsync(testKey, 'test');
-    await SecureStore.deleteItemAsync(testKey);
-    return true;
-  } catch {
-    return false;
-  }
-};
+/** Only the already-redacted diagnostics snapshot can populate this screen. */
+interface DiagnosticsSnapshot {
+  environment: {
+    platform: string;
+    osVersion: string | number;
+    appVersion: string;
+    isDevelopment: boolean;
+  };
+  network: {
+    label: string;
+    tier: string;
+    horizonHost: string;
+    sorobanHost: string;
+    vaultMode: string;
+    vaultContractLabel: string;
+  };
+  featureFlags: Record<string, boolean>;
+  storage: { secureStoreAvailable: boolean };
+  walletState: {
+    hasPublicKey: boolean;
+    isBalanceLoaded: boolean;
+    lastError: string | null;
+    balanceState?: string;
+    fundingStatus?: string;
+  };
+  networkHealth?: {
+    classifiedError: string | null;
+    hasError: boolean;
+  };
+  lastReportedError?: {
+    source: string;
+    name: string;
+    message: string;
+    isFatal: boolean;
+  } | null;
+}
 
 export default function DiagnosticsScreen() {
   const router = useRouter();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-
-  const { publicKey, error: walletError } = useWalletStore();
-  const { balanceError: vaultError, isConfigured: vaultConfigured } = useVaultStore();
-
+  const [snapshot, setSnapshot] = useState<DiagnosticsSnapshot | null>(null);
+  const [report, setReport] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [secureStorageAvailable, setSecureStorageAvailable] = useState<boolean | null>(null);
-
-  // Gate to development mode only
-  if (!__DEV__) {
-    return <Redirect href="/(tabs)" />;
-  }
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [shareFailed, setShareFailed] = useState(false);
 
   useEffect(() => {
-    const checkStorage = async () => {
-      const available = await checkSecureStorageAvailability();
-      setSecureStorageAvailable(available);
-      setIsLoading(false);
+    // Never collect or expose diagnostics outside a development build.
+    if (!__DEV__) return;
+
+    let active = true;
+    const load = async () => {
+      try {
+        // The builder omits secrets, full URLs, keys and balance amounts.
+        // A second redaction at the UI/export boundary is defense in depth.
+        const safe = redactSensitiveValue(JSON.parse(await getDiagnostics())) as DiagnosticsSnapshot;
+        if (!safe || !safe.environment || !safe.network || !safe.storage ||
+            !safe.walletState || !safe.featureFlags) {
+          throw new Error('Invalid diagnostics snapshot');
+        }
+        if (active) {
+          setSnapshot(safe);
+          setReport(JSON.stringify(safe, null, 2));
+        }
+      } catch {
+        if (active) setLoadFailed(true); // Do not render raw exception messages.
+      } finally {
+        if (active) setIsLoading(false);
+      }
     };
-    checkStorage();
+    void load();
+    return () => { active = false; };
   }, []);
 
-  // Gather diagnostic information
-  const appVersion = Constants.expoConfig?.version || '1.0.0';
-  const sdkVersion = Constants.expoConfig?.sdkVersion || 'Unknown';
-  const appName = Constants.expoConfig?.name || 'stellar-pocketpay-mobile';
+  const shareDiagnostics = async () => {
+    if (!report) return;
+    try {
+      await Share.share({ title: 'PocketPay Diagnostics', message: report });
+      setShareFailed(false);
+    } catch {
+      setShareFailed(true); // Sharing errors can contain sensitive provider data.
+    }
+  };
 
-  const stellarNetwork = process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET';
-  const horizonUrl = process.env.EXPO_PUBLIC_STELLAR_HORIZON_URL;
-  const sorobanRpcUrl = process.env.EXPO_PUBLIC_SOROBAN_RPC_URL;
-  const networkPassphrase = process.env.EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE;
-
-  const sections: DiagnosticSection[] = [
-    {
-      title: 'App Information',
-      icon: <Smartphone color={colors.primary} size={20} />,
-      items: [
-        { label: 'App Name', value: appName },
-        { label: 'Version', value: appVersion },
-        { label: 'Expo SDK', value: sdkVersion },
-        { label: 'Platform', value: `${Platform.OS} ${Platform.Version}` },
-        { label: 'Build Mode', value: __DEV__ ? 'Development' : 'Production' },
-      ],
-    },
-    {
-      title: 'Network Configuration',
-      icon: <Globe color={colors.primary} size={20} />,
-      items: [
-        { label: 'Network', value: stellarNetwork },
-        { label: 'Network Passphrase', value: networkPassphrase ? 'Configured' : 'Using default' },
-      ],
-    },
-    {
-      title: 'Service Endpoints',
-      icon: <Server color={colors.primary} size={20} />,
-      items: [
-        { label: 'Horizon Host', value: extractHost(horizonUrl) || 'horizon-testnet.stellar.org' },
-        { label: 'Soroban RPC Host', value: extractHost(sorobanRpcUrl) || 'Not configured' },
-        { label: 'Vault Contract', value: vaultConfigured ? 'Configured' : 'Not configured (mock mode)' },
-      ],
-    },
-    {
-      title: 'Wallet State',
-      icon: <Wallet color={colors.primary} size={20} />,
-      items: [
-        { label: 'Wallet Status', value: publicKey ? 'Connected' : 'Not connected' },
-        { label: 'Public Key', value: truncatePublicKey(publicKey), isSensitive: true },
-      ],
-    },
-    {
-      title: 'Security & Storage',
-      icon: <ShieldCheck color={colors.primary} size={20} />,
-      items: [
-        {
-          label: 'Secure Storage',
-          value: secureStorageAvailable === null
-            ? 'Checking...'
-            : secureStorageAvailable
-            ? 'Available'
-            : 'Unavailable',
-        },
-        { label: 'Biometric Support', value: Platform.OS === 'web' ? 'Not available' : 'Supported' },
-      ],
-    },
-  ];
-
-  // Add error summary if there are recent errors
-  const errors: string[] = [];
-  if (walletError) errors.push(`Wallet: ${walletError}`);
-  if (vaultError) errors.push(`Vault: ${vaultError}`);
-
-  if (errors.length > 0) {
-    sections.push({
-      title: 'Recent Errors',
-      icon: <AlertCircle color={colors.error} size={20} />,
-      items: errors.map((error, index) => ({
-        label: `Error ${index + 1}`,
-        value: error,
-      })),
-    });
-  }
+  if (!__DEV__) return <Redirect href="/(tabs)" />;
 
   if (isLoading) {
     return (
@@ -189,13 +134,92 @@ export default function DiagnosticsScreen() {
     );
   }
 
+  if (loadFailed || !snapshot) {
+    return (
+      <View style={[styles.container, styles.centered]}>
+        <Text style={styles.errorValue}>Unable to load diagnostics.</Text>
+        <TouchableOpacity onPress={() => router.back()} accessibilityRole="button">
+          <Text style={styles.loadingText}>Go back</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const sections: DiagnosticSection[] = [
+    {
+      title: 'App Information',
+      icon: <Smartphone color={colors.primary} size={20} />,
+      items: [
+        { label: 'Platform', value: snapshot.environment.platform + ' ' + String(snapshot.environment.osVersion) },
+        { label: 'Version', value: snapshot.environment.appVersion },
+        { label: 'Build Mode', value: snapshot.environment.isDevelopment ? 'Development' : 'Production' },
+      ],
+    },
+    {
+      title: 'Network Configuration',
+      icon: <Globe color={colors.primary} size={20} />,
+      items: [
+        { label: 'Network', value: snapshot.network.label },
+        { label: 'Network Tier', value: snapshot.network.tier },
+      ],
+    },
+    {
+      title: 'Service Endpoints',
+      icon: <Server color={colors.primary} size={20} />,
+      items: [
+        { label: 'Horizon Host', value: snapshot.network.horizonHost },
+        { label: 'Soroban RPC Host', value: snapshot.network.sorobanHost },
+        { label: 'Vault Mode', value: snapshot.network.vaultMode },
+        { label: 'Vault Contract', value: snapshot.network.vaultContractLabel },
+      ],
+    },
+    {
+      title: 'Wallet State',
+      icon: <Wallet color={colors.primary} size={20} />,
+      items: [
+        { label: 'Wallet Configured', value: snapshot.walletState.hasPublicKey ? 'Yes' : 'No' },
+        { label: 'Balance Loaded', value: snapshot.walletState.isBalanceLoaded ? 'Yes' : 'No' },
+        { label: 'Balance State', value: snapshot.walletState.balanceState || 'Unknown' },
+        { label: 'Funding Status', value: snapshot.walletState.fundingStatus || 'Unknown' },
+      ],
+    },
+    {
+      title: 'Security & Storage',
+      icon: <ShieldCheck color={colors.primary} size={20} />,
+      items: [
+        { label: 'Secure Storage', value: snapshot.storage.secureStoreAvailable ? 'Available' : 'Unavailable' },
+      ],
+    },
+    {
+      title: 'Feature Flags',
+      icon: <ShieldCheck color={colors.primary} size={20} />,
+      items: Object.entries(snapshot.featureFlags)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([label, enabled]) => ({ label, value: enabled ? 'Enabled' : 'Disabled' })),
+    },
+    {
+      title: 'Recent Errors',
+      icon: <AlertCircle color={colors.error} size={20} />,
+      items: [
+        { label: 'Error Category', value: snapshot.networkHealth?.classifiedError || snapshot.lastReportedError?.name || 'None' },
+        ...(snapshot.walletState.lastError
+          ? [{ label: 'Wallet Error (redacted)', value: snapshot.walletState.lastError }]
+          : []),
+        ...(snapshot.lastReportedError
+          ? [
+              { label: 'Error Source', value: snapshot.lastReportedError.source },
+              { label: 'Error Type', value: snapshot.lastReportedError.name },
+              { label: 'Reported Error (redacted)', value: snapshot.lastReportedError.message },
+            ]
+          : []),
+      ],
+    },
+  ];
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton} accessibilityRole="button" accessibilityLabel="Go back">
           <ChevronLeft color={colors.textPrimary} size={24} />
         </TouchableOpacity>
         <View style={styles.headerTitleContainer}>
@@ -209,32 +233,21 @@ export default function DiagnosticsScreen() {
       </View>
 
       <Text style={styles.description}>
-        This screen shows non-sensitive app and network information for debugging purposes.
-        Secret keys are never displayed.
+        Non-sensitive support diagnostics. Keys, balances, full RPC URLs and wallet secrets are excluded.
       </Text>
 
-      {sections.map((section, sectionIndex) => (
-        <View key={sectionIndex} style={styles.section}>
+      {sections.map((section) => (
+        <View key={section.title} style={styles.section}>
           <View style={styles.sectionHeader}>
             {section.icon}
             <Text style={styles.sectionTitle}>{section.title}</Text>
           </View>
           <View style={styles.card}>
-            {section.items.map((item, itemIndex) => (
-              <View
-                key={itemIndex}
-                style={[
-                  styles.row,
-                  itemIndex < section.items.length - 1 && styles.rowBorder,
-                ]}
-              >
+            {section.items.map((item, index) => (
+              <View key={item.label} style={[styles.row, index < section.items.length - 1 && styles.rowBorder]}>
                 <Text style={styles.label}>{item.label}</Text>
                 <Text
-                  style={[
-                    styles.value,
-                    item.isSensitive && styles.sensitiveValue,
-                    section.title === 'Recent Errors' && styles.errorValue,
-                  ]}
+                  style={[styles.value, item.isSensitive && styles.sensitiveValue, section.title === 'Recent Errors' && styles.errorValue]}
                   numberOfLines={2}
                   ellipsizeMode="tail"
                 >
@@ -246,9 +259,19 @@ export default function DiagnosticsScreen() {
         </View>
       ))}
 
+      <TouchableOpacity
+        style={styles.exportButton}
+        onPress={() => { void shareDiagnostics(); }}
+        accessibilityRole="button"
+        accessibilityLabel="Export Diagnostics Log"
+      >
+        <Text style={styles.exportButtonText}>Export Diagnostics Log</Text>
+      </TouchableOpacity>
+      {shareFailed && <Text style={styles.errorValue}>Unable to share diagnostics. Please try again.</Text>}
+
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          This screen is only available in development builds.
+          This screen is only available in development builds. Review the report before sharing.
         </Text>
       </View>
     </ScrollView>
@@ -370,6 +393,19 @@ const createStyles = (colors: ThemeColors) =>
     errorValue: {
       color: colors.error,
       fontSize: 12,
+    },
+    exportButton: {
+      backgroundColor: colors.primary,
+      paddingVertical: SIZES.md,
+      paddingHorizontal: SIZES.lg,
+      borderRadius: RADIUS.md,
+      alignItems: 'center',
+      marginTop: SIZES.sm,
+    },
+    exportButtonText: {
+      color: colors.background,
+      fontSize: 15,
+      fontWeight: '600',
     },
     footer: {
       alignItems: 'center',
