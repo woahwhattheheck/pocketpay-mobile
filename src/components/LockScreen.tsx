@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, AppState, AppStateStatus, Platform } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, AppState, AppStateStatus } from 'react-native';
 import { useAppLockStore } from '../store/appLockStore';
 import { useWalletStore } from '../store/walletStore';
 import { Button } from './Button';
@@ -11,7 +11,7 @@ interface LockScreenProps {
 }
 
 export const LockScreen: React.FC<LockScreenProps> = ({ children }) => {
-  const { isLockEnabled, isAuthenticated, isAuthenticating, hasBiometrics, authError, authenticate, lock, initializeLock } =
+  const { isInitialized, isLockEnabled, isAuthenticated, isAuthenticating, hasBiometrics, authError, authenticate, lock, initializeLock } =
     useAppLockStore();
   const { publicKey } = useWalletStore();
 
@@ -37,6 +37,33 @@ export const LockScreen: React.FC<LockScreenProps> = ({ children }) => {
     const subscription = AppState.addEventListener('change', handleAppStateChange);
     return () => subscription.remove();
   }, [handleAppStateChange]);
+
+  // Do not display the wallet before its persisted lock policy has been read.
+  // Storage errors show a neutral retry rather than wallet contents.
+  if (publicKey && !isInitialized) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.iconContainer}>
+            <Shield color={COLORS.primary} size={32} />
+          </View>
+          <Text style={styles.title}>Checking Wallet Security</Text>
+          <Text style={styles.subtitle}>
+            {authError || 'Restoring your wallet lock settings securely.'}
+          </Text>
+          {authError ? (
+            <Button
+              title="Retry Lock Settings"
+              onPress={() => { void initializeLock(); }}
+              style={styles.unlockButton}
+            />
+          ) : (
+            <ActivityIndicator color={COLORS.primary} size="large" />
+          )}
+        </View>
+      </View>
+    );
+  }
 
   // No wallet or lock not enabled — show children directly
   if (!publicKey || !isLockEnabled) {

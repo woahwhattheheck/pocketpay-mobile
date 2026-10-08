@@ -12,6 +12,8 @@ const LOCK_ENABLED_KEY = '@pocketpay_app_lock';
 const LAST_AUTH_KEY = '@pocketpay_last_auth';
 
 interface AppLockState {
+  /** True only after the persisted lock setting has been read safely. */
+  isInitialized: boolean;
   /** Whether the user has enabled app lock in settings */
   isLockEnabled: boolean;
   /** Whether the current session has been authenticated */
@@ -34,6 +36,7 @@ interface AppLockState {
 }
 
 export const useAppLockStore = create<AppLockState>((set, get) => ({
+  isInitialized: false,
   isLockEnabled: false,
   isAuthenticated: false,
   isAuthenticating: false,
@@ -42,26 +45,45 @@ export const useAppLockStore = create<AppLockState>((set, get) => ({
   authError: null,
 
   initializeLock: async () => {
+    // Keep wallet content gated during every (re)hydration.
+    set({ isInitialized: false, isAuthenticated: false, authError: null });
+
     try {
-      const [storedLock, bioAvailable, enrolled] = await Promise.all([
-        AsyncStorage.getItem(LOCK_ENABLED_KEY),
+      const storedLock = await AsyncStorage.getItem(LOCK_ENABLED_KEY);
+      if (storedLock !== null && storedLock !== 'true' && storedLock !== 'false') {
+        throw new Error('Invalid persisted app-lock state');
+      }
+
+      // A biometric capability probe must not turn a persisted lock OFF.
+      const [hardware, enrollment] = await Promise.allSettled([
         hasHardwareAsync(),
         isEnrolledAsync(),
       ]);
-
-      const hasBio = bioAvailable && enrolled;
+      const hasBio =
+        hardware.status === 'fulfilled' && hardware.value &&
+        enrollment.status === 'fulfilled' && enrollment.value;
 
       set({
+        isInitialized: true,
         isLockEnabled: storedLock === 'true',
         hasBiometrics: hasBio,
         availableTypes: hasBio
-          ? [AuthenticationType.FINGERPRINT, AuthenticationType.FACIAL_RECOGNITION].filter(Boolean)
+          ? [AuthenticationType.FINGERPRINT, AuthenticationType.FACIAL_RECOGNITION]
           : [],
-        isAuthenticated: !(storedLock === 'true'), // If lock is enabled, start unauthenticated
+        isAuthenticated: storedLock !== 'true',
+        authError: null,
       });
-    } catch (err) {
-      console.error('Failed to initialize app lock:', err);
-      set({ isLockEnabled: false, isAuthenticated: true, hasBiometrics: false });
+    } catch {
+      // Unknown or unreadable lock settings are never treated as disabled.
+      console.error('App lock initialization unavailable');
+      set({
+        isInitialized: false,
+        isLockEnabled: true,
+        isAuthenticated: false,
+        hasBiometrics: false,
+        availableTypes: [],
+        authError: 'Cannot verify your lock settings. Retry to access the wallet.',
+      });
     }
   },
 

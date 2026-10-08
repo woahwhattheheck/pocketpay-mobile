@@ -21,6 +21,7 @@ React Native Expo wallet for Stellar Testnet. The app aims to feel polished and 
 - [Meaningful Change Threshold Guide](./docs/meaningful-change-threshold-guide.md) - Guide explaining what constitutes a meaningful change and how reviewers should assess PR scope and completeness
 - [Reviewer Evidence Checklist](./docs/reviewer-evidence-checklist.md) - Maintainer-facing checklist for reviewing whether a PR is complete and evaluation-ready, covering implementation scope, quality, test evidence, CI status, documentation impact, acceptance-criteria verification, and risk
 - [Storage Guide](./docs/storage.md) - SecureStore vs AsyncStorage
+- [App-Lock Readiness and Recovery Model](./docs/app-lock-model.md) - Lock initialization, safe fallback and retry states, biometric/PIN limitations, and secure-storage assumptions
 - [Test-First Contribution Guide](./docs/test-first-contribution-guide.md) - Required test planning, happy-path and negative-path coverage, no-test justification rules, and local verification commands for mobile PRs
 - [Low-Effort Contribution Examples](./docs/low-effort-contribution-examples.md) - Worked examples of superficial changes, partial implementations, missing tests, and failing CI, with why each is insufficient and an improved alternative for each
 - [Contacts Guide](./docs/contacts.md) - Contact storage, backup limitations, and future export/import ideas
