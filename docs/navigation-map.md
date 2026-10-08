@@ -11,30 +11,32 @@ All file paths are relative to repository root. All routes use **Expo Router v6 
 
 ---
 
-## 1. Route Inventory (20 Routes Across 3 Groups)
+## 1. Route Inventory (21 Routed Screens Across 3 Groups)
 
 Expo Router converts files in `app/` directly to routes. Parentheses in directory names (e.g. `(auth)`) are **route groups** — they organize layout nesting but do NOT appear in the URL / deep link path.
 
 ### 1.1 Unauthenticated Route Group: `(auth)/`
 
-Shown when `walletStore.walletChecked === true` AND `publicKey === null` (no wallet on device). Stack navigator inside [app/(auth)/_layout.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(auth)/_layout.tsx).
+Shown when `walletStore.walletChecked === true` AND `publicKey === null` (no wallet on device). Stack navigator inside [app/(auth)/_layout.tsx](../app/%28auth%29/_layout.tsx).
 
 | Route Path        | File on Disk                                                 | Purpose                                                      | Primary Entry: Navigate Here From…          |
 | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------- |
-| `/` (in auth)     | [app/(auth)/index.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(auth)/index.tsx) | Landing tile: **Create New Wallet** vs **Import Existing**   | RootLayout auth gate / app cold start        |
-| `/create`         | [app/(auth)/create.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(auth)/create.tsx) | 3-step onboarding: Generate → Reveal keys → Confirm backup   | `(auth)/index` [Create New Wallet]           |
-| `/import`         | [app/(auth)/import.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(auth)/import.tsx) | Paste secret → StrKey validation → activate wallet           | `(auth)/index` [Import Existing]             |
+| `/` (in auth)     | [app/(auth)/index.tsx](../app/%28auth%29/index.tsx) | Landing tile: **Create New Wallet** vs **Import Existing**   | RootLayout auth gate / app cold start        |
+| `/create`         | [app/(auth)/create.tsx](../app/%28auth%29/create.tsx) | 3-step onboarding: Generate → Reveal keys → Confirm backup   | `(auth)/index` [Create New Wallet]           |
+| `/import`         | [app/(auth)/import.tsx](../app/%28auth%29/import.tsx) | Paste secret → StrKey validation → activate wallet           | `(auth)/index` [Import Existing]             |
+| `/wallet-creation-success` | [app/(auth)/wallet-creation-success.tsx](../app/%28auth%29/wallet-creation-success.tsx) | Wallet-created confirmation and **Go to Wallet** action. Root's `publicKey` auth redirect may replace this route once wallet creation completes. | Create-wallet completion (declared in auth Stack) |
 
 ### 1.2 Authenticated Tab Group: `(tabs)/`
 
-Shown when `walletStore.publicKey != null` AND `walletStore.walletChecked === true`. Bottom-tab navigator inside [app/(tabs)/_layout.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(tabs)/_layout.tsx). Adds an `OfflineBanner` at the top on all tabs.
+Shown when `walletStore.publicKey != null` AND `walletStore.walletChecked === true`. Bottom-tab navigator inside [app/(tabs)/_layout.tsx](../app/%28tabs%29/_layout.tsx). Renders `NetworkStatusBanner` above the tabs and exposes a Retry action for network-state recovery.
 
 | Route Path       | File on Disk                                                 | Tab Label | Purpose                                                      |
 | ---------------- | ------------------------------------------------------------ | --------- | ------------------------------------------------------------ |
-| `/` (tabs home)  | [app/(tabs)/index.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(tabs)/index.tsx) | Home      | XLM Balance, Public Key, **Fund my Wallet** button, Backup reminder modal, 5 most-recent transactions |
-| `/history`       | [app/(tabs)/history.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(tabs)/history.tsx) | Activity  | **SectionList grouped by date**, filter chips (All/Sent/Received), cursor-based pagination, pull-to-refresh, empty CTA → Send |
-| `/vault`         | [app/(tabs)/vault.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(tabs)/vault.tsx) | Vault     | Soroban Savings Vault: balance card, Deposit / Withdraw CTAs, Pending/Matured lock lists, intro/education modals |
-| `/settings`      | [app/(tabs)/settings.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/(tabs)/settings.tsx) | Settings  | 4 sections — Preferences (theme, app lock), Wallet (export, sign out), Network & Environment (new), About (version, diagnostics) |
+| `/` (tabs home)  | [app/(tabs)/index.tsx](../app/%28tabs%29/index.tsx) | Home      | XLM Balance, Public Key, **Fund my Wallet** button, Backup reminder modal, 5 most-recent transactions |
+| `/history`       | [app/(tabs)/history.tsx](../app/%28tabs%29/history.tsx) | Activity  | **SectionList grouped by date**, filter chips (All/Sent/Received), cursor-based pagination, pull-to-refresh, empty CTA → Send |
+| `/vault`         | [app/(tabs)/vault.tsx](../app/%28tabs%29/vault.tsx) | Vault     | Soroban Savings Vault: balance card, Deposit / Withdraw CTAs, Pending/Matured lock lists, intro/education modals |
+| `/settings`      | [app/(tabs)/settings.tsx](../app/%28tabs%29/settings.tsx) | Settings  | 4 sections — Preferences (theme, app lock), Wallet (export, sign out), Network & Environment (new), About (version, diagnostics) |
+| `/settings/flags` | [app/(tabs)/settings/flags.tsx](../app/%28tabs%29/settings/flags.tsx) | Nested settings development screen (not a bottom tab) | Inspects `FEATURE_FLAGS`; `Switch` currently logs a toggle only, does not persist it |
 
 ### 1.3 Stack / Modal Routes (Outside Groups)
 
@@ -42,17 +44,18 @@ Presented modally, or pushed onto the stack above the tabs.
 
 | Route Path            | File on Disk                                                 | Presentation | Purpose                                                      | Primary Entry: Navigate Here From…          |
 | --------------------- | ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ | -------------------------------------------- |
-| `/send`               | [app/send.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/send.tsx) | Stack push   | Payment form: destination, amount, memo. Validates before navigation to sign confirmation. | Home [Send XLM], Activity [New Payment] CTA, contact row tap, scan success |
-| `/sign-confirmation`  | [app/sign-confirmation.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/sign-confirmation.tsx) | Stack push   | Pre-signing confirmation: shows transaction summary, explains signing implications, provides clear cancel option. Separates approval intent from execution. | Send form [Send Payment] button             |
-| `/receive`            | [app/receive.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/receive.tsx) | Stack push   | Public-key QR code, address copy + share sheet              | Home [Receive] icon / button                 |
-| `/scan`               | [app/scan.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/scan.tsx) | Stack push   | `expo-camera` QR scanner. On valid decode → navigates back to `/send` with `?destination=` prefilled. | Home [Scan] icon, Send form [Scan] button    |
-| `/review-transaction` | [app/review-transaction.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/review-transaction.tsx) | Modal-like push | 8-phase Sign & Send flow: review summary → handoff → signing → submitting → completed / failed → success screen | Sign confirmation [Sign Transaction]         |
-| `/payment-success`    | [app/payment-success.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/payment-success.tsx) | `replace` (no back history) | Post-send confirmation: big success checkmark, tx hash copy, explorer link, Back to Home | Review transaction [phase → completed]       |
-| `/contacts`           | [app/contacts.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/contacts.tsx) | Stack push   | Address book: list, search, add/edit/delete, duplicate guards. Tapping a contact pushes to `/send` with destination prefilled. | Settings [Address Book], Send form [Pick contact] |
-| `/diagnostics`        | [app/diagnostics.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/diagnostics.tsx) | Stack push   | Read-only dev/debug panel: redacted `getDiagnostics()` JSON, environment summary, synthetic-error trigger if enabled | Settings → About → [Open Diagnostics]       |
-| `/transaction/:id`    | [app/transaction/[id].tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/transaction/%5Bid%5D.tsx) | Stack push   | **Dynamic route** (segment `:id = operation id`): single-transaction detail view, memo, fee, source/dest, explorer link | Activity row tap, Home recent-list tap      |
-| `/vault/:id`          | [app/vault/[id].tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/vault/%5Bid%5D.tsx) | Stack push   | Dynamic: deep-linkable vault overview / account view (placeholder/detail) | Vault header card, from external deep link  |
-| `/vault-lock/:id`     | [app/vault-lock/[id].tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/vault-lock/%5Bid%5D.tsx) | Stack push   | Dynamic: single time-lock detail — countdown, status, mature-withdraw CTA | Vault list row tap, matured notification     |
+| `/send`               | [app/send.tsx](../app/send.tsx) | Stack push   | Payment form: destination, amount, memo. Validates before navigation to sign confirmation. | Home [Send XLM], Activity [New Payment] CTA, contact row tap, scan success |
+| `/sign-confirmation`  | [app/sign-confirmation.tsx](../app/sign-confirmation.tsx) | Stack push   | Pre-signing confirmation: shows transaction summary, explains signing implications, provides clear cancel option. Separates approval intent from execution. | Send form [Send Payment] button             |
+| `/receive`            | [app/receive.tsx](../app/receive.tsx) | Stack push   | Public-key QR code, address copy + share sheet              | Home [Receive] icon / button                 |
+| `/scan`               | [app/scan.tsx](../app/scan.tsx) | Stack push   | `expo-camera` QR scanner. On valid decode → navigates back to `/send` with `?destination=` prefilled. | Home [Scan] icon, Send form [Scan] button    |
+| `/scan-pay` | [app/scan-pay.tsx](../app/scan-pay.tsx) | Stack route / proof-of-concept payment request review | Parses and validates manually supplied QR payload; **Confirm currently shows an informational alert and does not navigate to Send or sign or submit** | Direct route / scan-to-pay preview (not the same as camera `/scan`) |
+| `/review-transaction` | [app/review-transaction.tsx](../app/review-transaction.tsx) | Modal-like push | 8-phase Sign & Send flow: review summary → handoff → signing → submitting → completed / failed → success screen | Sign confirmation [Sign Transaction]         |
+| `/payment-success`    | [app/payment-success.tsx](../app/payment-success.tsx) | `replace` (no back history) | Post-send confirmation: big success checkmark, tx hash copy, explorer link, Back to Home | Review transaction [phase → completed]       |
+| `/contacts`           | [app/contacts.tsx](../app/contacts.tsx) | Stack push   | Address book: list, search, add/edit/delete, duplicate guards. Tapping a contact pushes to `/send` with destination prefilled. | Settings [Address Book], Send form [Pick contact] |
+| `/diagnostics`        | [app/diagnostics.tsx](../app/diagnostics.tsx) | Stack push   | Read-only dev/debug panel: redacted `getDiagnostics()` JSON, environment summary, synthetic-error trigger if enabled | Settings → About → [Open Diagnostics]       |
+| `/transaction/:id`    | [app/transaction/[id].tsx](../app/transaction/%5Bid%5D.tsx) | Stack push   | **Dynamic route** (segment `:id = operation id`): single-transaction detail view, memo, fee, source/dest, explorer link | Activity row tap, Home recent-list tap      |
+| `/vault/:id`          | [app/vault/[id].tsx](../app/vault/%5Bid%5D.tsx) | Stack push   | Dynamic: deep-linkable vault overview / account view (placeholder/detail) | Vault header card, from external deep link  |
+| `/vault-lock/:id`     | [app/vault-lock/[id].tsx](../app/vault-lock/%5Bid%5D.tsx) | Stack push   | Dynamic: single time-lock detail — countdown, status, mature-withdraw CTA | Vault list row tap, matured notification     |
 
 ---
 
@@ -73,7 +76,7 @@ Read top-down from the single JS entry point `expo-router/entry`. Arrow `→` me
                               │                                           │
                               ▼                                           ▼
                     (auth)/_layout.tsx                          (tabs)/_layout.tsx
-                   ┌────────────────────┐                      ┌─── OFFLINE BANNER ────┐
+                   ┌────────────────────┐                      ┌─ NETWORK STATUS BANNER ─┐
                    │ index (Create/Imp) │                      │  Home     Activity     │
                    │  ▼            ▼    │                      │  Vault    Settings     │
                    │ create      import │                      └────────────────────────┘
@@ -103,14 +106,14 @@ Read top-down from the single JS entry point `expo-router/entry`. Arrow `→` me
 
 Document these behaviors explicitly when modifying navigation:
 
-- `/payment-success` uses **`router.replace`**, not `push`. The user cannot go "Back to signing" → always jumps to Home. This prevents accidental duplicate sends. See: [app/review-transaction.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/review-transaction.tsx)
-- RootLayout auth gate uses **`router.replace`** when swapping `(auth)`↔`(tabs)`. This means tapping hardware Back after sign-out does NOT pop a tab screen back into view. See: [app/_layout.tsx auth gate](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/_layout.tsx#L46-L66)
-- `/scan` calls **`router.back()` after setting params** on a successful decode. This returns to the form, preserving what the user had already typed into Amount/Memo before scanning. See [app/scan.tsx](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/app/scan.tsx).
+- `/payment-success` uses **`router.replace`**, not `push`. The user cannot go "Back to signing" → always jumps to Home. This prevents accidental duplicate sends. See: [app/review-transaction.tsx](../app/review-transaction.tsx)
+- RootLayout auth gate uses **`router.replace`** when swapping `(auth)`↔`(tabs)`. This means tapping hardware Back after sign-out does NOT pop a tab screen back into view. See: [app/_layout.tsx auth gate](../app/_layout.tsx#L46-L66)
+- `/scan` uses **`router.replace('/send?destination=...')`**, and its manual fallback replaces with `/send`. It does **not** call `router.back()` or automatically retain amount/memo input from a previous Send screen. Check [app/scan.tsx](../app/scan.tsx) before changing scanner navigation.
 - Dynamic routes `/transaction/:id`, `/vault/:id`, `/vault-lock/:id` accept **both deep links and programmatic pushes**. They must render gracefully even when the parent store state is empty (e.g. user taps a stored deep link before the wallet loads — show a loading or "Wallet not loaded yet" placeholder).
 
 ### 2.2 Deep Links (Scheme: `stellar-pocketpay://`)
 
-Configured in `app.json` → `scheme: "stellar-pocketpay"`. Currently 5 deep-link targets are supported because Expo Router maps file paths 1:1 to scheme paths:
+Configured in `app.json` → `scheme: "stellar-pocketpay"`. The table below lists **examples**, not an allowlist: Expo Router can resolve other page paths through the scheme. Resolution is not proof that the wallet is initialized, that the user is authorized, or that a feature is complete:
 
 | Deep link                           | Resolves to                        | Prerequisite                          |
 | ----------------------------------- | ---------------------------------- | ------------------------------------- |
@@ -147,13 +150,13 @@ This is the most important section for contributors. If you are working on *feat
 
 | Feature Area             | UI Entry: File(s) 🟢                                        | Hooks / Feature Logic 🟢                                   | Store Owner 🟢                                                | Service Layer 🟡                                              | Shared Components 🟡 |
 | ------------------------ | ----------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------- |
-| **1. Wallet Lifecycle**  | `(auth)/create.tsx` `(auth)/import.tsx` `(tabs)/settings.tsx Wallet section` | — (inline orchestration in screen; import logic helper `parseStoredSecret` in store) | [store/walletStore.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/store/walletStore.ts) — create/import/export/clear, backup reminders | [services/stellar.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/services/stellar.ts#L17-L24) — `generateKeypair`, `validateSecretKey`; also SecureStore via store | SecretKeyReveal, WalletResetConfirmModal, BackupReminderModal |
+| **1. Wallet Lifecycle**  | `(auth)/create.tsx` `(auth)/import.tsx` `(tabs)/settings.tsx Wallet section` | — (inline orchestration in screen; import logic helper `parseStoredSecret` in store) | [store/walletStore.ts](../src/store/walletStore.ts) — create/import/export/clear, backup reminders | [services/stellar.ts](../src/services/stellar.ts#L17-L24) — `generateKeypair`, `validateSecretKey`; also SecureStore via store | SecretKeyReveal, WalletResetConfirmModal, BackupReminderModal |
 | **2. Balance / History** | `(tabs)/index.tsx` (Top 5 + Balance card) `(tabs)/history.tsx` `transaction/[id].tsx` | Pagination inside walletStore actions; pull-to-refresh inline | walletStore → balance, transactions[], nextCursor, isLoadingMore | stellar.ts → fetchXlmBalance, fetchTransactionsPage, getExplorerTxUrl | TransactionListItem, EmptyState, NetworkStatusBanner |
-| **3. Send / Receive**    | `send.tsx` `receive.tsx` `review-transaction.tsx` `payment-success.tsx` `scan.tsx` | **[hooks/useSignerHandoff.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/hooks/useSignerHandoff.ts)** — 8-phase orchestrator; validation.ts pure funcs | walletStore (getSecretKey, refresh after send), **[store/signerStore.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/store/signerStore.ts)** — handoff phases, lastResult | stellar.ts → sendXlmTransaction, fetchBaseFee; signer.ts → LocalSigner; pocketpay-sdk → validatePublicKey | QrScanner, FundButton, SigningConfirmModal, PaymentErrorBanner, DirtyFormConfirm |
+| **3. Send / Receive**    | `send.tsx` `receive.tsx` `review-transaction.tsx` `payment-success.tsx` `scan.tsx` | **[hooks/useSignerHandoff.ts](../src/hooks/useSignerHandoff.ts)** — 8-phase orchestrator; validation.ts pure funcs | walletStore (getSecretKey, refresh after send), **[store/signerStore.ts](../src/store/signerStore.ts)** — handoff phases, lastResult | stellar.ts → sendXlmTransaction, fetchBaseFee; signer.ts → LocalSigner; pocketpay-sdk → validatePublicKey | QrScanner, FundButton, SigningConfirmModal, PaymentErrorBanner, DirtyFormConfirm |
 | **4. QR / Scanner**      | `scan.tsx` `receive.tsx` (QR render)                        | — (inline Expo Camera barcode callbacks)                   | walletStore publicKey read only                              | —                                                            | **QrScanner** (component)  + react-native-qrcode-svg lib |
-| **5. Address Book**      | `contacts.tsx` + Send form contact picker flow              | dedup helpers in `utils/contacts.ts`                       | [store/appStore.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/store/appStore.ts) → contacts[] + addContactIfUnique + removeContact | — (persists via AsyncStorage inside appStore actions)        | FormField, ConfirmModal     |
-| **6. Vault**             | `(tabs)/vault.tsx` `vault/[id].tsx` `vault-lock/[id].tsx`   | **[features/vault/](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/features/vault)** — maturedLockWithdrawal, useMaturedLockWithdrawal, useVaultDepositForm, useVault | **[store/vaultStore.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/store/vaultStore.ts)** — balance, locks[], isConfigured | **[services/vault.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/services/vault.ts)** — Soroban RPC calls; stellar.ts — mock fallbacks | All Vault* Modal & List components (MaturedLockWithdrawalModal, VaultIntroModal, LockDurationSelector, …) |
-| **7. Settings / Network / Theme / AppLock** | `(tabs)/settings.tsx` `diagnostics.tsx`             | **NEW:** [features/settings/useNetworkEnvironment.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/features/settings/useNetworkEnvironment.ts) (Network tier, hostname mask, warnings); [hooks/useTheme.ts](file:///c:/Users/Muhammad/.trae/Grantfox/pocketpay-mobile/src/hooks/useTheme.ts) | appStore (theme, init), walletStore (secret export, clear), appLockStore (lock flag, biometrics authenticateAsync), vaultStore (locks purge, intro reset) | stellar.ts/vault.ts read only (isVaultConfigured); AsyncStorage + SecureStore via stores | AsyncActionButton, ConfirmModal, LockScreen |
+| **5. Address Book**      | `contacts.tsx` + Send form contact picker flow              | dedup helpers in `utils/contacts.ts`                       | [store/appStore.ts](../src/store/appStore.ts) → contacts[] + addContactIfUnique + removeContact | — (persists via AsyncStorage inside appStore actions)        | FormField, ConfirmModal     |
+| **6. Vault**             | `(tabs)/vault.tsx` `vault/[id].tsx` `vault-lock/[id].tsx`   | **[features/vault/](../src/features/vault)** — maturedLockWithdrawal, useMaturedLockWithdrawal, useVaultDepositForm, useVault | **[store/vaultStore.ts](../src/store/vaultStore.ts)** — balance, locks[], isConfigured | **[services/vault.ts](../src/services/vault.ts)** — Soroban RPC calls; stellar.ts — mock fallbacks | All Vault* Modal & List components (MaturedLockWithdrawalModal, VaultIntroModal, LockDurationSelector, …) |
+| **7. Settings / Network / Theme / AppLock** | `(tabs)/settings.tsx` `diagnostics.tsx`             | **NEW:** [features/settings/useNetworkEnvironment.ts](../src/features/settings/useNetworkEnvironment.ts) (Network tier, hostname mask, warnings); [hooks/useTheme.ts](../src/hooks/useTheme.ts) | appStore (theme, init), walletStore (secret export, clear), appLockStore (lock flag, biometrics authenticateAsync), vaultStore (locks purge, intro reset) | stellar.ts/vault.ts read only (isVaultConfigured); AsyncStorage + SecureStore via stores | AsyncActionButton, ConfirmModal, LockScreen |
 
 ### 3.2 Cross-Feature Boundary Rules (Hard Invariants)
 
@@ -202,33 +205,35 @@ Contributor onboarding reference: every step along the send/receive user journey
 
 When you add a new route under `app/`, these assumptions are baked into the current architecture — **you are opting in to all of them** unless you explicitly modify the root layout or create a new route group.
 
-### 5.1 Assumption A — Every route gets the 3 safety wrappers automatically
+### 5.1 As-built root wrappers, initialization and state
 
-Every file under `app/` (including new ones you add) inherits, top-down:
+Read [app/_layout.tsx](../app/_layout.tsx) when adding a route. Its actual shared sequence is:
 
-1. **Polyfills loaded FIRST** via `shim.js` at `app/_layout.tsx:1` (Buffer, process, crypto.getRandomValues). If you add a new screen that imports StellarSdk before root renders (don't), it will throw.
-2. **`ErrorBoundary` → `ErrorBoundaryFallback`** on render exceptions. (No partial crashes.)
-3. **`GestureHandlerRootView`** → if your screen uses swipeable rows, gesture handlers work without re-wrapping.
-4. **App Lock gate (`LockScreen` wrapper around `<Slot/>`)** — if `appLockStore.isLockEnabled && !isAuthenticated`, the screen is hidden behind biometrics regardless of how the user arrived (deep link, OS relaunch, or push notification).
-5. **`NetworkStatusBanner` / `OfflineBanner`** — in `(tabs)/` sub-layout, banners render. Outside `(tabs)/`, you may need to include it yourself if offline behavior matters for the new screen.
+1. Import `shim` **first**, then install global JS error handlers; protect root rendering with `ErrorBoundary`.
+2. Initialize app settings and restore the wallet secret asynchronously. Show `StartupLoadingScreen` until **both** app preferences and wallet state are ready. A secure-storage restoration failure displays an explicit retry/reset recovery screen instead of mounting the router.
+3. Once initialized, render `<LockScreen><Slot /></LockScreen>`. `LockScreen` uses `useAppLockStore` and `useWalletStore`: it challenges only when **a wallet exists**, lock is enabled and the session has not authenticated.
+4. [app/(tabs)/_layout.tsx](../app/%28tabs%29/_layout.tsx) renders the **`NetworkStatusBanner`** above the tabs. Standalone stack routes outside `(tabs)` do not gain that banner automatically.
 
-### 5.2 Assumption B — Auth redirection gate runs for EVERY route, not just group roots
+The root layout does **not** mount a `GestureHandlerRootView` directly. A screen requiring gestures must verify its own provider integration instead of assuming a root gesture wrapper exists.
 
-The `useEffect` in `app/_layout.tsx` (lines 46–66) redirects to `/(auth)` or `/(tabs)` based on:
+### 5.2 As-built wallet authorization gate (including three exceptions)
 
-- `appStore.isInitialized === true` AND
-- `walletStore.walletChecked === true`
+The redirect effect runs only once `appStore.isInitialized` and `walletStore.walletChecked` are true, and it pauses redirection while secure-storage restoration has failed.
 
-**If you add a new route in a new group, e.g. `(payments)/something.tsx`**, the root layout still knows nothing about it and will redirect based on the same two rules. If your new group is **meant to be reachable without a wallet** (e.g. a marketing onboarding flow), move it inside `(auth)/` — the gate redirects *any* wallet-absent route into the `(auth)` group.
+- With `publicKey` present, visiting a route inside `(auth)` causes a `replace('/(tabs)')` or a replay of an already-saved deep link.
+- With **no** `publicKey`, a route outside `(auth)` redirects to `/(auth)` **except** top-level `/send`, `/receive` and `/review-transaction`. These exceptions appear verbatim in [app/_layout.tsx](../app/_layout.tsx); **they are not evidence those routes are safe to use without wallet state**.
+- The root only populates `pendingDeepLink` when it takes that unauthenticated redirect branch; it does not promise to queue links entering one of the three excluded routes.
 
-### 5.3 Assumption C — Deep links always work (file path = URL)
+**Contributor boundary:** Changing the wallet gate is security-sensitive. Audit both the root redirect exceptions and each standalone route's store/secret assumptions when adding or renaming routes. Do not rely on group names or the existence of a deep link as an access-control check.
 
-Because we use `scheme: "stellar-pocketpay"` and Expo Router's filesystem-routing 1:1 mapping, any new file `/app/foo/bar.tsx` will instantly be reachable via `stellar-pocketpay:///foo/bar`.
+### 5.3 File-based URLs are route addresses, not security guarantees
 
-**Secure your new routes the same way the existing ones are.** Example safe patterns:
+With scheme `stellar-pocketpay`, a matching page in `app/` may be addressable by deep link. This is route resolution, **not** authorization, successful wallet restore, or a guarantee of an implemented payment path.
 
-- Dynamic routes `/transaction/:id` and `/vault-lock/:id` should check `publicKey` on mount and redirect to `/(auth)` when missing (never render a partial screen with empty on-chain data).
-- If the parameter references a non-existent ID (user hand-edited the scheme URL), show a user-friendly "Transaction not found" state inside the dynamic screen — not a crash.
+- Validate dynamic ids and optional query parameters at the target screen and handle missing wallet state, missing network records and errors.
+- Treat `/scan-pay` as a non-signing prototype: its current Confirm action displays an alert only. Do not promise a payment submission on this path.
+- `/settings/flags` is a development inspector, and its switches do not persist changed values. Do not treat it as an operative feature-flag administration route.
+- Keep secret keys, signer payloads, and private diagnostics out of URLs. Review [docs/security.md](./security.md) and [docs/user-flows.md](./user-flows.md) before introducing a new wallet-dependent link.
 
 ### 5.4 Assumption D — The `(tabs)` root and `(auth)` root both mount at `/`
 
@@ -272,3 +277,24 @@ Contributor cheat sheet. If you're about to make one of these common changes, op
 | Add a new Store slice (e.g. `nftStore`)                      | Create under `src/store/nftStore.ts`, follow slice pattern (no cross-store imports), initialize in its own module top scope. Never add to a single root combine store. | `shim.js` if new service/SDK requires an extra polyfill      |
 | Add a new feature section in Settings                        | `(tabs)/settings.tsx` as a new `<View>` section + new sub-constants in `features/settings/useNetworkEnvironment.ts` if env-derived | release-testing-checklist §7 Settings/Persistence           |
 | Add a new payment / signing path (e.g. MUXED account, XLM path with base64 memo) | `/send.tsx` validators + `review-transaction.tsx` + `stellar.ts` send helper; route navigation stays the same | signer-handoff-design.md, user-flows.md § send payment flow |
+
+---
+
+## 8. Route-change review checklist
+
+Use this after editing a screen, route, or feature-state integration:
+
+1. Inventory its `app/` page, route group and parent Stack/Tabs registration; a new file does not necessarily create a new bottom-tab button.
+2. Trace the actual `router.push`, `router.replace` or `Linking.openURL` call site. `/scan` replaces with `/send`; `/scan-pay` stops at local review; `/payment-success` replaces signed review history.
+3. Check cold-start and missing-wallet behavior against the **three explicit root exceptions** described in §5.2, not merely against the directory's `(auth)` or `(tabs)` label.
+4. Confirm state ownership before changing a route parameter. Payment review crosses `src/features/payments`, wallet/signing stores and `src/services/stellar.ts`; vault flows cross `src/features/vault` and their locked/matured state.
+5. Validate error/loading/disabled states, secret-key non-disclosure and fallback behavior. Use [UI State Catalogue](./ui-states.md), [Accessibility Checklist](./accessibility.md) and [Release Testing Checklist](./release-testing-checklist.md).
+6. When introducing any new route, update **all three** of this document's route table, journey diagram and cross-feature section. Review direct links and cold-start examples separately; they are not an allowlist.
+
+### Newly inventoried route ownership
+
+| Route | Owner/limits | Must coordinate with |
+| --- | --- | --- |
+| `/wallet-creation-success` | Auth Stack post-create confirmation; no signing | `src/store/walletStore.ts`, auth-gate redirect and backup reminder |
+| `/settings/flags` | Nested Settings developer inspector, switches currently log only | `src/config/featureFlags.ts`, settings navigation and release-build visibility |
+| `/scan-pay` | Payment-request parse/validate UI; **does not sign or submit** | `src/features/payments/useScanPayReview.ts`, `src/features/payments/scanPayPayload.ts`, `app/send.tsx` future handoff |
