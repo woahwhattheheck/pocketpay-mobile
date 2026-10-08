@@ -73,6 +73,20 @@ describe('AC-P2 – concurrent pending entries', () => {
   });
 });
 
+describe('AC-P2c – definitive Horizon rejection cleanup', () => {
+  it('removes only the rejected pending hash and retains concurrent pending payments', () => {
+    useWalletStore.getState().addPendingTransaction('rejected-hash', { id: 'rejected-hash', amount: '5' });
+    useWalletStore.getState().addPendingTransaction('still-pending', { id: 'still-pending', amount: '9' });
+    useWalletStore.getState().removePendingTransaction('rejected-hash');
+
+    const state = useWalletStore.getState();
+    expect(state.pendingTransactions['rejected-hash']).toBeUndefined();
+    expect(state.pendingTransactions['still-pending'].status).toBe('pending');
+    expect(state.transactions.some((tx) => tx.id === 'rejected-hash')).toBe(false);
+    expect(state.transactions.some((tx) => tx.id === 'still-pending')).toBe(true);
+  });
+});
+
 describe('AC-P3 – reconcile on refresh', () => {
   it('drops the optimistic entry once refresh brings back the same hash (no duplicate)', async () => {
     useWalletStore.getState().addPendingTransaction('hash1', { id: 'hash1', amount: '10' });
