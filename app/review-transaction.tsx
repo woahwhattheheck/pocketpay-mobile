@@ -237,6 +237,11 @@ export default function ReviewTransactionScreen() {
     store.reset();
   };
 
+  const handleDismissError = () => {
+    store.reset();
+    router.back();
+  };
+
   const reviewItems: ReviewItem[] = useMemo(() => {
     const items: ReviewItem[] = [
       { label: 'From', value: publicKey ?? '', truncate: true },
