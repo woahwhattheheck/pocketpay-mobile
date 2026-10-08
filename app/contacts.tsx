@@ -245,7 +245,7 @@ export default function ContactsScreen() {
             accessibilityLabel="Contact name"
           />
           {nameWarning && !nameError && (
-            <Text style={styles.warningText}>{nameWarning}</Text>
+            <Text style={styles.warningText} accessibilityRole="alert" accessibilityLiveRegion="polite">{nameWarning}</Text>
           )}
 
           {/* Address field – read-only when pre-filled from scan */}
@@ -262,7 +262,7 @@ export default function ContactsScreen() {
           />
           {/* Duplicate address update banner */}
           {foundDuplicate && (
-            <View style={styles.duplicateBanner}>
+            <View style={styles.duplicateBanner} accessibilityLiveRegion="polite">
               <View style={styles.duplicateBannerHeader}>
                 <AlertTriangle color={colors.warning} size={18} />
                 <Text style={styles.duplicateBannerTitle}>Duplicate Address</Text>
@@ -273,7 +273,7 @@ export default function ContactsScreen() {
               <Text style={styles.duplicateBannerHint}>
                 You can update the existing entry's name below, or cancel to keep it unchanged.
               </Text>
-              <TouchableOpacity style={styles.updateButton} onPress={handleUpdateExisting}>
+              <TouchableOpacity style={styles.updateButton} onPress={handleUpdateExisting} accessibilityRole="button" accessibilityLabel={`Update saved contact ${foundDuplicate.name}`} accessibilityHint="Changes the existing contact name instead of creating a duplicate">
                 <Pencil color={colors.primary} size={16} />
                 <Text style={styles.updateButtonText}>
                   Update "{foundDuplicate.name}" to "{name.trim() || foundDuplicate.name}"
@@ -365,13 +365,15 @@ export default function ContactsScreen() {
                             {item.publicKey}
                           </Text>
                         </View>
-                        <Trash2
-                            color={colors.error}
-                            size={20}
-                            onPress={() => handleRemove(item)}
-                            accessibilityLabel={`Remove ${item.name}`}
-                            accessibilityRole="button"
-                        />
+                        <TouchableOpacity
+                          onPress={() => handleRemove(item)}
+                          accessibilityRole="button"
+                          accessibilityLabel={`Delete contact ${item.name}`}
+                          accessibilityHint="Opens a confirmation before deleting this contact"
+                          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                        >
+                          <Trash2 color={colors.error} size={20} accessible={false} />
+                        </TouchableOpacity>
                       </View>
                   )}
               />
