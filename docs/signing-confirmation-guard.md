@@ -18,6 +18,15 @@ data the user must refresh the wallet; approval cannot proceed on a
 comparison against `NaN`. This guards against impossible insufficient-fund
 comparisons and unknown signer network assumptions.
 
+The consent network is derived from the **same network passphrase used by the
+signing service**, not from the display-only network label. The signing service
+uses `EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE` and falls back to the Stellar
+Testnet passphrase when it is absent. If `EXPO_PUBLIC_STELLAR_NETWORK` is
+explicitly configured, that label must agree with the passphrase-derived
+network. A Public label with a missing/Testnet passphrase, a Testnet label with
+the Public passphrase, or an unsupported custom passphrase fails closed before
+any signing consent is shown.
+
 At the approval tap it re-reads the current wallet and repeats the check, so a
 wallet change since render cannot authorize a stale request. The next screen
 still independently reviews and signs: this page does not sign or submit.

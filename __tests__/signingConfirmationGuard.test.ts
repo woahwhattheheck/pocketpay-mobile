@@ -1,4 +1,4 @@
-import { validateSigningConfirmationRequest } from '../src/utils/signingConfirmation';
+import { resolveSigningNetwork, validateSigningConfirmationRequest } from '../src/utils/signingConfirmation';
 
 jest.mock('pocketpay-sdk', () => ({
   validatePublicKey: (key: string) => {
@@ -26,6 +26,23 @@ describe('signing confirmation route uses the live signer, not URL claims (#388)
       ok: true,
       values: { source, destination, amount: request.amount, assetCode: 'XLM', memo: request.memo, network: 'Testnet' },
     });
+  });
+
+  it('binds consent to the exact signer passphrase, not a display-only network label', () => {
+    const publicPassphrase = 'Public Global Stellar Network ; September 2015';
+
+    // The signing service falls back to Testnet when passphrase is absent.
+    expect(resolveSigningNetwork('PUBLIC', undefined)).toBeNull();
+    expect(resolveSigningNetwork('TESTNET', undefined)).toBe('Testnet');
+
+    // An absent display label may be derived from the real signer passphrase,
+    // but an explicit conflicting label or unknown passphrase fails closed.
+    expect(resolveSigningNetwork(undefined, publicPassphrase)).toBe('Public Network');
+    expect(resolveSigningNetwork('PUBLIC', publicPassphrase)).toBe('Public Network');
+    expect(resolveSigningNetwork('TESTNET', publicPassphrase)).toBeNull();
+    expect(resolveSigningNetwork('PUBLIC', 'custom private network')).toBeNull();
+
+    expect(validateSigningConfirmationRequest(request, { ...wallet, network: null }).ok).toBe(false);
   });
 
   it('blocks missing or switched wallets, and forged asset/network values', () => {

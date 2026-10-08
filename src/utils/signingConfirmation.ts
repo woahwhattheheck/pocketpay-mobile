@@ -13,7 +13,7 @@ export interface SigningConfirmationParams {
 export interface ActiveSigningWallet {
   publicKey: string | null;
   balance: string;
-  network: string;
+  network: string | null;
 }
 
 export type VerifiedSigningConfirmation =
@@ -32,6 +32,57 @@ export type VerifiedSigningConfirmation =
 
 const readText = (value: unknown): string | null =>
   typeof value === 'string' ? value.trim() : null;
+
+const STELLAR_TESTNET_PASSPHRASE = 'Test SDF Network ; September 2015';
+const STELLAR_PUBLIC_PASSPHRASE = 'Public Global Stellar Network ; September 2015';
+
+const normalizeNetworkLabel = (value: unknown): 'Testnet' | 'Public Network' | null => {
+  if (typeof value !== 'string') return null;
+  switch (value.trim().toUpperCase()) {
+    case 'TESTNET':
+      return 'Testnet';
+    case 'PUBLIC':
+    case 'MAINNET':
+    case 'PUBLIC NETWORK':
+      return 'Public Network';
+    default:
+      return null;
+  }
+};
+
+/**
+ * Derive the consent network from the exact passphrase used by transaction
+ * signing. EXPO_PUBLIC_STELLAR_NETWORK is only a consistency hint: when it is
+ * explicitly set, it must agree with the signer passphrase.
+ *
+ * The signing service falls back to Testnet when its passphrase environment
+ * variable is absent or empty, so this helper deliberately mirrors that rule.
+ */
+export function resolveSigningNetwork(
+  configuredNetwork: unknown,
+  configuredPassphrase: unknown,
+): 'Testnet' | 'Public Network' | null {
+  const passphrase =
+    typeof configuredPassphrase === 'string' && configuredPassphrase.length > 0
+      ? configuredPassphrase
+      : STELLAR_TESTNET_PASSPHRASE;
+
+  const actualNetwork =
+    passphrase === STELLAR_TESTNET_PASSPHRASE
+      ? 'Testnet'
+      : passphrase === STELLAR_PUBLIC_PASSPHRASE
+        ? 'Public Network'
+        : null;
+
+  if (!actualNetwork) return null;
+
+  // An unset/empty display label has no authority. Use the actual signer
+  // passphrase. If a label is explicitly configured, require exact agreement.
+  if (configuredNetwork === undefined || configuredNetwork === null || configuredNetwork === '') {
+    return actualNetwork;
+  }
+  return normalizeNetworkLabel(configuredNetwork) === actualNetwork ? actualNetwork : null;
+}
 
 /**
  * The signer uses the current local wallet, configured Stellar network, and

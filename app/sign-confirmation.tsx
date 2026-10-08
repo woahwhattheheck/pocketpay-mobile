@@ -11,7 +11,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../src/hooks/useTheme';
 import { useAppStore } from '../src/store/appStore';
 import { useWalletStore } from '../src/store/walletStore';
-import { validateSigningConfirmationRequest } from '../src/utils/signingConfirmation';
+import { resolveSigningNetwork, validateSigningConfirmationRequest } from '../src/utils/signingConfirmation';
 import { SIZES, RADIUS, ThemeColors } from '../src/constants/theme';
 import { formatAmount } from '../src/utils/amount';
 import { resolveAddressLabel } from '../src/utils/contacts';
@@ -26,12 +26,11 @@ import {
 import { AsyncActionButton, Button, ScreenHeader } from '@/components';
 import { useConfirm } from '../src/hooks/useConfirm';
 
-const getNetworkLabel = (): string => {
-  const network = (process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET').toUpperCase();
-  if (network === 'PUBLIC' || network === 'MAINNET') return 'Public Network';
-  if (network === 'TESTNET') return 'Testnet';
-  return network;
-};
+const getNetworkLabel = (): 'Testnet' | 'Public Network' | null =>
+  resolveSigningNetwork(
+    process.env.EXPO_PUBLIC_STELLAR_NETWORK,
+    process.env.EXPO_PUBLIC_STELLAR_NETWORK_PASSPHRASE,
+  );
 
 /**
  * Signing Confirmation Screen
@@ -75,7 +74,7 @@ export default function SignConfirmationScreen() {
   const amount = validation.ok ? validation.values.amount : '';
   const assetCode = 'XLM';
   const memo = validation.ok ? validation.values.memo : '';
-  const network = getNetworkLabel();
+  const network = validation.ok ? validation.values.network : '';
   // Never display route-supplied fee as fact: review-transaction fetches
   // the network base fee just before signing.
   const fee = 'Calculated at signing';
