@@ -264,6 +264,13 @@ export default function ReviewTransactionScreen() {
     router.back();
   };
 
+  const handleLeaveUnknown = () => {
+    // A back navigation would reopen Sign Confirmation and invite a duplicate
+    // payment; instead take the user to wallet history with the hash retained.
+    store.reset();
+    router.replace('/(tabs)/history');
+  };
+
   const reviewItems: ReviewItem[] = useMemo(() => {
     const items: ReviewItem[] = [
       { label: 'From', value: publicKey ?? '', truncate: true },
@@ -450,9 +457,9 @@ export default function ReviewTransactionScreen() {
       {(phase === 'failed' || phase === 'cancelled') && (
         <View style={styles.actions}>
           <Button
-            title={unknownHash ? 'Back to Wallet / History' : 'Go Back'}
+            title={unknownHash ? 'View Wallet History' : 'Go Back'}
             variant="secondary"
-            onPress={handleDismissError}
+            onPress={unknownHash ? handleLeaveUnknown : handleDismissError}
           />
         </View>
       )}
