@@ -65,3 +65,24 @@ export function mayStartBalanceRefresh(
 ): boolean {
   return !offline && !isLoading && state !== 'loading';
 }
+
+export interface BalanceRefreshObservation {
+  isLoading: boolean;
+  lastRefreshed: number | null;
+  error: string | null;
+  offline: boolean;
+}
+
+/**
+ * Resolve the six visible states from wallet fetch outcomes and connectivity.
+ * Never mistake a cached (possibly stale) balance for a verified live result.
+ */
+export function resolveBalanceRefreshState({
+  isLoading, lastRefreshed, error, offline,
+}: BalanceRefreshObservation): BalanceRefreshState {
+  if (offline) return 'offline';
+  if (isLoading) return 'loading';
+  if (error) return failedRefreshState(lastRefreshed !== null, false);
+  if (lastRefreshed !== null) return 'refreshed';
+  return 'idle';
+}
