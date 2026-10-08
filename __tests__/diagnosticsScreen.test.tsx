@@ -10,6 +10,8 @@ jest.mock('../src/utils/diagnostics', () => ({
 }));
 
 jest.mock('expo-router', () => ({
+  useRouter: () => ({ back: jest.fn() }),
+  Redirect: () => null,
   Stack: {
     Screen: () => null,
   },
@@ -91,6 +93,28 @@ describe('DiagnosticsScreen', () => {
     const payload = (share.mock.calls[0][0] as { message: string }).message;
     expect(payload).toContain('[REDACTED_SECRET]');
     expect(payload).not.toContain(secret);
+  });
+
+  it('recovers a failed first load and retains safe diagnostics when refresh fails', async () => {
+    const secret = 'S' + 'C'.repeat(55);
+    mockGetDiagnostics
+      .mockRejectedValueOnce(new Error('initial provider failure: ' + secret))
+      .mockResolvedValueOnce(JSON.stringify(diagnosticsFixtures.healthy))
+      .mockRejectedValueOnce(new Error('refresh provider failure: ' + secret));
+
+    const { getByText, queryByText } = render(<DiagnosticsScreen />);
+    await waitFor(() => getByText('Unable to load diagnostics.'));
+    expect(queryByText(secret)).toBeNull();
+
+    fireEvent.press(getByText('Retry diagnostics'));
+    await waitFor(() => getByText('horizon-testnet.stellar.org'));
+
+    fireEvent.press(getByText('Refresh Diagnostics'));
+    await waitFor(() => getByText('Unable to refresh diagnostics. Showing the previous safe snapshot.'));
+    getByText('horizon-testnet.stellar.org');
+    getByText('Export Diagnostics Log');
+    expect(queryByText(secret)).toBeNull();
+    expect(mockGetDiagnostics).toHaveBeenCalledTimes(3);
   });
 
   it('shows a loading state until the snapshot resolves', () => {
