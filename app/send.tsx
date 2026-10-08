@@ -25,6 +25,7 @@ import {
   validateAddress,
   validateAmount,
   validateMemo,
+  validatePaymentSend,
 } from "../src/utils/validation";
 import { resolveAddressLabel } from "../src/utils/contacts";
 import { formatAmount, getMaxSendableAmount } from "../src/utils/amount";
@@ -56,14 +57,15 @@ export default function SendScreen() {
   const router = useRouter();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const { publicKey, getSecretKey, refreshWalletData, balance, fundingStatus, error } =
+  const { publicKey, getSecretKey, refreshWalletData, balance, balanceState, fundingStatus, error } =
     useWalletStore();
   const contacts = useAppStore((state) => state.contacts);
   const { getContactByAddress, addRecentRecipient } = useContactStore();
   const { state: networkState, disableWriteActions, retry } = useNetworkState({ error });
 
   const isUnfunded = fundingStatus === 'unfunded';
-  const sendDisabled = isUnfunded || !publicKey || disableWriteActions;
+  const sendDisabled = !publicKey || fundingStatus !== 'funded' ||
+    balanceState !== 'available' || networkState !== 'online';
 
   const [destination, setDestination] = useState("");
   const [amount, setAmount] = useState("");
@@ -151,13 +153,29 @@ export default function SendScreen() {
   };
 
   const handleSend = () => {
-    const fieldErrors: FieldErrors = {
-      destination: validateAddress(destination, publicKey) ?? undefined,
-      amount: validateAmount(amount, balance) ?? undefined,
-      memo: validateMemo(memo) ?? undefined,
-    };
-    setErrors(fieldErrors);
-    if (fieldErrors.destination || fieldErrors.amount || fieldErrors.memo) {
+    // Recheck the full payment context at the action boundary, not only via
+    // button disabled state (which may lag a wallet/network transition).
+    const state = useWalletStore.getState();
+    const validation = validatePaymentSend(
+      { destination, amount, memo },
+      {
+        sourcePublicKey: state.publicKey,
+        balance: state.balance,
+        balanceState: state.balanceState,
+        fundingStatus: state.fundingStatus,
+        networkState,
+      },
+    );
+    setErrors({
+      destination: validation.destination,
+      amount: validation.amount,
+      memo: validation.memo,
+    });
+    if (validation.readiness) {
+      Alert.alert("Payment unavailable", validation.readiness);
+      return;
+    }
+    if (validation.destination || validation.amount || validation.memo) {
       return;
     }
 
@@ -293,6 +311,12 @@ export default function SendScreen() {
               ? 'Network Unavailable'
               : isUnfunded
               ? 'Funding Required'
+              : fundingStatus !== 'funded'
+              ? 'Checking Wallet'
+              : balanceState !== 'available'
+              ? 'Balance Unavailable'
+              : networkState !== 'online'
+              ? 'Checking Network'
               : 'Send Payment'
           }
           onPress={handleSend}
