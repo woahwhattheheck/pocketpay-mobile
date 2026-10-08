@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useWalletStore } from '../../src/store/walletStore';
 import { SIZES, RADIUS, ThemeColors } from '../../src/constants/theme';
@@ -121,12 +121,15 @@ export default function HomeScreen() {
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recent Activity</Text>
-          <Text
-            style={styles.seeAll}
+          <TouchableOpacity
             onPress={() => router.push('/(tabs)/history')}
+            accessibilityRole="button"
+            accessibilityLabel="View all transaction history"
+            accessibilityHint="Opens the complete transaction activity screen"
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           >
-            See All
-          </Text>
+            <Text style={styles.seeAll}>See All</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.transactionsList}>
