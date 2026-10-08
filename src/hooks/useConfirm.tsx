@@ -52,50 +52,65 @@ export interface UseConfirmResult {
  * ```
  */
 export function useConfirm(): UseConfirmResult {
-  const [request, setRequest] = useState<ConfirmRequest | null>(null);
+  // Each request has its own identity: a late callback from an older dialog
+  // must never acknowledge or dismiss a different confirmation.
+  const [request, setRequest] = useState<(ConfirmRequest & { id: number }) | null>(null);
+  const requestRef = useRef<(ConfirmRequest & { id: number }) | null>(null);
+  const requestIdRef = useRef(0);
   const resolverRef = useRef<((confirmed: boolean) => void) | null>(null);
+  const confirmingIdRef = useRef<number | null>(null);
 
-  const settle = useCallback((confirmed: boolean) => {
+  const settle = useCallback((id: number, confirmed: boolean) => {
+    if (requestRef.current?.id !== id) return;
     const resolve = resolverRef.current;
     resolverRef.current = null;
+    requestRef.current = null;
     setRequest(null);
     resolve?.(confirmed);
   }, []);
 
-  const confirm = useCallback(
-    (next: ConfirmRequest) => {
-      // A second request while one is open supersedes it; the superseded caller
-      // resolves `false` so its promise never dangles.
-      resolverRef.current?.(false);
+  const confirm = useCallback((next: ConfirmRequest): Promise<boolean> => {
+    // Do not replace an in-flight destructive action. It may have committed
+    // side effects even though its promise has not settled yet.
+    if (confirmingIdRef.current !== null) return Promise.resolve(false);
 
-      return new Promise<boolean>((resolve) => {
-        resolverRef.current = resolve;
-        setRequest(next);
-      });
-    },
-    [],
-  );
+    // Superseding an idle request resolves the prior caller as cancelled.
+    resolverRef.current?.(false);
+    const active = { ...next, id: ++requestIdRef.current };
+    requestRef.current = active;
+    setRequest(active);
 
-  const handleConfirm = useCallback(async () => {
-    // Captured before awaiting: `settle` clears the request, and a later
-    // supersede must not run this request's work twice.
-    const pending = request;
-    if (!pending) return;
+    return new Promise<boolean>((resolve) => {
+      resolverRef.current = resolve;
+    });
+  }, []);
 
+  const handleConfirm = useCallback(async (id: number) => {
+    const pending = requestRef.current;
+    if (!pending || pending.id !== id || confirmingIdRef.current !== null) return;
+
+    confirmingIdRef.current = id;
     try {
       await pending.onConfirm?.();
+      // Only a completed action can report success. On rejection the dialog
+      // remains open, so the user can retry or cancel instead of getting true.
+      settle(id, true);
     } finally {
-      settle(true);
+      if (confirmingIdRef.current === id) confirmingIdRef.current = null;
     }
-  }, [request, settle]);
+  }, [settle]);
 
-  const handleCancel = useCallback(() => settle(false), [settle]);
+  const handleCancel = useCallback((id: number) => {
+    if (confirmingIdRef.current !== null) return;
+    settle(id, false);
+  }, [settle]);
 
   const confirmationDialog = useMemo(() => {
     if (!request) return null;
 
     return (
       <ConfirmModal
+        key={request.id}
         visible
         title={request.title}
         message={request.message}
@@ -103,8 +118,8 @@ export function useConfirm(): UseConfirmResult {
         cancelLabel={request.cancelLabel ?? 'Cancel'}
         destructive={request.destructive}
         icon={request.icon}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
+        onConfirm={() => handleConfirm(request.id)}
+        onCancel={() => handleCancel(request.id)}
       />
     );
   }, [request, handleConfirm, handleCancel]);
