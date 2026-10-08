@@ -26,7 +26,7 @@ interface SignerState {
   setActiveSignerType: (type: SignerType) => void;
   setAvailableSigners: (signers: SignerInfo[]) => void;
   startReview: (review: TransactionReview) => void;
-  beginSigningAttempt: () => boolean;
+  beginSigningAttempt: (expectedRequestId?: string) => boolean;
   setReviewFee: (fee: string) => void;
   enterHandoff: () => void;
   enterSigning: () => void;
@@ -55,16 +55,27 @@ export const useSignerStore = create<SignerState>((set, get) => ({
   setAvailableSigners: (signers) => set({ availableSigners: signers }),
 
   startReview: (review) =>
-    set({
-      phase: 'review',
-      currentReview: review,
-      error: null,
-      lastResult: null,
+    set((state) => {
+      // A route remount must not reopen signing while a prior request is
+      // still awaiting secrets, RPC submission or confirmation.
+      if (['handoff', 'signing', 'submitting', 'confirming'].includes(state.phase)) {
+        return state;
+      }
+      return {
+        phase: 'review',
+        currentReview: review,
+        error: null,
+        lastResult: null,
+      };
     }),
 
-  beginSigningAttempt: () => {
+  beginSigningAttempt: (expectedRequestId) => {
     const { phase, currentReview } = get();
-    if (phase !== 'review' || !currentReview) return false;
+    if (
+      phase !== 'review' ||
+      !currentReview ||
+      (expectedRequestId !== undefined && currentReview.requestId !== expectedRequestId)
+    ) return false;
     set({ phase: 'handoff' });
     return true;
   },
