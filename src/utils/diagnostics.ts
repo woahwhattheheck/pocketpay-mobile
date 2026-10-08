@@ -35,6 +35,17 @@ function getFeatureFlagsSnapshot(): Record<string, boolean> {
   );
 }
 
+/** A coarse support category; raw network errors stay in the redacted field. */
+function classifyNetworkError(error: string | null | undefined): string | null {
+  if (!error) return null;
+  const message = error.toLowerCase();
+  if (/timeout|timed out/.test(message)) return 'timeout';
+  if (/rate.limit|too many requests|\b429\b/.test(message)) return 'rate_limit';
+  if (/unauthorized|forbidden|permission|\b401\b|\b403\b/.test(message)) return 'authorization';
+  if (/network|connection|offline|fetch|socket|dns|unreachable/.test(message)) return 'connection';
+  return 'other';
+}
+
 export const getDiagnostics = async () => {
   const appState = useAppStore.getState();
   const walletState = useWalletStore.getState();
