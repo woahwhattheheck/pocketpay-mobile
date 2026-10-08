@@ -2,14 +2,37 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 jest.mock('expo-router');
-jest.mock('../src/services/stellar', () => ({
-  server: {
-    fetchBaseFee: jest.fn(async () => 100),
-  },
-  sendXlmTransaction: jest.fn(),
-}));
+jest.mock('../src/services/stellar', () => {
+  class PaymentSendError extends Error {
+    submissionAttempted: boolean;
+    definitiveRejection: boolean;
+    transactionHash: string | null;
+
+    constructor(
+      message: string,
+      submissionAttempted: boolean,
+      definitiveRejection: boolean,
+      transactionHash: string | null,
+    ) {
+      super(message);
+      this.name = 'PaymentSendError';
+      this.submissionAttempted = submissionAttempted;
+      this.definitiveRejection = definitiveRejection;
+      this.transactionHash = transactionHash;
+    }
+  }
+
+  return {
+    server: {
+      fetchBaseFee: jest.fn(async () => 100),
+    },
+    sendXlmTransaction: jest.fn(),
+    PaymentSendError,
+  };
+});
 jest.mock('../src/store/walletStore');
 jest.mock('../src/store/appStore', () => ({
+  normalizePublicKey: (value: string) => value.trim(),
   useAppStore: jest.fn((selector) => {
     const state = { contacts: [] };
     return selector ? selector(state) : state;
@@ -78,7 +101,7 @@ jest.mock('@/components', () => {
 });
 
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { sendXlmTransaction } from '../src/services/stellar';
+import { PaymentSendError, sendXlmTransaction } from '../src/services/stellar';
 import { useWalletStore } from '../src/store/walletStore';
 import { useSignerStore } from '../src/store/signerStore';
 import ReviewTransactionScreen from '../app/review-transaction';
@@ -91,11 +114,24 @@ const mockSendXlmTransaction = sendXlmTransaction as jest.MockedFunction<typeof 
 
 const mockBack = jest.fn();
 const mockReplace = jest.fn();
+const mockAddPendingTransaction = jest.fn();
+const sourcePublicKey = 'GSOURCE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABC';
+const walletState = {
+  publicKey: sourcePublicKey,
+  getSecretKey: jest.fn(async () => 'SSECRET123'),
+  refreshWalletData: jest.fn(),
+  addPendingTransaction: mockAddPendingTransaction,
+};
 
 describe('ReviewTransactionScreen negative paths', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    useSignerStore.getState().reset();
+    useSignerStore.setState({
+      phase: 'idle',
+      currentReview: null,
+      lastResult: null,
+      error: null,
+    });
     mockUseRouter.mockReturnValue({
       back: mockBack,
       replace: mockReplace,
@@ -106,46 +142,59 @@ describe('ReviewTransactionScreen negative paths', () => {
       amount: '10',
       memo: 'invoice-42',
     } as any);
-    mockUseWalletStore.mockReturnValue({
-      publicKey: 'GSOURCE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABC',
-      getSecretKey: jest.fn(async () => 'SSECRET123'),
-      refreshWalletData: jest.fn(),
-      addPendingTransaction: jest.fn(),
-    } as any);
+    mockUseWalletStore.mockImplementation(() => walletState as any);
+    (useWalletStore as unknown as { getState: () => typeof walletState }).getState = () => walletState;
   });
 
   it('shows a safe unconfirmed-submission message when the network request fails', async () => {
-    mockSendXlmTransaction.mockRejectedValueOnce(new Error('fetch failed'));
+    mockSendXlmTransaction.mockRejectedValueOnce(
+      new PaymentSendError(
+        'The payment outcome is not confirmed. Check history before retrying.',
+        true,
+        false,
+        'abc123hash',
+      ),
+    );
 
     const { getByText } = render(<ReviewTransactionScreen />);
     fireEvent.press(getByText('Sign & Send'));
 
     await waitFor(() => {
-      expect(getByText('Transaction Failed')).toBeTruthy();
+      expect(getByText('Transaction Status Unknown')).toBeTruthy();
       expect(getByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeTruthy();
-      expect(getByText('Go Back')).toBeTruthy();
+      expect(getByText('Check Transaction History')).toBeTruthy();
     });
+    expect(mockAddPendingTransaction).toHaveBeenCalledWith(
+      'abc123hash',
+      expect.objectContaining({ id: 'abc123hash', from: sourcePublicKey }),
+      sourcePublicKey,
+    );
+    expect(mockReplace).not.toHaveBeenCalled();
   });
 
   it('surfaces a clear insufficient-balance failure from submission', async () => {
-    mockSendXlmTransaction.mockRejectedValueOnce(new Error('op_underfunded'));
+    mockSendXlmTransaction.mockRejectedValueOnce(
+      new PaymentSendError('op_underfunded', true, true, 'rejectedhash'),
+    );
 
-    const { getByText } = render(<ReviewTransactionScreen />);
+    const { getByText, queryByText } = render(<ReviewTransactionScreen />);
     fireEvent.press(getByText('Sign & Send'));
 
     await waitFor(() => {
       expect(getByText('Transaction Failed')).toBeTruthy();
-      expect(getByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeTruthy();
+      expect(getByText(/does not have enough XLM/)).toBeTruthy();
     });
+    expect(queryByText(UNCONFIRMED_SUBMISSION_MESSAGE)).toBeNull();
+    expect(mockAddPendingTransaction).not.toHaveBeenCalled();
   });
 
-  it('shows the cancelled state clearly when signing is aborted before submission', () => {
-    useSignerStore.getState().cancelSigning();
-
+  it('cancels a review before submission when the user goes back to edit', () => {
     const { getByText } = render(<ReviewTransactionScreen />);
 
-    expect(getByText('Cancelled')).toBeTruthy();
-    expect(getByText('Signing was cancelled. No transaction was submitted.')).toBeTruthy();
-    expect(getByText('Go Back')).toBeTruthy();
+    fireEvent.press(getByText('Back to Edit'));
+
+    expect(mockBack).toHaveBeenCalled();
+    expect(mockSendXlmTransaction).not.toHaveBeenCalled();
+    expect(useSignerStore.getState().phase).toBe('idle');
   });
 });

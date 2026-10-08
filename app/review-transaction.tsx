@@ -30,7 +30,7 @@ import {
   ScreenHeader,
   StatusBadge,
 } from '@/components';
-import { UNCONFIRMED_SUBMISSION_MESSAGE } from '../src/utils/paymentErrors';
+import { UNCONFIRMED_SUBMISSION_MESSAGE, classifyPaymentError } from '../src/utils/paymentErrors';
 
 /** Copy for each in-flight signing phase, shared by the visible card and its screen-reader label. */
 const PHASE_COPY = {
@@ -265,9 +265,10 @@ export default function ReviewTransactionScreen() {
           // Transport timeout is not a definitive Horizon rejection.
           latest.markUnknown();
         } else {
+          const guidance = classifyPaymentError(failure);
           latest.failSigning({
             type: failure.submissionAttempted ? 'network_error' : 'invalid_transaction',
-            message: failure.message,
+            message: guidance.message,
           });
         }
       } else if (submittedHash || latest.phase === 'submitting' || latest.phase === 'confirming') {
