@@ -157,6 +157,76 @@ describe('ReviewTransactionScreen negative paths', () => {
     unmount();
   });
 
+  it('stops a stale attempt if the review is reset before secret lookup completes', async () => {
+    let releaseSecret!: (value: string) => void;
+    const getSecretKey = jest.fn(() => new Promise<string>((resolve) => {
+      releaseSecret = resolve;
+    }));
+    mockUseWalletStore.mockReturnValue({
+      publicKey: 'GSOURCE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABC',
+      getSecretKey,
+      refreshWalletData: jest.fn(),
+      addPendingTransaction: jest.fn(),
+    } as any);
+
+    const { getByText } = render(<ReviewTransactionScreen />);
+    fireEvent.press(getByText('Sign & Send'));
+    await waitFor(() => expect(getSecretKey).toHaveBeenCalledTimes(1));
+
+    act(() => useSignerStore.getState().reset());
+    await act(async () => {
+      releaseSecret('SSECRET123');
+      await Promise.resolve();
+    });
+
+    expect(mockSendXlmTransaction).not.toHaveBeenCalled();
+    expect(useSignerStore.getState().phase).toBe('idle');
+  });
+
+  it('records a completed network send without overwriting a replacement review', async () => {
+    let finishSend!: (result: { hash: string }) => void;
+    mockSendXlmTransaction.mockReturnValueOnce(
+      new Promise((resolve) => { finishSend = resolve; }) as any,
+    );
+    const addPendingTransaction = jest.fn();
+    mockUseWalletStore.mockReturnValue({
+      publicKey: 'GSOURCE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABC',
+      getSecretKey: jest.fn(async () => 'SSECRET123'),
+      refreshWalletData: jest.fn(),
+      addPendingTransaction,
+    } as any);
+
+    const { getByText } = render(<ReviewTransactionScreen />);
+    fireEvent.press(getByText('Sign & Send'));
+    await waitFor(() => expect(mockSendXlmTransaction).toHaveBeenCalledTimes(1));
+    const original = useSignerStore.getState().currentReview!;
+    const replacement = {
+      ...original,
+      requestId: 'replacement-review',
+      destinationPublicKey: 'GNEWDESTINATION',
+    };
+    act(() => {
+      useSignerStore.getState().reset();
+      useSignerStore.getState().startReview(replacement);
+    });
+
+    await act(async () => {
+      finishSend({ hash: 'already-sent-hash' });
+      await Promise.resolve();
+    });
+
+    expect(addPendingTransaction).toHaveBeenCalledWith(
+      'already-sent-hash',
+      expect.objectContaining({
+        from: original.sourcePublicKey,
+        to: original.destinationPublicKey,
+        amount: original.amount,
+      }),
+    );
+    expect(useSignerStore.getState().currentReview).toEqual(replacement);
+    expect(useSignerStore.getState().phase).toBe('review');
+  });
+
   it('shows a safe unconfirmed-submission message when the network request fails', async () => {
     mockSendXlmTransaction.mockRejectedValueOnce(new Error('fetch failed'));
 
