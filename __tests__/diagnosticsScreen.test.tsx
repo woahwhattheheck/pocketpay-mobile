@@ -64,7 +64,7 @@ describe('DiagnosticsScreen', () => {
     getByText('Network request failed');
     getByText('connection');
     getByText('Enabled');
-    getByText('Disabled');
+    expect(getAllByText('Enabled')).toHaveLength(2);
   });
   it('shows a loading indicator until the snapshot resolves', async () => {
     let resolveReport!: (report: string) => void;
