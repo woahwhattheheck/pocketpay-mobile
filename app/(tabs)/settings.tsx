@@ -9,11 +9,13 @@ import { useAppLockStore } from '../../src/store/appLockStore';
 import { Moon, Sun, Shield } from 'lucide-react-native';
 import { SecretKeyReveal } from '../../src/components/SecretKeyReveal';
 import { WalletResetConfirmModal } from '../../src/components/WalletResetConfirmModal';
+import { getPaymentNetworkInfo } from '../../src/utils/paymentNetwork';
 
 export default function SettingsScreen() {
   const router = useRouter();
   const { colors, isDark } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const networkInfo = getPaymentNetworkInfo();
   const { clearWallet, getSecretKey } = useWalletStore();
   const { isLockEnabled, enableLock, disableLock, authenticate } = useAppLockStore();
   const [showSecret, setShowSecret] = useState(false);
@@ -157,7 +159,12 @@ export default function SettingsScreen() {
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>Stellar PocketPay v1.0.0</Text>
-          <Text style={styles.footerText}>Network: Testnet</Text>
+          <Text style={styles.footerText}>Network: {networkInfo.label}</Text>
+          {networkInfo.mismatch && (
+            <Text style={styles.footerText} testID="settings-network-warning">
+              {networkInfo.warning}
+            </Text>
+          )}
         </View>
       </ScrollView>
       <WalletResetConfirmModal

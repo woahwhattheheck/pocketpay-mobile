@@ -22,13 +22,7 @@ import {
 } from 'lucide-react-native';
 import { AsyncActionButton, Button, ScreenHeader } from '@/components';
 import { useConfirm } from '../src/hooks/useConfirm';
-
-const getNetworkLabel = (): string => {
-  const network = (process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET').toUpperCase();
-  if (network === 'PUBLIC' || network === 'MAINNET') return 'Public Network';
-  if (network === 'TESTNET') return 'Testnet';
-  return network;
-};
+import { getPaymentNetworkInfo } from '../src/utils/paymentNetwork';
 
 /**
  * Signing Confirmation Screen
@@ -50,7 +44,6 @@ export default function SignConfirmationScreen() {
     assetCode?: string;
     memo?: string;
     fee?: string;
-    network?: string;
   }>();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -64,7 +57,9 @@ export default function SignConfirmationScreen() {
   const assetCode = params.assetCode || 'XLM';
   const memo = params.memo || '';
   const fee = params.fee || 'Unknown';
-  const network = params.network || getNetworkLabel();
+  // Route params are user-controlled; the signing passphrase is authoritative.
+  const networkInfo = getPaymentNetworkInfo();
+  const network = networkInfo.label;
 
   const destinationContact = destination.trim()
     ? resolveAddressLabel(destination.trim(), contacts)
@@ -141,11 +136,11 @@ export default function SignConfirmationScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         {/* Warning Banner */}
-        <View style={styles.warningBanner}>
+        <View style={styles.warningBanner} testID="signing-network-warning">
           <AlertTriangle size={20} color={colors.warning} />
           <Text style={styles.warningText}>
             You are about to sign a blockchain transaction. This action cannot be
-            undone.
+            undone. {networkInfo.label}: {networkInfo.warning}
           </Text>
         </View>
 

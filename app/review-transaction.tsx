@@ -31,6 +31,7 @@ import {
   StatusBadge,
 } from '@/components';
 import { UNCONFIRMED_SUBMISSION_MESSAGE } from '../src/utils/paymentErrors';
+import { getPaymentNetworkInfo } from '../src/utils/paymentNetwork';
 
 /** Copy for each in-flight signing phase, shared by the visible card and its screen-reader label. */
 const PHASE_COPY = {
@@ -56,13 +57,6 @@ type InFlightPhase = keyof typeof PHASE_COPY;
 
 const isInFlightPhase = (phase: string): phase is InFlightPhase => phase in PHASE_COPY;
 
-const getNetworkLabel = (): string => {
-  const network = (process.env.EXPO_PUBLIC_STELLAR_NETWORK || 'TESTNET').toUpperCase();
-  if (network === 'PUBLIC' || network === 'MAINNET') return 'Public Network';
-  if (network === 'TESTNET') return 'Testnet';
-  return network;
-};
-
 /**
  * Transaction Review Screen
  *
@@ -83,6 +77,7 @@ export default function ReviewTransactionScreen() {
   }>();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const networkInfo = getPaymentNetworkInfo();
   const { publicKey, getSecretKey, refreshWalletData, addPendingTransaction } = useWalletStore();
   const contacts = useAppStore((state) => state.contacts);
   const store = useSignerStore();
@@ -109,7 +104,7 @@ export default function ReviewTransactionScreen() {
       amount: amount.trim(),
       assetCode: 'XLM',
       memo: memo.trim() || undefined,
-      network: getNetworkLabel(),
+      network: networkInfo.label,
       createdAt: new Date().toISOString(),
       timeoutSeconds: 30,
     });
@@ -154,7 +149,7 @@ export default function ReviewTransactionScreen() {
       amount: amount.trim(),
       assetCode: 'XLM',
       memo: memo.trim() || undefined,
-      network: getNetworkLabel(),
+      network: networkInfo.label,
       createdAt: new Date().toISOString(),
       timeoutSeconds: 30,
       fee: fee.toString(),
@@ -240,13 +235,13 @@ export default function ReviewTransactionScreen() {
     ];
 
     if (memo.trim()) items.push({ label: 'Memo', value: memo.trim() });
-    items.push({ label: 'Network', value: getNetworkLabel() });
+    items.push({ label: 'Network', value: networkInfo.label });
     if (store.currentReview?.fee) {
       items.push({ label: 'Fee', value: `~${store.currentReview.fee} stroops` });
     }
 
     return items;
-  }, [publicKey, destination, destinationContact, amount, memo, store.currentReview?.fee]);
+  }, [publicKey, destination, destinationContact, amount, memo, store.currentReview?.fee, networkInfo.label]);
 
   // Only the review phase offers actions; every later phase keeps the same
   // summary on screen so the user can still see what they committed to.
@@ -258,6 +253,23 @@ export default function ReviewTransactionScreen() {
       contentContainerStyle={styles.content}
     >
       <ScreenHeader title="Review Transaction" subtitle="Verify details before signing" />
+
+      <View
+        style={[styles.networkNotice, { backgroundColor: colors.surface, borderColor: colors.warning }]}
+        testID="payment-network-warning"
+        accessible
+        accessibilityLabel={`Signing network: ${networkInfo.label}. ${networkInfo.warning}`}
+      >
+        <AlertTriangle size={18} color={colors.warning} />
+        <View style={styles.networkNoticeContent}>
+          <Text style={[styles.networkNoticeTitle, { color: colors.textPrimary }]}>
+            Network: {networkInfo.label}
+          </Text>
+          <Text style={[styles.networkNoticeText, { color: colors.textSecondary }]}>
+            {networkInfo.warning}
+          </Text>
+        </View>
+      </View>
 
       {/* Transaction Details + primary confirmation */}
       <ReviewConfirm
@@ -390,6 +402,18 @@ const createStyles = (colors: ThemeColors) =>
       padding: SIZES.xl,
       paddingBottom: SIZES.xxl,
     },
+    networkNotice: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: SIZES.sm,
+      padding: SIZES.md,
+      borderRadius: RADIUS.md,
+      borderWidth: 1,
+      marginBottom: SIZES.md,
+    },
+    networkNoticeContent: { flex: 1, gap: SIZES.xs },
+    networkNoticeTitle: { fontSize: 14, fontWeight: '600' },
+    networkNoticeText: { fontSize: 12, lineHeight: 18 },
     card: {
       borderRadius: RADIUS.lg,
       borderWidth: 1,
