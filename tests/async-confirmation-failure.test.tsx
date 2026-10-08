@@ -1,5 +1,6 @@
 import React from 'react';
-import { act, renderHook } from '@testing-library/react-native';
+import { Text } from 'react-native';
+import { act, fireEvent, render, renderHook } from '@testing-library/react-native';
 
 // lucide-react-native ships untransformed ESM; stub the icons ConfirmModal uses,
 // as the other ConfirmModal/useConfirm suites do.
@@ -124,5 +125,83 @@ describe('async confirmation failure and lifecycle', () => {
     });
     expect(await first).toBe(true);
     expect(result.current.isVisible).toBe(false);
+  });
+
+  it('shows a redacted, accessible retry error in the rendered dialog and clears it on success', async () => {
+    let attempts = 0;
+    const onResolved = jest.fn();
+    const Harness = () => {
+      const { confirm, confirmationDialog, isVisible } = useConfirm();
+      return (
+        <>
+          <Text
+            accessibilityRole="button"
+            accessibilityLabel="raise"
+            onPress={() => {
+              void confirm({
+                title: 'Delete Contact',
+                message: 'Are you sure?',
+                confirmLabel: 'Delete',
+                destructive: true,
+                onConfirm: async () => {
+                  attempts += 1;
+                  if (attempts === 1) throw new Error('secret seed in provider error');
+                },
+              }).then(onResolved);
+            }}
+          >
+            raise
+          </Text>
+          <Text>{isVisible ? 'dialog-open' : 'dialog-closed'}</Text>
+          {confirmationDialog}
+        </>
+      );
+    };
+
+    const { getByLabelText, getByTestId, getByText, queryByTestId, queryByText } = render(<Harness />);
+    await act(async () => {
+      fireEvent.press(getByLabelText('raise'));
+    });
+    await act(async () => {
+      fireEvent.press(getByLabelText('Delete'));
+    });
+
+    const alert = getByTestId('confirm-action-error');
+    expect(alert.props.accessibilityRole).toBe('alert');
+    expect(getByText('Unable to complete this action. Please try again.')).toBeTruthy();
+    expect(queryByText(/secret seed/)).toBeNull();
+    expect(getByText('dialog-open')).toBeTruthy();
+    expect(onResolved).not.toHaveBeenCalled();
+
+    await act(async () => {
+      fireEvent.press(getByLabelText('Delete'));
+    });
+    expect(attempts).toBe(2);
+    expect(onResolved).toHaveBeenCalledWith(true);
+    expect(getByText('dialog-closed')).toBeTruthy();
+    expect(queryByTestId('confirm-action-error')).toBeNull();
+  });
+
+  it('clears a previous failure when a declarative modal is hidden and reopened', async () => {
+    const onConfirm = jest.fn(async () => {
+      throw new Error('private storage detail');
+    });
+    const props = {
+      title: 'Reset Wallet',
+      message: 'Remove this wallet from the device?',
+      confirmLabel: 'Reset',
+      onConfirm,
+      onCancel: jest.fn(),
+    };
+
+    const { getByLabelText, queryByTestId, rerender } = render(<ConfirmModal visible {...props} />);
+    await act(async () => {
+      fireEvent.press(getByLabelText('Reset'));
+    });
+    expect(queryByTestId('confirm-action-error')).not.toBeNull();
+
+    rerender(<ConfirmModal visible={false} {...props} />);
+    rerender(<ConfirmModal visible {...props} />);
+    expect(queryByTestId('confirm-action-error')).toBeNull();
   });
 });
