@@ -1,4 +1,4 @@
-import { resolveSigningNetwork, validateSigningConfirmationRequest } from '../src/utils/signingConfirmation';
+import { resolveSigningNetwork, signerMatchesReviewedWallet, validateSigningConfirmationRequest } from '../src/utils/signingConfirmation';
 
 jest.mock('pocketpay-sdk', () => ({
   validatePublicKey: (key: string) => {
@@ -43,6 +43,13 @@ describe('signing confirmation route uses the live signer, not URL claims (#388)
     expect(resolveSigningNetwork('PUBLIC', 'custom private network')).toBeNull();
 
     expect(validateSigningConfirmationRequest(request, { ...wallet, network: null }).ok).toBe(false);
+  });
+
+  it('keeps reviewed, live, and signer public keys aligned', () => {
+    expect(signerMatchesReviewedWallet(source, source, source)).toBe(true);
+    expect(signerMatchesReviewedWallet(source, destination, source)).toBe(false);
+    expect(signerMatchesReviewedWallet(source, source, destination)).toBe(false);
+    expect(signerMatchesReviewedWallet(source, null, source)).toBe(false);
   });
 
   it('blocks missing or switched wallets, and forged asset/network values', () => {
