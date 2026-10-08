@@ -100,6 +100,12 @@ Read top-down from the single JS entry point `expo-router/entry`. Arrow `→` me
                          ├─ /transaction/:id     ← tap row in Home recent / Activity list
                          ├─ /vault/:id           ← tap Vault header / deep link scheme://stellar-pocketpay/vault/123
                          └─ /vault-lock/:id      ← tap lock row in Vault list
+
+                         
+                         ADDITIONAL DECLARED ROUTES (not all linked from a tab)
+                         ├─ /wallet-creation-success ← auth Stack post-create (subject to root wallet redirect)
+                         ├─ /settings/flags         ← nested Settings development inspector; read-only toggle stubs
+                         └─ /scan-pay               ← non-signing payment-request preview; Confirm does not submit
 ```
 
 ### 2.1 Back-Stack Behavior — Key Rules
