@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { server } from '../src/services/stellar';
 import {
   View,
@@ -54,6 +54,16 @@ const PHASE_COPY = {
 
 type InFlightPhase = keyof typeof PHASE_COPY;
 
+type FeeEstimateState =
+  | { status: 'loading' }
+  | { status: 'available'; stroops: number }
+  | { status: 'unavailable' };
+
+const STROOPS_PER_XLM = 10_000_000;
+
+const formatFeeEstimate = (stroops: number): string =>
+  `${(stroops / STROOPS_PER_XLM).toFixed(7)} XLM`;
+
 const isInFlightPhase = (phase: string): phase is InFlightPhase => phase in PHASE_COPY;
 
 const getNetworkLabel = (): string => {
@@ -87,6 +97,7 @@ export default function ReviewTransactionScreen() {
   const contacts = useAppStore((state) => state.contacts);
   const store = useSignerStore();
   const { phase, error } = store;
+  const [feeEstimate, setFeeEstimate] = useState<FeeEstimateState>({ status: 'loading' });
 
   const destination = params.destination || '';
   const amount = params.amount || '';
@@ -113,6 +124,33 @@ export default function ReviewTransactionScreen() {
       createdAt: new Date().toISOString(),
       timeoutSeconds: 30,
     });
+  }, [destination, amount, publicKey]);
+
+  // Resolve the fee before consent so the user can review it. The Horizon base
+  // fee is an estimate only; transaction construction remains authoritative.
+  useEffect(() => {
+    if (!destination || !amount || !publicKey) return;
+
+    let cancelled = false;
+    setFeeEstimate({ status: 'loading' });
+
+    void server.fetchBaseFee()
+      .then((fee) => {
+        if (cancelled) return;
+        const numericFee = typeof fee === 'number' ? fee : Number(fee);
+        if (!Number.isSafeInteger(numericFee) || numericFee <= 0) {
+          setFeeEstimate({ status: 'unavailable' });
+          return;
+        }
+        setFeeEstimate({ status: 'available', stroops: numericFee });
+      })
+      .catch(() => {
+        if (!cancelled) setFeeEstimate({ status: 'unavailable' });
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [destination, amount, publicKey]);
 
   // Handle success - navigate away
@@ -145,7 +183,6 @@ export default function ReviewTransactionScreen() {
       });
       return;
     }
-    const fee = await server.fetchBaseFee();
     store.startReview({
       requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
       sourcePublicKey: publicKey!,
@@ -157,7 +194,7 @@ export default function ReviewTransactionScreen() {
       network: getNetworkLabel(),
       createdAt: new Date().toISOString(),
       timeoutSeconds: 30,
-      fee: fee.toString(),
+      fee: feeEstimate.status === 'available' ? feeEstimate.stroops.toString() : undefined,
     });
 
     store.enterHandoff();
@@ -241,12 +278,24 @@ export default function ReviewTransactionScreen() {
 
     if (memo.trim()) items.push({ label: 'Memo', value: memo.trim() });
     items.push({ label: 'Network', value: getNetworkLabel() });
-    if (store.currentReview?.fee) {
-      items.push({ label: 'Fee', value: `~${store.currentReview.fee} stroops` });
+    if (feeEstimate.status === 'loading') {
+      items.push({ label: 'Fee', value: 'Estimating network fee…' });
+    } else if (feeEstimate.status === 'available') {
+      items.push({
+        label: 'Fee',
+        value: `~${formatFeeEstimate(feeEstimate.stroops)}`,
+        secondaryValue: `${feeEstimate.stroops} stroops · estimate`,
+      });
+    } else {
+      items.push({
+        label: 'Fee',
+        value: 'Estimate unavailable',
+        secondaryValue: 'The network will set the final fee at submission',
+      });
     }
 
     return items;
-  }, [publicKey, destination, destinationContact, amount, memo, store.currentReview?.fee]);
+  }, [publicKey, destination, destinationContact, amount, memo, feeEstimate]);
 
   // Only the review phase offers actions; every later phase keeps the same
   // summary on screen so the user can still see what they committed to.
@@ -265,6 +314,13 @@ export default function ReviewTransactionScreen() {
         confirmLabel={isReviewPhase ? 'Sign & Send' : undefined}
         onConfirm={isReviewPhase ? handleConfirmSign : undefined}
         loadingText="Signing…"
+        confirmDisabled={isReviewPhase && feeEstimate.status === 'loading'}
+        confirmDisabledHint="Wait for the network fee estimate before signing."
+        note={
+          isReviewPhase
+            ? 'Fee is estimated from the connected Stellar network. The final network fee is determined when the transaction is built and submitted.'
+            : undefined
+        }
         cancelLabel="Back to Edit"
         onCancel={isReviewPhase ? () => router.back() : undefined}
       />
