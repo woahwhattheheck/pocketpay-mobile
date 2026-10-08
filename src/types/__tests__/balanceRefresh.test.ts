@@ -2,6 +2,7 @@ import {
   describeBalanceRefresh,
   failedRefreshState,
   mayStartBalanceRefresh,
+  resolveBalanceRefreshState,
   type BalanceRefreshState,
 } from '../balanceRefresh';
 
@@ -34,4 +35,15 @@ describe('balance refresh lifecycle (#526)', () => {
     expect(mayStartBalanceRefresh('refreshed', true, false)).toBe(false);
     expect(mayStartBalanceRefresh('offline', false, true)).toBe(false);
   });
+  it('derives idle/loading/stale/failed/offline/refreshed from observations', () => {
+    const baseline = { isLoading: false, lastRefreshed: null, error: null, offline: false };
+    expect(resolveBalanceRefreshState(baseline)).toBe('idle');
+    expect(resolveBalanceRefreshState({ ...baseline, isLoading: true })).toBe('loading');
+    expect(resolveBalanceRefreshState({ ...baseline, error: 'server error' })).toBe('failed');
+    expect(resolveBalanceRefreshState({ ...baseline, lastRefreshed: 123 })).toBe('refreshed');
+    expect(resolveBalanceRefreshState({ ...baseline, lastRefreshed: 123, error: 'timeout' })).toBe('stale');
+    expect(resolveBalanceRefreshState({ ...baseline, lastRefreshed: 123, offline: true })).toBe('offline');
+    expect(resolveBalanceRefreshState({ ...baseline, isLoading: true, offline: true })).toBe('offline');
+  });
+
 });
