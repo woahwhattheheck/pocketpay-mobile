@@ -118,15 +118,18 @@ export default function ReviewTransactionScreen() {
   // Handle success - navigate away
   useEffect(() => {
     if (phase === 'completed' && store.lastResult) {
+      // Keep the receipt bound to the review that produced the transaction.
+      // A different route may have mounted while confirmation was in flight.
+      const completed = store.lastResult;
       refreshWalletData();
       const timer = setTimeout(() => {
         store.reset();
         router.replace({
           pathname: '/payment-success',
           params: {
-            hash: store.lastResult!.hash,
-            amount: amount.trim(),
-            destination: destination.trim(),
+            hash: completed.hash,
+            amount: completed.review.amount,
+            destination: completed.review.destinationPublicKey,
             date: new Date().toISOString(),
           },
         });
@@ -136,13 +139,30 @@ export default function ReviewTransactionScreen() {
   }, [phase, store.lastResult]);
 
   const handleConfirmSign = async () => {
-    // Acquire the submission lock synchronously before any await. A second tap
-    // sees the handoff phase immediately even if React has not rerendered yet.
-    if (!store.beginSigningAttempt()) return;
+    // Bind this button and its async work to the review visible on THIS route.
+    // An old mounted handler must never initiate a newer review's payment.
+    const review = store.currentReview;
+    if (
+      !review ||
+      review.sourcePublicKey !== publicKey ||
+      review.destinationPublicKey !== destination.trim() ||
+      review.amount !== amount.trim() ||
+      !store.beginSigningAttempt(review.requestId)
+    ) return;
+
+    const stillCurrent = () => {
+      const state = useSignerStore.getState();
+      return (
+        state.currentReview?.requestId === review.requestId &&
+        ['handoff', 'signing', 'submitting', 'confirming'].includes(state.phase)
+      );
+    };
 
     try {
       const { sendXlmTransaction } = await import('../src/services/stellar');
+      if (!stillCurrent()) return;
       const secretKey = await getSecretKey();
+      if (!stillCurrent()) return;
       if (!secretKey) {
         store.failSigning({
           type: 'signer_unavailable',
@@ -152,46 +172,48 @@ export default function ReviewTransactionScreen() {
       }
 
       const fee = await server.fetchBaseFee();
+      if (!stillCurrent()) return;
       store.setReviewFee(fee.toString());
       store.enterSigning();
 
       const result = await sendXlmTransaction(
         secretKey,
-        destination.trim(),
-        amount.trim(),
-        memo.trim() || undefined,
+        review.destinationPublicKey,
+        review.amount,
+        review.memo,
       );
-      store.enterSubmitting();
-      store.enterConfirming();
 
+      // A transaction that has reached the network must remain discoverable,
+      // even when this component's review has since been reset or superseded.
       addPendingTransaction(result.hash, {
         id: result.hash,
         type: 'payment',
-        from: publicKey!,
-        to: destination.trim(),
-        amount: amount.trim(),
+        from: review.sourcePublicKey,
+        to: review.destinationPublicKey,
+        amount: review.amount,
         asset: 'XLM',
         created_at: new Date().toISOString(),
       });
+      if (!stillCurrent()) return;
 
-      // React batches these consecutive set() calls into a single render, so
-      // without a real gap here 'confirming' never actually paints — this
-      // delay is what makes the phase visible instead of skipping straight
-      // from signing to completed.
+      store.enterSubmitting();
+      store.enterConfirming();
+
+      // Allow the confirming phase to paint before recording completion.
       await new Promise((resolve) => setTimeout(resolve, 400));
-
-      const signingResult = {
+      if (!stillCurrent()) return;
+      const confirmedReview = useSignerStore.getState().currentReview;
+      if (!confirmedReview || confirmedReview.requestId !== review.requestId) return;
+      store.completeSigning({
         hash: result.hash,
-        review: useSignerStore.getState().currentReview!,
+        review: confirmedReview,
         signerType: 'local' as const,
         completedAt: new Date().toISOString(),
-      };
-      store.completeSigning(signingResult);
+      });
     } catch (err: any) {
+      if (!stillCurrent()) return;
       const rawMessage = err?.message || '';
-      // A throw here doesn't prove the transaction was rejected — a client-side
-      // timeout can happen after Horizon already accepted it — so use neutral
-      // copy instead of asserting failure, except for an explicit cancellation.
+      // Transport failure alone does not prove a signed transaction was rejected.
       const isCancelled = /cancel|abort/i.test(rawMessage);
       store.failSigning({
         type: isCancelled ? 'user_cancelled' : 'unknown',
