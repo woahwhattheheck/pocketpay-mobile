@@ -124,6 +124,24 @@ User taps Create/Import
 
 Cancelled setup (user presses Back during create/import flow) leaves the user on the `(auth)` index screen with no wallet state changes — the safe default state.
 
+### Import validation, recovery, and overwrite protection (#521)
+
+The import screen validates blank input, the secret-key prefix, exact length, base32 characters, and the Stellar checksum before invoking the SDK. Invalid input returns fixed, user-readable copy rather than echoing the entered secret. An SDK import failure is classified to a typed onboarding error; neither the exception's raw message nor the secret seed is rendered in the error-state UI.
+
+On a successful SDK import, the screen checks the **current** wallet store immediately before attempting SecureStore persistence:
+
+| Existing wallet | Attempted import | Result |
+|-----------------|------------------|--------|
+| None | Valid seed | Continue with secure persistence |
+| Same public key | Valid seed | `duplicate_wallet`: reject; original wallet is retained |
+| Different public key | Valid seed | `existing_wallet`: reject; an implicit replacement is not allowed |
+
+The two new errors use fixed safe messages from `ONBOARDING_ERROR_MESSAGES`, point the user to a backup and explicit reset before replacement, and never display the public account key or entered secret. The root app waits for initial SecureStore restoration before showing the import screen, and the import screen keeps only one import/save in flight. On a successful save, the secret is cleared from the form state.
+
+If `setWallet()` reports a failed secure save, the import screen uses the existing typed `storage_error` state (not success), with retry/start-over actions and safe guidance. The explicit Cancel Import action remains disabled while the persistence request is in flight because the secure-store write cannot be cancelled or rolled back by the screen.
+
+The focused `src/types/onboarding.import.test.ts` cases cover the empty, same-account, and different-account decisions and confirm the new error strings remain fixed rather than reflecting secret input. They do **not** replace device-level keystore, biometric, accessibility, or full navigation verification.
+
 ---
 
 ## Contributor Checklist
