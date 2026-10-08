@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
-import { server } from '../src/services/stellar';
+import { server, PaymentFlowFailure } from '../src/services/stellar';
+import { mapSdkError, describeSdkError } from '../src/utils/sdkErrorMapper';
 import {
   View,
   Text,
@@ -137,7 +138,19 @@ export default function ReviewTransactionScreen() {
 
   const handleConfirmSign = async () => {
     const { sendXlmTransaction } = await import('../src/services/stellar');
-    const secretKey = await getSecretKey();
+    let secretKey: string | null = null;
+    let fee: number;
+    try {
+      secretKey = await getSecretKey();
+      fee = await server.fetchBaseFee();
+    } catch (error: unknown) {
+      const guidance = mapSdkError(error, 'payment');
+      store.failSigning({
+        type: 'invalid_transaction',
+        message: `${guidance.message} ${guidance.action} (${guidance.diagnosticCode})`,
+      });
+      return;
+    }
     if (!secretKey) {
       store.failSigning({
         type: 'signer_unavailable',
@@ -145,7 +158,6 @@ export default function ReviewTransactionScreen() {
       });
       return;
     }
-    const fee = await server.fetchBaseFee();
     store.startReview({
       requestId: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
       sourcePublicKey: publicKey!,
@@ -196,16 +208,19 @@ export default function ReviewTransactionScreen() {
         completedAt: new Date().toISOString(),
       };
       store.completeSigning(signingResult);
-    } catch (err: any) {
-      const rawMessage = err?.message || '';
-      // A throw here doesn't prove the transaction was rejected — a client-side
-      // timeout can happen after Horizon already accepted it — so use neutral
-      // copy instead of asserting failure, except for an explicit cancellation.
-      const isCancelled = /cancel|abort/i.test(rawMessage);
+    } catch (err: unknown) {
+      // Definite reject codes and pre-submit errors are carried as safe typed
+      // categories. A missing/ambiguous network reply is never a retry signal.
+      const uncertain = !(err instanceof PaymentFlowFailure) || err.stage === 'uncertain';
+      const guidance = uncertain
+        ? describeSdkError('transaction', 'unknown')
+        : describeSdkError('payment', err.category);
+      const cancelled = !uncertain && guidance.category === 'signing-rejected';
       store.failSigning({
-        type: isCancelled ? 'user_cancelled' : 'unknown',
-        message: isCancelled ? rawMessage : UNCONFIRMED_SUBMISSION_MESSAGE,
-        raw: err,
+        type: uncertain ? 'network_error' : cancelled ? 'user_cancelled' : 'invalid_transaction',
+        message: uncertain
+          ? `${UNCONFIRMED_SUBMISSION_MESSAGE} (${guidance.diagnosticCode})`
+          : `${guidance.message} ${guidance.action} (${guidance.diagnosticCode})`,
       });
     }
   };
@@ -220,11 +235,6 @@ export default function ReviewTransactionScreen() {
 
   const handleRetry = () => {
     store.reset();
-  };
-
-  const handleDismissError = () => {
-    store.reset();
-    router.back();
   };
 
   const reviewItems: ReviewItem[] = useMemo(() => {
@@ -329,15 +339,23 @@ export default function ReviewTransactionScreen() {
           <XCircle size={24} color={colors.error} />
           <View style={styles.statusTextGroup}>
             <View style={styles.statusTitleRow}>
-              <Text style={[styles.statusTitle, { color: colors.error }]}>Transaction Failed</Text>
-              <StatusBadge text="Failed" tone="error" />
+              <Text style={[styles.statusTitle, { color: colors.error }]}>
+                {error.type === 'network_error' ? 'Submission Unconfirmed' : 'Payment Not Completed'}
+              </Text>
+              <StatusBadge
+                text={error.type === 'network_error' ? 'Check History' : 'Needs Attention'}
+                tone={error.type === 'network_error' ? 'warning' : 'error'}
+              />
             </View>
             <Text style={[styles.errorText, { color: colors.textSecondary }]}>{error.message}</Text>
           </View>
           <Button
-            title="Dismiss"
+            title={error.type === 'network_error' ? 'Check History' : 'Edit Payment'}
             variant="secondary"
-            onPress={handleDismissError}
+            onPress={() => {
+              store.reset();
+              router.replace(error.type === 'network_error' ? '/(tabs)/history' : '/send');
+            }}
             style={styles.retryButton}
           />
         </View>
