@@ -204,11 +204,17 @@ export default function VaultScreen() {
         }
         if (action === 'deposit') {
           const hash = await depositForm.submit(publicKey, getSecretKey, deposit, walletBalance);
+          if (isConfigured && !hash) {
+            throw new Error('Vault deposit confirmation unavailable. Check activity before retrying.');
+          }
           return { txHash: hash || 'mock-deposit' };
         }
         const secret = await getSecretKey();
         if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
         const hash = await withdraw(secret, publicKey, submittedAmount);
+        if (isConfigured && !hash) {
+          throw new Error('Vault withdrawal confirmation unavailable. Check activity before retrying.');
+        }
         return { txHash: hash || 'mock-withdraw' };
       },
       // The live vault service already awaits the Soroban confirmation before
