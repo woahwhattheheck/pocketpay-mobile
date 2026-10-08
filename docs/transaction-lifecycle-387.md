@@ -48,6 +48,34 @@ UI checks where a suitable environment exists. Confirm real Stellar Horizon
 success, explicit rejection and lost-response outcomes; inspect wallet history
 with actual accounts. No device result, end-to-end run or payment is implied.
 
+## Signed source-account identity and final submit authority
+
+The review initially captures `sourcePublicKey` and a stable request ID.
+At approval the screen compares that source to the **live** wallet state, not
+only a React render closure, then repeats that comparison after retrieving
+the secret and after the asynchronous fee quote. The payment service now
+accepts optional `expectedSourcePublicKey` and proves it matches the
+actual public key derived from the retrieved secret **before** Horizon
+account lookup or local signing. A stale wallet/secret cannot sign from a
+different account just because the review had passed earlier validation.
+
+Between signing and Horizon POST, the `onSubmissionStart` callback acts
+as a final approval fence: it confirms the same request ID, live wallet
+public key and `signing` phase. Explicit `false` aborts without calling
+`submitTransaction`; the service emits a typed pre-submission
+`PaymentSendError` with `submissionAttempted=false`,
+`definitiveRejection=false`, and no pending/unknown transaction hash.
+Existing callers that do not supply the optional bound source/callback
+remain compatible. Once the network POST has begun, genuine lost responses
+continue through the prior `unknown` status flow; none of these guards
+represent a submitted hash as an accepted ledger receipt.
+
+`__tests__/sendXlmSigningAuthority.test.ts` supplies four focused
+regressions (mismatched signer, cancelled callback, accepted submit, and
+old optional-caller compatibility). They were **authored, not executed**
+here. Device/keychain/Horizon trials are still necessary before removing
+the draft designation or representing the source as network-validated.
+
 ## Focused tests and remaining verification
 
 `transactionLifecycle.test.ts` asserts the lifecycle edges, late
