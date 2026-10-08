@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { VaultLockList } from '../../src/components/VaultLockList';
 import { VaultConfirmModal } from '../../src/components/VaultConfirmModal';
@@ -25,6 +25,9 @@ import { WALLET_SECRET_ACCESS_MESSAGE } from '../../src/utils/walletStorageError
 import { PiggyBank, Info, Lock, HelpCircle, ShieldCheck, AlertTriangle, Ban } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VaultReceiptModal } from "../../src/components/VaultReceiptModal";
+import { buildVaultReceipt } from '../../src/features/vault/receiptModel';
+import type { VaultReceiptViewModel } from '../../src/features/vault/receiptModel';
+import { getExplorerTxUrl } from '../../src/services/stellar';
 import { isActionSupported, getActionUnsupportedReason, getActionUnsupportedDetail } from '../../src/utils/vaultCapabilities';
 import { useNetworkState } from '../../src/hooks/useNetworkState';
 import { NetworkStatusBanner } from '../../src/components/NetworkStatusBanner';
@@ -84,12 +87,15 @@ export default function VaultScreen() {
   const [showDepositPreview, setShowDepositPreview] = useState(false);
   const [depositError, setDepositError] = useState<string | null>(null);
 
-  const [receiptData, setReceiptData] = useState({
-    actionType: "deposit" as "deposit" | "withdraw" | "lock",
-    amount: "",
-    status: "Success",
-    date: "",
-    transactionHash: null as string | null,
+  const [receiptData, setReceiptData] = useState<VaultReceiptViewModel>({
+    actionType: 'deposit',
+    amount: '',
+    status: 'pending',
+    date: '',
+    transactionHash: null,
+    explorerUrl: null,
+    simulated: true,
+    guidance: '',
   });
 
   // Initial setup
@@ -140,7 +146,8 @@ export default function VaultScreen() {
     // Set pending action and execute the deposit flow directly —
     // the DepositPreview itself serves as the confirmation step.
     setPendingAction('deposit');
-    handleConfirmAction();
+    // Explicit action avoids reading the previous pendingAction before React re-renders.
+    void handleConfirmAction('deposit');
   };
 
   const vaultAction = useVaultAction();
@@ -174,12 +181,15 @@ export default function VaultScreen() {
     setConfirmVisible(true);
   };
 
- const handleConfirmAction = async () => {
-    if (!publicKey || !pendingAction) return;
+ const handleConfirmAction = async (
+    action: 'deposit' | 'withdraw' | 'lock' | null = pendingAction
+  ) => {
+    if (!publicKey || !action || vaultAction.isBusy) return;
 
-    await vaultAction.run({
+    const submittedAmount = depositForm.amount;
+    const result = await vaultAction.run({
       sign: async () => {
-        if (pendingAction === 'withdraw') {
+        if (action === 'withdraw') {
           const secret = await getSecretKey();
           if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
           return secret;
@@ -187,48 +197,46 @@ export default function VaultScreen() {
         return null;
       },
       submit: async () => {
-        if (pendingAction === 'lock') {
+        if (action === 'lock') {
           const unlockDate = new Date(Date.now() + LOCK_PERIOD_SECONDS * 1000);
-          await addLock(depositForm.amount, unlockDate.toISOString());
+          await addLock(submittedAmount, unlockDate.toISOString());
           return { txHash: 'mock-lock' };
-        } else if (pendingAction === 'deposit') {
-          const hash = await depositForm.submit(publicKey, getSecretKey, deposit, walletBalance);
-          return { txHash: hash || 'mock-deposit' };
-        } else {
-          const secret = await getSecretKey();
-          if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
-          const hash = await withdraw(secret, publicKey, depositForm.amount);
-          return { txHash: hash || 'mock-withdraw' };
         }
+        if (action === 'deposit') {
+          const hash = await depositForm.submit(publicKey, getSecretKey, deposit, walletBalance);
+          if (isConfigured && !hash) {
+            throw new Error('Vault deposit confirmation unavailable. Check activity before retrying.');
+          }
+          return { txHash: hash || 'mock-deposit' };
+        }
+        const secret = await getSecretKey();
+        if (!secret) throw new Error(WALLET_SECRET_ACCESS_MESSAGE);
+        const hash = await withdraw(secret, publicKey, submittedAmount);
+        if (isConfigured && !hash) {
+          throw new Error('Vault withdrawal confirmation unavailable. Check activity before retrying.');
+        }
+        return { txHash: hash || 'mock-withdraw' };
       },
-      confirm: async () => {
-        setConfirmVisible(false);
-        const hash = vaultAction.status.txHash;
-        setReceiptData({
-          actionType: pendingAction as 'deposit' | 'withdraw' | 'lock',
-          amount: depositForm.amount,
-          status: vaultAction.status.state === 'confirmed' ? 'Success' : 'Failed',
-          date: new Date().toLocaleString(),
-          transactionHash: hash || null,
-        });
-        setReceiptVisible(true);
-
-        depositForm.setAmount("");
-        depositForm.setAmountError(undefined);
-      },
+      // The live vault service already awaits the Soroban confirmation before
+      // returning its hash. Local lock actions are previews only.
+      confirm: async () => {},
     });
 
-    if (vaultAction.status.state === 'failed') {
-      setConfirmVisible(false);
-      setReceiptData({
-        actionType: pendingAction as 'deposit' | 'withdraw' | 'lock',
-        amount: depositForm.amount,
-        status: 'Failed',
-        date: new Date().toLocaleString(),
-        transactionHash: null,
-      });
-      setReceiptVisible(true);
-      depositForm.setAmount("");
+    setConfirmVisible(false);
+    const simulated = action === 'lock' || !isConfigured || Boolean(result.txHash?.startsWith('mock-'));
+    setReceiptData(buildVaultReceipt({
+      actionType: action,
+      amount: submittedAmount,
+      result,
+      simulated,
+      date: new Date().toISOString(),
+      explorerUrl: getExplorerTxUrl(result.txHash),
+    }));
+    setReceiptVisible(true);
+
+    // Preserve entered values on failure or unknown submission status.
+    if (result.state === 'confirmed') {
+      depositForm.setAmount('');
       depositForm.setAmountError(undefined);
     }
   };
@@ -237,12 +245,25 @@ export default function VaultScreen() {
   };
 
   const handleUnlock = async (lockId: string) => {
+    // This legacy lock action currently exposes no transaction hash. Do not
+    // announce a confirmed on-chain withdrawal without that evidence.
     try {
       await unlockLock(lockId);
-      Alert.alert('Success', 'Funds unlocked! (mock)');
-    } catch (e: any) {
-      Alert.alert('Unlock failed', e.message);
+      setReceiptData(buildVaultReceipt({
+        actionType: 'unlock',
+        result: { state: isConfigured ? 'pending' : 'confirmed' },
+        simulated: !isConfigured,
+        date: new Date().toISOString(),
+      }));
+    } catch {
+      setReceiptData(buildVaultReceipt({
+        actionType: 'unlock',
+        result: { state: 'failed' },
+        simulated: !isConfigured,
+        date: new Date().toISOString(),
+      }));
     }
+    setReceiptVisible(true);
   };
 
   const handleWithdrawPress = () => {
@@ -274,6 +295,9 @@ export default function VaultScreen() {
         status={receiptData.status}
         date={receiptData.date}
         transactionHash={receiptData.transactionHash}
+        explorerUrl={receiptData.explorerUrl}
+        simulated={receiptData.simulated}
+        guidance={receiptData.guidance}
         onClose={() => setReceiptVisible(false)}
       />
 

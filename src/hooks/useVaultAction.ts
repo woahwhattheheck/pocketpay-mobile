@@ -20,23 +20,32 @@ interface VaultActionSteps<TSigned, TResult> {
 export function useVaultAction<TSigned = unknown, TResult = unknown>() {
   const [status, setStatus] = useState<VaultActionStatus>({ state: 'idle' });
 
-  const run = useCallback(async (steps: VaultActionSteps<TSigned, TResult>) => {
+  const run = useCallback(async (steps: VaultActionSteps<TSigned, TResult>): Promise<VaultActionStatus> => {
+    let acceptedHash: string | undefined;
     try {
       setStatus({ state: 'signing' });
       const signed = await steps.sign();
 
       setStatus({ state: 'submission' });
       const { txHash } = await steps.submit(signed);
+      acceptedHash = txHash || undefined;
 
-      setStatus({ state: 'pending', txHash });
+      setStatus({ state: 'pending', txHash: acceptedHash });
       await steps.confirm(txHash);
 
-      setStatus((prev) => ({ state: 'confirmed', txHash: prev.txHash }));
+      const complete: VaultActionStatus = { state: 'confirmed', txHash: acceptedHash };
+      setStatus(complete);
+      return complete;
     } catch (err) {
-      setStatus({
-        state: 'failed',
-        error: err instanceof Error ? err.message : 'Action failed. Please try again.',
-      });
+      // A confirmation error after submission is not proof of a failed transaction.
+      // Keep the known hash and mark the outcome pending so users won't retry blindly.
+      const result: VaultActionStatus = {
+        state: acceptedHash ? 'pending' : 'failed',
+        txHash: acceptedHash,
+        error: err instanceof Error ? err.message : 'Unable to complete the vault action.',
+      };
+      setStatus(result);
+      return result;
     }
   }, []);
 

@@ -128,3 +128,29 @@ All vault exceptions are intercepted and categorized before reaching the user in
 * [Vault Integration Assumptions](../../docs/vault-integration-assumptions.md) - Core dependencies and placeholder behaviors.
 * [Vault SDK Capability Assumptions](../../docs/vault-sdk-capability-assumptions.md) - Capability gating and feature flag design.
 * [Vault UI Guidance](../../docs/vault-ui-guidance.md) - UI design standards, copywriting rules, and Testnet constraints.
+
+---
+
+## Vault transaction receipts (issue #392)
+
+The tab uses `useVaultAction.run()` to obtain the **returned** terminal/uncertain
+status from the current action. Do not read `vaultAction.status` immediately
+after awaiting the hook: React state updates are asynchronous. A failed action
+preserves the input for correction and may not be safely repeated blindly.
+
+`buildVaultReceipt` is a pure presentation boundary for deposit, withdrawal,
+lock creation and matured-lock withdrawal. It distinguishes `confirmed`,
+`pending` / unknown and `failed`, with correct success/warning/error UI.
+A failure to confirm a transaction after a hash was returned is **pending**,
+not proof of failed settlement. Transaction details and explorer links appear
+only for genuine 64-hex-character hashes on known Stellar networks; values
+such as `mock-deposit` are internal sentinels and are never displayed as
+on-chain transaction hashes.
+
+Local lock creation and unconfigured vault actions remain previews: the receipt
+says no on-chain transaction was submitted. The legacy lock-unlock path does not
+return a confirmation hash, so even with a configured contract it remains
+pending / unverified rather than asserting an on-chain withdrawal. Where no
+hash is known, users should inspect vault activity before retrying. Receipt
+presentation does **not** create a blockchain transaction, add a signed payload,
+or imply a contract capability is supported.
