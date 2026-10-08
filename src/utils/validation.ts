@@ -1,5 +1,7 @@
 import { validatePublicKey } from "pocketpay-sdk";
 import { Buffer } from "buffer";
+import type { BalanceState, FundingStatus } from "../types/balance";
+import type { NetworkState } from "../types/network";
 
 // Stellar text memos are limited to 28 bytes.
 export const MEMO_MAX_BYTES = 28;
@@ -154,6 +156,9 @@ export const validateAmount = (
 
   if (balance !== undefined) {
     const balanceValue = Number(balance);
+    if (!/^\d+(\.\d+)?$/.test(balance.trim()) || !Number.isFinite(balanceValue)) {
+      return "Wallet balance is unavailable. Refresh your balance before sending.";
+    }
     if (value > balanceValue) {
       return "You don't have enough XLM for this payment.";
     }
@@ -180,6 +185,62 @@ export const validateMemo = (memo: string): string | null => {
   }
 
   return null;
+};
+
+
+/** A single validation contract used before navigating and before signing. */
+export interface PaymentSendInputs {
+  destination: string;
+  amount: string;
+  memo: string;
+}
+
+export interface PaymentSendContext {
+  sourcePublicKey: string | null;
+  balance: string;
+  balanceState: BalanceState;
+  fundingStatus: FundingStatus;
+  networkState: NetworkState;
+}
+
+export interface PaymentSendValidation {
+  destination?: string;
+  amount?: string;
+  memo?: string;
+  readiness?: string;
+}
+
+/**
+ * Do not trust navigation params or a disabled UI button as a send guard:
+ * balance and network readiness must be rechecked at the signing boundary.
+ */
+export const validatePaymentSend = (
+  input: PaymentSendInputs,
+  context: PaymentSendContext,
+): PaymentSendValidation => {
+  const result: PaymentSendValidation = {
+    destination: validateAddress(input.destination, context.sourcePublicKey) ?? undefined,
+    amount: validateAmount(
+      input.amount,
+      context.balanceState === 'available' ? context.balance : undefined,
+    ) ?? undefined,
+    memo: validateMemo(input.memo) ?? undefined,
+  };
+
+  if (!context.sourcePublicKey) {
+    result.readiness = "Connect your wallet before sending.";
+  } else if (context.fundingStatus !== 'funded') {
+    result.readiness =
+      context.fundingStatus === 'unfunded'
+        ? "Fund your wallet before sending."
+        : "Wallet funding status is not ready. Refresh and try again.";
+  } else if (context.balanceState !== 'available') {
+    result.readiness = "Wallet balance is not ready. Refresh and try again.";
+  } else if (context.networkState !== 'online') {
+    result.readiness = "Network is not ready for payments. Reconnect and try again.";
+  }
+
+  return result;
 };
 
 // ── Transaction deep-link validation ────────────────────────────────────────
