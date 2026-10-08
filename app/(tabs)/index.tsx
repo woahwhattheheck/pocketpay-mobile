@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useWalletStore } from '../../src/store/walletStore';
@@ -10,6 +10,8 @@ import { TransactionListItem } from '../../src/components/TransactionListItem';
 import { NetworkStatusBanner } from '../../src/components/NetworkStatusBanner';
 import { WalletEmptyState } from '../../src/components/WalletEmptyState';
 import { BalanceDisplay } from '../../src/components/BalanceDisplay';
+import { BalanceRefreshStatus } from '../../src/components/BalanceRefreshStatus';
+import { useBalanceRefreshState } from '../../src/hooks/useBalanceRefreshState';
 import { FundingStatusBanner } from '../../src/components/FundingStatusBanner';
 import { LoadingState } from '../../src/components/LoadingState';
 import { EmptyState } from '../../src/components/EmptyState';
@@ -41,6 +43,20 @@ export default function HomeScreen() {
   } = useWalletStore();
 
   const { state: networkState, disableWriteActions, retry } = useNetworkState({ error });
+  const balanceRefreshState = useBalanceRefreshState({ isLoading, error, lastRefreshed, networkState });
+  const retryLocked = useRef(false);
+  const wasOffline = useRef(false);
+
+  // Reconnect recovery is deliberate: refresh once after connectivity returns,
+  // not on every rerender or while the network is known offline.
+  useEffect(() => {
+    if (networkState === 'offline') {
+      wasOffline.current = true;
+    } else if (networkState === 'online' && wasOffline.current) {
+      wasOffline.current = false;
+      void refreshWalletData();
+    }
+  }, [networkState, refreshWalletData]);
 
   useEffect(() => {
     refreshWalletData();
@@ -48,11 +64,15 @@ export default function HomeScreen() {
   }, []);
 
   const handleRetry = useCallback(() => {
-    if (publicKey) {
-      refreshWalletData();
-      checkFundingStatus();
+    if (!publicKey || isLoading || retryLocked.current) return;
+    if (networkState === 'offline') {
+      void retry(); // Recheck connectivity; do not make an offline Horizon call.
+      return;
     }
-  }, [publicKey, refreshWalletData, checkFundingStatus]);
+    retryLocked.current = true;
+    void Promise.all([refreshWalletData(), checkFundingStatus()])
+      .finally(() => { retryLocked.current = false; });
+  }, [publicKey, isLoading, networkState, refreshWalletData, checkFundingStatus, retry]);
 
   const recentTransactions = transactions.slice(0, 3); // Preview
 
@@ -86,9 +106,21 @@ export default function HomeScreen() {
           isRetrying={isLoading}
         />
 
-        {/* Issue #329: Balance display with all states */}
+        {/* Issue #526: distinguish stale, offline, failed and confirmed fresh data. */}
+        <BalanceRefreshStatus
+          state={balanceRefreshState}
+          lastRefreshed={lastRefreshed}
+          isRetrying={isLoading}
+          onRetry={handleRetry}
+        />
+
+        {/* Preserve the last verified number while explicitly labeling it stale. */}
         <BalanceDisplay
-          state={balanceState}
+          state={lastRefreshed !== null && (
+            balanceRefreshState === 'stale' ||
+            balanceRefreshState === 'offline' ||
+            balanceRefreshState === 'loading'
+          ) ? 'available' : balanceState}
           balance={balance}
           publicKey={publicKey}
           onRetry={handleRetry}
