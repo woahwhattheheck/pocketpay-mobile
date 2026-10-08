@@ -9,6 +9,8 @@ jest.mock('../src/utils/diagnostics', () => ({
 }));
 
 jest.mock('expo-router', () => ({
+  useRouter: () => ({ back: jest.fn() }),
+  Redirect: () => null,
   Stack: {
     Screen: () => null,
   },
@@ -34,7 +36,7 @@ describe('DiagnosticsScreen', () => {
     getByText('horizon-testnet.stellar.org');
     getByText('Available');
     // Both "Wallet Configured" and "Balance Loaded" render "Yes" for this fixture.
-    expect(getAllByText('Yes')).toHaveLength(2);
+    expect(getAllByText('Yes')).toHaveLength(3);
     getByText('None');
   });
 
@@ -60,5 +62,26 @@ describe('DiagnosticsScreen', () => {
     getByText('Cannot read property of undefined');
     // Distinct from lastReportedError: this is walletState.lastError.
     getByText('Network request failed');
+    getByText('connection');
+    getByText('Enabled');
+    getByText('Disabled');
   });
+  it('shows a loading indicator until the snapshot resolves', async () => {
+    let resolveReport!: (report: string) => void;
+    mockGetDiagnostics.mockImplementation(
+      () => new Promise<string>((resolve) => { resolveReport = resolve; })
+    );
+    const { getByText } = render(<DiagnosticsScreen />);
+    getByText('Loading diagnostics...');
+    resolveReport(JSON.stringify(diagnosticsFixtures.healthy));
+    await waitFor(() => getByText('horizon-testnet.stellar.org'));
+  });
+
+  it('does not expose raw exception details when the snapshot fails', async () => {
+    mockGetDiagnostics.mockRejectedValue(new Error('private exception details'));
+    const { getByText, queryByText } = render(<DiagnosticsScreen />);
+    await waitFor(() => getByText('Diagnostics unavailable. Please try again later.'));
+    expect(queryByText('private exception details')).toBeNull();
+  });
+
 });
