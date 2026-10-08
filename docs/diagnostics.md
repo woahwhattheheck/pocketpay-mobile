@@ -8,6 +8,8 @@ The Development Diagnostics feature allows contributors to easily view, export, 
 
 In **development builds only**, open **Settings → Developer → App Diagnostics**. The screen displays a non-sensitive status snapshot collected by `getDiagnostics()` and redacted again before rendering. Select **Export Diagnostics Log** to share exactly that JSON snapshot through the native OS share sheet. No report is uploaded automatically. In production builds, the Settings entry is hidden and the `/diagnostics` route redirects to the main tabs.
 
+**Refresh and recovery:** Select **Refresh Diagnostics** to collect an updated snapshot. While collection is in progress, the previous safe snapshot remains visible and refresh/export actions are disabled. On a refresh failure, the prior redacted snapshot is retained alongside an error without raw provider details. If the initial collection fails, select **Retry diagnostics** to try again. Sharing is disabled during an active export so duplicate share sheets cannot be opened.
+
 ## Redacted Information
 
 The diagnostics payload is explicitly designed to **exclude** any sensitive data that could compromise a user's wallet or privacy. 
