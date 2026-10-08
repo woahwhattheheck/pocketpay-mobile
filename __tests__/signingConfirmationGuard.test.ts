@@ -45,6 +45,28 @@ describe('signing confirmation route uses the live signer, not URL claims (#388)
     expect(validateSigningConfirmationRequest({ ...request, memo: 'x'.repeat(29) }, wallet).ok).toBe(false);
   });
 
+  it('rejects malformed or unavailable live spendable balances before signing consent', () => {
+    for (const balance of ['NaN', 'Infinity', '-1', '99abc', '', ' ', '100.00000000', '0.000000001']) {
+      expect(validateSigningConfirmationRequest(request, { ...wallet, balance }).ok).toBe(false);
+    }
+    expect(validateSigningConfirmationRequest(request, { ...wallet, balance: undefined as unknown as string }).ok).toBe(false);
+    expect(validateSigningConfirmationRequest(request, { ...wallet, balance: '12' }).ok).toBe(false);
+    expect(validateSigningConfirmationRequest(request, { ...wallet, balance: '13.3456789' }).ok).toBe(true);
+  });
+
+  it('rejects unsupported active network values even if the route repeats them', () => {
+    for (const label of ['FUTURENET', 'UNSUPPORTED', 'https://fake.stellar.invalid', '']) {
+      expect(validateSigningConfirmationRequest({ ...request, network: label }, { ...wallet, network: label }).ok).toBe(false);
+    }
+    const liveMainnet = { ...wallet, network: 'Public Network' };
+    expect(validateSigningConfirmationRequest({ ...request, network: 'Public Network' }, liveMainnet).ok).toBe(true);
+  });
+
+  it('rejects invalid signer identity even when the route source matches the stale wallet', () => {
+    const invalid = 'not-a-stellar-address';
+    expect(validateSigningConfirmationRequest({ ...request, source: invalid }, { ...wallet, publicKey: invalid }).ok).toBe(false);
+  });
+
   it('rejects query-array injection but treats a missing optional memo as empty', () => {
     expect(validateSigningConfirmationRequest({ ...request, destination: [destination] }, wallet).ok).toBe(false);
     expect(validateSigningConfirmationRequest({ ...request, memo: ['one', 'two'] }, wallet).ok).toBe(false);
