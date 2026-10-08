@@ -184,7 +184,7 @@ export default function ReviewTransactionScreen() {
         amount: review.amount,
         asset: review.assetCode,
         created_at: new Date().toISOString(),
-      });
+      }, review.sourcePublicKey);
     };
 
     try {
