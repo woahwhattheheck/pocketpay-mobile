@@ -4,27 +4,29 @@ This document describes the assumptions the mobile client makes about the Pocket
 
 ## Current Capability Checks
 
-| Check                | Source                         | Fallback                          |
-|----------------------|--------------------------------|-----------------------------------|
-| Wallet loaded        | `walletStore.publicKey`        | Show "no wallet" unavailable      |
-| Feature flag         | `EXPO_PUBLIC_VAULT_ENABLED`    | Default `true` (vault enabled)    |
-| Contract configured  | `isVaultConfigured()`          | Mock mode (not unavailable)       |
+The live `useVaultCapabilities()` hook derives readiness from wallet state and vault store reads; it does not call a hypothetical SDK readiness API yet.
 
-## Capability Gate Architecture (Issue #331)
+| Signal | Source | Effective behavior |
+|---|---|---|
+| Wallet present | `walletStore.publicKey` | No wallet gives `unavailable` |
+| Feature gate | `EXPO_PUBLIC_VAULT_ENABLED` | Defaults to `true`; `false` or `0` blocks actions |
+| SDK ready flag | `EXPO_PUBLIC_VAULT_SDK_READY` | Defaults to `true`; `false` or `0` blocks actions; this is configuration, **not a live readiness probe** |
+| Contract configured | `vaultStore.isConfigured` | Missing contract selects a **usable local experimental preview**, not live funds movement |
+| Loading | `vaultStore.isLoadingBalance / isLoadingLocks` | `loading` disables actions |
+| Error | `vaultStore.balanceError` | `error` disables actions and provides an explanation |
+| Explicit experimental flag | `FEATURE_FLAGS.ENABLE_VAULT_EXPERIMENTAL` | Configured actions are labeled experimental when enabled and marked experimental |
 
-The vault capability gate (`src/utils/vaultCapabilities.ts`) evaluates per-action availability:
+## Capability Gate Architecture (Issue #391)
 
-| Action   | Requires Wallet | Requires Feature | Requires SDK Ready | Fallback                     |
-|----------|-----------------|------------------|--------------------|------------------------------|
-| Deposit  | Yes             | Yes              | Yes                | "Vault feature disabled"     |
-| Withdraw | Yes             | Yes              | Yes                | "Vault backend not ready"    |
-| Lock     | Yes             | Yes              | Yes                | "No wallet available"        |
-| Unlock   | Yes             | Yes              | Yes                | —                            |
+The `src/utils/vaultCapabilities.ts` evaluator returns one of **five** per-action states for deposit, withdraw, lock and unlock:
 
-Each capability returns one of:
-- `{ status: 'supported' }` — action is fully available
-- `{ status: 'unsupported', reason, detail }` — action not available, with user-facing copy
-- `{ status: 'loading' }` — capability check in progress
+- `available` — all readiness signals pass for a configured vault, and experimental mode is not selected
+- `experimental` — usable, visibly labeled preview/Testnet path; **no contract** means local mock behavior and no real fund movement
+- `unavailable` — feature/SDK disabled or wallet missing; includes user-facing `reason` and `detail`
+- `loading` — an in-flight capability check; not actionable
+- `error` — vault balance/capability read failed; includes `reason` and `detail`
+
+`isActionSupported` returns `true` **only** for `available` and `experimental`. Actions must be guarded at the call site as well as visually disabled: an already-open preview/confirmation can outlive the original capability state. On the vault tab, deposit, withdraw, lock and unlock handlers recheck capability and network readiness immediately before invoking an action; deposit preview confirmation forwards the explicitly chosen `deposit` action without assuming React state updates synchronously. The underlying vault module should also enforce authorization and signing separately; UI capability flags are not a security boundary.
 
 ### VaultCapabilityInput
 
@@ -35,8 +37,17 @@ interface VaultCapabilityInput {
   isFeatureEnabled: boolean;
   isSdkReady: boolean;
   isLoading: boolean;
+  isExperimentalEnabled?: boolean;
+  error?: string | null;
 }
 ```
+
+### Focused manual acceptance scenarios
+
+1. Disable `EXPO_PUBLIC_VAULT_ENABLED` or the SDK readiness flag: all four action controls become unavailable and direct confirmation attempts are ignored.
+2. Start a deposit preview, then lose wallet/network/readiness before confirming: confirmation must not submit; an unchanged preview with readiness restored can be reconsidered.
+3. With preview mode enabled and no contract, actions explicitly say experimental and cannot be mistaken for live fund movements.
+4. After loading or a balance-read error, the controls remain disabled until the state genuinely clears.
 
 ## Future SDK Capability Signal
 
